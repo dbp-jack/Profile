@@ -166,9 +166,9 @@ function ProblemRow({
       >
         {label}
       </span>
-      {label === 'Result' && content.includes('<') ? (
+      {content.includes('<') ? (
         <div
-          className={`pt-0.5 text-sm leading-snug ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : (
