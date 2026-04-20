@@ -43,7 +43,7 @@ export default function HeroSection() {
               }`}
             >
               <img
-                src="/profile-photo.png"
+                src={`${import.meta.env.BASE_URL}profile-photo.png`}
                 alt="정민수 증명사진"
                 className="h-full w-full object-contain"
               />
