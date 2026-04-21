@@ -19,12 +19,13 @@ interface ProjectData {
   implementationGoal?: string
   techStack: string[]
   roles: ProjectRoleItem[]
+  problemHeadline?: string
   problem: string
   thinking: string
   solution: string
   result: string
   githubUrl: string
-  demoUrl: string
+  demoUrl?: string
 }
 
 type Props = { project: ProjectData; index: number }
@@ -277,6 +278,13 @@ export default function ProjectCard({ project, index }: Props) {
       <div
         className={`mb-6 space-y-3 rounded-lg border p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
       >
+        {project.problemHeadline ? (
+          <p
+            className={`text-base font-extrabold tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          >
+            {project.problemHeadline}
+          </p>
+        ) : null}
         <ProblemRow label="Problem" content={project.problem} dark={dark} />
         <ProblemRow label="Thinking" content={project.thinking} dark={dark} />
         <ProblemRow label="Solution" content={project.solution} dark={dark} />
