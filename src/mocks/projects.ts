@@ -3,7 +3,7 @@ import type { ProjectData } from '@/pages/home/components/ProjectCard'
 export const PROJECTS: ProjectData[] = [
   {
     name: 'FeedShop - B2C | 피드 기반 패션 커뮤니티 쇼핑몰 플랫폼',
-    period: '2025.05 - 2025.08',
+    period: '2025.05 - 2025.09',
     teamSize: '총원 4명/부팀장',
     description:
       '관심 (Need/Trigger) → 정보 탐색 (Search) → 스타일링 공감 (Empathy/Desire) → 구매 고민 (Anxiety) → 구매 확신 (Decision) → 구매 행동 (Action)',
