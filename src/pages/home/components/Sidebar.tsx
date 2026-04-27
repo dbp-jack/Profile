@@ -65,9 +65,9 @@ export default function Sidebar() {
         Dual-zone hover: invisible strip (sibling) catches the left screen edge; <aside> is the real bar.
         Both sit as direct children of this Fragment (<>…</>).
       */}
-      <div className="fixed left-0 top-0 z-50 h-full w-4" onMouseEnter={handleMouseEnter} />
+      <div className="fixed left-0 top-0 z-50 hidden h-full w-4 md:block" onMouseEnter={handleMouseEnter} />
       <aside
-        className={`fixed left-0 top-0 z-40 flex h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out ${hovered ? 'w-52' : 'w-14'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}
+        className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out md:flex ${hovered ? 'w-52' : 'w-14'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
