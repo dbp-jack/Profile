@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import PortfolioBody from '@/pages/home/PortfolioBody'
@@ -9,6 +9,15 @@ import PortfolioBody from '@/pages/home/PortfolioBody'
  */
 export default function PdfPortfolioPage() {
   const { dark } = useDarkMode()
+  const [isMobileViewport, setIsMobileViewport] = useState(false)
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767px)')
+    const onChange = (e: MediaQueryListEvent) => setIsMobileViewport(e.matches)
+    setIsMobileViewport(mql.matches)
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [])
 
   useEffect(() => {
     const onBeforePrint = () => window.scrollTo({ top: 0, left: 0 })
@@ -48,14 +57,16 @@ export default function PdfPortfolioPage() {
         </div>
       </header>
 
-      <div className="overflow-x-auto pb-10 pt-14 print:overflow-visible print:pb-0 print:pt-0">
+      <div className="overflow-x-auto pb-8 pt-14 sm:pb-10 print:overflow-visible print:pb-0 print:pt-0">
         <div
-          data-portfolio-mode="pdf"
-          className={`portfolio-pdf-column mx-auto w-[297mm] max-w-full overflow-hidden shadow-2xl print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none ${
+          data-portfolio-mode={isMobileViewport ? undefined : 'pdf'}
+          className={`portfolio-pdf-column mx-auto overflow-hidden ${
+            isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
+          } print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none ${
             dark ? 'bg-[#0f172a] text-gray-100' : 'bg-white text-gray-900'
           }`}
         >
-          <PortfolioBody pdfStackHeroAbout />
+          <PortfolioBody pdfStackHeroAbout={!isMobileViewport} />
         </div>
       </div>
     </div>

@@ -161,7 +161,7 @@ function ProblemRow({
 }) {
   const labelColors = getLabelColors(dark)
   return (
-    <div className="flex items-start gap-4">
+    <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:gap-4">
       <span
         className={`inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1 text-xs font-semibold ${labelColors[label]}`}
       >
@@ -169,12 +169,12 @@ function ProblemRow({
       </span>
       {content.includes('<') ? (
         <div
-          className={`overflow-x-auto pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`project-rich-content w-full overflow-x-auto pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : (
         <p
-          className={`whitespace-pre-line pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`w-full whitespace-pre-line pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
         >
           {content}
         </p>
@@ -190,7 +190,7 @@ export default function ProjectCard({ project, index }: Props) {
   return (
     <article
       id={`project-${index}`}
-      className={`rounded-xl border p-5 transition-colors duration-300 md:p-8 ${
+      className={`rounded-xl border p-4 transition-colors duration-300 sm:p-5 md:p-8 ${
         dark
           ? 'border-[#3a3a3a] bg-[#2e2e2e] shadow-[0_2px_16px_rgba(0,0,0,0.25)]'
           : 'border-gray-100 bg-white shadow-[0_4px_32px_rgba(0,0,0,0.07)]'
@@ -201,14 +201,14 @@ export default function ProjectCard({ project, index }: Props) {
       >
         Project {index + 1}
       </p>
-      <h3 className={`mb-2 text-xl font-bold md:text-2xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+      <h3 className={`mb-2 text-lg font-bold sm:text-xl md:text-2xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
         {project.name}
       </h3>
-      <p className={`mb-5 text-sm ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
+      <p className={`mb-4 text-sm md:mb-5 ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
         {project.period} | {project.teamSize}
       </p>
 
-      <div className="mb-6">
+      <div className="mb-5 md:mb-6">
         <p
           className={`mb-2 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
         >
@@ -231,7 +231,7 @@ export default function ProjectCard({ project, index }: Props) {
       </div>
 
       <div
-        className={`mb-6 rounded-xl border p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+        className={`mb-5 rounded-xl border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
       >
         <p className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>
           Roles
@@ -276,7 +276,7 @@ export default function ProjectCard({ project, index }: Props) {
       ) : null}
 
       <div
-        className={`mb-6 space-y-3 rounded-lg border p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
+        className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
       >
         {project.problemHeadline ? (
           <p
