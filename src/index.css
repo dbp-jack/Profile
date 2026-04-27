@@ -389,6 +389,7 @@ body {
 [data-portfolio-mode='pdf-fluid'] #hero,
 [data-portfolio-mode='pdf-fluid'] #about,
 [data-portfolio-mode='pdf-fluid'] #projects,
+[data-portfolio-mode='pdf-fluid'] #experience,
 [data-portfolio-mode='pdf-fluid'] #closing,
 [data-portfolio-mode='pdf-fluid'] #resources,
 [data-portfolio-mode='pdf-fluid'] #contact {
@@ -409,11 +410,52 @@ body {
 }
 
 [data-portfolio-mode='pdf-fluid'] #projects,
+[data-portfolio-mode='pdf-fluid'] #experience,
 [data-portfolio-mode='pdf-fluid'] #closing,
 [data-portfolio-mode='pdf-fluid'] #resources,
 [data-portfolio-mode='pdf-fluid'] #contact {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
+}
+
+/* /pdf 미리보기에서 Hero가 화면 높이를 강제로 차지하지 않도록 조정 */
+[data-portfolio-mode='pdf-fluid'] #hero {
+  min-height: auto !important;
+  align-items: flex-start !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #hero .max-w-5xl > div.flex {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 1rem !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #hero .max-w-5xl > div.flex > div:first-child {
+  align-items: center !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #hero > .relative.z-10 {
+  padding-top: 3rem !important;
+  padding-bottom: 1.25rem !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #hero .profile-photo-frame {
+  height: 10.5rem !important;
+  width: 7.8rem !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #hero .min-w-0 ul.mb-8 {
+  margin-bottom: 0.75rem !important;
+}
+
+/* /pdf 미리보기: 프로젝트 도식 이미지가 다음 페이지로 밀리며 생기는 큰 공백 완화 */
+[data-portfolio-mode='pdf-fluid'] .project-rich-content img {
+  max-height: 11rem !important;
+  width: 100% !important;
+  object-fit: contain !important;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 @media print {
