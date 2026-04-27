@@ -138,9 +138,11 @@ body {
   margin-bottom: 0.35rem !important;
 }
 
-[data-portfolio-mode='pdf'] #hero .min-w-0 p.mb-6 {
+[data-portfolio-mode='pdf'] #hero .min-w-0 p.hero-tagline {
+  margin-top: 0.5rem !important;
   margin-bottom: 0.45rem !important;
-  font-size: 1rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.45 !important;
 }
 
 [data-portfolio-mode='pdf'] #hero .min-w-0 ul.mb-8 {

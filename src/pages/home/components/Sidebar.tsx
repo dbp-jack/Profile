@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
   { label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
+  { label: 'Experience', href: '#experience', icon: 'ri-time-line' },
   { label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
   { label: 'Resources', href: '#resources', icon: 'ri-links-line' },
   { label: 'Contact', href: '#contact', icon: 'ri-mail-line' },

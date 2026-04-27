@@ -59,12 +59,14 @@ export default function HeroSection() {
               {HERO_ROLE_BADGE}
             </span>
             <h1
-              className={`mb-1 text-4xl font-extrabold leading-tight md:text-6xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+              className={`text-4xl font-extrabold leading-tight md:text-6xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
             >
               {HERO_NAME}
             </h1>
             <p
-              className={`mb-6 text-xl font-semibold md:text-2xl ${dark ? 'text-[#a0a0a0]' : 'text-[#1E3A5F]'}`}
+              className={`hero-tagline mb-3 mt-2 max-w-xl text-pretty text-base font-normal leading-relaxed text-balance md:mb-4 md:mt-3 md:max-w-2xl md:text-[1.0625rem] ${
+                dark ? 'text-[#9ca3af]' : 'text-gray-500'
+              }`}
             >
               {HERO_ROLE_TITLE}
             </p>

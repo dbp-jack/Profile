@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { label: 'Hero', href: '#hero' },
   { label: 'About', href: '#about' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Experience', href: '#experience' },
   { label: '마무리', href: '#closing' },
   { label: 'Resources', href: '#resources' },
   { label: 'Contact', href: '#contact' },

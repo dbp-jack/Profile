@@ -1,5 +1,6 @@
 import AboutSection from './components/AboutSection'
 import ContactSection from './components/ContactSection'
+import ExperienceSection from './components/ExperienceSection'
 import Footer from './components/Footer'
 import HeroSection from './components/HeroSection'
 import PhilosophyClosingSection from './components/PhilosophyClosingSection'
@@ -31,6 +32,7 @@ export default function PortfolioBody({ pdfStackHeroAbout = false }: PortfolioBo
       <main>
         {heroAbout}
         <ProjectsSection />
+        <ExperienceSection />
         <PhilosophyClosingSection />
         <ResourcesSection />
         <ContactSection />
