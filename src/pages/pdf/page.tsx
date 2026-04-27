@@ -29,10 +29,10 @@ export default function PdfPortfolioPage() {
   useEffect(() => {
     const el = document.createElement('style')
     el.setAttribute('data-pdf-landscape-page', '')
-    el.textContent = `@media print { @page { size: A4 landscape; margin: 0; } }`
+    el.textContent = `@media print { @page { size: ${isMobileViewport ? 'A4 portrait' : 'A4 landscape'}; margin: 0; } }`
     document.head.appendChild(el)
     return () => el.remove()
-  }, [])
+  }, [isMobileViewport])
 
   return (
     <div className="min-h-screen bg-[#e5e7eb] print:bg-transparent">
@@ -59,7 +59,7 @@ export default function PdfPortfolioPage() {
 
       <div className="overflow-x-auto pb-8 pt-14 sm:pb-10 print:overflow-visible print:pb-0 print:pt-0">
         <div
-          data-portfolio-mode={isMobileViewport ? undefined : 'pdf'}
+          data-portfolio-mode={isMobileViewport ? 'pdf-mobile' : 'pdf'}
           className={`portfolio-pdf-column mx-auto overflow-hidden ${
             isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
           } print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none ${

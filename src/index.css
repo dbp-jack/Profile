@@ -357,6 +357,32 @@ body {
   padding-bottom: 0.65rem !important;
 }
 
+/* /pdf 모바일 인쇄: 데스크톱 전용 강제 분할/높이 규칙 완화 */
+[data-portfolio-mode='pdf-mobile'] #hero {
+  min-height: auto !important;
+  align-items: flex-start !important;
+}
+
+[data-portfolio-mode='pdf-mobile'] #hero .max-w-5xl {
+  padding-top: 18mm !important;
+  padding-bottom: 8mm !important;
+}
+
+[data-portfolio-mode='pdf-mobile'] #projects,
+[data-portfolio-mode='pdf-mobile'] #closing,
+[data-portfolio-mode='pdf-mobile'] #resources,
+[data-portfolio-mode='pdf-mobile'] #contact {
+  padding-top: 10mm !important;
+  padding-bottom: 10mm !important;
+  break-before: auto !important;
+  page-break-before: auto !important;
+}
+
+[data-portfolio-mode='pdf-mobile'] .pdf-hero-about-bunch {
+  gap: 0 !important;
+  margin-bottom: 0 !important;
+}
+
 @media print {
   /*
     미리보기(/pdf)와 맞춤:
@@ -416,6 +442,11 @@ body {
   [data-portfolio-mode='pdf'] #closing .mb-14 {
     break-after: avoid !important;
     page-break-after: avoid !important;
+  }
+
+  [data-portfolio-mode='pdf-mobile'] #projects {
+    break-before: auto !important;
+    page-break-before: auto !important;
   }
 }
 
