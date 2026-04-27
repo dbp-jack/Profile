@@ -383,6 +383,37 @@ body {
   margin-bottom: 0 !important;
 }
 
+/* /pdf 자연 출력 모드: 강제 페이지 분할 없이 콘텐츠 높이대로 인쇄 */
+[data-portfolio-mode='pdf-fluid'] #hero,
+[data-portfolio-mode='pdf-fluid'] #about,
+[data-portfolio-mode='pdf-fluid'] #projects,
+[data-portfolio-mode='pdf-fluid'] #closing,
+[data-portfolio-mode='pdf-fluid'] #resources,
+[data-portfolio-mode='pdf-fluid'] #contact {
+  break-before: auto !important;
+  page-break-before: auto !important;
+  break-after: auto !important;
+  page-break-after: auto !important;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] .pdf-hero-about-bunch,
+[data-portfolio-mode='pdf-fluid'] .pdf-closing-bunch {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+  gap: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+[data-portfolio-mode='pdf-fluid'] #projects,
+[data-portfolio-mode='pdf-fluid'] #closing,
+[data-portfolio-mode='pdf-fluid'] #resources,
+[data-portfolio-mode='pdf-fluid'] #contact {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
 @media print {
   /*
     미리보기(/pdf)와 맞춤:
@@ -445,6 +476,21 @@ body {
   }
 
   [data-portfolio-mode='pdf-mobile'] #projects {
+    break-before: auto !important;
+    page-break-before: auto !important;
+  }
+
+  [data-portfolio-mode='pdf-fluid'] {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  [data-portfolio-mode='pdf-fluid'] section {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-portfolio-mode='pdf-fluid'] #projects {
     break-before: auto !important;
     page-break-before: auto !important;
   }

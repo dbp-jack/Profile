@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDarkMode } from '@/hooks/useDarkMode'
 import PortfolioBody from '@/pages/home/PortfolioBody'
 
 /**
@@ -8,7 +7,6 @@ import PortfolioBody from '@/pages/home/PortfolioBody'
  * 인쇄·PDF 저장 시 `@page A4 landscape`와 동일 비율이 되도록 합니다.
  */
 export default function PdfPortfolioPage() {
-  const { dark } = useDarkMode()
   const [isMobileViewport, setIsMobileViewport] = useState(false)
 
   useEffect(() => {
@@ -25,17 +23,8 @@ export default function PdfPortfolioPage() {
     return () => window.removeEventListener('beforeprint', onBeforePrint)
   }, [])
 
-  /* `@page`는 CSS에서 선택자로 한정할 수 없어, /pdf에 있을 때만 가로 용지 규칙을 주입합니다. */
-  useEffect(() => {
-    const el = document.createElement('style')
-    el.setAttribute('data-pdf-landscape-page', '')
-    el.textContent = `@media print { @page { size: ${isMobileViewport ? 'A4 portrait' : 'A4 landscape'}; margin: 0; } }`
-    document.head.appendChild(el)
-    return () => el.remove()
-  }, [isMobileViewport])
-
   return (
-    <div className="min-h-screen bg-[#e5e7eb] print:bg-transparent">
+    <div className="min-h-screen bg-[#0b1220] print:bg-transparent">
       <header className="fixed left-0 right-0 top-0 z-50 flex h-12 items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 shadow-sm print:hidden">
         <Link
           to="/"
@@ -59,12 +48,10 @@ export default function PdfPortfolioPage() {
 
       <div className="overflow-x-auto pb-8 pt-14 sm:pb-10 print:overflow-visible print:pb-0 print:pt-0">
         <div
-          data-portfolio-mode={isMobileViewport ? 'pdf-mobile' : 'pdf'}
+          data-portfolio-mode="pdf-fluid"
           className={`portfolio-pdf-column mx-auto overflow-hidden ${
             isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
-          } print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none ${
-            dark ? 'bg-[#0f172a] text-gray-100' : 'bg-white text-gray-900'
-          }`}
+          } bg-[#0f172a] text-gray-100 print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none`}
         >
           <PortfolioBody pdfStackHeroAbout={!isMobileViewport} />
         </div>
