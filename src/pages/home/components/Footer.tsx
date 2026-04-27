@@ -6,7 +6,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer
-      className={`py-10 pl-14 transition-colors duration-300 ${
+      className={`py-8 md:py-10 md:pl-14 transition-colors duration-300 ${
         /* Dark: footer bar + top divider. Light: navy bar only (no `border-t`). */
         dark ? 'border-t border-[#333333] bg-[#1e1e1e]' : 'bg-[#1E3A5F]'
       }`}

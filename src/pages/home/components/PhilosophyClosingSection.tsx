@@ -15,13 +15,13 @@ export default function PhilosophyClosingSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`border-t py-24 transition-colors duration-300 ${
+      className={`border-t py-20 md:py-24 transition-colors duration-300 ${
         dark ? 'border-[#3d3d3d] bg-[#262626]' : 'border-gray-200 bg-[#f8fafc]'
       }`}
     >
       <div className="mx-auto max-w-6xl px-6 lg:max-w-7xl lg:px-10">
         <div className="pdf-closing-bunch">
-          <div className="mb-16 text-center md:mb-20">
+          <div className="mb-10 text-center md:mb-20">
             <span
               className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
             >
@@ -39,7 +39,7 @@ export default function PhilosophyClosingSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20 xl:gap-24">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20 xl:gap-24">
             {CLOSING_BLOCKS.map((block) => {
               const paragraphs = block.body.split(/\n\n+/).map((p) => p.trim())
               return (

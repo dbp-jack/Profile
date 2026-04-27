@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className={`relative flex min-h-screen items-center overflow-hidden transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
+      className={`relative flex min-h-[88svh] md:min-h-screen items-center overflow-hidden transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div
         className="pointer-events-none absolute right-0 top-0 h-[420px] w-[420px] rounded-full"
@@ -34,8 +34,8 @@ export default function HeroSection() {
             : 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
         }}
       />
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-28">
-        <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-14">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-14 pt-20 sm:px-6 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28">
+        <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-14">
           <div className="flex flex-shrink-0 flex-col items-center gap-3">
             <div
               className={`profile-photo-frame h-64 w-48 overflow-hidden rounded-2xl border md:h-80 md:w-60 ${

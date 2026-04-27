@@ -16,10 +16,10 @@ export default function ProjectsSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`py-28 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
+      className={`py-20 md:py-28 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-14">
+        <div className="mb-10 md:mb-14">
           <span
             className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
@@ -33,7 +33,7 @@ export default function ProjectsSection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 md:gap-8">
           {PROJECTS.map((project, i) => (
             <ProjectCard key={project.name} project={project} index={i} />
           ))}

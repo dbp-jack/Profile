@@ -14,10 +14,10 @@ export default function ContactSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
+      className={`py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-12 text-center">
+        <div className="mb-8 text-center md:mb-12">
           <span
             className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
@@ -31,7 +31,7 @@ export default function ContactSection() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-12">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-10">
           {CONTACT_LINKS.map((item) => (
             <a
               key={item.label}

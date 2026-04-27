@@ -15,7 +15,7 @@ export default function AboutSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`relative overflow-hidden py-28 transition-colors duration-300 ${
+      className={`relative overflow-hidden py-20 md:py-28 transition-colors duration-300 ${
         dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'
       }`}
     >
@@ -29,7 +29,7 @@ export default function AboutSection() {
       />
 
       <div className="relative mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
+        <div className="mb-10 text-center md:mb-16">
           <span
             className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
@@ -47,7 +47,7 @@ export default function AboutSection() {
           {ABOUT_CARDS.map((card) => (
             <article
               key={card.title}
-              className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 shadow-sm transition-all duration-300 ${
+              className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 sm:p-7 md:p-8 shadow-sm transition-all duration-300 ${
                 dark
                   ? 'border-[#3d3d3d] bg-[#333333] hover:border-[#5a5a5a] hover:shadow-[0_20px_50px_-24px_rgba(0,0,0,0.65)]'
                   : 'border-gray-100 bg-white hover:border-[#BFDBFE] hover:shadow-[0_20px_50px_-24px_rgba(30,58,95,0.18)]'
