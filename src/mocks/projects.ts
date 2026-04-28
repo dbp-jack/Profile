@@ -3,8 +3,9 @@ import type { ProjectData } from '@/pages/home/components/ProjectCard'
 export const PROJECTS: ProjectData[] = [
   {
     name: 'FeedShop - B2C | 피드 기반 패션 커뮤니티 쇼핑몰 플랫폼',
-    period: '2025.05 - 2025.09',
-    teamSize: '총원 4명/부팀장',
+    period: '2025.05 – 2025.09',
+    teamSize: '4명 / 부팀장',
+    contribution: '기여도 약 40% (이벤트·피드 투표 도메인 전담)',
     description:
       '관심 (Need/Trigger) → 정보 탐색 (Search) → 스타일링 공감 (Empathy/Desire) → 구매 고민 (Anxiety) → 구매 확신 (Decision) → 구매 행동 (Action)',
     planningBackground:
@@ -31,8 +32,9 @@ export const PROJECTS: ProjectData[] = [
   },
   {
     name: '3M - B2B | 물류 관리 및 배송 시스템',
-    period: '2025.03 - 2025.04',
-    teamSize: '총원 4명/팀장',
+    period: '2025.03 – 2025.04',
+    teamSize: '4명 / 팀장',
+    contribution: '기여도 약 35% (Auth·User·Gateway 도메인 전담)',
     description:
       '지역 허브 기반 주문·배송과 인증 경로를 안정적으로 연결하는 B2B 물류 관리 시스템',
     planningBackground:

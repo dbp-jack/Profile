@@ -11,6 +11,7 @@ interface ProjectData {
   name: string
   period: string
   teamSize: string
+  contribution?: string
   /** 마지막 `\n\n` 블록에 `→`가 있으면 User Journey로 파싱합니다. */
   description: string
   /** 기획·배경 카드 본문 (선택). */
@@ -206,6 +207,7 @@ export default function ProjectCard({ project, index }: Props) {
       </h3>
       <p className={`mb-4 text-sm md:mb-5 ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
         {project.period} | {project.teamSize}
+        {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
 
       <div className="mb-5 md:mb-6">
