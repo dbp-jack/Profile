@@ -35,14 +35,14 @@ export const HERO_PERSONAL_INFO: readonly HeroPersonalRow[] = [
 
 export const HERO_ROLE_BADGE = 'Backend Software Engineer'
 export const HERO_NAME = '정민수'
-export const HERO_ROLE_TITLE = '구현보다 흐름을 먼저 생각하고, 결과로 보여드리겠습니다.'
-export const HERO_TECH_STACK_LABEL = 'Skills'
+export const HERO_ROLE_TITLE = '수치로 검증하고, 팀 흐름을 맞추는 백엔드 개발자입니다.'
+export const HERO_TECH_STACK_LABEL = '기술 스택'
 
 export const ABOUT_SECTION = {
   kicker: 'About',
-  title: '깊이 고민하고, 협력하고, 결과로 보여주는 개발자입니다.',
+  title: '저는 이렇게 일합니다',
   intro:
-    '고민한 선택은 지표로 확인하고, 협력은 흐름을 맞추는 방식으로 정리합니다. 맡은 임무는 끝까지 완수합니다.',
+    '고민한 선택은 수치로 확인하고, 협력은 팀 흐름을 맞추는 방식으로 정리합니다. 맡은 임무는 끝까지 완수합니다.',
 } as const
 
 export const ABOUT_CARDS = [
@@ -71,14 +71,14 @@ export const ABOUT_CARDS = [
 
 export const PROJECTS_SECTION = {
   kicker: 'Projects',
-  title: "What I've Built",
+  title: '이렇게 만들었습니다',
   subtitle:
-    'Each project below focuses on the decisions behind the work - not just what was built, but why.',
+    '각 프로젝트는 무엇을 만들었는지보다, 왜 그렇게 만들었는지에 집중합니다.',
 } as const
 
 export const EXPERIENCE_SECTION = {
   kicker: 'Experience',
-  title: 'Experience',
+  title: '걸어온 여정',
   subtitle: '직무 관련성이 높은 경험부터 최신순으로 정리했습니다.',
 } as const
 
@@ -126,8 +126,8 @@ export const EXPERIENCE_ITEMS: readonly ExperienceItem[] = [
 
 export const CONTACT_SECTION = {
   kicker: 'Contact',
-  title: 'Get in Touch',
-  subtitle: 'Feel free to reach out via any of the channels below.',
+  title: '연락하기',
+  subtitle: '아래 채널로 편하게 연락주세요.',
 } as const
 
 export const CONTACT_LINKS = [
@@ -150,13 +150,13 @@ export const CONTACT_LINKS = [
 
 export const RESOURCES_SECTION = {
   kicker: 'Links',
-  title: 'Resources',
+  title: '자료 모음',
 } as const
 
 /** Projects 다음·Resources 앞, Contact 직전 — 마무리 톤의 짧은 글 (웹·PDF 공통) */
 export const CLOSING_SECTION = {
   kicker: 'Closing',
-  title: '협업하고 설계하는 개발자',
+  title: '앞으로의 방향',
   subtitle: '일하는 방식과 성장 방향을 짧게 담았습니다.',
 } as const
 
