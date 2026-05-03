@@ -16,19 +16,19 @@ export default function ResourcesSection() {
       }}
       className={`py-16 md:py-24 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#f8fafc]'}`}
     >
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-8 md:mb-12">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 text-center md:mb-16">
           <span
-            className={`mb-2 block text-xs font-semibold uppercase tracking-widest ${dark ? 'text-[#8a8a8a]' : 'text-[#1E3A5F]'}`}
+            className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {RESOURCES_SECTION.kicker}
           </span>
           <h2
-            className={`text-3xl font-extrabold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+            className={`text-2xl font-bold md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
           >
             {RESOURCES_SECTION.title}
           </h2>
-          <div className={`mt-3 h-1 w-12 rounded-full ${dark ? 'bg-[#5a5a5a]' : 'bg-[#1E3A5F]'}`} />
+          <div className={`mx-auto mt-3 h-1 w-12 rounded-full ${dark ? 'bg-[#5a5a5a]' : 'bg-[#1E3A5F]'}`} />
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">

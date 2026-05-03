@@ -12,7 +12,7 @@ interface ProjectData {
   period: string
   teamSize: string
   contribution?: string
-  /** 마지막 `\n\n` 블록에 `→`가 있으면 User Journey로 파싱합니다. */
+  /** 마지막 `\n\n` 블록에 `→`가 있으면 사용자 여정으로 파싱합니다. */
   description: string
   /** 기획·배경 카드 본문 (선택). */
   planningBackground?: string
@@ -52,49 +52,49 @@ function parseProjectDescription(description: string): { flowSteps: string[] | n
   return { flowSteps }
 }
 
-function ProjectBackgroundSection({
-  planningBackground,
-  implementationGoal,
+function ProjectBackgroundCard({
+  title,
+  body,
   dark,
 }: {
-  planningBackground?: string
-  implementationGoal?: string
+  title: string
+  body?: string
   dark: boolean
 }) {
-  const cards = [
-    { title: '기획 배경', body: planningBackground },
-    { title: '구현 목표', body: implementationGoal },
-  ].filter((c) => (c.body?.trim() ?? '').length > 0)
-  if (cards.length === 0) return null
+  if (!(body?.trim() ?? '').length) return null
   return (
-    <div className={`mb-6 space-y-3 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
-      {cards.map((card) => (
-        <div
-          key={card.title}
-          className={`rounded-lg border p-3 ${
-            dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50'
-          }`}
-        >
-          <p
-            className={`mb-1 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
-          >
-            {card.title}
-          </p>
-          <p className="whitespace-pre-line text-sm leading-relaxed">{card.body}</p>
-        </div>
-      ))}
+    <div
+      className={`rounded-lg border p-3 ${
+        dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50'
+      }`}
+    >
+      <p
+        className={`mb-1 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+      >
+        {title}
+      </p>
+      <p className={`whitespace-pre-line text-sm leading-relaxed ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>{body}</p>
     </div>
   )
 }
 
-function ProjectUserJourneySection({ flowSteps, dark }: { flowSteps: string[]; dark: boolean }) {
+function ProjectUserJourneySection({
+  flowSteps,
+  dark,
+  stacked,
+}: {
+  flowSteps: string[]
+  dark: boolean
+  /** true면 바깥 `mb-6`을 제거하고, 위쪽 카드 블록(`space-y-3`) 안에 넣습니다. */
+  stacked?: boolean
+}) {
   if (flowSteps.length === 0) return null
   return (
-    <div className="mb-6">
+    <div className={stacked ? undefined : 'mb-6'}>
       <p
         className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
       >
-        User Journey
+        사용자 여정
       </p>
       <div
         className={`mx-auto max-w-3xl rounded-lg border p-4 ${
@@ -187,6 +187,10 @@ function ProblemRow({
 export default function ProjectCard({ project, index }: Props) {
   const { dark } = useDarkMode()
   const { flowSteps } = parseProjectDescription(project.description)
+  const hasPlanning = (project.planningBackground?.trim() ?? '').length > 0
+  const hasGoal = (project.implementationGoal?.trim() ?? '').length > 0
+  const hasJourney = !!(flowSteps && flowSteps.length > 0)
+  const showContextBlock = hasPlanning || hasGoal || hasJourney
 
   return (
     <article
@@ -210,11 +214,21 @@ export default function ProjectCard({ project, index }: Props) {
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
 
+      {showContextBlock ? (
+        <div className={`mb-6 space-y-3 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+          <ProjectBackgroundCard title="기획 배경" body={project.planningBackground} dark={dark} />
+          <ProjectBackgroundCard title="구현 목표" body={project.implementationGoal} dark={dark} />
+          {hasJourney ? (
+            <ProjectUserJourneySection flowSteps={flowSteps ?? []} dark={dark} stacked />
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="mb-5 md:mb-6">
         <p
           className={`mb-2 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
         >
-          Skills
+          기술 스택
         </p>
         <div className="flex flex-wrap gap-2">
           {project.techStack.map((tech) => (
@@ -236,7 +250,7 @@ export default function ProjectCard({ project, index }: Props) {
         className={`mb-5 rounded-xl border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
       >
         <p className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>
-          Roles
+          담당 업무
         </p>
         <ul className="m-0 list-none space-y-2.5 p-0">
           {filterFilledRoles(project.roles).map((role, idx) => (
@@ -266,16 +280,6 @@ export default function ProjectCard({ project, index }: Props) {
           ))}
         </ul>
       </div>
-
-      <ProjectBackgroundSection
-        planningBackground={project.planningBackground}
-        implementationGoal={project.implementationGoal}
-        dark={dark}
-      />
-
-      {flowSteps && flowSteps.length > 0 ? (
-        <ProjectUserJourneySection flowSteps={flowSteps} dark={dark} />
-      ) : null}
 
       <div
         className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}

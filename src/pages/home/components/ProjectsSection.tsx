@@ -18,17 +18,21 @@ export default function ProjectsSection() {
       }}
       className={`py-20 md:py-28 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-10 md:mb-14">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-10 text-center md:mb-16">
           <span
             className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {PROJECTS_SECTION.kicker}
           </span>
-          <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+          <h2
+            className={`text-2xl font-bold md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+          >
             {PROJECTS_SECTION.title}
           </h2>
-          <p className={`mt-3 max-w-xl text-sm ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p
+            className={`mx-auto mt-3 max-w-2xl text-xs leading-relaxed md:text-sm ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
+          >
             {PROJECTS_SECTION.subtitle}
           </p>
         </div>
