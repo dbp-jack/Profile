@@ -67,7 +67,7 @@ export default function ExperienceSection() {
                   <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
                     <p className={`text-xs font-semibold tracking-wide md:text-sm ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.period}</p>
                     <span
-                      className={`inline-flex w-fit rounded-md px-2 py-0.5 text-[11px] font-bold ${dark ? style.dark : style.light}`}
+                      className={`inline-flex w-fit rounded-md px-2 py-0.5 text-[0.6875rem] font-bold ${dark ? style.dark : style.light}`}
                     >
                       {item.category}
                     </span>

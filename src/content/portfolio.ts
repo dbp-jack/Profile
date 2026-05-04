@@ -65,7 +65,7 @@ export const ABOUT_CARDS = [
     title: '임무 완수',
     subtitle: '끝까지 완수로 증명한 책임감',
     description:
-      '현장실습에서 프로젝트 완성도를 높이기 위해 실습 기간 연장을 직접 제안했습니다.\n\n연장된 기간 내 관리자 대시보드를 마무리했고, 기획부터 개발까지 혼자 전담한 첫 실무 경험이었습니다.',
+      '현장실습에서 프로젝트 완성도를 높이기 위해 실습 기간 연장을 직접 제안했습니다.\n\n연장된 기간 내 관리자 대시보드를 마무리했고, 기획부터 개발까지 혼자 담당한 첫 실무 경험이었습니다.',
   },
 ] as const
 
@@ -120,7 +120,7 @@ export const EXPERIENCE_ITEMS: readonly ExperienceItem[] = [
     period: '2023.03 – 2023.08',
     category: '경력',
     title: '(주)Elssen — ICT 인턴십 및 하계현장실습',
-    detail: '건설현장 안전관리 대시보드 기획·설계·개발 전담 · AJAX 기반 실시간 센서 데이터 시각화',
+    detail: '건설현장 안전관리 대시보드 기획·설계·개발 담당 · AJAX 기반 실시간 센서 데이터 시각화',
   },
 ] as const
 
@@ -164,16 +164,16 @@ export const CLOSING_BLOCKS = [
   {
     icon: 'ri-lightbulb-flash-line',
     titleEn: 'Development Philosophy',
-    titleKo: '기능을 만들기 전에 흐름을 먼저 생각합니다.',
+    titleKo: '구현하기 전에 흐름을 먼저 설계합니다.',
     body:
-      '요구사항이 들어오면 구현보다 먼저 전체 구조와 데이터 흐름을 그립니다.\n\nFeedShop에서 단일 캐시 전략이 아니라 데이터 특성별로 캐시를 분리한 것, 3M에서 도메인 책임을 먼저 분리하고 인증 흐름을 설계한 것도 같은 방식이었습니다.\n\n개발이 끝난 뒤에도 더 나은 구조를 스스로 찾아보고, 원인과 과정을 짚으며 다듬는 습관을 이어가고 있습니다.',
+      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">설계 방식</span><span class="block leading-[1.72]">요구사항이 들어오면 구현보다 먼저 전체 구조와 데이터 흐름을 그립니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">실제 적용</span><span class="block leading-[1.72]">FeedShop에서 데이터 특성별로 캐시를 분리한 것, 3M에서 도메인 책임을 먼저 분리하고 인증 흐름을 설계한 것도 같은 방식이었습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">지속적 개선</span><span class="block leading-[1.72]">개발이 끝난 뒤에도 더 나은 구조를 스스로 찾아보고, 원인과 과정을 짚으며 다듬는 습관을 이어가고 있습니다.</span></div>',
   },
   {
     icon: 'ri-seedling-line',
     titleEn: 'Growth Direction',
-    titleKo: '도구는 적극 활용하되, 판단은 제가 합니다.',
+    titleKo: '도구는 활용하되 판단은 양보하지 않습니다.',
     body:
-      '프론트 작업은 생성형 AI로 프롬프트를 설계하고, AI 툴로 구조를 잡은 뒤, AI 에이전트로 마무리합니다.\n\n도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지, 결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 두고 결정합니다.\n\n팀에서도 같은 방식으로 일합니다. JIRA 가이드라인을 설계·배포하고 스크럼 진행을 맡은 경험을 통해, 개인 성과보다 팀의 흐름을 맞추는 일이 결과물의 질을 높인다는 점을 확인했습니다. 협업도 참여를 넘어 흐름을 만드는 일이라고 생각합니다.',
+      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">프론트 작업은 생성형 AI로 프롬프트를 설계하고, AI 툴로 구조를 잡은 뒤, AI 에이전트로 마무리합니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">현재는 n8n 기반 코드리뷰 자동화 워크플로를 구상하며 도구의 범위를 넓히고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지, 결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
   },
 ] as const
 

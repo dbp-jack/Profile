@@ -15,6 +15,11 @@
 
 html {
   scroll-behavior: smooth;
+  /*
+    한 단계 가독성 업 — 브라우저 기본(보통 16px) 대비 약 +1px에 해당.
+    Tailwind의 text-sm/base/xl 등 rem 단위가 같은 비율로 커져 레이아웃 균형이 유지됩니다.
+  */
+  font-size: 106.25%;
 }
 
 body {

@@ -9,6 +9,7 @@ export default function PhilosophyClosingSection() {
   return (
     <section
       id="closing"
+      lang="ko"
       ref={ref}
       style={{
         opacity: visible ? 1 : 0,
@@ -33,7 +34,7 @@ export default function PhilosophyClosingSection() {
               {CLOSING_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-4 max-w-2xl text-base leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+              className={`mx-auto mt-4 max-w-2xl text-base leading-relaxed break-keep ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
             >
               {CLOSING_SECTION.subtitle}
             </p>
@@ -52,7 +53,7 @@ export default function PhilosophyClosingSection() {
                 }`}
               >
                 <header
-                  className={`shrink-0 border-b px-6 pb-5 pt-6 sm:px-7 sm:pt-7 md:px-8 md:pb-6 md:pt-8 ${
+                  className={`shrink-0 border-b px-8 pb-5 pt-6 sm:px-10 sm:pt-7 md:px-12 md:pb-6 md:pt-8 ${
                     dark ? 'border-[#3d3d3d] bg-[#363636]/50' : 'border-slate-100 bg-gradient-to-br from-[#fafbff] to-white'
                   }`}
                 >
@@ -66,12 +67,12 @@ export default function PhilosophyClosingSection() {
                     </div>
                     <div className="min-w-0 pt-0.5">
                       <p
-                        className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#3730a3]'}`}
+                        className={`text-[0.6875rem] font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#3730a3]'}`}
                       >
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1.5 break-keep text-xl font-extrabold leading-snug tracking-tight text-pretty md:text-2xl ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1.5 text-[1.0625rem] font-extrabold leading-snug tracking-tight break-keep sm:text-xl md:text-2xl ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
                       >
                         {block.titleKo}
                       </h3>
@@ -79,7 +80,7 @@ export default function PhilosophyClosingSection() {
                   </div>
                 </header>
                 <div
-                  className={`flex flex-1 flex-col gap-3 px-6 py-5 sm:px-7 md:gap-3.5 md:px-8 md:py-6 ${dark ? 'bg-[#2f2f2f]/40' : 'bg-slate-50/40'}`}
+                  className={`flex flex-1 flex-col gap-3 px-8 py-5 sm:px-10 md:gap-3.5 md:px-12 md:py-6 ${dark ? 'bg-[#2f2f2f]/40' : 'bg-slate-50/40'}`}
                 >
                   <div className="w-full space-y-3 md:space-y-3.5">
                     {paragraphs.map((para, idx) => {
@@ -100,15 +101,24 @@ export default function PhilosophyClosingSection() {
                       return (
                         <div
                           key={`${block.titleKo}-${idx}`}
-                          className={`rounded-xl border px-4 py-3 md:px-5 md:py-3.5 ${blockShell}`}
+                          className={`rounded-xl border px-6 py-3 md:px-8 md:py-3.5 ${blockShell}`}
                         >
-                          <p
-                            className={`whitespace-pre-line text-pretty text-[0.9375rem] leading-[1.72] md:text-[1rem] md:leading-[1.75] ${
-                              dark ? 'text-[#d8d8d8]' : 'text-slate-700'
-                            } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
-                          >
-                            {para}
-                          </p>
+                          {para.includes('<') ? (
+                            <div
+                              className={`closing-card-body-html text-[0.9375rem] leading-[1.72] break-keep md:text-[1rem] md:leading-[1.75] ${
+                                dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                              } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
+                              dangerouslySetInnerHTML={{ __html: para }}
+                            />
+                          ) : (
+                            <p
+                              className={`whitespace-pre-line text-[0.9375rem] leading-[1.72] break-keep md:text-[1rem] md:leading-[1.75] ${
+                                dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                              } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
+                            >
+                              {para}
+                            </p>
+                          )}
                         </div>
                       )
                     })}
