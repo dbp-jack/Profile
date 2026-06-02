@@ -7,12 +7,13 @@ import PortfolioBody from '@/pages/home/PortfolioBody'
  * 인쇄·PDF 저장 시 `@page A4 landscape`와 동일 비율이 되도록 합니다.
  */
 export default function PdfPortfolioPage() {
-  const [isMobileViewport, setIsMobileViewport] = useState(false)
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => window.matchMedia('(max-width: 767px)').matches,
+  )
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 767px)')
     const onChange = (e: MediaQueryListEvent) => setIsMobileViewport(e.matches)
-    setIsMobileViewport(mql.matches)
     mql.addEventListener('change', onChange)
     return () => mql.removeEventListener('change', onChange)
   }, [])

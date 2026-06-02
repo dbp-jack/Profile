@@ -57,6 +57,44 @@ interface ProjectData {
 
 type Props = { project: ProjectData; index: number }
 
+const IS_DEV = import.meta.env.DEV
+const devWarnedKeys = new Set<string>()
+const ALLOWED_RICH_TAGS = new Set([
+  'a',
+  'b',
+  'br',
+  'caption',
+  'div',
+  'em',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'i',
+  'img',
+  'li',
+  'ol',
+  'p',
+  'span',
+  'strong',
+  'table',
+  'tbody',
+  'td',
+  'th',
+  'thead',
+  'tr',
+  'u',
+  'ul',
+])
+
+function warnDevOnce(key: string, message: string): void {
+  if (!IS_DEV || devWarnedKeys.has(key)) return
+  devWarnedKeys.add(key)
+  console.warn(`[ProjectCard] ${message}`)
+}
+
 /** "한글 (English)" 형태면 괄호를 없애고 두 줄로 나눕니다. */
 function splitJourneyStep(step: string): { ko: string; en?: string } {
   const t = step.trim()
@@ -70,11 +108,23 @@ function filterFilledRoles(roles: ProjectRoleItem[]): ProjectRoleItem[] {
   return roles.filter((r) => (r.title?.trim() ?? '').length > 0 || (r.detail?.trim() ?? '').length > 0)
 }
 
-function parseProjectDescription(description: string): { flowSteps: string[] | null } {
+function parseProjectDescription(description: string, projectName?: string): { flowSteps: string[] | null } {
   const blocks = description.split('\n\n').map((block) => block.trim()).filter(Boolean)
   const flowText = blocks.at(-1) ?? ''
   const hasFlow = flowText.includes('→')
   const flowSteps = hasFlow ? flowText.split('→').map((s) => s.trim()).filter(Boolean) : null
+  if (!hasFlow && description.includes('→')) {
+    warnDevOnce(
+      `journey-misplaced-${projectName ?? 'unknown'}`,
+      `${projectName ?? '프로젝트'}: 사용자 여정(→)이 description 마지막 블록이 아니라 파싱되지 않았습니다.`,
+    )
+  }
+  if (hasFlow && (flowSteps?.length ?? 0) < 2) {
+    warnDevOnce(
+      `journey-too-short-${projectName ?? 'unknown'}`,
+      `${projectName ?? '프로젝트'}: 사용자 여정 단계가 2개 미만입니다.`,
+    )
+  }
   return { flowSteps }
 }
 
@@ -141,6 +191,22 @@ function parseBulletLines(text: string): string[] | undefined {
 
   // 줄이 2개 이상이면 bullet 레이아웃으로 통일해 일관성을 유지한다.
   return bullets.length >= 2 ? bullets : undefined
+}
+
+function validateBulletLabelFormat(
+  bullets: string[] | undefined,
+  label: string,
+  contextKey: string,
+): void {
+  if (!bullets?.length) return
+  const first = bullets[0]
+  // 라벨이 섞여 들어온 경우 포맷(예: "설계 판단 · ...")을 느슨하게 점검한다.
+  if (first.startsWith(label) && !first.startsWith(`${label} · `)) {
+    warnDevOnce(
+      `bullet-label-${contextKey}-${label}`,
+      `${contextKey}: 첫 bullet 라벨 형식이 "${label} · ..." 형태가 아닙니다.`,
+    )
+  }
 }
 
 function normalizePerspectivePlanning(project: ProjectData): PerspectivePlanningNormalized | null {
@@ -475,6 +541,16 @@ function ProblemRow({
   dark: boolean
 }) {
   const labelColors = getLabelColors(dark)
+  if (content.includes('<')) {
+    const tags = [...content.matchAll(/<\/?([a-zA-Z0-9-]+)\b/g)].map((m) => m[1].toLowerCase())
+    const unknown = [...new Set(tags.filter((tag) => !ALLOWED_RICH_TAGS.has(tag)))]
+    if (unknown.length > 0) {
+      warnDevOnce(
+        `rich-tag-${label}-${unknown.join(',')}`,
+        `${label}: 허용되지 않은 HTML 태그(${unknown.join(', ')})가 포함되어 있습니다.`,
+      )
+    }
+  }
   return (
     <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:gap-4">
       <span
@@ -500,7 +576,7 @@ function ProblemRow({
 
 export default function ProjectCard({ project, index }: Props) {
   const { dark } = useDarkMode()
-  const { flowSteps } = parseProjectDescription(project.description)
+  const { flowSteps } = parseProjectDescription(project.description, project.name)
   const overviewSection = getOverviewSection(project)
   const perspectiveSection = normalizePerspectivePlanning(project)
   const usePlanningVariantTop = !!(overviewSection || perspectiveSection)
@@ -512,6 +588,13 @@ export default function ProjectCard({ project, index }: Props) {
   const showLegacyContext =
     !usePlanningVariantTop && (hasPlanning || hasGoal || hasJourney)
   const showContextBlock = usePlanningVariantTop || showLegacyContext
+  if (perspectiveSection?.cards?.length) {
+    perspectiveSection.cards.forEach((card, cardIdx) => {
+      const contextKey = `${project.name}#${card.title || cardIdx}`
+      validateBulletLabelFormat(card.problemBullets, perspectiveSection.problemLabel, `${contextKey} problem`)
+      validateBulletLabelFormat(card.directionBullets, perspectiveSection.directionLabel, `${contextKey} direction`)
+    })
+  }
 
   return (
     <article

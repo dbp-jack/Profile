@@ -62,7 +62,7 @@ export const ABOUT_CARDS = [
   },
   {
     icon: 'ri-checkbox-circle-line',
-    title: '임무 완수',
+    title: '책임감',
     subtitle: '끝까지 완수로 증명한 책임감',
     description:
       '현장실습에서 프로젝트 완성도를 높이기 위해 실습 기간 연장을 직접 제안했습니다.\n\n연장된 기간 내 관리자 대시보드를 마무리했고, 기획부터 개발까지 혼자 담당한 첫 실무 경험이었습니다.',
