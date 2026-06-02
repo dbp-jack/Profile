@@ -118,25 +118,7 @@ function filterFilledRoles(roles: ProjectRoleItem[]): ProjectRoleItem[] {
   return roles.filter((r) => (r.title?.trim() ?? '').length > 0 || (r.detail?.trim() ?? '').length > 0)
 }
 
-function parseProjectDescription(description: string, projectName?: string): { flowSteps: string[] | null } {
-  const blocks = description.split('\n\n').map((block) => block.trim()).filter(Boolean)
-  const flowText = blocks.at(-1) ?? ''
-  const hasFlow = flowText.includes('→')
-  const flowSteps = hasFlow ? flowText.split('→').map((s) => s.trim()).filter(Boolean) : null
-  if (!hasFlow && description.includes('→')) {
-    warnDevOnce(
-      `journey-misplaced-${projectName ?? 'unknown'}`,
-      `${projectName ?? '프로젝트'}: 사용자 여정(→)이 description 마지막 블록이 아니라 파싱되지 않았습니다.`,
-    )
-  }
-  if (hasFlow && (flowSteps?.length ?? 0) < 2) {
-    warnDevOnce(
-      `journey-too-short-${projectName ?? 'unknown'}`,
-      `${projectName ?? '프로젝트'}: 사용자 여정 단계가 2개 미만입니다.`,
-    )
-  }
-  return { flowSteps }
-}
+
 
 function ProjectBackgroundCard({
   title,
