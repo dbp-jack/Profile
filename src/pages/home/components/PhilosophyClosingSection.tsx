@@ -72,7 +72,7 @@ export default function PhilosophyClosingSection() {
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1.5 text-[1.0625rem] font-extrabold leading-snug tracking-tight break-keep sm:text-xl md:text-2xl ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1.5 text-2xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
                       >
                         {block.titleKo}
                       </h3>
@@ -105,14 +105,14 @@ export default function PhilosophyClosingSection() {
                         >
                           {para.includes('<') ? (
                             <div
-                              className={`closing-card-body-html text-[0.9375rem] leading-[1.72] break-keep md:text-[1rem] md:leading-[1.75] ${
+                              className={`closing-card-body-html text-sm leading-[1.72] break-keep ${
                                 dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                               } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                               dangerouslySetInnerHTML={{ __html: para }}
                             />
                           ) : (
                             <p
-                              className={`whitespace-pre-line text-[0.9375rem] leading-[1.72] break-keep md:text-[1rem] md:leading-[1.75] ${
+                              className={`whitespace-pre-line text-sm leading-[1.72] break-keep ${
                                 dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                               } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                             >

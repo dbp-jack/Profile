@@ -74,20 +74,45 @@ export const PROJECTS: ProjectData[] = [
     contribution: '기여도 약 35%',
     description:
       '지역 허브 기반 주문·배송과 인증 경로를 안정적으로 연결하는 B2B 물류 관리 시스템',
+    architectureImage: '/m3_infra.png',
+    architectureDetails: [
+      {
+        title: 'Docker Compose',
+        description: 'Spring Cloud 기반 MSA 구조로, 각 도메인을 독립 서비스로 분리해 배포·변경 단위를 최소화했습니다.',
+        items: [
+          {
+            bullets: [
+              '10개 이상의 서비스(Gateway·Eureka·각 마이크로서비스·독립 PostgreSQL·Redis·Zipkin)를 단일 파일로 통합 구성',
+              '각 서비스마다 Actuator 헬스체크를 설정해 상태를 자동 모니터링하고, depends_on + wait-for-it.sh로 Eureka → Gateway → 각 서비스 순의 기동 순서를 제어했습니다.',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Eureka',
+        items: [
+          {
+            bullets: [
+              '서비스 디스커버리 서버를 직접 구성. 모든 서비스가 기동 시 Eureka에 자동 등록되어 서비스 간 직접 의존 없이 이름 기반으로 통신',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Gateway',
+        items: [
+          {
+            bullets: [
+              '단일 진입점으로 JWT 검증 후 X-User-* 헤더로 사용자 컨텍스트 전달, 각 서비스의 인증 의존성 제거',
+            ],
+          },
+        ],
+      },
+    ],
     serviceOverview:
       '허브 센터 기반 B2B 물류 관리 및 배송 시스템\n경기도 허브의 상품이 부산 허브로 이동하고, 최종 수령 업체에 배송되기까지의 허브 간 물류 흐름을 통합 관리하는 플랫폼입니다.\n다수의 기업·허브·배송 담당자가 시스템을 사용하는 구조 특성상 인증과 권한 관리가 핵심 기반이었고,\nAuth·User·Gateway 도메인을 전담하며 서비스 간 의존성을 최소화하는 인증 구조를 설계했습니다.',
-    designPerspectivePlanning: {
-      subtitle: '',
-      cards: [
-        {
-          title: '책임 분리 설계',
-          recognizedProblem:
-            '· Auth/User 경계가 없으면 인증 정책 변경 시 사용자 도메인까지 배포 단위로 엮임\n· 매 요청마다 User 서비스를 거치는 구조는 호출 체인이 길어질수록 서비스 간 결합도가 높아짐',
-          designJudgment:
-            '· SRP 기준으로 Auth·User·Gateway 역할 경계를 명확히 분리\n· 로그인 시점에 컨텍스트를 JWT payload에 포함\n· Gateway에서 일괄 검증 후 X-User-* 헤더로 전달\n· 추가 정보가 필요한 경우에만 User 서비스 선택 호출 → 서비스 간 의존성 최소화',
-        },
-      ],
-    },
+    developerPerspective:
+      'B2B 물류 시스템은 다수의 서비스가 연계되는 구조로, 인증과 사용자 관리가 한 모듈에 혼재되면 인증 정책 하나를 바꿀 때, <span class="font-semibold text-red-500 dark:text-red-400">사용자 도메인까지 배포 단위로 엮이는</span> 문제가 발생합니다. 또한 매 요청마다 User 서비스를 재조회하는 방식은 <span class="font-semibold text-red-500 dark:text-red-400">서비스 간 결합도를 높이고</span>, <span class="font-semibold text-red-500 dark:text-red-400">User 서비스 장애 시 인증 전체가 영향받는</span> 위험을 내포하고 있었습니다.\n단순한 기능 분리가 아닌 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">SRP</span>를 기준으로 변경 이유가 다른 두 책임을 별도 모듈로 분리하고, 로그인 시점에 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">userId·role을 JWT payload에 포함</span>해\n이후 요청에서 User 서비스 재조회 없이 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Gateway에서 직접 처리</span>하는 구조를 선택했습니다.\n 이를 통해 인증 정책 변경 시 Auth·Gateway만 수정하고 User 모듈은 독립적으로 유지할 수 있는 구조를 만들었습니다.',
     techStack: ['SpringBoot', 'Spring Cloud Gateway', 'JWT', 'Redis', 'PostgreSQL', 'Docker', 'JIRA'],
     roles: [
       {

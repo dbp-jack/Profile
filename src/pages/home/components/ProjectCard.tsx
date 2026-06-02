@@ -25,6 +25,7 @@ interface ProjectData {
   /** 아키텍처 이미지 아래 세부 작업 내용 카드 (선택). */
   architectureDetails?: Array<{
     title: string
+    description?: string
     items: Array<{
       label?: string
       bullets: string[]
@@ -141,13 +142,13 @@ function ProjectBackgroundCard({
       }`}
     >
       <p
-        className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         {title}
       </p>
       <p
         lang="ko"
-        className={`whitespace-pre-line break-keep text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+        className={`whitespace-pre-line break-keep text-sm leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
         dangerouslySetInnerHTML={{ __html: body ?? '' }}
       />
     </div>
@@ -306,7 +307,7 @@ function ProjectPerspectivePlanningSection({
     >
       <div className="mb-4 sm:mb-5">
         <p
-          className={`text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           {data.sectionTitle}
         </p>
@@ -465,7 +466,7 @@ function ProjectUserJourneySection({
   return (
     <div className={stacked || embeddedInPerspective ? undefined : 'mb-6'}>
       <p
-        className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         사용자 여정
       </p>
@@ -614,7 +615,7 @@ export default function ProjectCard({ project, index }: Props) {
         }`}
       >
         <p
-          className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           기술 스택
         </p>
@@ -645,7 +646,7 @@ export default function ProjectCard({ project, index }: Props) {
                 className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
               >
                 <p
-                  className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+                  className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
                 >
                   담당 업무
                 </p>
@@ -686,7 +687,7 @@ export default function ProjectCard({ project, index }: Props) {
                       : 'border-indigo-100/80 bg-white shadow-sm'
                   }`}
                 >
-                  <p className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                  <p className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
                   <img
@@ -701,9 +702,14 @@ export default function ProjectCard({ project, index }: Props) {
                           key={si}
                           className={`rounded-xl border p-3.5 ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                         >
-                          <p className={`mb-2.5 text-sm font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                          <p className={`mb-2.5 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                             {section.title}
                           </p>
+                          {section.description ? (
+                            <p className={`mb-2 text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                              {section.description}
+                            </p>
+                          ) : null}
                           <div className="space-y-2">
                             {section.items.map((item, ii) => (
                               <div key={ii}>
@@ -753,7 +759,7 @@ export default function ProjectCard({ project, index }: Props) {
       >
         {project.problemHeadline ? (
           <p
-            className={`text-base font-extrabold tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+            className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
           >
             {project.problemHeadline}
           </p>
