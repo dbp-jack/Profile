@@ -148,7 +148,7 @@ function ProjectBackgroundCard({
       <p
         lang="ko"
         className={`whitespace-pre-line break-keep text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
-        dangerouslySetInnerHTML={{ __html: body }}
+        dangerouslySetInnerHTML={{ __html: body ?? '' }}
       />
     </div>
   )
