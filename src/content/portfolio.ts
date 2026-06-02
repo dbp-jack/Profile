@@ -56,9 +56,9 @@ export const ABOUT_CARDS = [
   {
     icon: 'ri-node-tree',
     title: '협업 시스템 설계',
-    subtitle: '일관된 협업 방식으로 혼선을 줄인 경험',
+    subtitle: '백지 상태에서 팀 협업 기반을 만든 경험',
     description:
-      '작업 공유·진행에서 생기는 혼선을 줄이기 위해 JIRA 기반 Agile 프로세스를 도입했습니다.\n\nTo Do / In Progress / Done, 티켓 작성 규칙·작업 단위 기준을 정리하고 가이드라인을 제작·배포해 협업 일관성을 맞췄습니다.',
+      '협업 체계가 전무한 상태에서 작업 충돌과 진행 혼선을 줄이기 위해 코딩 컨벤션·JIRA 스프린트 기반을 직접 설계·배포했습니다.\n\n스프린트 운영 방식·JIRA 사용법·티켓 작성 규칙을 가이드라인으로 정리하고, JIRA 이슈·Slack 알림을 연동해 변경 사항이 자동으로 공유되는 협업 알림 체계를 구축했습니다.',
   },
   {
     icon: 'ri-checkbox-circle-line',
