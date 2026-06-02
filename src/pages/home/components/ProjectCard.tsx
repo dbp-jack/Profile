@@ -586,17 +586,12 @@ function ProblemRow({
 
 export default function ProjectCard({ project, index }: Props) {
   const { dark } = useDarkMode()
-  const { flowSteps } = parseProjectDescription(project.description, project.name)
   const overviewSection = getOverviewSection(project)
   const perspectiveSection = normalizePerspectivePlanning(project)
   const usePlanningVariantTop = !!(overviewSection || perspectiveSection)
   const hasPlanning = (project.planningBackground?.trim() ?? '').length > 0
   const hasGoal = (project.implementationGoal?.trim() ?? '').length > 0
-  const hasJourney = !!(flowSteps && flowSteps.length > 0)
-  const embedUserJourneyInPerspective =
-    perspectiveSection?.variant === 'user' && hasJourney
-  const showLegacyContext =
-    !usePlanningVariantTop && (hasPlanning || hasGoal || hasJourney)
+  const showLegacyContext = !usePlanningVariantTop && (hasPlanning || hasGoal)
   const showContextBlock = usePlanningVariantTop || showLegacyContext
   if (perspectiveSection?.cards?.length) {
     perspectiveSection.cards.forEach((card, cardIdx) => {
