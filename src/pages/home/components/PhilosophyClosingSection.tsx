@@ -6,6 +6,11 @@ export default function PhilosophyClosingSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
 
+  const allParagraphs = CLOSING_BLOCKS.map((block) =>
+    block.body.split(/\n\n+/).map((p) => p.trim()),
+  )
+  const maxRows = Math.max(...allParagraphs.map((p) => p.length))
+
   return (
     <section
       id="closing"
@@ -40,21 +45,20 @@ export default function PhilosophyClosingSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-stretch md:gap-16 lg:gap-20 xl:gap-24">
-            {CLOSING_BLOCKS.map((block) => {
-              const paragraphs = block.body.split(/\n\n+/).map((p) => p.trim())
-              return (
-              <article
+          {/* 헤더 행 */}
+          <div className="grid grid-cols-1 gap-x-16 gap-y-3 md:grid-cols-2 lg:gap-x-20 xl:gap-x-24">
+            {CLOSING_BLOCKS.map((block) => (
+              <div
                 key={block.titleKo}
-                className={`flex h-full flex-col overflow-hidden rounded-2xl border shadow-md ${
+                className={`overflow-hidden rounded-2xl border shadow-md ${
                   dark
                     ? 'border-[#424242] bg-[#333333] shadow-black/25'
                     : 'border-indigo-100/90 bg-white shadow-slate-200/90'
                 }`}
               >
-                <header
-                  className={`shrink-0 border-b px-8 pb-5 pt-6 sm:px-10 sm:pt-7 md:px-12 md:pb-6 md:pt-8 ${
-                    dark ? 'border-[#3d3d3d] bg-[#363636]/50' : 'border-slate-100 bg-gradient-to-br from-[#fafbff] to-white'
+                <div
+                  className={`px-8 pb-3 pt-4 sm:px-10 md:px-12 ${
+                    dark ? 'bg-[#363636]/50' : 'bg-gradient-to-br from-[#fafbff] to-white'
                   }`}
                 >
                   <div className="flex items-start gap-5">
@@ -72,61 +76,59 @@ export default function PhilosophyClosingSection() {
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1.5 text-2xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1.5 text-xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
                       >
                         {block.titleKo}
                       </h3>
                     </div>
                   </div>
-                </header>
-                <div
-                  className={`flex flex-1 flex-col gap-3 px-8 py-5 sm:px-10 md:gap-3.5 md:px-12 md:py-6 ${dark ? 'bg-[#2f2f2f]/40' : 'bg-slate-50/40'}`}
-                >
-                  <div className="w-full space-y-3 md:space-y-3.5">
-                    {paragraphs.map((para, idx) => {
-                      const isFirst = idx === 0
-                      const isLast = idx === paragraphs.length - 1
-                      const blockShell =
-                        dark
-                          ? isFirst
-                            ? 'border-[#3d4460] bg-[#323848]/90'
-                            : isLast
-                              ? 'border-[#4a4a55] bg-[#383838]/80'
-                              : 'border-[#40404a] bg-[#363636]/70'
-                          : isFirst
-                            ? 'border-indigo-200/70 bg-white shadow-sm ring-1 ring-indigo-100/40'
-                            : isLast
-                              ? 'border-slate-200/90 bg-white shadow-sm'
-                              : 'border-slate-200/70 bg-white/90 shadow-sm'
-                      return (
-                        <div
-                          key={`${block.titleKo}-${idx}`}
-                          className={`rounded-xl border px-6 py-3 md:px-8 md:py-3.5 ${blockShell}`}
-                        >
-                          {para.includes('<') ? (
-                            <div
-                              className={`closing-card-body-html text-sm leading-[1.72] break-keep ${
-                                dark ? 'text-[#d8d8d8]' : 'text-slate-700'
-                              } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
-                              dangerouslySetInnerHTML={{ __html: para }}
-                            />
-                          ) : (
-                            <p
-                              className={`whitespace-pre-line text-sm leading-[1.72] break-keep ${
-                                dark ? 'text-[#d8d8d8]' : 'text-slate-700'
-                              } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
-                            >
-                              {para}
-                            </p>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
                 </div>
-              </article>
-              )
-            })}
+              </div>
+            ))}
+
+            {/* 서브카드 행 — 열별로 높이 자동 정렬 */}
+            {Array.from({ length: maxRows }).map((_, rowIdx) =>
+              CLOSING_BLOCKS.map((block, colIdx) => {
+                const para = allParagraphs[colIdx][rowIdx]
+                if (!para) return <div key={`empty-${colIdx}-${rowIdx}`} />
+                const isFirst = rowIdx === 0
+                const isLast = rowIdx === allParagraphs[colIdx].length - 1
+                const blockShell = dark
+                  ? isFirst
+                    ? 'border-[#3d4460] bg-[#323848]/90'
+                    : isLast
+                      ? 'border-[#4a4a55] bg-[#383838]/80'
+                      : 'border-[#40404a] bg-[#363636]/70'
+                  : isFirst
+                    ? 'border-indigo-200/70 bg-white shadow-sm ring-1 ring-indigo-100/40'
+                    : isLast
+                      ? 'border-slate-200/90 bg-white shadow-sm'
+                      : 'border-slate-200/70 bg-white/90 shadow-sm'
+                return (
+                  <div
+                    key={`${block.titleKo}-${rowIdx}`}
+                    className={`flex flex-col justify-center rounded-xl border px-6 py-3 md:px-8 md:py-3.5 ${blockShell}`}
+                  >
+                    {para.includes('<') ? (
+                      <div
+                        className={`closing-card-body-html text-sm leading-[1.72] break-keep ${
+                          dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                        } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
+                        dangerouslySetInnerHTML={{ __html: para }}
+                      />
+                    ) : (
+                      <p
+                        className={`whitespace-pre-line text-sm leading-[1.72] break-keep ${
+                          dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                        } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
+                      >
+                        {para}
+                      </p>
+                    )}
+                  </div>
+                )
+              }),
+            )}
           </div>
         </div>
       </div>

@@ -173,7 +173,7 @@ export const CLOSING_BLOCKS = [
     titleEn: 'Growth Direction',
     titleKo: '도구는 활용하되 판단은 양보하지 않습니다.',
     body:
-      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.\n도구를 적극 활용하되, 어떤 구조로 만들지에 대한 설계 판단은 직접 수행합니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
+      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
   },
 ] as const
 
