@@ -20,6 +20,8 @@ interface ProjectData {
   implementationGoal?: string
   /** 서비스 개요 — 설정 시 `기획 배경` 대신 상단에 노출 (예: FeedShop). */
   serviceOverview?: string
+  /** 아키텍처 이미지 URL — 서비스 소개와 담당 업무 사이에 노출 (선택). */
+  architectureImage?: string
   /** 사용자 관점 기획 카드 — `serviceOverview`와 함께 사용 */
   userPerspectivePlanning?: {
     subtitle: string
@@ -647,6 +649,60 @@ export default function ProjectCard({ project, index }: Props) {
               {overviewSection ? (
                 <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
               ) : null}
+              {project.architectureImage ? (
+                <div
+                  className={`rounded-2xl border p-4 sm:p-5 ${
+                    dark
+                      ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
+                      : 'border-indigo-100/80 bg-white shadow-sm'
+                  }`}
+                >
+                  <p className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                    아키텍처
+                  </p>
+                  <img
+                    src={project.architectureImage}
+                    alt="아키텍처 다이어그램"
+                    className="w-full rounded-xl object-contain"
+                  />
+                </div>
+              ) : null}
+              <div
+                className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+              >
+                <p
+                  className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+                >
+                  담당 업무
+                </p>
+                <ul className="m-0 list-none space-y-2.5 p-0">
+                  {filterFilledRoles(project.roles).map((role, idx) => (
+                    <li
+                      key={`${role.title}-${role.detail}-${idx}`}
+                      className={`flex gap-3 rounded-lg border p-3 transition-colors ${
+                        dark
+                          ? 'border-[#3a3a3a] bg-[#2e2e2e] hover:border-[#4a4a4a]'
+                          : 'border-gray-100 bg-white hover:border-blue-100'
+                      }`}
+                    >
+                      <span
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${
+                          dark ? 'bg-[#383838]' : 'bg-gray-50'
+                        }`}
+                        aria-hidden
+                      >
+                        {role.icon}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
+                        <p className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}>
+                          {role.detail}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               {perspectiveSection ? (
                 <ProjectPerspectivePlanningSection
                   data={perspectiveSection}
@@ -663,43 +719,6 @@ export default function ProjectCard({ project, index }: Props) {
           )}
         </div>
       ) : null}
-
-      <div
-        className={`mb-5 rounded-xl border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
-      >
-        <p
-          className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
-        >
-          담당 업무
-        </p>
-        <ul className="m-0 list-none space-y-2.5 p-0">
-          {filterFilledRoles(project.roles).map((role, idx) => (
-            <li
-              key={`${role.title}-${role.detail}-${idx}`}
-              className={`flex gap-3 rounded-lg border p-3 transition-colors ${
-                dark
-                  ? 'border-[#3a3a3a] bg-[#2e2e2e] hover:border-[#4a4a4a]'
-                  : 'border-gray-100 bg-white hover:border-blue-100'
-              }`}
-            >
-              <span
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${
-                  dark ? 'bg-[#383838]' : 'bg-gray-50'
-                }`}
-                aria-hidden
-              >
-                {role.icon}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className={`text-sm font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
-                <p className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}>
-                  {role.detail}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
 
       <div
         className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
