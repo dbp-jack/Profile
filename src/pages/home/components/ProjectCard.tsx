@@ -30,6 +30,8 @@ interface ProjectData {
       bullets: string[]
     }>
   }>
+  /** 개발자 관점 핵심 과제 — perspectiveSection 대신 단순 텍스트 카드로 노출 (선택). */
+  developerPerspective?: string
   /** 사용자 관점 기획 카드 — `serviceOverview`와 함께 사용 */
   userPerspectivePlanning?: {
     subtitle: string
@@ -145,10 +147,9 @@ function ProjectBackgroundCard({
       </p>
       <p
         lang="ko"
-        className={`whitespace-pre-line break-keep text-sm leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
-      >
-        {body}
-      </p>
+        className={`whitespace-pre-line break-keep text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+        dangerouslySetInnerHTML={{ __html: body }}
+      />
     </div>
   )
 }
@@ -605,9 +606,15 @@ export default function ProjectCard({ project, index }: Props) {
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
 
-      <div className="mb-5 md:mb-6">
+      <div
+        className={`mb-5 rounded-2xl border p-4 sm:p-5 md:mb-6 ${
+          dark
+            ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
+            : 'border-indigo-100/80 bg-white shadow-sm'
+        }`}
+      >
         <p
-          className={`mb-2 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+          className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           기술 스택
         </p>
@@ -722,7 +729,9 @@ export default function ProjectCard({ project, index }: Props) {
                   ) : null}
                 </div>
               ) : null}
-              {perspectiveSection ? (
+              {project.developerPerspective ? (
+                <ProjectBackgroundCard title="개발자 관점에서 핵심 과제" body={project.developerPerspective} dark={dark} />
+              ) : perspectiveSection ? (
                 <ProjectPerspectivePlanningSection
                   data={perspectiveSection}
                   dark={dark}

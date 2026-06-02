@@ -36,21 +36,8 @@ export const PROJECTS: ProjectData[] = [
     ],
     serviceOverview:
       '"내가 진짜 쓸 서비스인가?" 이 본질적인 질문에서 출발했습니다.\n저희 플랫폼은 단순 구매를 넘어 피드 공유, 투표, 이벤트로 유저가 자발적으로 움직이는 커뮤니티형 패션 커머스입니다.\n피드 투표를 통해 상위 랭커에게 포인트와 쿠폰을 지급하며,\n \'구매가 곧 참여이자 보상\'이 되는 선순환 구조로 유저의 지속적인 재방문을 유도하도록 설계했습니다.',
-    userPerspectivePlanning: {
-      subtitle: '',
-      cards: [
-        {
-          title: '재참여 설계',
-          problemBullets: [
-            '구매 후 이탈과 단발성 이용으로 재방문 유인이 만들어지지 않는 구조',
-            '재방문이 없으니 콘텐츠 생산도, 신뢰 기반 후기 축적도 이어지기 어려움',
-          ],
-          directionBullets: [
-            '사용자 여정 6단계 분석으로 공감·확신 단계를 재참여 유입 지점으로 설정',
-          ],
-        },
-      ],
-    },
+    developerPerspective:
+      '유저의 재방문을 유도하는 선순환 구조의 핵심은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">\'이벤트 참여\'</span>에 있습니다. 한정된 기간 동안 보상을 얻기 위해 특정 시간에 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">유저 요청이 급증</span>하는 구조적 특성이 있었고, 랭킹 상위권 피드에 투표가 몰리는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">쏠림 현상</span>도 예상되었습니다.\n이 과정에서 발생하는 <span class="font-semibold text-red-500 dark:text-red-400">응답 지연</span>과 <span class="font-semibold text-red-500 dark:text-red-400">데이터 정합성 이슈</span>는 서비스 신뢰도를 떨어뜨리는 치명적인 요인입니다. 따라서 유저 경험을 온전히 지키기 위해 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 문제 해결</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성 보장</span>에 집중했습니다.',
     techStack: ['SpringBoot', 'Query DSL', 'MySQL', 'Redis', 'GCP', 'Docker', 'Github', 'JIRA', 'JMeter'],
     roles: [
       {
