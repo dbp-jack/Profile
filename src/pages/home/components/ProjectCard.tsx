@@ -683,7 +683,7 @@ export default function ProjectCard({ project, index }: Props) {
                     아키텍처
                   </p>
                   <img
-                    src={project.architectureImage}
+                    src={`${__BASE_PATH__}${project.architectureImage.replace(/^\//, '')}`}
                     alt="아키텍처 다이어그램"
                     className="w-full rounded-xl object-contain"
                   />
