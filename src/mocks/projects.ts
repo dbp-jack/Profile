@@ -90,9 +90,21 @@ export const PROJECTS: ProjectData[] = [
     },
     techStack: ['SpringBoot', 'Spring Cloud Gateway', 'JWT', 'Redis', 'PostgreSQL', 'Docker', 'JIRA'],
     roles: [
-      { icon: '🧱', title: '책임 경계 설계', detail: 'Auth / User / Gateway 역할 분리, 인증·사용자 책임 분리' },
-      { icon: '🐳', title: '인프라 통합', detail: 'Docker Compose 기반 모듈·Redis·DB·Eureka 통합 구성' },
-      { icon: '🔐', title: '인증 흐름 구현', detail: 'JWT 발급 및 Gateway 필터 기반 토큰 검증 공통 인증 흐름 적용' },
+      {
+        icon: '🧱',
+        title: '책임 경계 설계 / 인증 흐름 구현',
+        detail: 'SRP 중심으로 Auth / User / Gateway 역할 분리\nJWT 발급 및 Gateway 필터 기반 토큰 검증, AOP 기반 권한 제어 구현',
+      },
+      {
+        icon: '🐳',
+        title: '인프라 통합',
+        detail: 'Docker Compose 기반 모듈·Redis·DB·Eureka 통합 구성',
+      },
+      {
+        icon: '👥',
+        title: '팀장 | 팀 리딩',
+        detail: 'JIRA 애자일 기반 협업 진행, 스프린트·우선순위 조율',
+      },
     ],
     problemHeadline: '인증 구조 설계 및 서비스 경계 문제',
     problem:
