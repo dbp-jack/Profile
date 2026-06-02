@@ -730,7 +730,7 @@ export default function ProjectCard({ project, index }: Props) {
                 </div>
               ) : null}
               {project.developerPerspective ? (
-                <ProjectBackgroundCard title="개발자 관점에서 핵심 과제" body={project.developerPerspective} dark={dark} />
+                <ProjectBackgroundCard title="개발자 관점에서의 핵심 과제" body={project.developerPerspective} dark={dark} />
               ) : perspectiveSection ? (
                 <ProjectPerspectivePlanningSection
                   data={perspectiveSection}
