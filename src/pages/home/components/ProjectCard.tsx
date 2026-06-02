@@ -147,7 +147,7 @@ function ProjectBackgroundCard({
       }`}
     >
       <p
-        className={`mb-3 text-xs font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         {title}
       </p>
@@ -249,7 +249,7 @@ function normalizePerspectivePlanning(project: ProjectData): PerspectivePlanning
 
 function getOverviewSection(project: ProjectData): { title: string; body: string } | null {
   const sv = project.serviceOverview?.trim()
-  if (sv) return { title: '서비스 개요', body: project.serviceOverview! }
+  if (sv) return { title: '서비스 소개', body: project.serviceOverview! }
   const po = project.projectOverview?.trim()
   if (po) return { title: '프로젝트 개요', body: project.projectOverview! }
   return null
@@ -313,7 +313,7 @@ function ProjectPerspectivePlanningSection({
     >
       <div className="mb-4 sm:mb-5">
         <p
-          className={`text-xs font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           {data.sectionTitle}
         </p>
@@ -472,7 +472,7 @@ function ProjectUserJourneySection({
   return (
     <div className={stacked || embeddedInPerspective ? undefined : 'mb-6'}>
       <p
-        className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
       >
         사용자 여정
       </p>
@@ -618,39 +618,9 @@ export default function ProjectCard({ project, index }: Props) {
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
 
-      {showContextBlock ? (
-        <div className={`mb-6 space-y-4 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
-          {usePlanningVariantTop ? (
-            <>
-              {overviewSection ? (
-                <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
-              ) : null}
-              {perspectiveSection ? (
-                <ProjectPerspectivePlanningSection
-                  data={perspectiveSection}
-                  dark={dark}
-                  userJourneyFlowSteps={embedUserJourneyInPerspective ? (flowSteps ?? []) : undefined}
-                />
-              ) : null}
-              {hasJourney && !embedUserJourneyInPerspective ? (
-                <ProjectUserJourneySection flowSteps={flowSteps ?? []} dark={dark} stacked />
-              ) : null}
-            </>
-          ) : (
-            <>
-              <ProjectBackgroundCard title="기획 배경" body={project.planningBackground} dark={dark} />
-              <ProjectBackgroundCard title="구현 목표" body={project.implementationGoal} dark={dark} />
-              {hasJourney ? (
-                <ProjectUserJourneySection flowSteps={flowSteps ?? []} dark={dark} stacked />
-              ) : null}
-            </>
-          )}
-        </div>
-      ) : null}
-
       <div className="mb-5 md:mb-6">
         <p
-          className={`mb-2 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+          className={`mb-2 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
         >
           기술 스택
         </p>
@@ -670,11 +640,35 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
       </div>
 
+      {showContextBlock ? (
+        <div className={`mb-6 space-y-4 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+          {usePlanningVariantTop ? (
+            <>
+              {overviewSection ? (
+                <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
+              ) : null}
+              {perspectiveSection ? (
+                <ProjectPerspectivePlanningSection
+                  data={perspectiveSection}
+                  dark={dark}
+                  userJourneyFlowSteps={undefined}
+                />
+              ) : null}
+            </>
+          ) : (
+            <>
+              <ProjectBackgroundCard title="기획 배경" body={project.planningBackground} dark={dark} />
+              <ProjectBackgroundCard title="구현 목표" body={project.implementationGoal} dark={dark} />
+            </>
+          )}
+        </div>
+      ) : null}
+
       <div
         className={`mb-5 rounded-xl border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
       >
         <p
-          className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+          className={`mb-3 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
         >
           담당 업무
         </p>
