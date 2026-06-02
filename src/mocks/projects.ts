@@ -8,6 +8,32 @@ export const PROJECTS: ProjectData[] = [
     contribution: '기여도 약 40%',
     description:
       '관심 (Need/Trigger) → 정보 탐색 (Search) → 스타일링 공감 (Empathy/Desire) → 구매 고민 (Anxiety) → 구매 확신 (Decision) → 구매 행동 (Action)',
+    architectureImage: '/image-1780417036070.png',
+    architectureDetails: [
+      {
+        title: 'GCP Cloud Run + Docker 배포',
+        items: [
+          {
+            bullets: [
+              'eclipse-temurin:17-jdk-alpine 기반 Dockerfile 작성, Gradle 빌드 후 JAR 패키징 → GCR에 이미지 푸시',
+              'Actuator 헬스체크 자동화로 배포 성공 여부 검증',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'GitHub Actions CI/CD + SonarCloud',
+        items: [
+          {
+            bullets: [
+              'CI — PR마다 테스트 → Jacoco 커버리지 리포트 생성 → SonarCloud 연동으로 Reliability·Coverage·인지 복잡도 정적 분석 자동 실행',
+              '분석 결과를 실제 코드 개선에 활용\n(Reliability C등급 while 루프 → for 루프 교체, EventValidator 인지 복잡도 경고 → 메서드 분리)',
+              'CD — main 브랜치 push 시 빌드 → Docker 이미지 GCR 푸시 → Cloud Run 배포 → 헬스체크까지 자동화',
+            ],
+          },
+        ],
+      },
+    ],
     serviceOverview:
       ' \'내가 사용할 서비스인가\'를 기준으로 설계한, 구매한 신발을 피드로 공유하고\n이벤트·투표·리워드로 재방문을 유도하는 선순환 구조의 커뮤니티 기반 패션 커머스 플랫폼.\n 구매 인증 기반으로 이벤트에 참여하고, 피드 투표로 순위를 겨루며,\n상위 랭커에게 포인트·쿠폰 보상이 지급되는 구조로 단순 구매에서 커뮤니티 재참여까지 이어지도록 설계했습니다.',
     userPerspectivePlanning: {
@@ -29,11 +55,19 @@ export const PROJECTS: ProjectData[] = [
     roles: [
       {
         icon: '🔧',
-        title: '백엔드 구현',
-        detail: '이벤트·피드 투표 도메인 담당 — 성능 병목 분석, 캐시 전략 설계, 동시성 문제 해결까지 수행',
+        title: '이벤트·피드 도메인 전담',
+        detail: '사용자 참여(이벤트·투표)와 콘텐츠(피드·댓글·좋아요·검색) 기능 전체 구현',
       },
-      { icon: '👥', title: '팀 리딩(부팀장)', detail: '스프린트·우선순위 조율, 스크럼 진행, 가이드라인 제공' },
-      { icon: '🚀', title: '배포/운영', detail: 'GCP·Docker 기반 배포 환경 구성, JMeter 성능 점검' },
+      {
+        icon: '🚀',
+        title: '배포/운영',
+        detail: 'GCP·Docker 기반 배포 환경 구성, GitHub Actions CI/CD + SonarCloud 코드 품질 자동 검증 파이프라인 구축',
+      },
+      {
+        icon: '👥',
+        title: '팀 리딩(부팀장)',
+        detail: '스프린트·우선순위 조율, <a href="https://dev99-tale.tistory.com/69" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#1d4ed8]">JIRA 기반 협업 가이드라인</a> 직접 설계·배포, JIRA 이슈·Slack 알림 연동으로 팀 협업 알림 체계 설정',
+      },
     ],
     problemHeadline: '이벤트 조회 성능 병목 문제',
     problem:

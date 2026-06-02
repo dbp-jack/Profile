@@ -22,6 +22,14 @@ interface ProjectData {
   serviceOverview?: string
   /** 아키텍처 이미지 URL — 서비스 소개와 담당 업무 사이에 노출 (선택). */
   architectureImage?: string
+  /** 아키텍처 이미지 아래 세부 작업 내용 카드 (선택). */
+  architectureDetails?: Array<{
+    title: string
+    items: Array<{
+      label?: string
+      bullets: string[]
+    }>
+  }>
   /** 사용자 관점 기획 카드 — `serviceOverview`와 함께 사용 */
   userPerspectivePlanning?: {
     subtitle: string
@@ -649,24 +657,6 @@ export default function ProjectCard({ project, index }: Props) {
               {overviewSection ? (
                 <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
               ) : null}
-              {project.architectureImage ? (
-                <div
-                  className={`rounded-2xl border p-4 sm:p-5 ${
-                    dark
-                      ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
-                      : 'border-indigo-100/80 bg-white shadow-sm'
-                  }`}
-                >
-                  <p className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
-                    아키텍처
-                  </p>
-                  <img
-                    src={project.architectureImage}
-                    alt="아키텍처 다이어그램"
-                    className="w-full rounded-xl object-contain"
-                  />
-                </div>
-              ) : null}
               <div
                 className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
               >
@@ -695,14 +685,66 @@ export default function ProjectCard({ project, index }: Props) {
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className={`text-sm font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
-                        <p className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}>
-                          {role.detail}
-                        </p>
+                        <p
+                          className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                          dangerouslySetInnerHTML={{ __html: role.detail }}
+                        />
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
+              {project.architectureImage ? (
+                <div
+                  className={`rounded-2xl border p-4 sm:p-5 ${
+                    dark
+                      ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
+                      : 'border-indigo-100/80 bg-white shadow-sm'
+                  }`}
+                >
+                  <p className={`mb-3 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                    아키텍처
+                  </p>
+                  <img
+                    src={project.architectureImage}
+                    alt="아키텍처 다이어그램"
+                    className="w-full rounded-xl object-contain"
+                  />
+                  {project.architectureDetails?.length ? (
+                    <div className="mt-4 space-y-3">
+                      {project.architectureDetails.map((section, si) => (
+                        <div
+                          key={si}
+                          className={`rounded-xl border p-3.5 ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+                        >
+                          <p className={`mb-2.5 text-sm font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                            {section.title}
+                          </p>
+                          <div className="space-y-2">
+                            {section.items.map((item, ii) => (
+                              <div key={ii}>
+                                {item.label ? (
+                                  <p className={`mb-1 text-xs font-semibold ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                                    {item.label}
+                                  </p>
+                                ) : null}
+                                <ul className="space-y-1">
+                                  {item.bullets.map((b, bi) => (
+                                    <li key={bi} className={`flex gap-2 text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
+                                      {b}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               {perspectiveSection ? (
                 <ProjectPerspectivePlanningSection
                   data={perspectiveSection}
