@@ -71,7 +71,7 @@ export const PROJECTS: ProjectData[] = [
     name: '3M - B2B | 물류 관리 및 배송 시스템',
     period: '2025.03 – 2025.04',
     teamSize: '4명 / 팀장',
-    contribution: '기여도 약 35% (Auth·User·Gateway 도메인 담당)',
+    contribution: '기여도 약 35%',
     description:
       '지역 허브 기반 주문·배송과 인증 경로를 안정적으로 연결하는 B2B 물류 관리 시스템',
     serviceOverview:
