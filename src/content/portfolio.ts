@@ -42,7 +42,7 @@ export const ABOUT_SECTION = {
   kicker: 'About',
   title: '저는 이렇게 일합니다',
   intro:
-    '고민한 선택은 수치로 확인하고, 협력은 팀 흐름을 맞추는 방식으로 정리합니다. 맡은 임무는 끝까지 완수합니다.',
+    '문제는 수치로 파악해 해결하고, 협력은 팀 흐름을 맞춰 정리하며, 맡은 임무는 끝까지 완수합니다.',
 } as const
 
 export const ABOUT_CARDS = [
