@@ -670,7 +670,7 @@ export default function ProjectCard({ project, index }: Props) {
                       <div className="min-w-0 flex-1">
                         <p className={`text-sm font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
                         <p
-                          className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                          className={`mt-0.5 whitespace-pre-line text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
                           dangerouslySetInnerHTML={{ __html: role.detail }}
                         />
                       </div>
