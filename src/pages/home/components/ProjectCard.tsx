@@ -60,10 +60,18 @@ interface ProjectData {
   techStack: string[]
   roles: ProjectRoleItem[]
   problemHeadline?: string
-  problem: string
-  thinking: string
-  solution: string
-  result: string
+  problem?: string
+  thinking?: string
+  solution?: string
+  result?: string
+  /** 다중 문제 섹션 — 설정 시 단일 problem/thinking/solution/result 대신 사용 */
+  problemSections?: Array<{
+    headline: string
+    problem: string
+    thinking: string
+    solution: string
+    result: string
+  }>
   githubUrl: string
   demoUrl?: string
 }
@@ -754,21 +762,40 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
       ) : null}
 
-      <div
-        className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
-      >
-        {project.problemHeadline ? (
-          <p
-            className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
-          >
-            {project.problemHeadline}
-          </p>
-        ) : null}
-        <ProblemRow label="Problem" content={project.problem} dark={dark} />
-        <ProblemRow label="Thinking" content={project.thinking} dark={dark} />
-        <ProblemRow label="Solution" content={project.solution} dark={dark} />
-        <ProblemRow label="Result" content={project.result} dark={dark} />
-      </div>
+      {project.problemSections ? (
+        <div className="mb-5 space-y-4 md:mb-6">
+          {project.problemSections.map((sec, i) => (
+            <div
+              key={i}
+              className={`space-y-3 rounded-lg border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
+            >
+              <p className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                {sec.headline}
+              </p>
+              <ProblemRow label="Problem" content={sec.problem} dark={dark} />
+              <ProblemRow label="Thinking" content={sec.thinking} dark={dark} />
+              <ProblemRow label="Solution" content={sec.solution} dark={dark} />
+              <ProblemRow label="Result" content={sec.result} dark={dark} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
+        >
+          {project.problemHeadline ? (
+            <p
+              className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+            >
+              {project.problemHeadline}
+            </p>
+          ) : null}
+          {project.problem && <ProblemRow label="Problem" content={project.problem} dark={dark} />}
+          {project.thinking && <ProblemRow label="Thinking" content={project.thinking} dark={dark} />}
+          {project.solution && <ProblemRow label="Solution" content={project.solution} dark={dark} />}
+          {project.result && <ProblemRow label="Result" content={project.result} dark={dark} />}
+        </div>
+      )}
 
       <div className="flex gap-3">
         <a
