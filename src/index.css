@@ -477,7 +477,7 @@ body {
   */
   /* 기본 인쇄(메인 등). /pdf는 런타임에 가로 @page 스타일을 추가해 덮어씀. */
   @page {
-    size: A4 landscape;
+    size: A4;
     margin: 0;
   }
 
@@ -547,34 +547,6 @@ body {
   [data-portfolio-mode='pdf-fluid'] #projects {
     break-before: auto !important;
     page-break-before: auto !important;
-  }
-
-  /* ── 페이지 단절 방지 ── */
-
-  /* 이미지는 반드시 통으로 */
-  [data-portfolio-mode='pdf-fluid'] img {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 코드 블록 */
-  [data-portfolio-mode='pdf-fluid'] .font-mono {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 제목 뒤에서 바로 끊기지 않도록 */
-  [data-portfolio-mode='pdf-fluid'] h2,
-  [data-portfolio-mode='pdf-fluid'] h3 {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  /* 고아 줄·과부 줄 방지 */
-  [data-portfolio-mode='pdf-fluid'] p,
-  [data-portfolio-mode='pdf-fluid'] li {
-    orphans: 3;
-    widows: 3;
   }
 }
 

@@ -3,8 +3,9 @@
 export const HERO_SKILL_TAGS = [
   'Spring',
   'JPA',
-  'QueryDSL',
-  'Java',
+  'Quary DSL',
+  'JAVA',
+
   'PostgreSQL',
   'Redis',
   'Jira',
@@ -34,7 +35,7 @@ export const HERO_PERSONAL_INFO: readonly HeroPersonalRow[] = [
 
 export const HERO_ROLE_BADGE = 'Backend Software Engineer'
 export const HERO_NAME = '정민수'
-export const HERO_ROLE_TITLE = '성능 병목을 수치로 분석·해결하고, 팀 협업 구조를 직접 설계하는 백엔드 개발자입니다.'
+export const HERO_ROLE_TITLE = '수치로 검증하고, 팀 흐름을 맞추는 백엔드 개발자입니다.'
 export const HERO_TECH_STACK_LABEL = '기술 스택'
 
 export const ABOUT_SECTION = {
@@ -61,10 +62,10 @@ export const ABOUT_CARDS = [
   },
   {
     icon: 'ri-checkbox-circle-line',
-    title: '오너십',
-    subtitle: '기획부터 시연까지 — 단독 주도로 완수',
+    title: '책임감',
+    subtitle: '끝까지 완수로 증명한 책임감',
     description:
-      '현장실습에서 건설현장 안전관리 대시보드를 기획·설계·개발 전 과정 단독 담당\n\n완성도를 위해 기간 연장을 자발적으로 제안하고, 고양 킨텍스 시연 행사까지 성공적으로 완수했습니다.',
+      '건설현장 관리자 대시보드 기획·설계·개발 단독 주도, 고양 킨텍스 시연 완수\n\n연장된 기간 내 완성도를 높여서 구현했고, 고양 킨텍스 시연 행사까지 성공적으로 연결했습니다.',
   },
 ] as const
 
@@ -142,7 +143,7 @@ export const CONTACT_LINKS = [
   },
   {
     icon: 'ri-links-line',
-    label: 'LinkedIn',
+    label: 'Linkedind',
     href: 'https://linkedin.com/in/minsoo-jeong-31861b401',
   },
 ] as const
@@ -172,7 +173,7 @@ export const CLOSING_BLOCKS = [
     titleEn: 'Growth Direction',
     titleKo: '도구는 활용하되 판단은 양보하지 않습니다.',
     body:
-      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">구조 설계와 판단은 직접 수행하고, 반복적인 구현 작업에 AI 도구를 적극 활용합니다.\nFeedShop 프론트엔드를 이 방식으로 단독 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
+      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
   },
 ] as const
 
@@ -186,26 +187,26 @@ export type ResourceLink = {
 export const RESOURCE_LINKS: readonly ResourceLink[] = [
   {
     icon: 'ri-slideshow-2-line',
-    label: 'FeedShop 프로젝트 기획서',
-    description: '사용자 여정 분석부터 도메인 설계까지 — 기획 전 과정 문서',
+    label: '첫번째 프로젝트 기획서',
+    description: 'https://docs.google.com/document/d/11mKsXb3GQRfinyc0fYjn6MvsodHfxJZRFBkXZiOP6eA/edit?usp=sharing',
     url: 'https://docs.google.com/document/d/11mKsXb3GQRfinyc0fYjn6MvsodHfxJZRFBkXZiOP6eA/edit?usp=sharing',
   },
   {
     icon: 'ri-notion-fill',
-    label: '인턴십 현장실습 기록',
-    description: '건설현장 안전관리 대시보드 기획·개발·시연 전 과정 정리',
+    label: '인턴쉽 및 현장실습',
+    description: 'https://slime-face-7c4.notion.site/ICT-1fceeaa2f0af80a7aa88cd0bd37bdb7d?source=copy_link',
     url: 'https://slime-face-7c4.notion.site/ICT-1fceeaa2f0af80a7aa88cd0bd37bdb7d?source=copy_link',
   },
   {
     icon: 'ri-article-line',
-    label: 'JIRA 협업 가이드라인',
-    description: '팀 스프린트 운영·티켓 규칙·Slack 연동까지 직접 작성한 가이드',
+    label: 'JIRA 가이드 라인',
+    description: 'https://dev99-tale.tistory.com/69',
     url: 'https://dev99-tale.tistory.com/69',
   },
   {
     icon: 'ri-links-line',
-    label: 'FeedShop 초기 기획 과정',
-    description: '서비스 방향성 설정부터 MVP 범위 정의까지의 기획 흐름',
+    label: '초기 프로젝트 기획 과정',
+    description: 'https://docs.google.com/document/d/1XJ-STnZLo71kvtlduvHiM2kWS64wpwrl8-c4MY4anvE/edit?usp=sharing',
     url: 'https://docs.google.com/document/d/1XJ-STnZLo71kvtlduvHiM2kWS64wpwrl8-c4MY4anvE/edit?usp=sharing',
   },
 ]
