@@ -549,24 +549,50 @@ body {
     page-break-before: auto !important;
   }
 
-  /* ── PDF 페이지 단절 방지 ── */
-  [data-portfolio-mode='pdf-fluid'] img {
+  /* ── PDF 페이지 단절 방지 (정밀 적용) ── */
+
+  /* 이미지 + 캡션은 잘리지 않게 */
+  [data-portfolio-mode='pdf-fluid'] img,
+  [data-portfolio-mode='pdf-fluid'] figure {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+
+  /* 코드 블록 잘림 방지 */
   [data-portfolio-mode='pdf-fluid'] .font-mono {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+
+  /* 표 행 잘림 방지 */
+  [data-portfolio-mode='pdf-fluid'] tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 제목 아래에서 바로 끊기지 않게 */
   [data-portfolio-mode='pdf-fluid'] h2,
-  [data-portfolio-mode='pdf-fluid'] h3 {
+  [data-portfolio-mode='pdf-fluid'] h3,
+  [data-portfolio-mode='pdf-fluid'] h4 {
     break-after: avoid;
     page-break-after: avoid;
   }
-  [data-portfolio-mode='pdf-fluid'] p,
+
+  /* 라벨+내용 쌍(담당업무 카드 등 소형 카드)은 잘리지 않게 */
   [data-portfolio-mode='pdf-fluid'] li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 고아 줄 방지 */
+  [data-portfolio-mode='pdf-fluid'] p {
     orphans: 3;
     widows: 3;
+  }
+
+  /* 인쇄 시 폰트 살짝 축소 — 한 페이지에 더 많이 담기게 */
+  [data-portfolio-mode='pdf-fluid'] {
+    font-size: 92% !important;
   }
 }
 
