@@ -655,10 +655,8 @@ body {
   /* ─ 자료 모음 + 연락하기 + 푸터 — 1페이지, 푸터 하단 고정 ─ */
   [data-portfolio-mode='pdf-fluid'] #resources { break-before: page !important; }
   [data-portfolio-mode='pdf-fluid'] footer {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
+    margin-top: auto !important;
+    position: static !important;
   }
 
   /* ── PDF 페이지 단절 방지 (정밀 적용) ── */
