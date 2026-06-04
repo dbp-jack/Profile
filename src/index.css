@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 라이트박스 — 프로필 사진 제외한 모든 img에 클릭 커서 */
+img:not([src*="profile-photo"]) {
+  cursor: zoom-in;
+}
+
 /*
   Global tokens / optional hovers:
   - `--font-sans`: applied on `body` (see below).

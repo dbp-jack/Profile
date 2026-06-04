@@ -3,6 +3,7 @@ import { I18nextProvider } from 'react-i18next'
 import i18n from '@/i18n'
 import { AppRoutes } from './router'
 import { DarkModeContext, useDarkModeState } from '@/hooks/useDarkMode'
+import ImageLightbox from '@/components/ImageLightbox'
 
 /** Provider nesting (outer → inner): `I18nextProvider` → `BrowserRouter` → `DarkModeContext` → `AppRoutes`. */
 
@@ -11,6 +12,7 @@ function AppWithDarkMode() {
   return (
     <DarkModeContext.Provider value={darkModeValue}>
       <AppRoutes />
+      <ImageLightbox />
     </DarkModeContext.Provider>
   )
 }
