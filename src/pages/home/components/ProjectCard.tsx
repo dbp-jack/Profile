@@ -691,7 +691,7 @@ export default function ProjectCard({ project, index }: Props) {
               </div>
               {project.architectureImage ? (
                 <div
-                  className={`rounded-2xl border p-4 sm:p-5 ${
+                  className={`pdf-arch-wrap rounded-2xl border p-4 sm:p-5 ${
                     dark
                       ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
                       : 'border-indigo-100/80 bg-white shadow-sm'
@@ -713,7 +713,7 @@ export default function ProjectCard({ project, index }: Props) {
                     </div>
                   </div>
                   {project.architectureDetails?.length ? (
-                    <div className="mt-4 space-y-3">
+                    <div className="pdf-arch-details mt-4 space-y-3">
                       {project.architectureDetails.map((section, si) => (
                         <div
                           key={si}
