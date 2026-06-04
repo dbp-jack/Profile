@@ -469,38 +469,16 @@ body {
 }
 
 @media print {
-  /*
-    미리보기(/pdf)와 맞춤:
-    - A4 가로 → 미리보기 297mm 폭과 같은 방향
-    - 배경·테두리 색 인쇄 요청
-    - fade-in 인라인 opacity/transform 무시
-  */
-  /* 기본 인쇄(메인 등). /pdf는 런타임에 가로 @page 스타일을 추가해 덮어씀. */
-  @page {
-    size: 338.7mm 190.5mm; /* PPT 와이드스크린 16:9 */
-    margin: 0;
-  }
+  /* ════════════════════════════════════════════
+     A4 가로 PDF 설정 (297mm × 210mm, 여백 없음)
+     ════════════════════════════════════════════ */
+  @page { size: A4 landscape; margin: 0; }
 
-  html,
-  body {
+  html, body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-
-  #root {
-    min-height: 0;
-  }
-
-  [data-portfolio-mode='pdf'] {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  [data-portfolio-mode='pdf'] section {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
+  #root { min-height: 0; }
   .portfolio-pdf-column {
     box-shadow: none !important;
     width: 100% !important;
@@ -508,200 +486,165 @@ body {
     overflow: visible !important;
   }
 
-  [data-portfolio-mode='pdf'] #projects {
-    break-before: page;
-    page-break-before: always;
-  }
-
-  /* About 3열 카드는 가능하면 한 덩어리로 유지 */
-  [data-portfolio-mode='pdf'] #about .grid {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  [data-portfolio-mode='pdf'] .pdf-closing-bunch {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  [data-portfolio-mode='pdf'] #closing .mb-14 {
-    break-after: avoid !important;
-    page-break-after: avoid !important;
-  }
-
-  [data-portfolio-mode='pdf-mobile'] #projects {
-    break-before: auto !important;
-    page-break-before: auto !important;
-  }
-
+  /* ── pdf-fluid 공통 기반 ── */
   [data-portfolio-mode='pdf-fluid'] {
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
+    font-size: 74% !important;          /* A4 가로 한 페이지 수용 기준 */
   }
-
-  [data-portfolio-mode='pdf-fluid'] section {
+  [data-portfolio-mode='pdf-fluid'] section,
+  [data-portfolio-mode='pdf-fluid'] main {
     opacity: 1 !important;
     transform: none !important;
   }
 
-  [data-portfolio-mode='pdf-fluid'] #projects {
-    break-before: auto !important;
-    page-break-before: auto !important;
-  }
+  /* ── 단절 방지 (소형 원자 단위만) ── */
+  [data-portfolio-mode='pdf-fluid'] img   { break-inside: avoid; }
+  [data-portfolio-mode='pdf-fluid'] tr    { break-inside: avoid; }
+  [data-portfolio-mode='pdf-fluid'] li    { break-inside: avoid; }
+  [data-portfolio-mode='pdf-fluid'] .font-mono { break-inside: avoid; }
+  [data-portfolio-mode='pdf-fluid'] h2,
+  [data-portfolio-mode='pdf-fluid'] h3   { break-after: avoid; }
+  [data-portfolio-mode='pdf-fluid'] p    { orphans: 3; widows: 3; }
 
-  /* ══════════════════════════════════════════
-     PDF 페이지 구성 (pdf-fluid @media print 전용)
-     ══════════════════════════════════════════ */
-
-  /* 전체 폰트 축소 — PPT 16:9 기준 */
-  [data-portfolio-mode='pdf-fluid'] {
-    font-size: 78% !important;
-  }
-
-  /* ─ 1페이지: Hero ─ */
+  /* ════════════════════════════════════════════
+     페이지 1 — Hero
+     ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #hero {
     break-after: page !important;
-    padding-top: 2.5rem !important;
-    padding-bottom: 0.75rem !important;
+    padding-top: 10mm !important;
+    padding-bottom: 6mm !important;
+    min-height: auto !important;
+    align-items: flex-start !important;
   }
+  [data-portfolio-mode='pdf-fluid'] #hero > .relative.z-10 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #hero .max-w-5xl {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #hero .max-w-5xl > div.flex {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 2rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #hero .profile-photo-frame {
+    height: 9rem !important;
+    width: 6.75rem !important;
+    flex-shrink: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #hero h1    { font-size: 2rem !important; line-height: 1.2 !important; }
+  [data-portfolio-mode='pdf-fluid'] #hero .hero-tagline { font-size: 0.8rem !important; margin: 0.3rem 0 !important; }
+  [data-portfolio-mode='pdf-fluid'] #hero ul.mb-8 { margin-bottom: 0.4rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #hero ul.mb-8 li { font-size: 0.75rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #hero span.mb-4 { margin-bottom: 0.3rem !important; font-size: 0.65rem !important; }
 
-  /* ─ 2페이지: About ─ */
+  /* ════════════════════════════════════════════
+     페이지 2 — About
+     ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #about {
     break-after: page !important;
-    padding-top: 3mm !important;
-    padding-bottom: 2mm !important;
+    padding-top: 6mm !important;
+    padding-bottom: 4mm !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #about .mb-10 { margin-bottom: 0.4rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about h2 { font-size: 1.2rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .mb-10 { margin-bottom: 0.5rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about h2 { font-size: 1.25rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .max-w-screen-2xl { padding: 0 2rem !important; }
   [data-portfolio-mode='pdf-fluid'] #about .grid {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 0.5rem !important;
+    gap: 0.6rem !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #about article { padding: 0.6rem 0.75rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .min-h-\[6rem\] { min-height: 1rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .space-y-2 > * + * { margin-top: 0.15rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .mt-1 { margin-top: 0.08rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .mt-8 { margin-top: 0.3rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .h-12 { height: 1.75rem !important; width: 1.75rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about article {
+    padding: 0.7rem 0.8rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #about .h-12 { height: 1.8rem !important; width: 1.8rem !important; }
   [data-portfolio-mode='pdf-fluid'] #about .text-2xl { font-size: 1rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .min-h-\[6rem\] { min-height: 0.5rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .mt-8 { margin-top: 0.4rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .mt-1 { margin-top: 0.05rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .space-y-2 > * + * { margin-top: 0.15rem !important; }
 
-  /* ─ 3페이지: Projects 섹션 헤더 ─ */
-  [data-portfolio-mode='pdf-fluid'] #projects { break-before: page !important; }
-  [data-portfolio-mode='pdf-fluid'] #projects > div > .flex.flex-col { break-before: page !important; }
+  /* ════════════════════════════════════════════
+     페이지 3 — Projects 섹션 헤더 (단독 페이지)
+     ════════════════════════════════════════════ */
+  [data-portfolio-mode='pdf-fluid'] #projects {
+    break-before: page !important;
+    padding-top: 4mm !important;
+    padding-bottom: 2mm !important;
+  }
+  /* 카드 목록은 다음 페이지부터 */
+  [data-portfolio-mode='pdf-fluid'] #projects > div > .flex.flex-col {
+    break-before: page !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .mb-10,
+  [data-portfolio-mode='pdf-fluid'] #projects .mb-16 { margin-bottom: 0.5rem !important; }
 
-  /* ─ Project 1: 제목+기술스택+서비스소개+담당업무 → 새 페이지 ─ */
-  [data-portfolio-mode='pdf-fluid'] .pdf-arch-wrap { break-before: page !important; }
-
-  /* ─ 아키텍처 세부 → 새 페이지 (개발자 관점과 같이) ─ */
+  /* ════════════════════════════════════════════
+     Project 내부 페이지 분리
+     ════════════════════════════════════════════ */
+  /* 아키텍처 이미지 섹션 → 새 페이지 */
+  [data-portfolio-mode='pdf-fluid'] .pdf-arch-wrap  { break-before: page !important; }
+  /* 아키텍처 세부내용 → 새 페이지 */
   [data-portfolio-mode='pdf-fluid'] .pdf-arch-details { break-before: page !important; }
 
-  /* ─ 걸어온 여정 — 1페이지 ─ */
+  /* ════════════════════════════════════════════
+     걸어온 여정 — 1페이지
+     ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #experience {
     break-before: page !important;
     break-after: page !important;
-    padding-top: 3mm !important;
-    padding-bottom: 2mm !important;
+    padding-top: 5mm !important;
+    padding-bottom: 3mm !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #experience .mb-10 { margin-bottom: 0.4rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience h2 { font-size: 1.2rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .space-y-3 > * + * { margin-top: 0.25rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .py-4 {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
-  }
-  [data-portfolio-mode='pdf-fluid'] #experience .px-4 { padding-left: 0.6rem !important; padding-right: 0.6rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience h2 { font-size: 1.25rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience .mb-10 { margin-bottom: 0.5rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience .space-y-3 > * + * { margin-top: 0.3rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience .py-4 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience .px-4,
+  [data-portfolio-mode='pdf-fluid'] #experience .px-6 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
 
-  /* ─ 앞으로의 방향 — 1페이지 ─ */
+  /* ════════════════════════════════════════════
+     앞으로의 방향 — 1페이지
+     ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #closing {
     break-before: page !important;
     break-after: page !important;
-    padding-top: 3mm !important;
-    padding-bottom: 2mm !important;
+    padding-top: 5mm !important;
+    padding-bottom: 3mm !important;
   }
+  [data-portfolio-mode='pdf-fluid'] #closing h2 { font-size: 1.25rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .mb-10,
-  [data-portfolio-mode='pdf-fluid'] #closing .mb-20 { margin-bottom: 0.5rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing h2 { font-size: 1.2rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .mb-20 { margin-bottom: 0.6rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .gap-8,
   [data-portfolio-mode='pdf-fluid'] #closing .gap-16,
   [data-portfolio-mode='pdf-fluid'] #closing .gap-20,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-24 { gap: 0.6rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .gap-24 { gap: 0.7rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .px-8,
   [data-portfolio-mode='pdf-fluid'] #closing .px-10,
-  [data-portfolio-mode='pdf-fluid'] #closing .px-12 {
-    padding-left: 0.85rem !important;
-    padding-right: 0.85rem !important;
-  }
-  [data-portfolio-mode='pdf-fluid'] #closing .pb-5,
+  [data-portfolio-mode='pdf-fluid'] #closing .px-12 { padding-left: 1rem !important; padding-right: 1rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .pt-6,
   [data-portfolio-mode='pdf-fluid'] #closing .pt-7,
   [data-portfolio-mode='pdf-fluid'] #closing .pt-8,
-  [data-portfolio-mode='pdf-fluid'] #closing .pb-6 {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
-  }
+  [data-portfolio-mode='pdf-fluid'] #closing .pb-5,
+  [data-portfolio-mode='pdf-fluid'] #closing .pb-6 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .py-5,
-  [data-portfolio-mode='pdf-fluid'] #closing .py-6 {
-    padding-top: 0.3rem !important;
-    padding-bottom: 0.3rem !important;
-  }
+  [data-portfolio-mode='pdf-fluid'] #closing .py-6 { padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .gap-3,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-3\.5 { gap: 0.25rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing .text-2xl { font-size: 0.95rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .gap-3\.5 { gap: 0.3rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .text-2xl { font-size: 1rem !important; }
   [data-portfolio-mode='pdf-fluid'] #closing .h-14 { height: 2.25rem !important; width: 2.25rem !important; }
 
-  /* ─ 자료 모음 + 연락하기 + 푸터 — 1페이지, 푸터 하단 고정 ─ */
-  [data-portfolio-mode='pdf-fluid'] #resources { break-before: page !important; }
-  [data-portfolio-mode='pdf-fluid'] footer {
-    margin-top: auto !important;
-    position: static !important;
+  /* ════════════════════════════════════════════
+     자료 모음 + 연락하기 + 푸터 — 마지막 1페이지
+     ════════════════════════════════════════════ */
+  [data-portfolio-mode='pdf-fluid'] #resources {
+    break-before: page !important;
+    padding-top: 5mm !important;
   }
-
-  /* ── PDF 페이지 단절 방지 (정밀 적용) ── */
-
-  /* 이미지 + 캡션은 잘리지 않게 */
-  [data-portfolio-mode='pdf-fluid'] img,
-  [data-portfolio-mode='pdf-fluid'] figure {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 코드 블록 잘림 방지 */
-  [data-portfolio-mode='pdf-fluid'] .font-mono {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 표 행 잘림 방지 */
-  [data-portfolio-mode='pdf-fluid'] tr {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 제목 아래에서 바로 끊기지 않게 */
-  [data-portfolio-mode='pdf-fluid'] h2,
-  [data-portfolio-mode='pdf-fluid'] h3,
-  [data-portfolio-mode='pdf-fluid'] h4 {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  /* 라벨+내용 쌍(담당업무 카드 등 소형 카드)은 잘리지 않게 */
-  [data-portfolio-mode='pdf-fluid'] li {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 고아 줄 방지 */
-  [data-portfolio-mode='pdf-fluid'] p {
-    orphans: 3;
-    widows: 3;
-  }
-
-  /* 인쇄 시 폰트 살짝 축소 — 한 페이지에 더 많이 담기게 */
-  [data-portfolio-mode='pdf-fluid'] {
-    font-size: 92% !important;
-  }
+  [data-portfolio-mode='pdf-fluid'] footer { position: static !important; }
 }
 
 ::-webkit-scrollbar {

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import PortfolioBody from '@/pages/home/PortfolioBody'
 
 /**
- * 웹과 동일한 섹션·스타일을 쓰고, 미리보기 폭을 PPT 와이드스크린(33.87cm × 19.05cm)에 맞춥니다.
- * 인쇄·PDF 저장 시 16:9 비율로 저장됩니다.
+ * 웹과 동일한 섹션·스타일을 쓰고, 미리보기 폭을 A4 가로(297mm)에 맞춥니다.
+ * 인쇄·PDF 저장 시 A4 landscape 비율로 저장됩니다.
  */
 export default function PdfPortfolioPage() {
   const [isMobileViewport, setIsMobileViewport] = useState(
@@ -35,7 +35,7 @@ export default function PdfPortfolioPage() {
         </Link>
         <div className="flex items-center gap-2">
           <span className="hidden text-sm text-gray-500 sm:inline">
-            미리보기 PPT 와이드스크린(16:9) · 색이 다르면 인쇄 창에서 배경 그래픽 켜기
+            미리보기 A4 가로 · 색이 다르면 인쇄 창에서 배경 그래픽 켜기
           </span>
           <button
             type="button"
@@ -51,7 +51,7 @@ export default function PdfPortfolioPage() {
         <div
           data-portfolio-mode="pdf-fluid"
           className={`portfolio-pdf-column mx-auto overflow-hidden ${
-            isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[338.7mm] max-w-full shadow-2xl'
+            isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
           } bg-[#0f172a] text-gray-100 print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none`}
         >
           <PortfolioBody pdfStackHeroAbout={!isMobileViewport} />
