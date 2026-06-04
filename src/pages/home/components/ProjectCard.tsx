@@ -64,6 +64,8 @@ interface ProjectData {
   thinking?: string
   solution?: string
   result?: string
+  /** 테스트 환경 정보 — problemSections 상단에 한 번만 표시 */
+  problemEnvironment?: string
   /** 다중 문제 섹션 — 설정 시 단일 problem/thinking/solution/result 대신 사용 */
   problemSections?: Array<{
     headline: string
@@ -771,6 +773,11 @@ export default function ProjectCard({ project, index }: Props) {
 
       {project.problemSections ? (
         <div className="mb-5 space-y-4 md:mb-6">
+          {project.problemEnvironment ? (
+            <div className={`rounded-lg border px-4 py-2.5 text-sm ${dark ? 'border-[#333333] bg-[#1e1e1e] text-[#888888]' : 'border-slate-200 bg-slate-50 text-slate-500'}`}>
+              <span className={`mr-2 font-semibold ${dark ? 'text-[#aaaaaa]' : 'text-slate-600'}`}>🖥️ 로컬 테스트 환경</span><span className="whitespace-pre-line">{project.problemEnvironment}</span>
+            </div>
+          ) : null}
           {project.problemSections.map((sec, i) => (
             <div
               key={i}
