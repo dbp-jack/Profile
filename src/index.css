@@ -469,9 +469,7 @@ body {
 }
 
 @media print {
-  /* ════════════════════════════════════════════
-     A4 가로 PDF 설정 (297mm × 210mm, 여백 없음)
-     ════════════════════════════════════════════ */
+  /* A4 가로 PDF — PdfPortfolio 슬라이드 전용 */
   @page { size: A4 landscape; margin: 0; }
 
   html, body {
