@@ -2,7 +2,17 @@ import { PROJECTS_SECTION } from '@/content/portfolio'
 import { PROJECTS } from '@/mocks/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
 import ProjectCard from './ProjectCard'
+
+function LazyProjectCard({ project, index }: { project: typeof PROJECTS[number]; index: number }) {
+  const { ref, isVisible } = useIntersectionObserver()
+  return (
+    <div ref={ref} style={{ minHeight: isVisible ? undefined : '400px' }}>
+      {isVisible && <ProjectCard project={project} index={index} />}
+    </div>
+  )
+}
 
 export default function ProjectsSection() {
   const { dark } = useDarkMode()
@@ -39,7 +49,7 @@ export default function ProjectsSection() {
 
         <div className="flex flex-col gap-6 md:gap-8">
           {PROJECTS.map((project, i) => (
-            <ProjectCard key={project.name} project={project} index={i} />
+            <LazyProjectCard key={project.name} project={project} index={i} />
           ))}
         </div>
       </div>
