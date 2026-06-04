@@ -1,4 +1,4 @@
-import { ABOUT_CARDS, CONTACT_LINKS, CLOSING_BLOCKS, EXPERIENCE_ITEMS, HERO_NAME, HERO_PERSONAL_INFO, HERO_ROLE_BADGE, HERO_ROLE_TITLE, HERO_SKILL_TAGS } from '@/content/portfolio'
+import { ABOUT_CARDS, CONTACT_LINKS, CLOSING_BLOCKS, EXPERIENCE_ITEMS, HERO_NAME, HERO_PERSONAL_INFO, HERO_ROLE_BADGE, HERO_ROLE_TITLE, HERO_SKILL_TAGS, RESOURCE_LINKS } from '@/content/portfolio'
 import { PROJECTS } from '@/mocks/projects'
 
 /* ─────────────────────────────────────────
@@ -506,7 +506,6 @@ function AboutSlide() {
    8. 마지막 — 자료 + 연락처
 ═══════════════════════════════════════════ */
 function FinalSlide() {
-  const { RESOURCE_LINKS } = require('@/content/portfolio')
   return (
     <Slide dark>
       <div className="grid h-full grid-cols-2 divide-x divide-slate-700">
