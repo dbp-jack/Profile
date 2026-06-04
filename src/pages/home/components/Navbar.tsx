@@ -48,7 +48,7 @@ export default function Navbar() {
     >
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <span
-          className="cursor-pointer whitespace-nowrap text-base font-bold text-[#1E3A5F]"
+          className="cursor-pointer whitespace-nowrap text-lg font-bold text-[#1E3A5F]"
           onClick={() => scrollTo('#hero')}
         >
           {HERO_NAME}
@@ -61,7 +61,7 @@ export default function Navbar() {
               <li key={link.href}>
                 <button
                   onClick={() => scrollTo(link.href)}
-                  className={`relative cursor-pointer whitespace-nowrap pb-1 text-sm font-medium transition-colors duration-200 ${
+                  className={`relative cursor-pointer whitespace-nowrap pb-1 text-base font-medium transition-colors duration-200 ${
                     isActive ? 'text-[#1E3A5F]' : 'text-gray-500 hover:text-[#1E3A5F]'
                   }`}
                 >
@@ -105,7 +105,7 @@ export default function Navbar() {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="block w-full cursor-pointer whitespace-nowrap px-6 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1E3A5F]"
+              className="block w-full cursor-pointer whitespace-nowrap px-6 py-3 text-left text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1E3A5F]"
             >
               {link.label}
             </button>

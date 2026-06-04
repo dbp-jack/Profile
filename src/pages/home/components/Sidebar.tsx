@@ -76,8 +76,8 @@ export default function Sidebar() {
           onClick={() => scrollTo('#hero')}
           className={`flex h-16 flex-shrink-0 cursor-pointer items-center gap-3 overflow-hidden border-b px-4 text-left transition-colors duration-300 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}
         >
-          <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center text-lg ${dark ? 'text-[#909090]' : 'text-[#1E3A5F]'}`}><i className="ri-code-s-slash-line" /></span>
-          <span className={`overflow-hidden whitespace-nowrap text-sm font-bold transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'} ${dark ? 'text-[#c0c0c0]' : 'text-[#1E3A5F]'}`}>{HERO_NAME}</span>
+          <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center text-xl ${dark ? 'text-[#909090]' : 'text-[#1E3A5F]'}`}><i className="ri-code-s-slash-line" /></span>
+          <span className={`overflow-hidden whitespace-nowrap text-base font-bold transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'} ${dark ? 'text-[#c0c0c0]' : 'text-[#1E3A5F]'}`}>{HERO_NAME}</span>
         </button>
         <nav className="flex flex-1 flex-col gap-1 overflow-hidden px-2 py-4">
           {NAV_LINKS.map((link) => {
@@ -98,8 +98,8 @@ export default function Sidebar() {
                 }`}
               >
                 {isActive && <span className={`absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full ${dark ? 'bg-[#8a8a8a]' : 'bg-[#1E3A5F]'}`} />}
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-base"><i className={link.icon} /></span>
-                <span className={`overflow-hidden whitespace-nowrap text-sm font-medium transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'}`}>{link.label}</span>
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-lg"><i className={link.icon} /></span>
+                <span className={`overflow-hidden whitespace-nowrap text-base font-medium transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'}`}>{link.label}</span>
               </button>
             )
           })}
@@ -110,8 +110,8 @@ export default function Sidebar() {
             aria-label="Toggle dark mode"
             className={`flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-2 py-2.5 transition-all duration-200 ${dark ? 'text-[#909090] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]' : 'text-gray-500 hover:bg-gray-50 hover:text-[#1E3A5F]'}`}
           >
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-base"><i className={dark ? 'ri-sun-line' : 'ri-moon-line'} /></span>
-            <span className={`whitespace-nowrap text-sm font-medium transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'}`}>{dark ? 'Light Mode' : 'Dark Mode'}</span>
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-lg"><i className={dark ? 'ri-sun-line' : 'ri-moon-line'} /></span>
+            <span className={`whitespace-nowrap text-base font-medium transition-all duration-300 ${hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'}`}>{dark ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
         </div>
       </aside>

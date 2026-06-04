@@ -35,15 +35,15 @@ export default function ExperienceSection() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 text-center md:mb-16">
           <span
-            className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {EXPERIENCE_SECTION.kicker}
           </span>
-          <h2 className={`text-2xl font-bold md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+          <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {EXPERIENCE_SECTION.title}
           </h2>
           <p
-            className={`mx-auto mt-3 max-w-2xl text-xs leading-relaxed md:text-sm ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
+            className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
           >
             {EXPERIENCE_SECTION.subtitle}
           </p>
@@ -65,15 +65,15 @@ export default function ExperienceSection() {
                   }`}
                 >
                   <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
-                    <p className={`text-xs font-semibold tracking-wide md:text-sm ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.period}</p>
+                    <p className={`text-sm font-semibold tracking-wide md:text-base ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.period}</p>
                     <span
                       className={`inline-flex w-fit rounded-md px-2 py-0.5 text-[0.6875rem] font-bold ${dark ? style.dark : style.light}`}
                     >
                       {item.category}
                     </span>
                   </div>
-                  <h3 className={`mt-1.5 text-sm font-bold md:text-base ${dark ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
-                  <p className={`mt-1.5 text-xs leading-relaxed md:text-sm ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.detail}</p>
+                  <h3 className={`mt-1.5 text-base font-bold md:text-lg ${dark ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
+                  <p className={`mt-1.5 text-sm leading-relaxed md:text-base ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.detail}</p>
                 </div>
               </li>
             )

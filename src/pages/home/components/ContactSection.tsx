@@ -19,14 +19,14 @@ export default function ContactSection() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-8 text-center md:mb-12">
           <span
-            className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {CONTACT_SECTION.kicker}
           </span>
-          <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+          <h2 className={`text-4xl font-bold md:text-5xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {CONTACT_SECTION.title}
           </h2>
-          <p className={`mt-3 text-sm ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mt-3 text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
             {CONTACT_SECTION.subtitle}
           </p>
         </div>
@@ -47,11 +47,11 @@ export default function ContactSection() {
                 }`}
               >
                 <i
-                  className={`${item.icon} text-lg transition-colors duration-200 ${dark ? 'text-[#909090] group-hover:text-[#c0c0c0]' : 'text-gray-500 group-hover:text-[#1E3A5F]'}`}
+                  className={`${item.icon} text-xl transition-colors duration-200 ${dark ? 'text-[#909090] group-hover:text-[#c0c0c0]' : 'text-gray-500 group-hover:text-[#1E3A5F]'}`}
                 />
               </div>
               <span
-                className={`text-sm font-medium underline-offset-2 transition-colors duration-200 group-hover:underline ${
+                className={`text-base font-medium underline-offset-2 transition-colors duration-200 group-hover:underline ${
                   dark ? 'text-[#909090] group-hover:text-[#d0d0d0]' : 'text-gray-600 group-hover:text-[#1E3A5F]'
                 }`}
               >

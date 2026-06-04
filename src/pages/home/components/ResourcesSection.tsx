@@ -19,12 +19,12 @@ export default function ResourcesSection() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 text-center md:mb-16">
           <span
-            className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {RESOURCES_SECTION.kicker}
           </span>
           <h2
-            className={`text-2xl font-bold md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+            className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
           >
             {RESOURCES_SECTION.title}
           </h2>
@@ -51,19 +51,19 @@ export default function ResourcesSection() {
                     : 'bg-[#f0f4fa] text-[#1E3A5F] group-hover:bg-[#1E3A5F] group-hover:text-white'
                 }`}
               >
-                <i className={`${item.icon} text-lg`} />
+                <i className={`${item.icon} text-xl`} />
               </div>
 
               <div className="min-w-0">
                 <p
-                  className={`overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold transition-colors duration-200 ${
+                  className={`overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold transition-colors duration-200 ${
                     dark ? 'text-[#c8c8c8] group-hover:text-[#e8e8e8]' : 'text-gray-800 group-hover:text-[#1E3A5F]'
                   }`}
                 >
                   {item.label}
                 </p>
                 {item.description && !item.description.startsWith('http') && (
-                  <p className={`mt-0.5 text-xs leading-relaxed ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>
+                  <p className={`mt-0.5 text-sm leading-relaxed ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>
                     {item.description}
                   </p>
                 )}
@@ -74,7 +74,7 @@ export default function ResourcesSection() {
                   dark ? 'text-[#4a4a4a] group-hover:text-[#8a8a8a]' : 'text-gray-300 group-hover:text-[#1E3A5F]'
                 }`}
               >
-                <i className="ri-arrow-right-up-line text-base" />
+                <i className="ri-arrow-right-up-line text-lg" />
               </div>
             </a>
           ))}

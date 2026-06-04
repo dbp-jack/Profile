@@ -150,13 +150,13 @@ function ProjectBackgroundCard({
       }`}
     >
       <p
-        className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         {title}
       </p>
       <p
         lang="ko"
-        className={`whitespace-pre-line break-keep text-sm leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+        className={`whitespace-pre-line break-keep text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
         dangerouslySetInnerHTML={{ __html: body ?? '' }}
       />
     </div>
@@ -315,14 +315,14 @@ function ProjectPerspectivePlanningSection({
     >
       <div className="mb-4 sm:mb-5">
         <p
-          className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           {data.sectionTitle}
         </p>
         {data.subtitle.trim() ? (
           <p
             lang="ko"
-            className={`mt-2.5 break-keep text-sm leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+            className={`mt-2.5 break-keep text-base leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
           >
             {data.subtitle}
           </p>
@@ -354,7 +354,7 @@ function ProjectPerspectivePlanningSection({
                 <div>
                   <ul
                     lang="ko"
-                    className={`mt-3 list-none space-y-2 pl-0 text-sm leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
                   >
                     {card.problemBullets.map((line, i) => (
                       <li key={`perspective-${idx}-pb-${i}`} className="flex gap-2.5 break-keep [line-break:strict]">
@@ -380,7 +380,7 @@ function ProjectPerspectivePlanningSection({
                 <div>
                   <ul
                     lang="ko"
-                    className={`mt-3 list-none space-y-2 pl-0 text-sm leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
                   >
                     {card.directionBullets.map((line, i) => (
                       <li key={`perspective-${idx}-db-${i}`} className="flex gap-2.5 break-keep [line-break:strict]">
@@ -418,7 +418,7 @@ function ProjectPerspectivePlanningSection({
                   </span>
                   <p
                     lang="ko"
-                    className={`mt-3 whitespace-pre-line break-keep text-sm leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
                   >
                     {card.problem}
                   </p>
@@ -431,7 +431,7 @@ function ProjectPerspectivePlanningSection({
                   </span>
                   <p
                     lang="ko"
-                    className={`mt-3 whitespace-pre-line break-keep text-sm leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
                   >
                     {card.direction}
                   </p>
@@ -474,7 +474,7 @@ function ProjectUserJourneySection({
   return (
     <div className={stacked || embeddedInPerspective ? undefined : 'mb-6'}>
       <p
-        className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         사용자 여정
       </p>
@@ -489,7 +489,7 @@ function ProjectUserJourneySection({
             return (
               <Fragment key={step + i}>
                 <span
-                  className={`inline-flex min-w-[5.5rem] max-w-[11rem] flex-col items-center justify-center rounded-2xl border px-2.5 py-1.5 text-center text-xs font-semibold leading-snug ${
+                  className={`inline-flex min-w-[5.5rem] max-w-[11rem] flex-col items-center justify-center rounded-2xl border px-2.5 py-1.5 text-center text-sm font-semibold leading-snug ${
                     dark
                       ? 'border-[#4a4a4a] bg-[#333333] text-[#ececec]'
                       : 'border-[#1E3A5F]/20 bg-white text-[#1E3A5F]'
@@ -507,7 +507,7 @@ function ProjectUserJourneySection({
                   ) : null}
                 </span>
                 {i < flowSteps.length - 1 && (
-                  <span className={`text-xs font-semibold ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>→</span>
+                  <span className={`text-sm font-semibold ${dark ? 'text-[#6a6a6a]' : 'text-gray-400'}`}>→</span>
                 )}
               </Fragment>
             )
@@ -556,18 +556,18 @@ function ProblemRow({
   return (
     <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:gap-4">
       <span
-        className={`inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1 text-xs font-semibold ${labelColors[label]}`}
+        className={`inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1 text-sm font-semibold ${labelColors[label]}`}
       >
         {label}
       </span>
       {content.includes('<') ? (
         <div
-          className={`project-rich-content w-full overflow-x-auto pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`project-rich-content w-full overflow-x-auto pt-0.5 text-base leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : (
         <p
-          className={`w-full whitespace-pre-line pt-0.5 text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`w-full whitespace-pre-line pt-0.5 text-base leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
         >
           {content}
         </p>
@@ -603,14 +603,14 @@ export default function ProjectCard({ project, index }: Props) {
       }`}
     >
       <p
-        className={`mb-3 text-xs font-semibold tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-sm font-semibold tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
       >
         Project {index + 1}
       </p>
-      <h3 className={`mb-2 text-lg font-bold sm:text-xl md:text-2xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+      <h3 className={`mb-2 text-xl font-bold sm:text-2xl md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
         {project.name}
       </h3>
-      <p className={`mb-4 text-sm md:mb-5 ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
+      <p className={`mb-4 text-base md:mb-5 ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
         {project.period} | {project.teamSize}
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
@@ -623,7 +623,7 @@ export default function ProjectCard({ project, index }: Props) {
         }`}
       >
         <p
-          className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           기술 스택
         </p>
@@ -631,7 +631,7 @@ export default function ProjectCard({ project, index }: Props) {
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className={`rounded-full border px-3 py-1 text-xs font-medium ${
+              className={`rounded-full border px-3 py-1 text-sm font-medium ${
                 dark
                   ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
                   : 'border-[#1E3A5F]/15 bg-[#f0f4fa] text-[#1E3A5F]'
@@ -654,7 +654,7 @@ export default function ProjectCard({ project, index }: Props) {
                 className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
               >
                 <p
-                  className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+                  className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
                 >
                   담당 업무
                 </p>
@@ -669,7 +669,7 @@ export default function ProjectCard({ project, index }: Props) {
                       }`}
                     >
                       <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xl ${
                           dark ? 'bg-[#383838]' : 'bg-gray-50'
                         }`}
                         aria-hidden
@@ -677,9 +677,9 @@ export default function ProjectCard({ project, index }: Props) {
                         {role.icon}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
+                        <p className={`text-base font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
                         <p
-                          className={`mt-0.5 whitespace-pre-line text-sm leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                          className={`mt-0.5 whitespace-pre-line text-base leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
                           dangerouslySetInnerHTML={{ __html: role.detail }}
                         />
                       </div>
@@ -695,7 +695,7 @@ export default function ProjectCard({ project, index }: Props) {
                       : 'border-indigo-100/80 bg-white shadow-sm'
                   }`}
                 >
-                  <p className={`mb-3 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                  <p className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
                   <img
@@ -710,11 +710,11 @@ export default function ProjectCard({ project, index }: Props) {
                           key={si}
                           className={`rounded-xl border p-3.5 ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                         >
-                          <p className={`mb-2.5 text-base font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                          <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                             {section.title}
                           </p>
                           {section.description ? (
-                            <p className={`mb-2 text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                            <p className={`mb-2 text-base leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                               {section.description}
                             </p>
                           ) : null}
@@ -722,13 +722,13 @@ export default function ProjectCard({ project, index }: Props) {
                             {section.items.map((item, ii) => (
                               <div key={ii}>
                                 {item.label ? (
-                                  <p className={`mb-1 text-xs font-semibold ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                                  <p className={`mb-1 text-sm font-semibold ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                                     {item.label}
                                   </p>
                                 ) : null}
                                 <ul className="space-y-1">
                                   {item.bullets.map((b, bi) => (
-                                    <li key={bi} className={`flex gap-2 text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                                    <li key={bi} className={`flex gap-2 text-base leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
                                       {b}
                                     </li>
@@ -769,7 +769,7 @@ export default function ProjectCard({ project, index }: Props) {
               key={i}
               className={`space-y-3 rounded-lg border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
             >
-              <p className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+              <p className={`text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                 {sec.headline}
               </p>
               <ProblemRow label="Problem" content={sec.problem} dark={dark} />
@@ -785,7 +785,7 @@ export default function ProjectCard({ project, index }: Props) {
         >
           {project.problemHeadline ? (
             <p
-              className={`text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+              className={`text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
             >
               {project.problemHeadline}
             </p>
@@ -802,7 +802,7 @@ export default function ProjectCard({ project, index }: Props) {
           href={project.githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+          className={`rounded-lg border px-4 py-2 text-base font-medium transition-colors duration-300 ${
             dark
               ? 'border-[#5a5a5a] text-[#b0b0b0] hover:bg-[#3a3a3a] hover:text-[#e0e0e0]'
               : 'border-[#1E3A5F] text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white'

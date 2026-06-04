@@ -52,19 +52,19 @@ export default function HeroSection() {
 
           <div className="min-w-0 flex-1">
             <span
-              className={`mb-4 inline-block rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-widest ${
+              className={`mb-4 inline-block rounded-full border px-4 py-1.5 text-sm font-semibold uppercase tracking-widest ${
                 dark ? 'border-[#4a4a4a] text-[#a0a0a0]' : 'border-[#1E3A5F] text-[#1E3A5F]'
               }`}
             >
               {HERO_ROLE_BADGE}
             </span>
             <h1
-              className={`text-4xl font-extrabold leading-tight md:text-6xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+              className={`text-5xl font-extrabold leading-tight md:text-6xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
             >
               {HERO_NAME}
             </h1>
             <p
-              className={`hero-tagline mb-3 mt-2 max-w-xl text-pretty text-base font-normal leading-relaxed text-balance md:mb-4 md:mt-3 md:max-w-2xl md:text-[1.0625rem] ${
+              className={`hero-tagline mb-3 mt-2 max-w-xl text-pretty text-lg font-normal leading-relaxed text-balance md:mb-4 md:mt-3 md:max-w-2xl md:text-[1.0625rem] ${
                 dark ? 'text-[#9ca3af]' : 'text-gray-500'
               }`}
             >
@@ -75,12 +75,12 @@ export default function HeroSection() {
               {HERO_PERSONAL_INFO.map((item) => (
                 <li
                   key={item.icon + item.text}
-                  className={`flex items-center gap-3 text-sm ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}
+                  className={`flex items-center gap-3 text-base ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}
                 >
                   <span
                     className={`flex h-5 w-5 items-center justify-center ${dark ? 'text-[#7a7a7a]' : 'text-[#1E3A5F]'}`}
                   >
-                    <i className={`${item.icon} text-base`} />
+                    <i className={`${item.icon} text-lg`} />
                   </span>
                   {item.href ? (
                     <a
@@ -99,7 +99,7 @@ export default function HeroSection() {
             </ul>
 
             <p
-              className={`mb-3 text-xs font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+              className={`mb-3 text-sm font-semibold uppercase tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
             >
               {HERO_TECH_STACK_LABEL}
             </p>
@@ -107,7 +107,7 @@ export default function HeroSection() {
               {HERO_SKILL_TAGS.map((tag) => (
                 <span
                   key={tag}
-                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium ${dark ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]' : 'border-[#1E3A5F]/15 bg-[#f0f4fa] text-[#1E3A5F]'}`}
+                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium ${dark ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]' : 'border-[#1E3A5F]/15 bg-[#f0f4fa] text-[#1E3A5F]'}`}
                 >
                   {tag}
                 </span>

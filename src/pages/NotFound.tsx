@@ -9,9 +9,9 @@ export default function NotFound() {
         404
       </h1>
       <div className="relative z-10">
-        <h1 className="mt-6 text-xl font-semibold md:text-2xl">This page has not been generated</h1>
-        <p className="mt-2 font-mono text-base text-gray-400">{location.pathname}</p>
-        <p className="mt-4 text-lg text-gray-500 md:text-xl">
+        <h1 className="mt-6 text-2xl font-semibold md:text-3xl">This page has not been generated</h1>
+        <p className="mt-2 font-mono text-lg text-gray-400">{location.pathname}</p>
+        <p className="mt-4 text-xl text-gray-500 md:text-2xl">
           Tell me more about this page, so I can generate it
         </p>
       </div>

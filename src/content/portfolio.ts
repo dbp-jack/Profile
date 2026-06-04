@@ -5,7 +5,7 @@ export const HERO_SKILL_TAGS = [
   'JPA',
   'Quary DSL',
   'JAVA',
-  'MySQL',
+
   'PostgreSQL',
   'Redis',
   'Jira',
@@ -51,21 +51,21 @@ export const ABOUT_CARDS = [
     title: '문제 해결 능력',
     subtitle: '성능 병목을 찾아 수치로 증명',
     description:
-      '이벤트 목록 조회 시 findAll() 전체 로딩으로 평균 응답 2.3초가 걸리는 문제를 발견했습니다.\n\nN+1 쿼리 문제를 원인으로 파악하고, Spring Cache @Cacheable을 도입해 응답 시간을 0.5초로 단축, 78% 개선했습니다.',
+      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6.8s → 0.6s)\n\nScouter로 SQL 42회 발생 확인\n→ QueryDSL fetchJoin으로 2회 축소\n→ 읽기 빈번·변경 적은 특성 분석 후 Redis@Cacheable 추가 적용\nnGrinder 동시 1,000명 기준 수치 검증',
   },
   {
     icon: 'ri-node-tree',
     title: '협업 시스템 설계',
     subtitle: '백지 상태에서 팀 협업을 만든 경험',
     description:
-      '협업 체계가 전무한 상태에서 작업 충돌과 혼선을 방지하고자, 코딩 컨벤션과 JIRA 기반의 가이드라인을 배포하여 팀의 주간 스프린트 운영 방식을 확립했습니다.\n\nJIRA 이슈와 Slack 알림을 실시간으로 연동하여 팀 내 변경 사항이 자동으로 공유되도록 구축하고, 모든 진행 상황을 즉각 파악할 수 있는 환경을 만들었습니다.',
+      '제로베이스에서 팀 스프린트 <span class="font-bold text-[#2563EB]">가시성 확보</span>\n\n스프린트 일정·작업 범위 모두 없던 상태에서 JIRA 가이드라인 배포로 주간 스프린트를 구조화하고, Slack 실시간 연동으로 팀 전체 진척 상황을 즉시 파악할 수 있는 환경을 만들었습니다.',
   },
   {
     icon: 'ri-checkbox-circle-line',
     title: '책임감',
     subtitle: '끝까지 완수로 증명한 책임감',
     description:
-      '현장실습에서 관리자 대시보드의 기획·설계부터 개발까지 주도적으로 담당해 신뢰를 쌓았고, 완성도를 높이기 위해 기간 연장으로 이어졌습니다.\n\n연장된 기간 내 완성도를 높여 고양 킨텍스 시연 행사까지 성공적으로 연결했습니다.',
+      '건설현장 관리자 대시보드 기획·설계·개발 단독 주도, 고양 킨텍스 시연 완수\n\n연장된 기간 내 완성도를 높여서 구현했고, 고양 킨텍스 시연 행사까지 성공적으로 연결했습니다.',
   },
 ] as const
 
@@ -166,14 +166,14 @@ export const CLOSING_BLOCKS = [
     titleEn: 'Development Philosophy',
     titleKo: '구현하기 전에 흐름을 먼저 설계합니다.',
     body:
-      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">설계 방식</span><span class="block leading-[1.72]">요구사항이 들어오면 구현 전에 전체 구조와 데이터 흐름을 먼저 설계합니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">실제 적용</span><span class="block leading-[1.72]">FeedShop에서 캐시 전략을 데이터 특성별로 분리하고,\n3M에서 도메인 책임부터 나눈 뒤 인증 흐름을 설계한 것이\n모두 이 접근에서 나온 결과입니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">지속적 개선</span><span class="block leading-[1.72]">기능 구현 후에도 더 나은 구조를 스스로 찾아보고,\n원인과 과정을 정리하며 개선하는 습관을 이어가고 있습니다.</span></div>',
+      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">설계 방식</span><span class="block leading-[1.72]">요구사항이 들어오면 구현 전에 전체 구조와 데이터 흐름을 먼저 설계합니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">실제 적용</span><span class="block leading-[1.72]">FeedShop에서 캐시 전략을 데이터 특성별로 분리하고,\n3M에서 도메인 책임부터 나눈 뒤 인증 흐름을 설계한 것이\n모두 이 접근에서 나온 결과입니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">지속적 개선</span><span class="block leading-[1.72]">기능 구현 후에도 더 나은 구조를 스스로 찾아보고,\n원인과 과정을 정리하며 개선하는 습관을 이어가고 있습니다.</span></div>',
   },
   {
     icon: 'ri-seedling-line',
     titleEn: 'Growth Direction',
     titleKo: '도구는 활용하되 판단은 양보하지 않습니다.',
     body:
-      '<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-sm font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
+      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
   },
 ] as const
 

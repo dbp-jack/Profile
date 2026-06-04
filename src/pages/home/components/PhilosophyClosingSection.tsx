@@ -29,17 +29,17 @@ export default function PhilosophyClosingSection() {
         <div className="pdf-closing-bunch">
           <div className="mb-10 text-center md:mb-20">
             <span
-              className={`mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
             >
               {CLOSING_SECTION.kicker}
             </span>
             <h2
-              className={`break-keep text-2xl font-bold tracking-tight text-balance sm:text-3xl md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+              className={`break-keep text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
             >
               {CLOSING_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-4 max-w-2xl text-base leading-relaxed break-keep ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+              className={`mx-auto mt-4 max-w-2xl text-lg leading-relaxed break-keep ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
             >
               {CLOSING_SECTION.subtitle}
             </p>
@@ -67,7 +67,7 @@ export default function PhilosophyClosingSection() {
                         dark ? 'bg-[#2a3148] text-[#b4c2f0]' : 'bg-[#EEF2FF] text-[#1e3a8a]'
                       }`}
                     >
-                      <i className={`${block.icon} text-2xl`} aria-hidden />
+                      <i className={`${block.icon} text-3xl`} aria-hidden />
                     </div>
                     <div className="min-w-0 pt-0.5">
                       <p
@@ -76,7 +76,7 @@ export default function PhilosophyClosingSection() {
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1.5 text-xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1.5 text-2xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
                       >
                         {block.titleKo}
                       </h3>
@@ -111,14 +111,14 @@ export default function PhilosophyClosingSection() {
                   >
                     {para.includes('<') ? (
                       <div
-                        className={`closing-card-body-html text-sm leading-[1.72] break-keep ${
+                        className={`closing-card-body-html text-base leading-[1.72] break-keep ${
                           dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                         } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                         dangerouslySetInnerHTML={{ __html: para }}
                       />
                     ) : (
                       <p
-                        className={`whitespace-pre-line text-sm leading-[1.72] break-keep ${
+                        className={`whitespace-pre-line text-base leading-[1.72] break-keep ${
                           dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                         } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                       >
