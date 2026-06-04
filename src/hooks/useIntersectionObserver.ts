@@ -2,11 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 
 export function useIntersectionObserver(options?: IntersectionObserverInit) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(
+    () => window.matchMedia('print').matches,
+  )
 
   useEffect(() => {
+    const onBeforePrint = () => setIsVisible(true)
+    window.addEventListener('beforeprint', onBeforePrint)
+
     const el = ref.current
-    if (!el) return
+    if (!el || isVisible) return () => window.removeEventListener('beforeprint', onBeforePrint)
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -19,7 +24,10 @@ export function useIntersectionObserver(options?: IntersectionObserverInit) {
     )
 
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('beforeprint', onBeforePrint)
+    }
   }, [])
 
   return { ref, isVisible }
