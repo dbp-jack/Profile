@@ -168,21 +168,22 @@ function HeroSlide() {
         pointerEvents: 'none',
       }} />
 
-      {/* 메인 콘텐츠 — 웹과 동일한 flex row */}
+      {/* 메인 콘텐츠 — 중앙 정렬 */}
       <div style={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: 48,
-        padding: '0 40px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 56,
+        padding: '0 60px',
         width: '100%',
         boxSizing: 'border-box',
       }}>
-        {/* 왼쪽: 세로형 프로필 사진 */}
+        {/* 왼쪽: 세로형 프로필 사진 (한 단계 키움) */}
         <div style={{ flexShrink: 0 }}>
           <div style={{
-            width: 132, height: 176,
-            borderRadius: 16,
+            width: 152, height: 202,
+            borderRadius: 18,
             border: '1px solid rgba(30,58,95,0.2)',
             background: '#f4f7fb',
             overflow: 'hidden',
@@ -195,55 +196,54 @@ function HeroSlide() {
           </div>
         </div>
 
-        {/* 오른쪽: 텍스트 정보 */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        {/* 오른쪽: 텍스트 정보 (한 단계 키움) */}
+        <div style={{ minWidth: 0, maxWidth: 520 }}>
           {/* 뱃지 */}
           <div style={{
             display: 'inline-block',
             border: '1px solid #1E3A5F',
             color: '#1E3A5F',
             borderRadius: 999,
-            padding: '4px 14px',
-            fontSize: 11,
+            padding: '5px 16px',
+            fontSize: 12,
             fontWeight: 600,
             letterSpacing: 2,
             textTransform: 'uppercase',
-            marginBottom: 12,
+            marginBottom: 14,
           }}>
             {HERO_ROLE_BADGE}
           </div>
 
           {/* 이름 */}
           <div style={{
-            fontSize: 52,
+            fontSize: 62,
             fontWeight: 800,
             color: '#111827',
             lineHeight: 1.1,
-            marginBottom: 8,
+            marginBottom: 10,
           }}>
             {HERO_NAME}
           </div>
 
           {/* 태그라인 */}
           <p style={{
-            fontSize: 15,
+            fontSize: 17,
             color: '#6b7280',
             lineHeight: 1.6,
-            marginBottom: 16,
-            maxWidth: 480,
+            marginBottom: 18,
           }}>
             {HERO_ROLE_TITLE}
           </p>
 
           {/* 연락처 */}
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 16 }}>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 18 }}>
             {HERO_PERSONAL_INFO.map((item) => (
               <li key={item.text} style={{
                 display: 'flex', alignItems: 'center', gap: 10,
-                fontSize: 13, color: '#4b5563',
-                marginBottom: 7,
+                fontSize: 14, color: '#4b5563',
+                marginBottom: 8,
               }}>
-                <i className={item.icon} style={{ color: '#1E3A5F', fontSize: 15, width: 18, textAlign: 'center' }} />
+                <i className={item.icon} style={{ color: '#1E3A5F', fontSize: 16, width: 20, textAlign: 'center' }} />
                 <span>{item.text}</span>
               </li>
             ))}
@@ -251,23 +251,23 @@ function HeroSlide() {
 
           {/* 기술 스택 라벨 */}
           <p style={{
-            fontSize: 11, fontWeight: 600,
+            fontSize: 12, fontWeight: 600,
             textTransform: 'uppercase', letterSpacing: 2,
-            color: '#2563EB', marginBottom: 8,
+            color: '#2563EB', marginBottom: 9,
           }}>
             기술 스택
           </p>
 
           {/* 기술 스택 태그 */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
             {HERO_SKILL_TAGS.map((tag) => (
               <span key={tag} style={{
                 border: '1px solid rgba(30,58,95,0.15)',
                 background: '#f0f4fa',
                 color: '#1E3A5F',
                 borderRadius: 999,
-                padding: '3px 12px',
-                fontSize: 11,
+                padding: '4px 14px',
+                fontSize: 12,
                 fontWeight: 500,
                 whiteSpace: 'nowrap',
               }}>
@@ -665,36 +665,80 @@ function ExperiencePage() {
 
 /* ─── Page 21: About ─── */
 function AboutPage() {
+  const accentColors = [
+    { border: '#2563eb', bg: '#eff6ff', iconBg: '#dbeafe', text: '#1e40af' },
+    { border: '#059669', bg: '#ecfdf5', iconBg: '#d1fae5', text: '#065f46' },
+    { border: '#7c3aed', bg: '#f5f3ff', iconBg: '#ede9fe', text: '#5b21b6' },
+  ]
   return (
     <Slide pageNum={21}>
-      <Header title="About — 저는 이렇게 일합니다" />
-      <Content center padding="16px 24px">
-        <div style={{ display: 'flex', gap: 16 }}>
-          {ABOUT_CARDS.map(card => (
+      {/* 상단 헤더 영역 */}
+      <div style={{
+        background: NAVY, padding: '22px 32px 18px',
+      }}>
+        <div style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 6 }}>About</div>
+        <div style={{ fontSize: 26, fontWeight: 800, color: '#ffffff', marginBottom: 6 }}>저는 이렇게 일합니다</div>
+        <div style={{ fontSize: 13, color: '#94a3b8' }}>문제는 수치로 파악해 해결하고, 협력은 팀 흐름을 맞춰 정리하며, 맡은 임무는 끝까지 완수합니다.</div>
+      </div>
+
+      {/* 카드 3개 — 세로 꽉 채우기 */}
+      <div style={{
+        display: 'flex',
+        gap: 16,
+        padding: '20px 28px',
+        height: 'calc(210mm - 110px)',
+        boxSizing: 'border-box',
+      }}>
+        {ABOUT_CARDS.map((card, i) => {
+          const c = accentColors[i % accentColors.length]
+          return (
             <div key={card.title} style={{
               flex: 1,
-              background: GRAY1,
-              border: `1px solid ${GRAY2}`,
-              borderRadius: 10,
-              padding: '16px 14px',
+              background: c.bg,
+              border: `1.5px solid ${c.border}22`,
+              borderRadius: 14,
+              padding: '20px 18px',
+              display: 'flex',
+              flexDirection: 'column',
+              borderTop: `4px solid ${c.border}`,
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                <i className={card.icon} style={{ color: BLUE, fontSize: 18 }} />
-                <div style={{ fontSize: 15, fontWeight: 700, color: NAVY }}>{card.title}</div>
+              {/* 아이콘 + 제목 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: 10,
+                  background: c.iconBg,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <i className={card.icon} style={{ color: c.border, fontSize: 18 }} />
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: NAVY }}>{card.title}</div>
               </div>
+
+              {/* 소제목 */}
               <div
-                style={{ fontSize: 11, color: BLUE, fontWeight: 600, marginBottom: 8 }}
+                style={{ fontSize: 11, color: c.text, fontWeight: 700, marginBottom: 12, lineHeight: 1.4 }}
                 dangerouslySetInnerHTML={{ __html: card.subtitle }}
               />
+
+              {/* 구분선 */}
+              <div style={{ height: 1, background: `${c.border}30`, marginBottom: 12 }} />
+
+              {/* 내용 */}
               <div
                 className="pdf-content"
-                style={{ fontSize: 12, color: '#334155', lineHeight: 1.65 }}
-                dangerouslySetInnerHTML={{ __html: card.description.replace(/\n\n/g, '<br/>') }}
+                style={{ fontSize: 12, color: '#334155', lineHeight: 1.7, flex: 1 }}
+                dangerouslySetInnerHTML={{ __html: card.description.replace(/\n\n/g, '<br/><br/>') }}
               />
             </div>
-          ))}
-        </div>
-      </Content>
+          )
+        })}
+      </div>
+
+      {/* 페이지 번호 */}
+      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#94a3b8' }}>
+        21 / {TOTAL_PAGES}
+      </div>
     </Slide>
   )
 }
