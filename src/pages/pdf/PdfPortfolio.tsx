@@ -339,13 +339,6 @@ function FeedShopOverview() {
               ))}
             </div>
           </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          {/* 4. DEVELOPER PERSPECTIVE */}
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
-            <div style={{ fontSize: 12, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: feedshop.developerPerspective ?? '' }} />
-          </div>
         </div>
       </Content>
     </Slide>
@@ -403,6 +396,15 @@ function FeedShopP1Problem() {
     <Slide pageNum={6} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
       <Content center={false} padding="14px 24px">
+        {/* DEVELOPER PERSPECTIVE */}
+        {feedshop.developerPerspective && (
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: feedshop.developerPerspective }} />
+          </div>
+        )}
+        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
         {/* TEST ENVIRONMENT */}
         {feedshop.problemEnvironment && (
           <div style={{ marginBottom: 12, padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
