@@ -648,15 +648,41 @@ function M3Solution() { return null }
 
 function M3Result() {
   const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
+
+  const stage2Content = [
+    'Gateway 인증 필터에서 JWT 검증 후 X-User-* 헤더로 사용자 컨텍스트 전달',
+    '권한 검증은 AOP(@RequiresMasterRole)로 분리 → 역할 체크 로직 통합',
+    '대부분 경로에서 User 서비스 재호출 없이 처리, 추가 정보 필요 시에만 선택 호출',
+  ]
+
   return (
     <Slide pageNum={19} minHeight>
-      <Header title="3M — Result" sub="결과" />
-      <Content center padding="16px 24px">
-        <div style={{ width: '100%' }}>
+      <Header title="3M — Solution 2단계 · Result" sub="인증 흐름 단순화 · 결과" />
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        {/* 2단계 — 인증 흐름 단순화 */}
+        <div style={{ background: GRAY1, border: `1px solid ${GRAY2}`, borderRadius: 12, padding: '16px 20px' }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 10, paddingBottom: 6, borderBottom: `2px solid ${BLUE}`, display: 'inline-block' }}>
+            2단계 — 인증 흐름 단순화
+          </div>
+          <ul style={{ margin: 0, paddingLeft: 20 }}>
+            {stage2Content.map((b, i) => (
+              <li key={i} style={{ fontSize: 13, color: '#334155', lineHeight: 1.7, marginBottom: 4 }}>{b}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div style={{ height: 1, background: GRAY2 }} />
+
+        {/* Result */}
+        <div>
+          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>RESULT</div>
           <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
             dangerouslySetInnerHTML={{ __html: fixSrc(m3.result ?? '') }} />
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
