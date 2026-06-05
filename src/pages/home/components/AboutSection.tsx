@@ -87,15 +87,21 @@ export default function AboutSection() {
 
                   {/* 체크 bullet 목록 */}
                   <ul className={i < 2 ? 'space-y-1.5' : 'space-y-2'}>
-                    {bullets.map((line, j) => (
+                    {bullets.map((line, j) => {
+                      const noCheck = j === 0 && i < 2
+                      return (
                       <li key={j} className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
+                        {noCheck
+                          ? <span className="mt-0.5 shrink-0 w-4" />
+                          : <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
+                        }
                         <span
-                          className={`${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`${noCheck ? 'font-semibold' : ''} ${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>
-                    ))}
+                    )})}
+
                   </ul>
                 </div>
               </article>
