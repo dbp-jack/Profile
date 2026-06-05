@@ -78,7 +78,7 @@ export default function AboutSection() {
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className={`flex flex-1 flex-col justify-center px-8 ${i < 2 ? 'py-5' : 'py-7'}`}>
+                <div className="flex flex-1 flex-col justify-center px-8 py-7">
                   {/* 소제목 */}
                   <h3
                     className={`${i < 2 ? 'mb-3 text-lg' : 'mb-4 text-xl'} font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
