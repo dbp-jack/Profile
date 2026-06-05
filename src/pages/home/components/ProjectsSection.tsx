@@ -6,7 +6,15 @@ import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
 import ProjectCard from './ProjectCard'
 
 function LazyProjectCard({ project, index }: { project: typeof PROJECTS[number]; index: number }) {
+  // PDF 모드(pdf-fluid)에서는 lazy 로딩 건너뜀
+  const isPdfMode = typeof document !== 'undefined' &&
+    document.querySelector('[data-portfolio-mode="pdf-fluid"]') !== null
   const { ref, isVisible } = useIntersectionObserver()
+
+  if (isPdfMode) {
+    return <ProjectCard project={project} index={index} />
+  }
+
   return (
     <div ref={ref} style={{ minHeight: isVisible ? undefined : '400px' }}>
       {isVisible && <ProjectCard project={project} index={index} />}
