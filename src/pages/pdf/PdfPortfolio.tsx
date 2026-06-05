@@ -397,7 +397,7 @@ function FeedShopP1Problem() {
   const sec = feedshop.problemSections![0]
   return (
     <Slide pageNum={6} minHeight>
-      <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
+      <Header title={`FeedShop — ${sec.headline}`} sub="Problem" />
       <Content center={false} padding="14px 24px">
         {/* DEVELOPER PERSPECTIVE */}
         {feedshop.developerPerspective && (
@@ -421,11 +421,37 @@ function FeedShopP1Problem() {
             <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
               dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
           </div>
-          <div style={{ height: 1, background: GRAY2 }} />
+        </div>
+      </Content>
+    </Slide>
+  )
+}
+
+/* Thinking + Solution 1단계 */
+function FeedShopP1Thinking() {
+  const sec = feedshop.problemSections![0]
+  // solution HTML에서 1단계만 추출 (2단계 시작 전까지)
+  const sol = sec.solution
+  const idx2 = sol.indexOf('2단계')
+  const block2Start = idx2 > 0 ? sol.lastIndexOf('<div', idx2) : sol.length
+  const stage1Html = sol.substring(0, block2Start) + '</div>'
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
+
+  return (
+    <Slide pageNum={7} minHeight>
+      <Header title="FeedShop — Problem 1 / Thinking · Solution 1단계" sub="쿼리 최적화" />
+      <Content center={false} padding="14px 24px">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div>
             <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
             <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: sec.thinking.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
+              dangerouslySetInnerHTML={{ __html: fixSrc(sec.thinking) }} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
           </div>
         </div>
       </Content>
@@ -433,15 +459,22 @@ function FeedShopP1Problem() {
   )
 }
 
-function FeedShopP1Thinking() { return null }
-
+/* Solution 2단계 */
 function FeedShopP1Solution() {
   const sec = feedshop.problemSections![0]
+  const sol = sec.solution
+  const idx2 = sol.indexOf('2단계')
+  const block2Start = idx2 > 0 ? sol.lastIndexOf('<div', idx2) : 0
+  const stage2Html = sol.substring(block2Start)
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
+
   return (
     <Slide pageNum={8} minHeight>
-      <Header title="FeedShop — Problem 1 / 해결 방법" sub="Solution" />
+      <Header title="FeedShop — Problem 1 / Solution 2단계" sub="캐시 전략 적용" />
       <Content center={false} padding="16px 24px">
-        <HtmlContent html={sec.solution} />
+        <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 2단계</div>
+        <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+          dangerouslySetInnerHTML={{ __html: fixSrc(stage2Html) }} />
       </Content>
     </Slide>
   )
