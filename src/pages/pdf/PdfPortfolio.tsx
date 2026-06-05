@@ -359,42 +359,36 @@ function FeedShopArchImage() {
   return (
     <Slide pageNum={4} minHeight>
       <Header title="FeedShop — Architecture" sub="인프라 구조도 · Architecture Details" />
-      <Content center={false} padding="12px 24px">
-        {/* 이미지 (축소) */}
-        <div style={{ marginBottom: 14 }}>
+      <Content center padding="16px 28px">
+        {/* 이미지 */}
+        <div style={{ marginBottom: 16 }}>
           <img
             src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
             alt="FeedShop Architecture"
-            style={{ maxWidth: '100%', maxHeight: '80mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
+            style={{ maxWidth: '100%', maxHeight: '75mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
           />
         </div>
-        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
-        {/* Architecture Details */}
-        <div style={{ display: 'flex', gap: 20 }}>
+        <div style={{ height: 1, background: GRAY2, marginBottom: 16 }} />
+        {/* Architecture Details — 세로 나열 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {feedshop.architectureDetails?.map(section => (
-            <div key={section.title} style={{ flex: 1 }}>
+            <div key={section.title}>
               <div style={{
-                fontSize: 12, fontWeight: 700, color: NAVY, marginBottom: 6,
-                paddingBottom: 3, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
+                fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 6,
+                paddingBottom: 4, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
               }}>
                 {section.title}
               </div>
               {section.items.map((item, idx) => (
-                <ul key={idx} style={{ margin: 0, paddingLeft: 14 }}>
+                <ul key={idx} style={{ margin: '4px 0 0', paddingLeft: 18 }}>
                   {item.bullets.map((b, bi) => (
-                    <li key={bi} style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
+                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.65, marginBottom: 3 }}>{b}</li>
                   ))}
                 </ul>
               ))}
             </div>
           ))}
         </div>
-        {feedshop.problemEnvironment && (
-          <div style={{ marginTop: 10, padding: '8px 12px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: GRAY3, marginBottom: 3 }}>TEST ENVIRONMENT</div>
-            <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>{feedshop.problemEnvironment}</div>
-          </div>
-        )}
       </Content>
     </Slide>
   )
@@ -409,6 +403,13 @@ function FeedShopP1Problem() {
     <Slide pageNum={6} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
       <Content center={false} padding="14px 24px">
+        {/* TEST ENVIRONMENT */}
+        {feedshop.problemEnvironment && (
+          <div style={{ marginBottom: 12, padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: GRAY3, marginBottom: 3 }}>🖥️ 로컬 테스트 환경</div>
+            <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>{feedshop.problemEnvironment}</div>
+          </div>
+        )}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
             <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
