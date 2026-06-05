@@ -126,24 +126,7 @@ function HeroSlide() {
       display: 'flex',
       alignItems: 'center',
     }}>
-      {/* 우상단 그라디언트 장식 */}
-      <div style={{
-        position: 'absolute', top: 0, right: 0,
-        width: 300, height: 300, borderRadius: '50%',
-        transform: 'translate(30%, -30%)',
-        background: 'radial-gradient(circle, rgba(30,58,95,0.08) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      {/* 좌하단 그라디언트 장식 */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0,
-        width: 200, height: 200, borderRadius: '50%',
-        transform: 'translate(-40%, 40%)',
-        background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* 메인 콘텐츠 */}
+      {/* 메인 콘텐츠 — 텍스트 왼쪽, 사진 오른쪽 */}
       <div style={{
         display: 'flex',
         flexDirection: 'row',
@@ -154,26 +137,8 @@ function HeroSlide() {
         width: '100%',
         boxSizing: 'border-box',
       }}>
-        {/* 왼쪽: 프로필 사진 */}
-        <div style={{ flexShrink: 0 }}>
-          <div style={{
-            width: 162, height: 216,
-            borderRadius: 14,
-            border: `1.5px solid ${NAVY}20`,
-            background: '#f4f7fb',
-            overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(15,23,42,0.10)',
-          }}>
-            <img
-              src={`${__BASE_PATH__}profile-photo.png`}
-              alt="정민수 증명사진"
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            />
-          </div>
-        </div>
-
-        {/* 오른쪽: 텍스트 */}
-        <div style={{ minWidth: 0, flex: 1, maxWidth: 480 }}>
+        {/* 왼쪽: 텍스트 */}
+        <div style={{ minWidth: 0, flex: 1, maxWidth: 500 }}>
           {/* 뱃지 */}
           <div style={{
             display: 'inline-block',
@@ -254,6 +219,24 @@ function HeroSlide() {
                 {tag}
               </span>
             ))}
+          </div>
+        </div>
+
+        {/* 오른쪽: 증명사진 */}
+        <div style={{ flexShrink: 0 }}>
+          <div style={{
+            width: 162, height: 216,
+            borderRadius: 14,
+            border: `1.5px solid ${NAVY}20`,
+            background: '#f4f7fb',
+            overflow: 'hidden',
+            boxShadow: '0 4px 20px rgba(15,23,42,0.10)',
+          }}>
+            <img
+              src={`${__BASE_PATH__}profile-photo.png`}
+              alt="정민수 증명사진"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
           </div>
         </div>
       </div>

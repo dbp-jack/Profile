@@ -1,35 +1,13 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import PortfolioBody from '@/pages/home/PortfolioBody'
+import PdfPortfolio from './PdfPortfolio'
 
-/**
- * 웹과 동일한 섹션·스타일을 쓰고, 미리보기 폭을 A4 가로(297mm)에 맞춥니다.
- * 인쇄·PDF 저장 시 A4 landscape 비율로 저장됩니다.
- */
 export default function PdfPortfolioPage() {
-  const [isMobileViewport, setIsMobileViewport] = useState(
-    () => window.matchMedia('(max-width: 767px)').matches,
-  )
-
-  useEffect(() => {
-    const mql = window.matchMedia('(max-width: 767px)')
-    const onChange = (e: MediaQueryListEvent) => setIsMobileViewport(e.matches)
-    mql.addEventListener('change', onChange)
-    return () => mql.removeEventListener('change', onChange)
-  }, [])
-
-  useEffect(() => {
-    const onBeforePrint = () => window.scrollTo({ top: 0, left: 0 })
-    window.addEventListener('beforeprint', onBeforePrint)
-    return () => window.removeEventListener('beforeprint', onBeforePrint)
-  }, [])
-
   return (
-    <div className="min-h-screen bg-[#0b1220] print:bg-transparent">
+    <div className="min-h-screen bg-gray-200">
       <header className="fixed left-0 right-0 top-0 z-50 flex h-12 items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 shadow-sm print:hidden">
         <Link
           to="/"
-          className="text-base font-medium text-gray-600 underline-offset-2 hover:text-[#1E3A5F] hover:underline"
+          className="text-sm font-medium text-gray-600 underline-offset-2 hover:text-[#1E3A5F] hover:underline"
         >
           ← 사이트로
         </Link>
@@ -46,16 +24,8 @@ export default function PdfPortfolioPage() {
           </button>
         </div>
       </header>
-
-      <div className="overflow-x-auto pb-8 pt-14 sm:pb-10 print:overflow-visible print:pb-0 print:pt-0">
-        <div
-          data-portfolio-mode="pdf-fluid"
-          className={`portfolio-pdf-column mx-auto overflow-hidden ${
-            isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
-          } bg-[#0f172a] text-gray-100 print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none`}
-        >
-          <PortfolioBody pdfStackHeroAbout={!isMobileViewport} />
-        </div>
+      <div className="flex flex-col items-center gap-4 pb-8 pt-16 print:gap-0 print:p-0">
+        <PdfPortfolio />
       </div>
     </div>
   )
