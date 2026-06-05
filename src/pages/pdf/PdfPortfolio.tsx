@@ -345,55 +345,50 @@ function FeedShopTechRoles() { return null }
 /* ─── Page 4: FeedShop architecture image ─── */
 function FeedShopArchImage() {
   return (
-    <Slide pageNum={4}>
-      <Header title="FeedShop — Architecture" sub="인프라 구조도" />
-      <Content center padding="12px 24px">
-        <img
-          src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
-          alt="FeedShop Architecture"
-          style={{ maxWidth: '100%', maxHeight: '140mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
-        />
+    <Slide pageNum={4} minHeight>
+      <Header title="FeedShop — Architecture" sub="인프라 구조도 · Architecture Details" />
+      <Content center={false} padding="12px 24px">
+        {/* 이미지 (축소) */}
+        <div style={{ marginBottom: 14 }}>
+          <img
+            src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
+            alt="FeedShop Architecture"
+            style={{ maxWidth: '100%', maxHeight: '80mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
+          />
+        </div>
+        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
+        {/* Architecture Details */}
+        <div style={{ display: 'flex', gap: 20 }}>
+          {feedshop.architectureDetails.map(section => (
+            <div key={section.title} style={{ flex: 1 }}>
+              <div style={{
+                fontSize: 12, fontWeight: 700, color: NAVY, marginBottom: 6,
+                paddingBottom: 3, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
+              }}>
+                {section.title}
+              </div>
+              {section.items.map((item, idx) => (
+                <ul key={idx} style={{ margin: 0, paddingLeft: 14 }}>
+                  {item.bullets.map((b, bi) => (
+                    <li key={bi} style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          ))}
+        </div>
+        {feedshop.problemEnvironment && (
+          <div style={{ marginTop: 10, padding: '8px 12px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: GRAY3, marginBottom: 3 }}>TEST ENVIRONMENT</div>
+            <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>{feedshop.problemEnvironment}</div>
+          </div>
+        )}
       </Content>
     </Slide>
   )
 }
 
-/* ─── Page 5: FeedShop architecture details ─── */
-function FeedShopArchDetails() {
-  return (
-    <Slide pageNum={5} minHeight>
-      <Header title="FeedShop — Architecture Details" sub="GCP + GitHub Actions" />
-      <Content center={false} padding="16px 24px">
-        {feedshop.architectureDetails.map(section => (
-          <div key={section.title} style={{ marginBottom: 16 }}>
-            <div style={{
-              fontSize: 14,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 8,
-              paddingBottom: 4,
-              borderBottom: `2px solid ${BLUE}`,
-              display: 'inline-block',
-            }}>
-              {section.title}
-            </div>
-            {section.items.map((item, idx) => (
-              <ul key={idx} style={{ margin: 0, paddingLeft: 16 }}>
-                {item.bullets.map((b, bi) => (
-                  <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.7, marginBottom: 2 }}>{b}</li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        ))}
-        <div style={{ marginTop: 8, padding: '10px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: GRAY3, marginBottom: 4 }}>TEST ENVIRONMENT</div>
-          <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.6 }}>{feedshop.problemEnvironment}</div>
-        </div>
-      </Content>
-    </Slide>
-  )
-}
+function FeedShopArchDetails() { return null }
 
 /* ─── Pages 6–9: FeedShop Problem 1 ─── */
 function FeedShopP1Problem() {
@@ -574,50 +569,47 @@ function M3TechRolesOLD() {
 
 function M3ArchImage() {
   return (
-    <Slide pageNum={15}>
-      <Header title="3M — Architecture" sub="인프라 구조도" />
-      <Content center padding="12px 24px">
-        <img
-          src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
-          alt="3M Architecture"
-          style={{ maxWidth: '100%', maxHeight: '140mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
-        />
+    <Slide pageNum={15} minHeight>
+      <Header title="3M — Architecture" sub="인프라 구조도 · Architecture Details" />
+      <Content center={false} padding="12px 24px">
+        {/* 이미지 (축소) */}
+        <div style={{ marginBottom: 14 }}>
+          <img
+            src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
+            alt="3M Architecture"
+            style={{ maxWidth: '100%', maxHeight: '80mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
+          />
+        </div>
+        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
+        {/* Architecture Details */}
+        <div style={{ display: 'flex', gap: 20 }}>
+          {m3.architectureDetails?.map(section => (
+            <div key={section.title} style={{ flex: 1 }}>
+              <div style={{
+                fontSize: 12, fontWeight: 700, color: NAVY, marginBottom: 6,
+                paddingBottom: 3, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
+              }}>
+                {section.title}
+              </div>
+              {section.description && (
+                <p style={{ fontSize: 10, color: GRAY3, marginBottom: 4, lineHeight: 1.5 }}>{section.description}</p>
+              )}
+              {section.items.map((item, idx) => (
+                <ul key={idx} style={{ margin: 0, paddingLeft: 14 }}>
+                  {item.bullets.map((b, bi) => (
+                    <li key={bi} style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          ))}
+        </div>
       </Content>
     </Slide>
   )
 }
 
-function M3ArchDetails() {
-  return (
-    <Slide pageNum={16} minHeight>
-      <Header title="3M — Architecture Details" sub="Docker Compose + Eureka + Gateway" />
-      <Content center={false} padding="16px 24px">
-        {m3.architectureDetails.map(section => (
-          <div key={section.title} style={{ marginBottom: 16 }}>
-            <div style={{
-              fontSize: 14,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 8,
-              paddingBottom: 4,
-              borderBottom: `2px solid ${BLUE}`,
-              display: 'inline-block',
-            }}>
-              {section.title}
-            </div>
-            {section.items.map((item, idx) => (
-              <ul key={idx} style={{ margin: 0, paddingLeft: 16 }}>
-                {item.bullets.map((b, bi) => (
-                  <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.7, marginBottom: 2 }}>{b}</li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        ))}
-      </Content>
-    </Slide>
-  )
-}
+function M3ArchDetails() { return null }
 
 function M3ProblemThinking() {
   return (
