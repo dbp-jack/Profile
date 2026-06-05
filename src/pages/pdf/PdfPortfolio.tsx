@@ -412,13 +412,15 @@ function FeedShopP1Problem() {
         )}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
-            <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
-            <HtmlContent html={sec.problem} />
+            <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
-            <div style={{ fontSize: 9, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>THINKING</div>
-            <HtmlContent html={sec.thinking} />
+            <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: sec.thinking.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
           </div>
         </div>
       </Content>
