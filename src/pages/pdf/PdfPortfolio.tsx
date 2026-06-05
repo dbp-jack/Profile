@@ -352,18 +352,21 @@ function FeedShopArchImage() {
   return (
     <Slide pageNum={4} minHeight>
       <Header title="FeedShop — Architecture" sub="인프라 구조도 · Architecture Details" />
-      <Content center padding="16px 28px">
-        {/* 이미지 */}
-        <div style={{ marginBottom: 16 }}>
-          <img
-            src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
-            alt="FeedShop Architecture"
-            style={{ maxWidth: '100%', maxHeight: '75mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
-          />
-        </div>
-        <div style={{ height: 1, background: GRAY2, marginBottom: 16 }} />
+      <div style={{
+        height: 'calc(210mm - 44px)',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: '16px 28px', boxSizing: 'border-box',
+      }}>
+        {/* 이미지 (크게) */}
+        <img
+          src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
+          alt="FeedShop Architecture"
+          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', marginBottom: 16 }}
+        />
+        <div style={{ height: 1, background: GRAY2, width: '100%', marginBottom: 16 }} />
         {/* Architecture Details — 세로 나열 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {feedshop.architectureDetails?.map(section => (
             <div key={section.title}>
               <div style={{
@@ -382,7 +385,7 @@ function FeedShopArchImage() {
             </div>
           ))}
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
