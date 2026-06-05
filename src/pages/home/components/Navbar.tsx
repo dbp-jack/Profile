@@ -54,7 +54,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${navBg}`}
+      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 print:hidden ${navBg}`}
       style={{ boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.08)' : 'none' }}
     >
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
