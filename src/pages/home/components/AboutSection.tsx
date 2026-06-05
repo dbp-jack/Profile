@@ -72,26 +72,26 @@ export default function AboutSection() {
                   <span className="text-5xl font-black leading-none text-[#2563EB]">
                     {NUMS[i]}
                   </span>
-                  <span className={`mt-1 text-sm font-bold ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+                  <span className={`mt-1 text-base font-bold ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
                     {card.title}
                   </span>
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className="flex flex-1 flex-col justify-center px-8 py-7">
+                <div className={`flex flex-1 flex-col justify-center px-8 ${i < 2 ? 'py-5' : 'py-7'}`}>
                   {/* 소제목 */}
                   <h3
-                    className={`mb-4 text-xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+                    className={`${i < 2 ? 'mb-3 text-lg' : 'mb-4 text-xl'} font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
                     dangerouslySetInnerHTML={{ __html: card.subtitle }}
                   />
 
                   {/* 체크 bullet 목록 */}
-                  <ul className="space-y-2">
+                  <ul className={i < 2 ? 'space-y-1.5' : 'space-y-2'}>
                     {bullets.map((line, j) => (
                       <li key={j} className="flex items-start gap-3">
                         <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
                         <span
-                          className={`text-sm leading-relaxed md:text-base ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>
