@@ -272,8 +272,6 @@ function HeroSlide() {
         </div>
       </div>
 
-      {/* 페이지 번호 */}
-      </div>
     </div>
   )
 }
