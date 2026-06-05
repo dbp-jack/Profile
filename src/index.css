@@ -588,33 +588,41 @@ body {
      ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #about {
     break-after: page !important;
-    padding-top: 5mm !important;
-    padding-bottom: 4mm !important;
+    height: 210mm !important;
+    min-height: 210mm !important;
+    max-height: 210mm !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding-top: 6mm !important;
+    padding-bottom: 6mm !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #about .mb-12,
-  [data-portfolio-mode='pdf-fluid'] #about .md\:mb-14 { margin-bottom: 0.6rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about h2 { font-size: 1.3rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .max-w-5xl { padding: 0 1.5rem !important; }
-  /* 카드 컨테이너 간격 축소 */
-  [data-portfolio-mode='pdf-fluid'] #about .gap-5 { gap: 0.5rem !important; }
-  /* 각 카드 패딩 축소 */
+  /* 헤더 영역 축소 */
+  [data-portfolio-mode='pdf-fluid'] #about .mb-10 { margin-bottom: 0.6rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about h2 { font-size: 1.4rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .max-w-5xl { padding: 0 2rem !important; max-width: 100% !important; }
+  /* 카드 컨테이너 간격 */
+  [data-portfolio-mode='pdf-fluid'] #about .gap-5 { gap: 0.55rem !important; }
+  /* 왼쪽 번호 영역 */
   [data-portfolio-mode='pdf-fluid'] #about article > div:first-child {
-    padding-top: 0.7rem !important;
-    padding-bottom: 0.7rem !important;
-    width: 6rem !important;
+    width: 6.5rem !important;
+    padding-top: 0.8rem !important;
+    padding-bottom: 0.8rem !important;
   }
+  /* 번호 크기 */
+  [data-portfolio-mode='pdf-fluid'] #about .text-5xl { font-size: 2rem !important; }
+  /* 카테고리명 */
+  [data-portfolio-mode='pdf-fluid'] #about .text-base.font-bold { font-size: 0.8rem !important; }
+  /* 오른쪽 콘텐츠 영역 */
   [data-portfolio-mode='pdf-fluid'] #about article > div:last-child {
-    padding: 0.6rem 1.2rem !important;
+    padding: 0.75rem 1.25rem !important;
   }
-  /* 번호 크기 축소 */
-  [data-portfolio-mode='pdf-fluid'] #about .text-5xl { font-size: 1.8rem !important; }
-  /* 소제목, 본문 크기 축소 */
-  [data-portfolio-mode='pdf-fluid'] #about h3 { font-size: 0.95rem !important; margin-bottom: 0.35rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about ul { gap: 0.15rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about ul li { font-size: 0.75rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .mt-8 { margin-top: 0.4rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .mt-1 { margin-top: 0.05rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .space-y-2 > * + * { margin-top: 0.15rem !important; }
+  /* 소제목 */
+  [data-portfolio-mode='pdf-fluid'] #about h3 { font-size: 0.9rem !important; margin-bottom: 0.3rem !important; }
+  /* 본문 bullet */
+  [data-portfolio-mode='pdf-fluid'] #about ul li { font-size: 0.75rem !important; line-height: 1.4 !important; }
 
   /* ════════════════════════════════════════════
      페이지 3 — Projects 섹션 헤더 (단독 페이지)
