@@ -735,20 +735,20 @@ function AboutPage() {
   return (
     <Slide pageNum={21}>
       {/* 상단 헤더 영역 */}
-      <div style={{
-        background: NAVY, padding: '22px 32px 18px',
-      }}>
-        <div style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 6 }}>About</div>
-        <div style={{ fontSize: 26, fontWeight: 800, color: '#ffffff', marginBottom: 6 }}>저는 이렇게 일합니다</div>
+      <div style={{ background: NAVY, padding: '20px 32px 16px' }}>
+        <div style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 5 }}>About</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 5 }}>저는 이렇게 일합니다</div>
         <div style={{ fontSize: 13, color: '#94a3b8' }}>문제는 수치로 파악해 해결하고, 협력은 팀 흐름을 맞춰 정리하며, 맡은 임무는 끝까지 완수합니다.</div>
       </div>
 
-      {/* 카드 3개 — 세로 꽉 채우기 */}
+      {/* 카드 3개 — 남은 높이 꽉 채우기 */}
       <div style={{
         display: 'flex',
+        alignItems: 'stretch',
         gap: 16,
-        padding: '20px 28px',
-        height: 'calc(210mm - 110px)',
+        padding: '18px 28px',
+        flex: 1,
+        height: 'calc(210mm - 108px)',
         boxSizing: 'border-box',
       }}>
         {ABOUT_CARDS.map((card, i) => {
@@ -759,37 +759,37 @@ function AboutPage() {
               background: c.bg,
               border: `1.5px solid ${c.border}22`,
               borderRadius: 14,
-              padding: '20px 18px',
+              padding: '22px 20px',
               display: 'flex',
               flexDirection: 'column',
               borderTop: `4px solid ${c.border}`,
             }}>
               {/* 아이콘 + 제목 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
                 <div style={{
-                  width: 36, height: 36, borderRadius: 10,
+                  width: 42, height: 42, borderRadius: 12,
                   background: c.iconBg,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <i className={card.icon} style={{ color: c.border, fontSize: 18 }} />
+                  <i className={card.icon} style={{ color: c.border, fontSize: 22 }} />
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: NAVY }}>{card.title}</div>
+                <div style={{ fontSize: 19, fontWeight: 800, color: NAVY }}>{card.title}</div>
               </div>
 
               {/* 소제목 */}
               <div
-                style={{ fontSize: 11, color: c.text, fontWeight: 700, marginBottom: 12, lineHeight: 1.4 }}
+                style={{ fontSize: 13, color: c.text, fontWeight: 700, marginBottom: 14, lineHeight: 1.4 }}
                 dangerouslySetInnerHTML={{ __html: card.subtitle }}
               />
 
               {/* 구분선 */}
-              <div style={{ height: 1, background: `${c.border}30`, marginBottom: 12 }} />
+              <div style={{ height: 1, background: `${c.border}30`, marginBottom: 14 }} />
 
               {/* 내용 */}
               <div
                 className="pdf-content"
-                style={{ fontSize: 12, color: '#334155', lineHeight: 1.7, flex: 1 }}
+                style={{ fontSize: 13, color: '#334155', lineHeight: 1.75, flex: 1 }}
                 dangerouslySetInnerHTML={{ __html: card.description.replace(/\n\n/g, '<br/><br/>') }}
               />
             </div>
@@ -797,8 +797,6 @@ function AboutPage() {
         })}
       </div>
 
-      {/* 페이지 번호 */}
-        2      </div>
     </Slide>
   )
 }
