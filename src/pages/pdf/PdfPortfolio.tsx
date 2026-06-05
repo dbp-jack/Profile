@@ -119,13 +119,17 @@ function Chip({ text, bg = BLUE_LIGHT, color = BLUE }: { text: string; bg?: stri
   )
 }
 
-/* ─── HTML Content wrapper ─── */
+/* ─── HTML Content wrapper (이미지 src에 BASE_PATH 주입) ─── */
 function HtmlContent({ html }: { html: string }) {
+  const fixed = html.replace(
+    /src="(?!http|data|\/\/)([^"]+)"/g,
+    (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`
+  )
   return (
     <div
       className="pdf-content"
       style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: fixed }}
     />
   )
 }
@@ -288,63 +292,60 @@ function HeroSlide() {
 const feedshop = PROJECTS[0]
 const m3 = PROJECTS[1]
 
-/* ─── Page 2: FeedShop overview ─── */
+/* ─── Page 2: FeedShop overview + tech + roles (합쳐서 1페이지) ─── */
 function FeedShopOverview() {
   return (
-    <Slide pageNum={2} minHeight>
-      <Header title="FeedShop — Service Overview" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-          <HtmlContent html={feedshop.serviceOverview} />
-        </div>
-        <div style={{ height: 1, background: GRAY2, margin: '10px 0' }} />
-        <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
-          <HtmlContent html={feedshop.developerPerspective} />
+    <Slide pageNum={2}>
+      <Header title="FeedShop — Service Overview · Tech Stack · Roles" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
+      <Content center={false} padding="14px 24px">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {/* 좌: 서비스 소개 + 개발자 관점 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
+              <HtmlContent html={feedshop.serviceOverview} />
+            </div>
+            <div style={{ height: 1, background: GRAY2 }} />
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
+              <HtmlContent html={feedshop.developerPerspective ?? ''} />
+            </div>
+          </div>
+          {/* 우: 기술스택 + 담당업무 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {feedshop.techStack.map(t => <Chip key={t} text={t} />)}
+              </div>
+            </div>
+            <div style={{ height: 1, background: GRAY2 }} />
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {feedshop.roles.map(role => (
+                  <div key={role.title} style={{
+                    background: GRAY1, border: `1px solid ${GRAY2}`,
+                    borderRadius: 8, padding: '8px 12px',
+                    display: 'flex', alignItems: 'flex-start', gap: 8,
+                  }}>
+                    <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
+                      <HtmlContent html={role.detail} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </Content>
     </Slide>
   )
 }
 
-/* ─── Page 3: FeedShop tech + roles ─── */
-function FeedShopTechRoles() {
-  return (
-    <Slide pageNum={3}>
-      <Header title="FeedShop — Tech Stack & Roles" sub={feedshop.name} />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {feedshop.techStack.map(t => <Chip key={t} text={t} />)}
-          </div>
-        </div>
-        <div style={{ height: 1, background: GRAY2, margin: '0 0 12px' }} />
-        <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>ROLES</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {feedshop.roles.map(role => (
-              <div key={role.title} style={{
-                background: GRAY1,
-                border: `1px solid ${GRAY2}`,
-                borderRadius: 8,
-                padding: '10px 14px',
-                display: 'flex', alignItems: 'flex-start', gap: 10,
-              }}>
-                <span style={{ fontSize: 20, flexShrink: 0 }}>{role.icon}</span>
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{role.title}</div>
-                  <HtmlContent html={role.detail} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Content>
-    </Slide>
-  )
-}
+function FeedShopTechRoles() { return null }
 
 /* ─── Page 4: FeedShop architecture image ─── */
 function FeedShopArchImage() {
@@ -353,7 +354,7 @@ function FeedShopArchImage() {
       <Header title="FeedShop — Architecture" sub="인프라 구조도" />
       <Content center padding="12px 24px">
         <img
-          src={`${__BASE_PATH__}${feedshop.architectureImage}`}
+          src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
           alt="FeedShop Architecture"
           style={{ maxWidth: '100%', maxHeight: '140mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
         />
@@ -554,7 +555,7 @@ function M3ArchImage() {
       <Header title="3M — Architecture" sub="인프라 구조도" />
       <Content center padding="12px 24px">
         <img
-          src={`${__BASE_PATH__}${m3.architectureImage}`}
+          src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
           alt="3M Architecture"
           style={{ maxWidth: '100%', maxHeight: '140mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
         />
