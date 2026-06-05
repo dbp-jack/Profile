@@ -51,14 +51,14 @@ export const ABOUT_CARDS = [
     title: '문제 해결 능력',
     subtitle: '성능 병목을 찾아 수치로 증명',
     description:
-      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 91% 단축 (6.8s → 0.6s)\nScouter로 SQL 42회 발생 확인 → QueryDSL fetchJoin으로 2회 축소, 읽기 빈번·변경 적은 특성 분석 후 Redis@Cacheable 추가 적용\nnGrinder 동시 1,000명 기준 수치 검증',
+      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6.8s → 0.6s)\nScouter로 SQL 42회 발생 확인 → QueryDSL fetchJoin으로 2회 축소, 읽기 빈번·변경 적은 특성 분석 후 Redis@Cacheable 추가 적용\nnGrinder 동시 1,000명 기준 수치 검증',
   },
   {
     icon: 'ri-node-tree',
     title: '협업 시스템 설계',
     subtitle: '백지 상태에서 팀 협업을 만든 경험',
     description:
-      '제로베이스에서 팀 스프린트 가시성 확보\n스프린트 일정·작업 범위 모두 없던 상태에서 JIRA 가이드라인 배포로 주간 스프린트를 구조화\nSlack 실시간 연동으로 팀 전체 진척 상황을 즉시 파악할 수 있는 환경 구성',
+      '제로베이스에서 팀 스프린트 <span class="font-bold text-[#2563EB]">가시성 확보</span>\n스프린트 일정·작업 범위 모두 없던 상태에서 JIRA 가이드라인 배포로 주간 스프린트를 구조화\nSlack 실시간 연동으로 팀 전체 진척 상황을 즉시 파악할 수 있는 환경 구성',
   },
   {
     icon: 'ri-checkbox-circle-line',
