@@ -86,7 +86,7 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2">
           <button
             onClick={toggle}
             aria-label="Toggle dark mode"
@@ -102,7 +102,7 @@ export default function Navbar() {
           <button
             aria-label="Toggle menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex cursor-pointer flex-col gap-1.5 p-1"
+            className="flex cursor-pointer flex-col gap-1.5 p-1 md:hidden"
           >
             <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
             <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'opacity-0' : ''}`} />
