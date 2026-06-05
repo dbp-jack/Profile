@@ -91,10 +91,7 @@ export default function AboutSection() {
                       const noCheck = j === 0 && i < 2
                       return (
                       <li key={j} className="flex items-start gap-3">
-                        {noCheck
-                          ? <span className="mt-0.5 shrink-0 text-[#2563EB] opacity-0">✓</span>
-                          : <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
-                        }
+                        {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
                         <span
                           className={`${noCheck ? 'font-semibold' : ''} ${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
