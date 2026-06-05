@@ -298,45 +298,40 @@ function FeedShopOverview() {
     <Slide pageNum={2}>
       <Header title="FeedShop — Service Overview · Tech Stack · Roles" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
       <Content center={false} padding="14px 24px">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          {/* 좌: 서비스 소개 + 개발자 관점 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-              <HtmlContent html={feedshop.serviceOverview} />
-            </div>
-            <div style={{ height: 1, background: GRAY2 }} />
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
-              <HtmlContent html={feedshop.developerPerspective ?? ''} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
+            <HtmlContent html={feedshop.serviceOverview} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
+            <HtmlContent html={feedshop.developerPerspective ?? ''} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+              {feedshop.techStack.map(t => <Chip key={t} text={t} />)}
             </div>
           </div>
-          {/* 우: 기술스택 + 담당업무 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {feedshop.techStack.map(t => <Chip key={t} text={t} />)}
-              </div>
-            </div>
-            <div style={{ height: 1, background: GRAY2 }} />
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {feedshop.roles.map(role => (
-                  <div key={role.title} style={{
-                    background: GRAY1, border: `1px solid ${GRAY2}`,
-                    borderRadius: 8, padding: '8px 12px',
-                    display: 'flex', alignItems: 'flex-start', gap: 8,
-                  }}>
-                    <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
-                      <HtmlContent html={role.detail} />
-                    </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {feedshop.roles.map(role => (
+                <div key={role.title} style={{
+                  background: GRAY1, border: `1px solid ${GRAY2}`,
+                  borderRadius: 8, padding: '8px 12px',
+                  display: 'flex', alignItems: 'flex-start', gap: 8,
+                }}>
+                  <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
+                    <HtmlContent html={role.detail} />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -407,11 +402,12 @@ function FeedShopP1Problem() {
     <Slide pageNum={6} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
       <Content center={false} padding="14px 24px">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
             <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
             <HtmlContent html={sec.problem} />
           </div>
+          <div style={{ height: 1, background: GRAY2 }} />
           <div>
             <div style={{ fontSize: 9, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>THINKING</div>
             <HtmlContent html={sec.thinking} />
@@ -455,11 +451,12 @@ function FeedShopP2Problem() {
     <Slide pageNum={10} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
       <Content center={false} padding="14px 24px">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
             <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
             <HtmlContent html={sec.problem} />
           </div>
+          <div style={{ height: 1, background: GRAY2 }} />
           <div>
             <div style={{ fontSize: 9, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>THINKING</div>
             <HtmlContent html={sec.thinking} />
@@ -494,45 +491,40 @@ function M3Overview() {
     <Slide pageNum={13}>
       <Header title="3M — Service Overview · Tech Stack · Roles" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
       <Content center={false} padding="14px 24px">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          {/* 좌: 서비스 소개 + 개발자 관점 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-              <HtmlContent html={m3.serviceOverview} />
-            </div>
-            <div style={{ height: 1, background: GRAY2 }} />
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
-              <HtmlContent html={m3.developerPerspective ?? ''} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
+            <HtmlContent html={m3.serviceOverview} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
+            <HtmlContent html={m3.developerPerspective ?? ''} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+              {m3.techStack.map(t => <Chip key={t} text={t} />)}
             </div>
           </div>
-          {/* 우: 기술스택 + 담당업무 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {m3.techStack.map(t => <Chip key={t} text={t} />)}
-              </div>
-            </div>
-            <div style={{ height: 1, background: GRAY2 }} />
-            <div>
-              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {m3.roles.map(role => (
-                  <div key={role.title} style={{
-                    background: GRAY1, border: `1px solid ${GRAY2}`,
-                    borderRadius: 8, padding: '8px 12px',
-                    display: 'flex', alignItems: 'flex-start', gap: 8,
-                  }}>
-                    <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
-                      <HtmlContent html={role.detail} />
-                    </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {m3.roles.map(role => (
+                <div key={role.title} style={{
+                  background: GRAY1, border: `1px solid ${GRAY2}`,
+                  borderRadius: 8, padding: '8px 12px',
+                  display: 'flex', alignItems: 'flex-start', gap: 8,
+                }}>
+                  <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
+                    <HtmlContent html={role.detail} />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -752,75 +744,58 @@ function AboutPage() {
 }
 
 /* ─── Page 22: Closing ─── */
+/* ─── Closing + Resources 합쳐서 1페이지 ─── */
 function ClosingPage() {
   return (
     <Slide pageNum={22}>
-      <Header title="앞으로의 방향 — Closing" />
-      <Content center padding="16px 24px">
-        <div style={{ display: 'flex', gap: 16 }}>
+      <Header title="앞으로의 방향 — Closing · 자료 모음 · 연락처" />
+      <Content center={false} padding="14px 24px">
+        {/* Closing 카드 2개 */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
           {CLOSING_BLOCKS.map(block => (
             <div key={block.titleEn} style={{
-              flex: 1,
-              background: GRAY1,
-              border: `1px solid ${GRAY2}`,
-              borderRadius: 10,
-              padding: '16px 14px',
+              flex: 1, background: GRAY1, border: `1px solid ${GRAY2}`,
+              borderRadius: 10, padding: '12px 14px',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <i className={block.icon} style={{ color: BLUE, fontSize: 18 }} />
-                <div style={{ fontSize: 9, color: GRAY3, fontWeight: 700, letterSpacing: 1 }}>{block.titleEn}</div>
+                <i className={block.icon} style={{ color: BLUE, fontSize: 16 }} />
+                <div style={{ fontSize: 8, color: GRAY3, fontWeight: 700, letterSpacing: 1 }}>{block.titleEn}</div>
               </div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 10 }}>{block.titleKo}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>{block.titleKo}</div>
               <HtmlContent html={block.body} />
             </div>
           ))}
         </div>
-      </Content>
-    </Slide>
-  )
-}
-
-/* ─── Page 23: Resources + Contact ─── */
-function ResourcesContactPage() {
-  return (
-    <Slide pageNum={23}>
-      <Header title="Resources & Contact — 자료 모음" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>RESOURCES</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ height: 1, background: GRAY2, marginBottom: 14 }} />
+        {/* Resources */}
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>RESOURCES</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
             {RESOURCE_LINKS.map(link => (
               <div key={link.label} style={{
                 display: 'flex', alignItems: 'center', gap: 10,
-                padding: '8px 12px',
-                background: GRAY1,
-                borderRadius: 6,
-                border: `1px solid ${GRAY2}`,
+                padding: '6px 12px', background: GRAY1, borderRadius: 6, border: `1px solid ${GRAY2}`,
               }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 14, flexShrink: 0 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{link.label}</div>
-                  <div style={{ fontSize: 10, color: GRAY3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {link.description}
-                  </div>
+                <i className={link.icon} style={{ color: BLUE, fontSize: 13, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>{link.label}</div>
+                  <div style={{ fontSize: 10, color: GRAY3 }}>{link.description}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div style={{ height: 1, background: GRAY2, margin: '0 0 12px' }} />
+        <div style={{ height: 1, background: GRAY2, marginBottom: 10 }} />
+        {/* Contact */}
         <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>CONTACT</div>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>CONTACT</div>
+          <div style={{ display: 'flex', gap: 10 }}>
             {CONTACT_LINKS.map(link => (
               <div key={link.label} style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                padding: '8px 14px',
-                background: BLUE_LIGHT,
-                borderRadius: 6,
-                border: `1px solid #bfdbfe`,
+                padding: '6px 14px', background: BLUE_LIGHT, borderRadius: 6, border: `1px solid #bfdbfe`,
               }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 16 }} />
+                <i className={link.icon} style={{ color: BLUE, fontSize: 14 }} />
                 <span style={{ fontSize: 12, fontWeight: 600, color: NAVY }}>{link.label}</span>
               </div>
             ))}
@@ -830,6 +805,8 @@ function ResourcesContactPage() {
     </Slide>
   )
 }
+
+function ResourcesContactPage() { return null }
 
 /* ─── Page 24: Final contact card ─── */
 function FinalContactSlide() {
@@ -905,7 +882,10 @@ export default function PdfPortfolio() {
       {/* Page 1 */}
       <HeroSlide />
 
-      {/* Pages 2–12: FeedShop */}
+      {/* Page 2: About */}
+      <AboutPage />
+
+      {/* Pages 3–: FeedShop */}
       <FeedShopOverview />
       <FeedShopTechRoles />
       <FeedShopArchImage />
@@ -929,7 +909,6 @@ export default function PdfPortfolio() {
 
       {/* Pages 20–24: Portfolio sections */}
       <ExperiencePage />
-      <AboutPage />
       <ClosingPage />
       <ResourcesContactPage />
       <FinalContactSlide />
