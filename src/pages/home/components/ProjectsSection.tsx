@@ -2,15 +2,17 @@ import { PROJECTS_SECTION } from '@/content/portfolio'
 import { PROJECTS } from '@/mocks/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import ProjectCard from './ProjectCard'
+import ProjectsOverview from './ProjectsOverview'
 
 export default function ProjectsSection() {
   const { dark } = useDarkMode()
   return (
     <section
       id="projects"
-      className={`py-20 md:py-28 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
+      className={`transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
-      <div className="mx-auto max-w-6xl px-6">
+      {/* 기존 헤더 — 건들지 않음 */}
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <div className="mb-10 text-center md:mb-16">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
@@ -28,11 +30,19 @@ export default function ProjectsSection() {
             {PROJECTS_SECTION.subtitle}
           </p>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-6 md:gap-8">
-          {PROJECTS.map((project, i) => (
-            <ProjectCard key={project.name} project={project} index={i} />
-          ))}
+      {/* 프로젝트 개요 */}
+      <ProjectsOverview />
+
+      {/* 개별 프로젝트 카드 */}
+      <div className={`py-12 md:py-16 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}>
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="flex flex-col gap-6 md:gap-8">
+            {PROJECTS.map((project, i) => (
+              <ProjectCard key={project.name} project={project} index={i} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
