@@ -268,7 +268,10 @@ function FeedShopOverview() {
   return (
     <Slide pageNum={2}>
       <Header title="FeedShop — Service Overview · Tech Stack · Roles" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
-      <Content center padding="18px 28px">
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '18px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* 1. SERVICE OVERVIEW */}
           <div>
@@ -311,7 +314,7 @@ function FeedShopOverview() {
             </div>
           </div>
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
@@ -369,31 +372,31 @@ function FeedShopP1Problem() {
   return (
     <Slide pageNum={6} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem" />
-      <Content center={false} padding="14px 24px">
-        {/* DEVELOPER PERSPECTIVE */}
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
         {feedshop.developerPerspective && (
-          <div style={{ marginBottom: 12 }}>
+          <div>
             <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
             <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
               dangerouslySetInnerHTML={{ __html: feedshop.developerPerspective }} />
           </div>
         )}
-        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
-        {/* TEST ENVIRONMENT */}
+        <div style={{ height: 1, background: GRAY2 }} />
         {feedshop.problemEnvironment && (
-          <div style={{ marginBottom: 12, padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
+          <div style={{ padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: GRAY3, marginBottom: 3 }}>🖥️ 로컬 테스트 환경</div>
             <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>{feedshop.problemEnvironment}</div>
           </div>
         )}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div>
-            <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
-          </div>
+        <div style={{ height: 1, background: GRAY2 }} />
+        <div>
+          <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
@@ -411,21 +414,22 @@ function FeedShopP1Thinking() {
   return (
     <Slide pageNum={7} minHeight>
       <Header title="FeedShop — Problem 1 / Thinking · Solution 1단계" sub="쿼리 최적화" />
-      <Content center={false} padding="14px 24px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div>
-            <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(sec.thinking) }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
-          </div>
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        <div>
+          <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(sec.thinking) }} />
         </div>
-      </Content>
+        <div style={{ height: 1, background: GRAY2 }} />
+        <div>
+          <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
+        </div>
+      </div>
     </Slide>
   )
 }
