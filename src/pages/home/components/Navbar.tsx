@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { HERO_NAME } from '@/content/portfolio'
+import { useDarkMode } from '@/hooks/useDarkMode'
 
 const NAV_LINKS = [
   { label: 'Hero', href: '#hero' },
@@ -15,6 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(() => window.scrollY > 60)
   const [activeSection, setActiveSection] = useState('hero')
   const [menuOpen, setMenuOpen] = useState(false)
+  const { dark, toggle } = useDarkMode()
 
   const handleScroll = useCallback(() => {
     /* `scrolled` toggles nav chrome once the page is scrolled past 60px. */
@@ -41,14 +43,23 @@ export default function Navbar() {
     setMenuOpen(false)
   }
 
+  const navBg = scrolled
+    ? dark
+      ? 'bg-[#1e1e1e] shadow-sm'
+      : 'bg-white shadow-sm'
+    : 'bg-transparent'
+
+  const logoColor = dark ? 'text-[#c0c0c0]' : 'text-[#1E3A5F]'
+  const hamburgerColor = dark ? 'bg-[#c0c0c0]' : 'bg-[#1E3A5F]'
+
   return (
     <nav
-      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white shadow-sm' : 'bg-transparent'}`}
+      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${navBg}`}
       style={{ boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.08)' : 'none' }}
     >
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <span
-          className="cursor-pointer whitespace-nowrap text-lg font-bold text-[#1E3A5F]"
+          className={`cursor-pointer whitespace-nowrap text-lg font-bold ${logoColor}`}
           onClick={() => scrollTo('#hero')}
         >
           {HERO_NAME}
@@ -75,37 +86,42 @@ export default function Navbar() {
           })}
         </ul>
 
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setMenuOpen((v) => !v)}
-          className="flex cursor-pointer flex-col gap-1.5 p-1 md:hidden"
-        >
-          {/* Three bars → “X”: outer lines rotate ±45° and translate; middle fades out. */}
-          <span
-            className={`block h-0.5 w-6 bg-[#1E3A5F] transition-all duration-300 ${
-              menuOpen ? 'translate-y-2 rotate-45' : ''
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={toggle}
+            aria-label="Toggle dark mode"
+            className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors duration-200 ${
+              dark
+                ? 'text-[#c0c0c0] hover:bg-[#2a2a2a]'
+                : 'text-gray-500 hover:bg-gray-100'
             }`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-[#1E3A5F] transition-all duration-300 ${
-              menuOpen ? 'opacity-0' : ''
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-[#1E3A5F] transition-all duration-300 ${
-              menuOpen ? '-translate-y-2 -rotate-45' : ''
-            }`}
-          />
-        </button>
+          >
+            <i className={`text-xl ${dark ? 'ri-sun-line' : 'ri-moon-line'}`} />
+          </button>
+
+          <button
+            aria-label="Toggle menu"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex cursor-pointer flex-col gap-1.5 p-1"
+          >
+            <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+            <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
-        <div className="border-t border-gray-100 bg-white shadow-sm md:hidden">
+        <div className={`border-t shadow-sm md:hidden ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}>
           {NAV_LINKS.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="block w-full cursor-pointer whitespace-nowrap px-6 py-3 text-left text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1E3A5F]"
+              className={`block w-full cursor-pointer whitespace-nowrap px-6 py-3 text-left text-base font-medium transition-colors duration-200 ${
+                dark
+                  ? 'text-[#909090] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#1E3A5F]'
+              }`}
             >
               {link.label}
             </button>
