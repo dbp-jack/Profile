@@ -176,8 +176,8 @@ function HeroSlide() {
           {/* 뱃지 */}
           <div style={{
             display: 'inline-block',
-            border: '1px solid #1E3A5F',
-            color: '#1E3A5F',
+            border: `1px solid ${NAVY}`,
+            color: NAVY,
             borderRadius: 999,
             padding: '5px 16px',
             fontSize: 12,
@@ -218,7 +218,7 @@ function HeroSlide() {
                 fontSize: 14, color: '#4b5563',
                 marginBottom: 8,
               }}>
-                <i className={item.icon} style={{ color: '#1E3A5F', fontSize: 16, width: 20, textAlign: 'center' }} />
+                <i className={item.icon} style={{ color: NAVY, fontSize: 16, width: 20, textAlign: 'center' }} />
                 <span>{item.text}</span>
               </li>
             ))}
@@ -237,9 +237,9 @@ function HeroSlide() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
             {HERO_SKILL_TAGS.map((tag) => (
               <span key={tag} style={{
-                border: '1px solid rgba(30,58,95,0.15)',
-                background: '#f0f4fa',
-                color: '#1E3A5F',
+                border: `1px solid ${BLUE}22`,
+                background: BLUE_LIGHT,
+                color: NAVY,
                 borderRadius: 999,
                 padding: '4px 14px',
                 fontSize: 12,
@@ -496,6 +496,24 @@ function FeedShopP1Result() {
           <div className="pdf-content" style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
             dangerouslySetInnerHTML={{ __html: fixSrc(imagesHtml) }} />
         </div>
+        <div style={{ height: 1, background: GRAY2 }} />
+        {/* 핵심 성과 요약 */}
+        <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 12, padding: '14px 18px' }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: '#065f46', marginBottom: 10 }}>🎯 핵심 성과 요약</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 20px' }}>
+            {[
+              '응답시간 91% 단축 (6,818ms → 638ms, 동시 1,000명)',
+              'TPS 216% 향상 (138.7 → 438.3, 동시 1,000명)',
+              'SQL 실행 횟수 42회 → 0회 (Cache Hit 시)',
+              '쿼리 최적화 + Redis 캐시 2-Layer 전략',
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', fontSize: 12, color: '#065f46' }}>
+                <span style={{ color: '#059669', flexShrink: 0, fontWeight: 700 }}>✓</span>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Slide>
   )
@@ -534,21 +552,52 @@ function FeedShopP2SolutionResult() {
   return (
     <Slide pageNum={12} minHeight>
       <Header title="FeedShop — Problem 2 / 해결 & 결과" sub="Solution + Result" />
-      <Content center padding="16px 24px">
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(sec.solution) }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>RESULT</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(sec.result) }} />
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        <div>
+          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(sec.solution) }} />
+        </div>
+        <div style={{ height: 1, background: GRAY2 }} />
+        {/* 설계 요약 */}
+        <div style={{ background: BLUE_LIGHT, border: `1px solid ${BLUE}22`, borderRadius: 10, padding: '12px 16px' }}>
+          <div style={{ fontSize: 10, fontWeight: 800, color: NAVY, marginBottom: 8 }}>설계 요약</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px 16px' }}>
+            {[
+              ['DB 유니크 제약', '물리적 중복 차단 (코드 레벨 우회 불가)'],
+              ['NOT_SUPPORTED 전파', '외부 트랜잭션 없이 예외 처리 가능'],
+              ['Redis INCR', '원자적 연산으로 락 경합 제거'],
+              ['DB = Redis 정합성', '항상 일치 보장'],
+            ].map(([k, v]) => (
+              <div key={k} style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>
+                <span style={{ fontWeight: 700, color: NAVY }}>{k}: </span>{v}
+              </div>
+            ))}
           </div>
         </div>
-      </Content>
+        <div style={{ height: 1, background: GRAY2 }} />
+        {/* 수치 강조 카드 */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10 }}>
+          {[
+            { num: '0%', label: '에러율', sub: '동시 50명 ~ 3,000명', color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
+            { num: '0건', label: '중복 투표', sub: 'DB 유니크 제약 + 예외 처리', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
+            { num: '100%', label: '데이터 정합성', sub: 'DB count = Redis count', color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe' },
+            { num: '3,000명', label: '확장성', sub: 'nGrinder 부하 테스트 검증', color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+          ].map((s) => (
+            <div key={s.label} style={{
+              background: s.bg, border: `1px solid ${s.border}`,
+              borderRadius: 10, padding: '10px 8px', textAlign: 'center',
+            }}>
+              <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.num}</div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: s.color, marginTop: 3 }}>{s.label}</div>
+              <div style={{ fontSize: 8.5, color: '#6b7280', marginTop: 2 }}>{s.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </Slide>
   )
 }
@@ -578,7 +627,7 @@ function M3Overview() {
           <div>
             <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {m3.techStack.map(t => (
+              {[...m3.techStack, 'Eureka', 'RabbitMQ', 'Zipkin'].map(t => (
                 <span key={t} style={{ background: BLUE_LIGHT, color: BLUE, borderRadius: 6, padding: '3px 10px', fontSize: 12, fontWeight: 600 }}>{t}</span>
               ))}
             </div>
