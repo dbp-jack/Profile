@@ -521,15 +521,24 @@ function FeedShopP2Thinking() { return null }
 
 function FeedShopP2SolutionResult() {
   const sec = feedshop.problemSections![1]
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
   return (
     <Slide pageNum={12} minHeight>
       <Header title="FeedShop — Problem 2 / 해결 & 결과" sub="Solution + Result" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>Solution</div>
-        <HtmlContent html={sec.solution} />
-        <div style={{ height: 1, background: GRAY2, margin: '12px 0' }} />
-        <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>Result</div>
-        <HtmlContent html={sec.result} />
+      <Content center padding="16px 24px">
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(sec.solution) }} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>RESULT</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(sec.result) }} />
+          </div>
+        </div>
       </Content>
     </Slide>
   )
@@ -540,27 +549,31 @@ function M3Overview() {
   return (
     <Slide pageNum={13}>
       <Header title="3M — Service Overview · Tech Stack · Roles" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
-      <Content center={false} padding="14px 24px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Content center padding="14px 24px">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-            <HtmlContent html={m3.serviceOverview ?? ''} />
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>SERVICE OVERVIEW</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: m3.serviceOverview ?? '' }} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
-            <HtmlContent html={m3.developerPerspective ?? ''} />
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: m3.developerPerspective ?? '' }} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-              {m3.techStack.map(t => <Chip key={t} text={t} />)}
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {m3.techStack.map(t => (
+                <span key={t} style={{ background: BLUE_LIGHT, color: BLUE, borderRadius: 6, padding: '3px 10px', fontSize: 12, fontWeight: 600 }}>{t}</span>
+              ))}
             </div>
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {m3.roles.map(role => (
                 <div key={role.title} style={{
@@ -590,40 +603,40 @@ function M3ArchImage() {
   return (
     <Slide pageNum={15} minHeight>
       <Header title="3M — Architecture" sub="인프라 구조도 · Architecture Details" />
-      <Content center={false} padding="12px 24px">
-        {/* 이미지 (축소) */}
-        <div style={{ marginBottom: 14 }}>
-          <img
-            src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
-            alt="3M Architecture"
-            style={{ maxWidth: '100%', maxHeight: '80mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
-          />
-        </div>
-        <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
-        {/* Architecture Details */}
-        <div style={{ display: 'flex', gap: 20 }}>
+      <div style={{
+        height: 'calc(210mm - 44px)', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', padding: '14px 28px', boxSizing: 'border-box',
+      }}>
+        <img
+          src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
+          alt="3M Architecture"
+          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', marginBottom: 16 }}
+        />
+        <div style={{ height: 1, background: GRAY2, width: '100%', marginBottom: 14 }} />
+        {/* Architecture Details — 세로 나열 */}
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {m3.architectureDetails?.map(section => (
-            <div key={section.title} style={{ flex: 1 }}>
+            <div key={section.title}>
               <div style={{
-                fontSize: 12, fontWeight: 700, color: NAVY, marginBottom: 6,
+                fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 5,
                 paddingBottom: 3, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
               }}>
                 {section.title}
               </div>
               {section.description && (
-                <p style={{ fontSize: 10, color: GRAY3, marginBottom: 4, lineHeight: 1.5 }}>{section.description}</p>
+                <p style={{ fontSize: 12, color: GRAY3, marginBottom: 4, lineHeight: 1.5 }}>{section.description}</p>
               )}
               {section.items.map((item, idx) => (
-                <ul key={idx} style={{ margin: 0, paddingLeft: 14 }}>
+                <ul key={idx} style={{ margin: '4px 0 0', paddingLeft: 18 }}>
                   {item.bullets.map((b, bi) => (
-                    <li key={bi} style={{ fontSize: 11, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
+                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.65, marginBottom: 3 }}>{b}</li>
                   ))}
                 </ul>
               ))}
             </div>
           ))}
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
@@ -631,34 +644,36 @@ function M3ArchImage() {
 function M3ArchDetails() { return null }
 
 function M3ProblemThinking() {
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
   return (
     <Slide pageNum={17} minHeight>
-      <Header title={`3M — ${m3.problemHeadline ?? '문제 해결'}`} sub="Problem + Thinking" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>Problem</div>
-          <HtmlContent html={m3.problem ?? ''} />
-        </div>
-        <div style={{ height: 1, background: GRAY2, margin: '0 0 12px' }} />
-        <div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>Thinking</div>
-          <HtmlContent html={m3.thinking ?? ''} />
+      <Header title={`3M — ${m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'}`} sub="Problem · Thinking · Solution" />
+      <Content center padding="16px 24px">
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(m3.problem ?? '') }} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(m3.thinking ?? '') }} />
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          <div>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
+            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: fixSrc(m3.solution ?? '') }} />
+          </div>
         </div>
       </Content>
     </Slide>
   )
 }
 
-function M3Solution() {
-  return (
-    <Slide pageNum={18} minHeight>
-      <Header title="3M — Solution" sub="해결 방법" />
-      <Content center={false} padding="16px 24px">
-        <HtmlContent html={m3.solution ?? ''} />
-      </Content>
-    </Slide>
-  )
-}
+function M3Solution() { return null }
 
 function M3Result() {
   return (
