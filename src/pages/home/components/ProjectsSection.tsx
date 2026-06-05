@@ -1,21 +1,13 @@
 import { PROJECTS_SECTION } from '@/content/portfolio'
 import { PROJECTS } from '@/mocks/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import { useFadeIn } from '@/hooks/useFadeIn'
 import ProjectCard from './ProjectCard'
 
 export default function ProjectsSection() {
   const { dark } = useDarkMode()
-  const { ref, visible } = useFadeIn()
   return (
     <section
       id="projects"
-      ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(32px)',
-        transition: 'opacity 0.7s ease, transform 0.7s ease',
-      }}
       className={`py-20 md:py-28 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
       <div className="mx-auto max-w-6xl px-6">
