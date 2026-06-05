@@ -2,6 +2,8 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
 import { ABOUT_CARDS, ABOUT_SECTION } from '@/content/portfolio'
 
+const NUMS = ['01', '02', '03']
+
 export default function AboutSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
@@ -28,75 +30,77 @@ export default function AboutSection() {
         }`}
       />
 
-      <div className="relative mx-auto max-w-screen-2xl px-10 lg:px-16">
-        <div className="mb-10 text-center md:mb-16">
+      <div className="relative mx-auto max-w-5xl px-6">
+        {/* 헤더 — 현재 위치 유지 */}
+        <div className="mb-12 text-left md:mb-14">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {ABOUT_SECTION.kicker}
           </span>
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
-            {ABOUT_SECTION.title}
+            — {ABOUT_SECTION.title}
           </h2>
-          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
             {ABOUT_SECTION.intro}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-3">
-          {ABOUT_CARDS.map((card) => (
-            <article
-              key={card.title}
-              className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border px-8 py-5 sm:px-9 sm:py-6 md:px-10 md:py-7 shadow-sm transition-all duration-300 ${
-                dark
-                  ? 'border-[#3d3d3d] bg-[#333333] hover:border-[#5a5a5a] hover:shadow-[0_20px_50px_-24px_rgba(0,0,0,0.65)]'
-                  : 'border-gray-100 bg-white hover:border-[#BFDBFE] hover:shadow-[0_20px_50px_-24px_rgba(30,58,95,0.18)]'
-              }`}
-            >
-              <div
-                className={`pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl transition-opacity duration-500 ${
-                  dark
-                    ? 'bg-[#1E3A5F]/35 opacity-60 group-hover:opacity-90'
-                    : 'bg-[#2563EB]/20 opacity-70 group-hover:opacity-100'
-                }`}
-              />
+        {/* 카드 3개 — 세로 나열 가로 레이아웃 */}
+        <div className="flex flex-col gap-5">
+          {ABOUT_CARDS.map((card, i) => {
+            const bullets = card.description
+              .split('\n')
+              .map((l) => l.trim())
+              .filter((l) => l.length > 0)
 
-              <div className="relative flex min-h-[6rem] items-start gap-4">
+            return (
+              <article
+                key={card.title}
+                className={`flex overflow-hidden rounded-2xl border transition-all duration-300 ${
+                  dark
+                    ? 'border-[#3d3d3d] bg-[#2e2e2e] hover:border-[#5a5a5a]'
+                    : 'border-gray-200 bg-white hover:border-[#BFDBFE] hover:shadow-md'
+                }`}
+              >
+                {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
-                    dark ? 'bg-[#3d3d3d] text-[#a0a0a0]' : 'bg-[#EFF6FF] text-[#1E3A5F]'
+                  className={`flex w-36 shrink-0 flex-col items-center justify-center gap-1 border-r py-8 ${
+                    dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
-                  <i className={`${card.icon} text-2xl`} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className={`text-3xl font-extrabold tracking-tight ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+                  <span className="text-5xl font-black leading-none text-[#2563EB]">
+                    {NUMS[i]}
+                  </span>
+                  <span className={`mt-1 text-sm font-bold ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
                     {card.title}
-                  </h3>
-                  {'subtitle' in card && card.subtitle ? (
-                    <p
-                      className={`mt-1 text-base font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#7a9fd4]' : 'text-[#2563EB]'}`}
-                      dangerouslySetInnerHTML={{ __html: card.subtitle }}
-                    />
-                  ) : null}
+                  </span>
                 </div>
-              </div>
 
-              <div
-                className={`relative mt-1 space-y-2 text-base leading-relaxed ${dark ? 'text-[#e0e0e0]' : 'text-gray-900'}`}
-              >
-                {card.description.split(/\n\n+/).map((block) => (
-                  <p key={block} className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: block.trim() }} />
-                ))}
-              </div>
+                {/* 오른쪽: 소제목 + 내용 */}
+                <div className="flex flex-1 flex-col justify-center px-8 py-7">
+                  {/* 소제목 */}
+                  <h3
+                    className={`mb-4 text-xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+                    dangerouslySetInnerHTML={{ __html: card.subtitle }}
+                  />
 
-              <div
-                className={`relative mt-8 h-px w-full bg-gradient-to-r from-transparent ${
-                  dark ? 'via-[#4a4a4a]' : 'via-gray-200'
-                } to-transparent`}
-              />
-            </article>
-          ))}
+                  {/* 체크 bullet 목록 */}
+                  <ul className="space-y-2">
+                    {bullets.map((line, j) => (
+                      <li key={j} className="flex items-start gap-3">
+                        <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
+                        <span
+                          className={`text-sm leading-relaxed md:text-base ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          dangerouslySetInnerHTML={{ __html: line }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>
