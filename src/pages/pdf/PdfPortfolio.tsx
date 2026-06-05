@@ -17,13 +17,12 @@ const GRAY2      = '#e2e8f0'
 const GRAY3      = '#64748b'
 const WHITE      = '#ffffff'
 
-const TOTAL_PAGES = 24
-
 /* ─── Slide wrapper ─── */
 function Slide({
   children,
   bg = WHITE,
-  pageNum,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  pageNum: _pageNum,
   minHeight = false,
 }: {
   children: React.ReactNode
@@ -94,24 +93,6 @@ function Content({
   )
 }
 
-/* ─── Chip ─── */
-function Chip({ text, bg = BLUE_LIGHT, color = BLUE }: { text: string; bg?: string; color?: string }) {
-  return (
-    <span style={{
-      display: 'inline-block',
-      background: bg,
-      color,
-      borderRadius: 4,
-      padding: '2px 8px',
-      fontSize: 11,
-      fontWeight: 600,
-      marginRight: 4,
-      marginBottom: 4,
-    }}>
-      {text}
-    </span>
-  )
-}
 
 /* ─── HTML Content wrapper (이미지 src에 BASE_PATH 주입) ─── */
 function HtmlContent({ html }: { html: string }) {
@@ -922,7 +903,6 @@ function FinalContactSlide() {
             </div>
           ))}
         </div>
-      </div>
       </div>
     </div>
   )
