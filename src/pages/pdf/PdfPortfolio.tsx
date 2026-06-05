@@ -701,34 +701,35 @@ function ExperiencePage() {
   return (
     <Slide pageNum={20}>
       <Header title="Experience — 걸어온 여정" />
-      <Content center padding="16px 28px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%' }}>
-          {EXPERIENCE_ITEMS.map((item, idx) => (
-            <div key={idx} style={{
-              display: 'flex', gap: 18,
-              paddingBottom: 14,
-              borderBottom: idx < EXPERIENCE_ITEMS.length - 1 ? `1px solid ${GRAY2}` : 'none',
-              alignItems: 'flex-start',
-            }}>
-              <div style={{ minWidth: 130, flexShrink: 0 }}>
-                <div style={{ fontSize: 12, color: GRAY3, fontWeight: 600 }}>{item.period}</div>
-                <div style={{
-                  display: 'inline-block', marginTop: 4,
-                  background: categoryColor[item.category] ?? BLUE,
-                  color: WHITE, borderRadius: 4,
-                  padding: '2px 8px', fontSize: 11, fontWeight: 700,
-                }}>
-                  {item.category}
-                </div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 16, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{item.title}</div>
-                <div style={{ fontSize: 14, color: '#334155', lineHeight: 1.6 }}>{item.detail}</div>
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        {EXPERIENCE_ITEMS.map((item, idx) => (
+          <div key={idx} style={{
+            display: 'flex', gap: 20,
+            padding: '14px 0',
+            borderBottom: idx < EXPERIENCE_ITEMS.length - 1 ? `1px solid ${GRAY2}` : 'none',
+            alignItems: 'flex-start',
+          }}>
+            <div style={{ minWidth: 140, flexShrink: 0 }}>
+              <div style={{ fontSize: 13, color: GRAY3, fontWeight: 600, marginBottom: 5 }}>{item.period}</div>
+              <div style={{
+                display: 'inline-block',
+                background: categoryColor[item.category] ?? BLUE,
+                color: WHITE, borderRadius: 4,
+                padding: '3px 10px', fontSize: 12, fontWeight: 700,
+              }}>
+                {item.category}
               </div>
             </div>
-          ))}
-        </div>
-      </Content>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 5 }}>{item.title}</div>
+              <div style={{ fontSize: 14, color: '#334155', lineHeight: 1.65 }}>{item.detail}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </Slide>
   )
 }
