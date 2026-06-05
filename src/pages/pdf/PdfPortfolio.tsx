@@ -443,26 +443,60 @@ function FeedShopP1Solution() {
   const stage2Html = sol.substring(block2Start)
   const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
 
+  // result에서 표만 추출 (<table>...</table>)
+  const result = sec.result
+  const tableStart = result.indexOf('<table')
+  const tableEnd = result.indexOf('</table>') + '</table>'.length
+  // 표 감싸는 div까지 추출
+  const wrapStart = result.lastIndexOf('<div', tableStart)
+  const wrapEnd = result.indexOf('</div>', tableEnd) + '</div>'.length
+  const tableWrapHtml = wrapStart >= 0 ? result.substring(wrapStart, wrapEnd) : ''
+
   return (
     <Slide pageNum={8} minHeight>
       <Header title="FeedShop — Problem 1 / Solution 2단계" sub="캐시 전략 적용" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 2단계</div>
-        <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-          dangerouslySetInnerHTML={{ __html: fixSrc(stage2Html) }} />
-      </Content>
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        <div>
+          <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 2단계</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(stage2Html) }} />
+        </div>
+        <div style={{ height: 1, background: GRAY2 }} />
+        <div>
+          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>RESULT — 성능 수치</div>
+          <div className="pdf-content" style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(tableWrapHtml) }} />
+        </div>
+      </div>
     </Slide>
   )
 }
 
 function FeedShopP1Result() {
   const sec = feedshop.problemSections![0]
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
+  // 표 이후 이미지 그리드만 추출
+  const result = sec.result
+  const tableEnd = result.indexOf('</table>') + '</table>'.length
+  const afterTableDiv = result.indexOf('</div>', tableEnd) + '</div>'.length
+  const imagesHtml = result.substring(afterTableDiv)
+
   return (
     <Slide pageNum={9} minHeight>
-      <Header title="FeedShop — Problem 1 / 결과" sub="Result" />
-      <Content center={false} padding="16px 24px">
-        <HtmlContent html={sec.result} />
-      </Content>
+      <Header title="FeedShop — Problem 1 / 결과" sub="nGrinder Before / After" />
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        <div>
+          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>RESULT — nGrinder 성능 비교</div>
+          <div className="pdf-content" style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(imagesHtml) }} />
+        </div>
+      </div>
     </Slide>
   )
 }
