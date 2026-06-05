@@ -143,25 +143,26 @@ function HeroSlide() {
         pointerEvents: 'none',
       }} />
 
-      {/* 메인 콘텐츠 — 중앙 정렬 */}
+      {/* 메인 콘텐츠 */}
       <div style={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 56,
-        padding: '0 60px',
+        gap: 44,
+        padding: '0 52px',
         width: '100%',
         boxSizing: 'border-box',
       }}>
-        {/* 왼쪽: 세로형 프로필 사진 (한 단계 키움) */}
+        {/* 왼쪽: 프로필 사진 */}
         <div style={{ flexShrink: 0 }}>
           <div style={{
-            width: 240, height: 318,
-            borderRadius: 18,
-            border: '1px solid rgba(30,58,95,0.2)',
+            width: 162, height: 216,
+            borderRadius: 14,
+            border: `1.5px solid ${NAVY}20`,
             background: '#f4f7fb',
             overflow: 'hidden',
+            boxShadow: '0 4px 20px rgba(15,23,42,0.10)',
           }}>
             <img
               src={`${__BASE_PATH__}profile-photo.png`}
@@ -171,54 +172,58 @@ function HeroSlide() {
           </div>
         </div>
 
-        {/* 오른쪽: 텍스트 정보 (한 단계 키움) */}
-        <div style={{ minWidth: 0, maxWidth: 520 }}>
+        {/* 오른쪽: 텍스트 */}
+        <div style={{ minWidth: 0, flex: 1, maxWidth: 480 }}>
           {/* 뱃지 */}
           <div style={{
             display: 'inline-block',
             border: `1px solid ${NAVY}`,
             color: NAVY,
             borderRadius: 999,
-            padding: '5px 16px',
-            fontSize: 12,
+            padding: '4px 14px',
+            fontSize: 11,
             fontWeight: 600,
             letterSpacing: 2,
             textTransform: 'uppercase',
-            marginBottom: 14,
+            marginBottom: 10,
           }}>
             {HERO_ROLE_BADGE}
           </div>
 
           {/* 이름 */}
           <div style={{
-            fontSize: 62,
+            fontSize: 54,
             fontWeight: 800,
             color: '#111827',
             lineHeight: 1.1,
-            marginBottom: 10,
+            marginBottom: 8,
+            letterSpacing: '-1px',
           }}>
             {HERO_NAME}
           </div>
 
           {/* 태그라인 */}
           <p style={{
-            fontSize: 17,
+            fontSize: 14,
             color: '#6b7280',
             lineHeight: 1.6,
-            marginBottom: 18,
+            marginBottom: 14,
           }}>
             {HERO_ROLE_TITLE}
           </p>
 
+          {/* 구분선 */}
+          <div style={{ height: 1, background: `${NAVY}12`, marginBottom: 12 }} />
+
           {/* 연락처 */}
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 18 }}>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 14 }}>
             {HERO_PERSONAL_INFO.map((item) => (
               <li key={item.text} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                fontSize: 14, color: '#4b5563',
-                marginBottom: 8,
+                display: 'flex', alignItems: 'center', gap: 9,
+                fontSize: 12.5, color: '#4b5563',
+                marginBottom: 5,
               }}>
-                <i className={item.icon} style={{ color: NAVY, fontSize: 16, width: 20, textAlign: 'center' }} />
+                <i className={item.icon} style={{ color: NAVY, fontSize: 13, width: 18, textAlign: 'center', flexShrink: 0 }} />
                 <span>{item.text}</span>
               </li>
             ))}
@@ -226,23 +231,23 @@ function HeroSlide() {
 
           {/* 기술 스택 라벨 */}
           <p style={{
-            fontSize: 12, fontWeight: 600,
+            fontSize: 10, fontWeight: 700,
             textTransform: 'uppercase', letterSpacing: 2,
-            color: '#2563EB', marginBottom: 9,
+            color: BLUE, marginBottom: 7,
           }}>
             기술 스택
           </p>
 
           {/* 기술 스택 태그 */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {HERO_SKILL_TAGS.map((tag) => (
               <span key={tag} style={{
                 border: `1px solid ${BLUE}22`,
                 background: BLUE_LIGHT,
                 color: NAVY,
                 borderRadius: 999,
-                padding: '4px 14px',
-                fontSize: 12,
+                padding: '3px 11px',
+                fontSize: 11,
                 fontWeight: 500,
                 whiteSpace: 'nowrap',
               }}>
