@@ -576,16 +576,17 @@ function M3ArchImage() {
       <Header title="3M — Architecture" sub="인프라 구조도 · Architecture Details" />
       <div style={{
         height: 'calc(210mm - 44px)', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', padding: '14px 28px', boxSizing: 'border-box',
+        justifyContent: 'space-evenly', padding: '14px 28px', boxSizing: 'border-box',
       }}>
+        {/* 이미지 */}
         <img
           src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
           alt="3M Architecture"
-          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', marginBottom: 16 }}
+          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
         />
-        <div style={{ height: 1, background: GRAY2, width: '100%', marginBottom: 14 }} />
+        <div style={{ height: 1, background: GRAY2, width: '100%' }} />
         {/* Architecture Details — 세로 나열 */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {m3.architectureDetails?.map(section => (
             <div key={section.title}>
               <div style={{
@@ -595,12 +596,12 @@ function M3ArchImage() {
                 {section.title}
               </div>
               {section.description && (
-                <p style={{ fontSize: 12, color: GRAY3, marginBottom: 4, lineHeight: 1.5 }}>{section.description}</p>
+                <p style={{ fontSize: 12, color: GRAY3, marginBottom: 3, lineHeight: 1.5 }}>{section.description}</p>
               )}
               {section.items.map((item, idx) => (
-                <ul key={idx} style={{ margin: '4px 0 0', paddingLeft: 18 }}>
+                <ul key={idx} style={{ margin: '3px 0 0', paddingLeft: 18 }}>
                   {item.bullets.map((b, bi) => (
-                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.65, marginBottom: 3 }}>{b}</li>
+                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
                   ))}
                 </ul>
               ))}
