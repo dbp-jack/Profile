@@ -520,7 +520,10 @@ function M3Overview() {
   return (
     <Slide pageNum={13}>
       <Header title="3M — Service Overview · Tech Stack · Roles" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
-      <Content center padding="14px 24px">
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '14px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
           <div>
             <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>SERVICE OVERVIEW</div>
@@ -562,7 +565,7 @@ function M3Overview() {
             </div>
           </div>
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
@@ -617,30 +620,36 @@ function M3ArchDetails() { return null }
 
 function M3ProblemThinking() {
   const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
+  // solution에서 1단계만 추출 (2단계 시작 전까지)
+  const sol = m3.solution ?? ''
+  const idx2 = sol.indexOf('2단계')
+  const stage1Html = idx2 > 0 ? sol.substring(0, sol.lastIndexOf('<div', idx2)) + '</div>' : sol
+
   return (
     <Slide pageNum={17} minHeight>
-      <Header title={`3M — ${m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'}`} sub="Problem · Thinking · Solution" />
-      <Content center padding="16px 24px">
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div>
-            <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(m3.problem ?? '') }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(m3.thinking ?? '') }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: fixSrc(m3.solution ?? '') }} />
-          </div>
+      <Header title={`3M — ${m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'}`} sub="Problem · Thinking · Solution 1단계" />
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
+        <div>
+          <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(m3.problem ?? '') }} />
         </div>
-      </Content>
+        <div style={{ height: 1, background: GRAY2 }} />
+        <div>
+          <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(m3.thinking ?? '') }} />
+        </div>
+        <div style={{ height: 1, background: GRAY2 }} />
+        <div>
+          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
+        </div>
+      </div>
     </Slide>
   )
 }
