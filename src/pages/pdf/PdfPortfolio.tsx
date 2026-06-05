@@ -48,13 +48,6 @@ function Slide({
       {/* 4px blue top strip */}
       <div style={{ height: 4, background: BLUE, width: '100%' }} />
       {children}
-      {/* page number */}
-      <div style={{
-        position: 'absolute', bottom: 8, right: 16,
-        fontSize: 9, color: '#94a3b8', fontWeight: 500,
-      }}>
-        {pageNum} / {TOTAL_PAGES}
-      </div>
     </div>
   )
 }
@@ -280,8 +273,6 @@ function HeroSlide() {
       </div>
 
       {/* 페이지 번호 */}
-      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#d1d5db' }}>
-        1 / {TOTAL_PAGES}
       </div>
     </div>
   )
@@ -807,9 +798,7 @@ function AboutPage() {
       </div>
 
       {/* 페이지 번호 */}
-      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#94a3b8' }}>
-        21 / {TOTAL_PAGES}
-      </div>
+        2      </div>
     </Slide>
   )
 }
@@ -938,8 +927,6 @@ function FinalContactSlide() {
           ))}
         </div>
       </div>
-      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#475569' }}>
-        {TOTAL_PAGES} / {TOTAL_PAGES}
       </div>
     </div>
   )
