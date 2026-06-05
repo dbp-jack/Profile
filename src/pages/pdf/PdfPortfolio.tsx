@@ -92,7 +92,8 @@ function Content({
       flexDirection: 'column',
       justifyContent: center ? 'center' : 'flex-start',
       padding,
-      height: 'calc(100% - 44px)', // 4px strip + 40px header
+      /* minHeight 부모에서도 중앙 정렬이 되도록 min-height 고정값 사용 */
+      minHeight: 'calc(210mm - 44px)',
       boxSizing: 'border-box',
     }}>
       {children}
