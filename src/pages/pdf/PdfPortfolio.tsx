@@ -702,7 +702,10 @@ function AboutPage() {
                 <i className={card.icon} style={{ color: BLUE, fontSize: 18 }} />
                 <div style={{ fontSize: 15, fontWeight: 700, color: NAVY }}>{card.title}</div>
               </div>
-              <div style={{ fontSize: 11, color: BLUE, fontWeight: 600, marginBottom: 8 }}>{card.subtitle}</div>
+              <div
+                style={{ fontSize: 11, color: BLUE, fontWeight: 600, marginBottom: 8 }}
+                dangerouslySetInnerHTML={{ __html: card.subtitle }}
+              />
               <div
                 className="pdf-content"
                 style={{ fontSize: 12, color: '#334155', lineHeight: 1.65 }}
