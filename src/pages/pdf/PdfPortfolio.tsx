@@ -131,15 +131,13 @@ function HtmlContent({ html }: { html: string }) {
 }
 
 /* ════════════════════════════════════════════════════════
-   PAGE 1 — Hero
+   PAGE 1 — Hero (웹 HeroSection과 동일한 레이아웃)
 ════════════════════════════════════════════════════════ */
 function HeroSlide() {
-  const feedshop = PROJECTS[0]
-  const m3 = PROJECTS[1]
   return (
     <div style={{
       width: '297mm', height: '210mm',
-      background: NAVY,
+      background: WHITE,
       overflow: 'hidden',
       pageBreakAfter: 'always',
       breakAfter: 'page',
@@ -147,93 +145,137 @@ function HeroSlide() {
       fontFamily: "'Inter', 'Noto Sans KR', sans-serif",
       position: 'relative',
       display: 'flex',
-      flexDirection: 'column',
+      alignItems: 'center',
     }}>
-      {/* 4px blue strip */}
-      <div style={{ height: 4, background: BLUE, width: '100%', flexShrink: 0 }} />
-
-      {/* main area: 3 columns */}
+      {/* 우상단 그라디언트 장식 */}
       <div style={{
-        flex: 1,
+        position: 'absolute', top: 0, right: 0,
+        width: 300, height: 300, borderRadius: '50%',
+        transform: 'translate(30%, -30%)',
+        background: 'radial-gradient(circle, rgba(30,58,95,0.08) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      {/* 좌하단 그라디언트 장식 */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0,
+        width: 200, height: 200, borderRadius: '50%',
+        transform: 'translate(-40%, 40%)',
+        background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* 메인 콘텐츠 — 웹과 동일한 flex row */}
+      <div style={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        padding: '16px 32px',
-        gap: 32,
+        alignItems: 'flex-start',
+        gap: 48,
+        padding: '0 40px',
+        width: '100%',
+        boxSizing: 'border-box',
       }}>
-        {/* Left: photo */}
-        <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-          <img
-            src={`${__BASE_PATH__}/profile.jpg`}
-            alt="profile"
-            style={{ width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', border: `3px solid ${BLUE}` }}
-          />
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ color: '#94a3b8', fontSize: 10, marginBottom: 4 }}>Projects</div>
-            <div style={{ color: WHITE, fontSize: 10, lineHeight: 1.5 }}>
-              <div>{feedshop.name.split(' - ')[0]}</div>
-              <div>{m3.name.split(' - ')[0]}</div>
-            </div>
+        {/* 왼쪽: 세로형 프로필 사진 */}
+        <div style={{ flexShrink: 0 }}>
+          <div style={{
+            width: 132, height: 176,
+            borderRadius: 16,
+            border: '1px solid rgba(30,58,95,0.2)',
+            background: '#f4f7fb',
+            overflow: 'hidden',
+          }}>
+            <img
+              src={`${__BASE_PATH__}profile-photo.png`}
+              alt="정민수 증명사진"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
           </div>
         </div>
 
-        {/* Center: name + role + tags */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+        {/* 오른쪽: 텍스트 정보 */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* 뱃지 */}
           <div style={{
-            background: BLUE,
-            color: WHITE,
-            borderRadius: 4,
-            padding: '3px 12px',
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: 1,
+            display: 'inline-block',
+            border: '1px solid #1E3A5F',
+            color: '#1E3A5F',
+            borderRadius: 999,
+            padding: '4px 14px',
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: 2,
+            textTransform: 'uppercase',
+            marginBottom: 12,
           }}>
             {HERO_ROLE_BADGE}
           </div>
-          <div style={{ fontSize: 52, fontWeight: 800, color: WHITE, lineHeight: 1.1 }}>
+
+          {/* 이름 */}
+          <div style={{
+            fontSize: 52,
+            fontWeight: 800,
+            color: '#111827',
+            lineHeight: 1.1,
+            marginBottom: 8,
+          }}>
             {HERO_NAME}
           </div>
-          <div style={{ fontSize: 14, color: '#94a3b8', textAlign: 'center', maxWidth: 280 }}>
+
+          {/* 태그라인 */}
+          <p style={{
+            fontSize: 15,
+            color: '#6b7280',
+            lineHeight: 1.6,
+            marginBottom: 16,
+            maxWidth: 480,
+          }}>
             {HERO_ROLE_TITLE}
-          </div>
-          <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 4 }}>
-            {HERO_SKILL_TAGS.map(tag => (
+          </p>
+
+          {/* 연락처 */}
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 16 }}>
+            {HERO_PERSONAL_INFO.map((item) => (
+              <li key={item.text} style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                fontSize: 13, color: '#4b5563',
+                marginBottom: 7,
+              }}>
+                <i className={item.icon} style={{ color: '#1E3A5F', fontSize: 15, width: 18, textAlign: 'center' }} />
+                <span>{item.text}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* 기술 스택 라벨 */}
+          <p style={{
+            fontSize: 11, fontWeight: 600,
+            textTransform: 'uppercase', letterSpacing: 2,
+            color: '#2563EB', marginBottom: 8,
+          }}>
+            기술 스택
+          </p>
+
+          {/* 기술 스택 태그 */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {HERO_SKILL_TAGS.map((tag) => (
               <span key={tag} style={{
-                background: '#1e3a5f',
-                color: '#93c5fd',
-                borderRadius: 4,
-                padding: '2px 8px',
+                border: '1px solid rgba(30,58,95,0.15)',
+                background: '#f0f4fa',
+                color: '#1E3A5F',
+                borderRadius: 999,
+                padding: '3px 12px',
                 fontSize: 11,
-                fontWeight: 600,
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
               }}>
                 {tag}
               </span>
             ))}
           </div>
         </div>
-
-        {/* Right: contact */}
-        <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 8, minWidth: 200 }}>
-          <div style={{ color: '#94a3b8', fontSize: 10, fontWeight: 700, marginBottom: 4, letterSpacing: 1 }}>CONTACT</div>
-          {HERO_PERSONAL_INFO.map(row => (
-            <div key={row.text} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{
-                width: 24, height: 24,
-                background: '#1e293b',
-                borderRadius: 4,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <i className={row.icon} style={{ color: BLUE, fontSize: 12 }} />
-              </div>
-              <span style={{ color: '#cbd5e1', fontSize: 11 }}>{row.text}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
-      {/* page number */}
-      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#475569' }}>
+      {/* 페이지 번호 */}
+      <div style={{ position: 'absolute', bottom: 8, right: 16, fontSize: 9, color: '#d1d5db' }}>
         1 / {TOTAL_PAGES}
       </div>
     </div>
