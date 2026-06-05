@@ -301,7 +301,7 @@ function FeedShopOverview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div>
             <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-            <HtmlContent html={feedshop.serviceOverview} />
+            <HtmlContent html={feedshop.serviceOverview ?? ''} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
@@ -359,7 +359,7 @@ function FeedShopArchImage() {
         <div style={{ height: 1, background: GRAY2, marginBottom: 12 }} />
         {/* Architecture Details */}
         <div style={{ display: 'flex', gap: 20 }}>
-          {feedshop.architectureDetails.map(section => (
+          {feedshop.architectureDetails?.map(section => (
             <div key={section.title} style={{ flex: 1 }}>
               <div style={{
                 fontSize: 12, fontWeight: 700, color: NAVY, marginBottom: 6,
@@ -392,7 +392,7 @@ function FeedShopArchDetails() { return null }
 
 /* ─── Pages 6–9: FeedShop Problem 1 ─── */
 function FeedShopP1Problem() {
-  const sec = feedshop.problemSections[0]
+  const sec = feedshop.problemSections![0]
   return (
     <Slide pageNum={6} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
@@ -416,7 +416,7 @@ function FeedShopP1Problem() {
 function FeedShopP1Thinking() { return null }
 
 function FeedShopP1Solution() {
-  const sec = feedshop.problemSections[0]
+  const sec = feedshop.problemSections![0]
   return (
     <Slide pageNum={8} minHeight>
       <Header title="FeedShop — Problem 1 / 해결 방법" sub="Solution" />
@@ -428,7 +428,7 @@ function FeedShopP1Solution() {
 }
 
 function FeedShopP1Result() {
-  const sec = feedshop.problemSections[0]
+  const sec = feedshop.problemSections![0]
   return (
     <Slide pageNum={9} minHeight>
       <Header title="FeedShop — Problem 1 / 결과" sub="Result" />
@@ -441,7 +441,7 @@ function FeedShopP1Result() {
 
 /* ─── Pages 10–12: FeedShop Problem 2 ─── */
 function FeedShopP2Problem() {
-  const sec = feedshop.problemSections[1]
+  const sec = feedshop.problemSections![1]
   return (
     <Slide pageNum={10} minHeight>
       <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
@@ -465,7 +465,7 @@ function FeedShopP2Problem() {
 function FeedShopP2Thinking() { return null }
 
 function FeedShopP2SolutionResult() {
-  const sec = feedshop.problemSections[1]
+  const sec = feedshop.problemSections![1]
   return (
     <Slide pageNum={12} minHeight>
       <Header title="FeedShop — Problem 2 / 해결 & 결과" sub="Solution + Result" />
@@ -489,7 +489,7 @@ function M3Overview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div>
             <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-            <HtmlContent html={m3.serviceOverview} />
+            <HtmlContent html={m3.serviceOverview ?? ''} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
           <div>
@@ -530,42 +530,6 @@ function M3Overview() {
 
 function M3TechRoles() { return null }
 
-function M3TechRolesOLD() {
-  return (
-    <Slide pageNum={14}>
-      <Header title="3M — Tech Stack & Roles" sub={m3.name} />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {m3.techStack.map(t => <Chip key={t} text={t} />)}
-          </div>
-        </div>
-        <div style={{ height: 1, background: GRAY2, margin: '0 0 12px' }} />
-        <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>ROLES</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {m3.roles.map(role => (
-              <div key={role.title} style={{
-                background: GRAY1,
-                border: `1px solid ${GRAY2}`,
-                borderRadius: 8,
-                padding: '10px 14px',
-                display: 'flex', alignItems: 'flex-start', gap: 10,
-              }}>
-                <span style={{ fontSize: 20, flexShrink: 0 }}>{role.icon}</span>
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{role.title}</div>
-                  <HtmlContent html={role.detail} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Content>
-    </Slide>
-  )
-}
 
 function M3ArchImage() {
   return (
