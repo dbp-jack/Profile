@@ -453,26 +453,24 @@ function FeedShopP2Problem() {
   const sec = feedshop.problemSections[1]
   return (
     <Slide pageNum={10} minHeight>
-      <Header title={`FeedShop — ${sec.headline}`} sub="문제 상황" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ fontSize: 20, fontWeight: 800, color: NAVY, marginBottom: 12 }}>{sec.headline}</div>
-        <HtmlContent html={sec.problem} />
+      <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
+      <Content center={false} padding="14px 24px">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
+            <HtmlContent html={sec.problem} />
+          </div>
+          <div>
+            <div style={{ fontSize: 9, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>THINKING</div>
+            <HtmlContent html={sec.thinking} />
+          </div>
+        </div>
       </Content>
     </Slide>
   )
 }
 
-function FeedShopP2Thinking() {
-  const sec = feedshop.problemSections[1]
-  return (
-    <Slide pageNum={11} minHeight>
-      <Header title="FeedShop — Problem 2 / 사고 과정" sub="Thinking" />
-      <Content center={false} padding="16px 24px">
-        <HtmlContent html={sec.thinking} />
-      </Content>
-    </Slide>
-  )
-}
+function FeedShopP2Thinking() { return null }
 
 function FeedShopP2SolutionResult() {
   const sec = feedshop.problemSections[1]
@@ -493,24 +491,59 @@ function FeedShopP2SolutionResult() {
 /* ─── Pages 13–19: 3M Project ─── */
 function M3Overview() {
   return (
-    <Slide pageNum={13} minHeight>
-      <Header title="3M — Service Overview" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
-      <Content center={false} padding="16px 24px">
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-          <HtmlContent html={m3.serviceOverview} />
-        </div>
-        <div style={{ height: 1, background: GRAY2, margin: '10px 0' }} />
-        <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
-          <HtmlContent html={m3.developerPerspective} />
+    <Slide pageNum={13}>
+      <Header title="3M — Service Overview · Tech Stack · Roles" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
+      <Content center={false} padding="14px 24px">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {/* 좌: 서비스 소개 + 개발자 관점 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
+              <HtmlContent html={m3.serviceOverview} />
+            </div>
+            <div style={{ height: 1, background: GRAY2 }} />
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
+              <HtmlContent html={m3.developerPerspective ?? ''} />
+            </div>
+          </div>
+          {/* 우: 기술스택 + 담당업무 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {m3.techStack.map(t => <Chip key={t} text={t} />)}
+              </div>
+            </div>
+            <div style={{ height: 1, background: GRAY2 }} />
+            <div>
+              <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {m3.roles.map(role => (
+                  <div key={role.title} style={{
+                    background: GRAY1, border: `1px solid ${GRAY2}`,
+                    borderRadius: 8, padding: '8px 12px',
+                    display: 'flex', alignItems: 'flex-start', gap: 8,
+                  }}>
+                    <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
+                      <HtmlContent html={role.detail} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </Content>
     </Slide>
   )
 }
 
-function M3TechRoles() {
+function M3TechRoles() { return null }
+
+function M3TechRolesOLD() {
   return (
     <Slide pageNum={14}>
       <Header title="3M — Tech Stack & Roles" sub={m3.name} />
