@@ -182,7 +182,7 @@ function HeroSlide() {
         {/* 왼쪽: 세로형 프로필 사진 (한 단계 키움) */}
         <div style={{ flexShrink: 0 }}>
           <div style={{
-            width: 152, height: 202,
+            width: 178, height: 236,
             borderRadius: 18,
             border: '1px solid rgba(30,58,95,0.2)',
             background: '#f4f7fb',
@@ -297,42 +297,54 @@ function FeedShopOverview() {
   return (
     <Slide pageNum={2}>
       <Header title="FeedShop — Service Overview · Tech Stack · Roles" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
-      <Content center={false} padding="14px 24px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Content center padding="18px 28px">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {/* 1. SERVICE OVERVIEW */}
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>SERVICE OVERVIEW</div>
-            <HtmlContent html={feedshop.serviceOverview ?? ''} />
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>SERVICE OVERVIEW</div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: feedshop.serviceOverview ?? '' }} />
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
+          {/* 2. TECH STACK */}
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 4 }}>DEVELOPER PERSPECTIVE</div>
-            <HtmlContent html={feedshop.developerPerspective ?? ''} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>TECH STACK</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-              {feedshop.techStack.map(t => <Chip key={t} text={t} />)}
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {feedshop.techStack.map(t => (
+                <span key={t} style={{
+                  background: BLUE_LIGHT, color: BLUE, borderRadius: 6,
+                  padding: '3px 10px', fontSize: 12, fontWeight: 600,
+                }}>{t}</span>
+              ))}
             </div>
           </div>
           <div style={{ height: 1, background: GRAY2 }} />
+          {/* 3. ROLES */}
           <div>
-            <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {feedshop.roles.map(role => (
                 <div key={role.title} style={{
                   background: GRAY1, border: `1px solid ${GRAY2}`,
-                  borderRadius: 8, padding: '8px 12px',
-                  display: 'flex', alignItems: 'flex-start', gap: 8,
+                  borderRadius: 8, padding: '9px 14px',
+                  display: 'flex', alignItems: 'flex-start', gap: 10,
                 }}>
-                  <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{role.icon}</span>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
-                    <HtmlContent html={role.detail} />
+                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 3 }}>{role.title}</div>
+                    <div style={{ fontSize: 12, color: '#475569', lineHeight: 1.5 }}
+                      dangerouslySetInnerHTML={{ __html: role.detail }} />
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+          <div style={{ height: 1, background: GRAY2 }} />
+          {/* 4. DEVELOPER PERSPECTIVE */}
+          <div>
+            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
+            <div style={{ fontSize: 12, lineHeight: 1.65, color: '#334155' }}
+              dangerouslySetInnerHTML={{ __html: feedshop.developerPerspective ?? '' }} />
           </div>
         </div>
       </Content>
