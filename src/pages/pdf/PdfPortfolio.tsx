@@ -955,6 +955,30 @@ export default function PdfPortfolio() {
         .pdf-content img { max-width: 100%; height: auto; object-fit: contain; }
         .pdf-content table { width: 100%; font-size: 11px; }
         .pdf-content pre, .pdf-content .font-mono { font-size: 10px; }
+
+        /* 강조 키워드 스타일 */
+        .pdf-content strong, .pdf-content b,
+        .pdf-content .font-bold { font-weight: 700 !important; }
+        .pdf-content .font-semibold { font-weight: 600 !important; }
+
+        /* 색상 강조 */
+        .pdf-content .text-\\[\\#2563EB\\], .pdf-content [style*="color: #2563"] { color: #2563eb !important; }
+        .pdf-content .text-blue-600, .pdf-content .text-blue-700 { color: #2563eb !important; font-weight: 600; }
+        .pdf-content .text-blue-300, .pdf-content .text-\\[\\#8aa8e8\\] { color: #2563eb !important; font-weight: 600; }
+        .pdf-content .text-red-600, .pdf-content .text-red-300 { color: #dc2626 !important; font-weight: 600; }
+        .pdf-content .text-red-500, .pdf-content .text-red-400 { color: #ef4444 !important; font-weight: 600; }
+        .pdf-content .text-emerald-600, .pdf-content .text-emerald-400 { color: #059669 !important; font-weight: 600; }
+        .pdf-content .text-amber-600, .pdf-content .text-amber-300 { color: #d97706 !important; font-weight: 700; }
+        .pdf-content .text-slate-900, .pdf-content .text-slate-100 { color: #0f172a !important; font-weight: 700; }
+
+        /* Closing 카드 소제목 */
+        .pdf-content .block.font-bold { display: block; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+
+        /* 코드 인라인 */
+        .pdf-content .font-mono { font-family: monospace; background: #f1f5f9; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+
+        /* 링크 색상 */
+        .pdf-content a { color: #2563eb; font-weight: 600; }
       `}</style>
 
       {/* Page 1 */}
