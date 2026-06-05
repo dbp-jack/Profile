@@ -92,7 +92,7 @@ export default function AboutSection() {
                       return (
                       <li key={j} className="flex items-start gap-3">
                         {noCheck
-                          ? <span className="mt-0.5 shrink-0 w-4" />
+                          ? <span className="mt-0.5 shrink-0 text-[#2563EB] opacity-0">✓</span>
                           : <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
                         }
                         <span
