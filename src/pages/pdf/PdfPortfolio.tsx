@@ -405,26 +405,24 @@ function FeedShopP1Problem() {
   const sec = feedshop.problemSections[0]
   return (
     <Slide pageNum={6} minHeight>
-      <Header title={`FeedShop — ${sec.headline}`} sub="문제 상황" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ fontSize: 20, fontWeight: 800, color: NAVY, marginBottom: 12 }}>{sec.headline}</div>
-        <HtmlContent html={sec.problem} />
+      <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
+      <Content center={false} padding="14px 24px">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 9, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>PROBLEM</div>
+            <HtmlContent html={sec.problem} />
+          </div>
+          <div>
+            <div style={{ fontSize: 9, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>THINKING</div>
+            <HtmlContent html={sec.thinking} />
+          </div>
+        </div>
       </Content>
     </Slide>
   )
 }
 
-function FeedShopP1Thinking() {
-  const sec = feedshop.problemSections[0]
-  return (
-    <Slide pageNum={7} minHeight>
-      <Header title="FeedShop — Problem 1 / 사고 과정" sub="Thinking" />
-      <Content center={false} padding="16px 24px">
-        <HtmlContent html={sec.thinking} />
-      </Content>
-    </Slide>
-  )
-}
+function FeedShopP1Thinking() { return null }
 
 function FeedShopP1Solution() {
   const sec = feedshop.problemSections[0]
