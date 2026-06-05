@@ -182,7 +182,7 @@ function HeroSlide() {
         {/* 왼쪽: 세로형 프로필 사진 (한 단계 키움) */}
         <div style={{ flexShrink: 0 }}>
           <div style={{
-            width: 178, height: 236,
+            width: 240, height: 318,
             borderRadius: 18,
             border: '1px solid rgba(30,58,95,0.2)',
             background: '#f4f7fb',
@@ -676,11 +676,15 @@ function M3ProblemThinking() {
 function M3Solution() { return null }
 
 function M3Result() {
+  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
   return (
     <Slide pageNum={19} minHeight>
       <Header title="3M — Result" sub="결과" />
-      <Content center={false} padding="16px 24px">
-        <HtmlContent html={m3.result ?? ''} />
+      <Content center padding="16px 24px">
+        <div style={{ width: '100%' }}>
+          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
+            dangerouslySetInnerHTML={{ __html: fixSrc(m3.result ?? '') }} />
+        </div>
       </Content>
     </Slide>
   )
@@ -696,34 +700,29 @@ function ExperiencePage() {
   return (
     <Slide pageNum={20}>
       <Header title="Experience — 걸어온 여정" />
-      <Content center={false} padding="16px 24px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <Content center padding="16px 28px">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%' }}>
           {EXPERIENCE_ITEMS.map((item, idx) => (
             <div key={idx} style={{
-              display: 'flex',
-              gap: 14,
-              paddingBottom: 10,
+              display: 'flex', gap: 18,
+              paddingBottom: 14,
               borderBottom: idx < EXPERIENCE_ITEMS.length - 1 ? `1px solid ${GRAY2}` : 'none',
               alignItems: 'flex-start',
             }}>
-              <div style={{ minWidth: 110, flexShrink: 0 }}>
-                <div style={{ fontSize: 10, color: GRAY3, fontWeight: 600 }}>{item.period}</div>
+              <div style={{ minWidth: 130, flexShrink: 0 }}>
+                <div style={{ fontSize: 12, color: GRAY3, fontWeight: 600 }}>{item.period}</div>
                 <div style={{
-                  display: 'inline-block',
-                  marginTop: 3,
+                  display: 'inline-block', marginTop: 4,
                   background: categoryColor[item.category] ?? BLUE,
-                  color: WHITE,
-                  borderRadius: 3,
-                  padding: '1px 6px',
-                  fontSize: 9,
-                  fontWeight: 700,
+                  color: WHITE, borderRadius: 4,
+                  padding: '2px 8px', fontSize: 11, fontWeight: 700,
                 }}>
                   {item.category}
                 </div>
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 3 }}>{item.title}</div>
-                <div style={{ fontSize: 12, color: '#334155', lineHeight: 1.6 }}>{item.detail}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{item.title}</div>
+                <div style={{ fontSize: 14, color: '#334155', lineHeight: 1.6 }}>{item.detail}</div>
               </div>
             </div>
           ))}
@@ -819,7 +818,7 @@ function ClosingPage() {
   return (
     <Slide pageNum={22}>
       <Header title="앞으로의 방향 — Closing · 자료 모음 · 연락처" />
-      <Content center={false} padding="14px 24px">
+      <Content center padding="14px 24px">
         {/* Closing 카드 2개 */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
           {CLOSING_BLOCKS.map(block => (
