@@ -32,16 +32,16 @@ export default function AboutSection() {
 
       <div className="relative mx-auto max-w-5xl px-6">
         {/* 헤더 — 현재 위치 유지 */}
-        <div className="mb-12 text-left md:mb-14">
+        <div className="mb-10 text-center md:mb-16">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >
             {ABOUT_SECTION.kicker}
           </span>
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
-            — {ABOUT_SECTION.title}
+            {ABOUT_SECTION.title}
           </h2>
-          <p className={`mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
             {ABOUT_SECTION.intro}
           </p>
         </div>
