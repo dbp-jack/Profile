@@ -820,59 +820,66 @@ function ClosingPage() {
   return (
     <Slide pageNum={22}>
       <Header title="앞으로의 방향 — Closing · 자료 모음 · 연락처" />
-      <Content center padding="14px 24px">
+      <div style={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
+        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
+      }}>
         {/* Closing 카드 2개 */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
+        <div style={{ display: 'flex', gap: 14 }}>
           {CLOSING_BLOCKS.map(block => (
             <div key={block.titleEn} style={{
               flex: 1, background: GRAY1, border: `1px solid ${GRAY2}`,
-              borderRadius: 10, padding: '12px 14px',
+              borderRadius: 12, padding: '16px 18px',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <i className={block.icon} style={{ color: BLUE, fontSize: 16 }} />
-                <div style={{ fontSize: 8, color: GRAY3, fontWeight: 700, letterSpacing: 1 }}>{block.titleEn}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <i className={block.icon} style={{ color: BLUE, fontSize: 18 }} />
+                <div style={{ fontSize: 9, color: GRAY3, fontWeight: 700, letterSpacing: 1 }}>{block.titleEn}</div>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>{block.titleKo}</div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: NAVY, marginBottom: 10 }}>{block.titleKo}</div>
               <HtmlContent html={block.body} />
             </div>
           ))}
         </div>
-        <div style={{ height: 1, background: GRAY2, marginBottom: 14 }} />
+
+        <div style={{ height: 1, background: GRAY2 }} />
+
         {/* Resources */}
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>RESOURCES</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+        <div>
+          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>RESOURCES</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             {RESOURCE_LINKS.map(link => (
               <div key={link.label} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '6px 12px', background: GRAY1, borderRadius: 6, border: `1px solid ${GRAY2}`,
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}`,
               }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 13, flexShrink: 0 }} />
+                <i className={link.icon} style={{ color: BLUE, fontSize: 15, flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>{link.label}</div>
-                  <div style={{ fontSize: 10, color: GRAY3 }}>{link.description}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{link.label}</div>
+                  <div style={{ fontSize: 11, color: GRAY3 }}>{link.description}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div style={{ height: 1, background: GRAY2, marginBottom: 10 }} />
+
+        <div style={{ height: 1, background: GRAY2 }} />
+
         {/* Contact */}
         <div>
-          <div style={{ fontSize: 9, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>CONTACT</div>
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>CONTACT</div>
+          <div style={{ display: 'flex', gap: 12 }}>
             {CONTACT_LINKS.map(link => (
               <div key={link.label} style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                padding: '6px 14px', background: BLUE_LIGHT, borderRadius: 6, border: `1px solid #bfdbfe`,
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '10px 18px', background: BLUE_LIGHT, borderRadius: 8, border: `1px solid #bfdbfe`,
               }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 14 }} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: NAVY }}>{link.label}</span>
+                <i className={link.icon} style={{ color: BLUE, fontSize: 16 }} />
+                <span style={{ fontSize: 14, fontWeight: 600, color: NAVY }}>{link.label}</span>
               </div>
             ))}
           </div>
         </div>
-      </Content>
+      </div>
     </Slide>
   )
 }
