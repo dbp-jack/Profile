@@ -86,7 +86,7 @@ export default function AboutSection() {
                   />
 
                   {/* 체크 bullet 목록 */}
-                  <ul className={i < 2 ? 'space-y-1.5' : 'space-y-2'}>
+                  <ul className={i === 0 ? 'space-y-0.5' : i === 1 ? 'space-y-1.5' : 'space-y-2'}>
                     {bullets.map((line, j) => {
                       const noCheck = j === 0 && i < 2
                       return (
