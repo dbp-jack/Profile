@@ -541,25 +541,25 @@ body {
   }
   /* 사진 비율: 210mm 페이지에 비례하게 */
   [data-portfolio-mode='pdf-fluid'] #hero .profile-photo-frame {
-    height: 130mm !important;
-    width: 97.5mm !important;
+    height: 90mm !important;
+    width: 67.5mm !important;
     flex-shrink: 0 !important;
     border-radius: 1rem !important;
   }
   /* 텍스트 요소 크기 */
   [data-portfolio-mode='pdf-fluid'] #hero span.mb-4 {
-    font-size: 0.7rem !important;
-    padding: 0.3rem 0.8rem !important;
+    font-size: 0.8rem !important;
+    padding: 0.3rem 0.9rem !important;
     margin-bottom: 0.5rem !important;
     display: inline-block !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero h1 {
-    font-size: 2.8rem !important;
+    font-size: 3.2rem !important;
     line-height: 1.1 !important;
     margin-bottom: 0.5rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero .hero-tagline {
-    font-size: 0.85rem !important;
+    font-size: 0.95rem !important;
     margin: 0.3rem 0 0.7rem !important;
     line-height: 1.5 !important;
   }
@@ -568,19 +568,19 @@ body {
     gap: 0.3rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero ul.mb-8 li {
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
     gap: 0.5rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero .mb-3 {
     margin-bottom: 0.4rem !important;
-    font-size: 0.65rem !important;
+    font-size: 0.75rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero .flex.flex-wrap.gap-2 {
-    gap: 0.3rem !important;
+    gap: 0.35rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] #hero .flex.flex-wrap.gap-2 > span {
-    font-size: 0.7rem !important;
-    padding: 0.15rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    padding: 0.2rem 0.7rem !important;
   }
 
   /* ════════════════════════════════════════════
