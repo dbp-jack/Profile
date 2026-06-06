@@ -74,6 +74,7 @@ export default function Sidebar() {
         {/* Logo row: same as first nav item — scrolls to `#hero`. */}
         <button
           onClick={() => scrollTo('#hero')}
+          aria-label="Hero 섹션으로 이동"
           className={`flex h-16 flex-shrink-0 cursor-pointer items-center gap-3 overflow-hidden border-b px-4 text-left transition-colors duration-300 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}
         >
           <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center text-xl ${dark ? 'text-[#909090]' : 'text-[#1E3A5F]'}`}><i className="ri-code-s-slash-line" /></span>
@@ -87,6 +88,7 @@ export default function Sidebar() {
               <button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
+                aria-label={`${link.label} 섹션으로 이동`}
                 className={`relative flex w-full cursor-pointer items-center gap-3 overflow-hidden whitespace-nowrap rounded-lg px-2 py-2.5 text-left transition-all duration-200 ${
                   isActive
                     ? dark

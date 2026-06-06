@@ -57,7 +57,7 @@ export default function AboutSection() {
             return (
               <article
                 key={card.title}
-                className={`flex overflow-hidden rounded-2xl border transition-all duration-300 ${
+                className={`flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 sm:flex-row ${
                   dark
                     ? 'border-[#3d3d3d] bg-[#2e2e2e] hover:border-[#5a5a5a]'
                     : 'border-gray-200 bg-white hover:border-[#BFDBFE] hover:shadow-md'
@@ -65,20 +65,20 @@ export default function AboutSection() {
               >
                 {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex w-36 shrink-0 flex-col items-center justify-center gap-1 border-r py-8 ${
+                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-4 sm:w-36 sm:flex-col sm:justify-center sm:gap-1 sm:border-b-0 sm:border-r sm:px-0 sm:py-8 ${
                     dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
-                  <span className="text-5xl font-black leading-none text-[#2563EB]">
+                  <span className="text-4xl font-black leading-none text-[#2563EB] sm:text-5xl">
                     {NUMS[i]}
                   </span>
-                  <span className={`mt-1 text-base font-bold ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+                  <span className={`text-base font-bold sm:mt-1 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
                     {card.title}
                   </span>
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className="flex flex-1 flex-col justify-center px-8 py-7">
+                <div className="flex min-w-0 flex-1 flex-col justify-center px-5 py-5 sm:px-8 sm:py-7">
                   {/* 소제목 */}
                   <h3
                     className={`${i < 2 ? 'mb-3 text-lg' : 'mb-4 text-xl'} font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
@@ -90,10 +90,10 @@ export default function AboutSection() {
                     {bullets.map((line, j) => {
                       const noCheck = j === 0 && i < 2
                       return (
-                      <li key={j} className="flex items-start gap-3">
+                      <li key={j} className="flex min-w-0 items-start gap-3">
                         {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
                         <span
-                          className={`${noCheck ? 'font-semibold' : ''} ${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} ${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>

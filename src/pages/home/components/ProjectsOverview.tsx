@@ -1,12 +1,13 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { PROJECTS } from '@/mocks/projects'
 
 const OVERVIEW_PROJECTS = [
   {
     name: 'FeedShop',
     badge: 'B2C PLATFORM',
-    badgeColor: 'bg-emerald-500',
+    badgeColor: 'bg-[#2563EB]',
     icon: 'ri-shopping-bag-line',
-    iconColor: 'text-emerald-500',
+    iconColor: 'text-[#2563EB]',
     description:
       '\'나라면 이 쇼핑몰 쓸까?\'라는 질문에서 출발한 커뮤니티형 패션 커머스 플랫폼입니다. 피드 공유·투표·이벤트로 유저가 스스로 활동하며 재방문하는 선순환 구조를 설계했습니다.',
     tech: ['SpringBoot', 'QueryDSL', 'Redis', 'MySQL', 'GCP'],
@@ -29,16 +30,16 @@ const OVERVIEW_PROJECTS = [
 
 export default function ProjectsOverview() {
   const { dark } = useDarkMode()
+  const testEnvironment = PROJECTS.find((project) => project.problemEnvironment)?.problemEnvironment
 
   return (
-    <div className={`${dark ? 'bg-[#252525]' : 'bg-[#F0F4FF]'} px-6 py-10`}>
+    <div className={`projects-overview ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'} px-6 pb-10 md:pb-12`}>
       <div className="mx-auto max-w-6xl">
         {/* 헤더 */}
-        <div className={`mb-6 border-b pb-6 ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
+        <div className={`projects-overview-header mb-5 border-b pb-5 ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
           <div className="flex items-center gap-3">
-            <div className="h-7 w-1 rounded-full bg-[#2563EB]" />
             <h2 className={`text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
-              PROJECTS <span className="text-[#2563EB]">개요</span>
+              프로젝트 <span className="text-[#2563EB]">개요</span>
             </h2>
           </div>
           <p className={`mt-2 ml-4 text-sm ${dark ? 'text-[#888]' : 'text-gray-500'}`}>
@@ -46,20 +47,12 @@ export default function ProjectsOverview() {
           </p>
         </div>
 
-        {/* 인용 블록 */}
-        <div className={`mb-8 flex items-center gap-4 rounded-xl border-l-4 border-[#2563EB] py-4 pl-5 pr-6 ${dark ? 'bg-[#1e1e1e]' : 'bg-white'}`}>
-          <i className={`ri-double-quotes-l text-3xl ${dark ? 'text-[#3a3a3a]' : 'text-gray-300'}`} />
-          <p className={`text-lg font-bold ${dark ? 'text-[#e0e0e0]' : 'text-[#0f172a]'}`}>
-            각 프로젝트는 무엇을 만들었는지보다, 왜 그렇게 만들었는지에 집중합니다.
-          </p>
-        </div>
-
         {/* 프로젝트 카드 2개 */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="projects-overview-grid grid grid-cols-1 gap-6 md:grid-cols-2">
           {OVERVIEW_PROJECTS.map((project) => (
             <div
               key={project.name}
-              className={`rounded-2xl border p-6 ${
+              className={`projects-overview-card rounded-2xl border p-6 ${
                 dark
                   ? 'border-[#3d3d3d] bg-[#2a2a2a]'
                   : 'border-gray-200 bg-white'
@@ -112,6 +105,21 @@ export default function ProjectsOverview() {
             </div>
           ))}
         </div>
+
+        {testEnvironment ? (
+          <div
+            className={`projects-overview-environment mt-5 rounded-xl border px-4 py-3 text-sm ${
+              dark
+                ? 'border-[#333333] bg-[#1e1e1e] text-[#9a9a9a]'
+                : 'border-slate-200 bg-white text-slate-500'
+            }`}
+          >
+            <span className={`mr-2 font-semibold ${dark ? 'text-[#d0d0d0]' : 'text-slate-700'}`}>
+              🖥️ 로컬 테스트 환경
+            </span>
+            <span className="whitespace-pre-line">{testEnvironment}</span>
+          </div>
+        ) : null}
       </div>
     </div>
   )

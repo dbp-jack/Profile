@@ -137,15 +137,17 @@ function ProjectBackgroundCard({
   title,
   body,
   dark,
+  className = '',
 }: {
   title: string
   body?: string
   dark: boolean
+  className?: string
 }) {
   if (!(body?.trim() ?? '').length) return null
   return (
     <div
-      className={`rounded-2xl border p-4 sm:p-5 ${
+      className={`${className} rounded-2xl border p-4 sm:p-5 ${
         dark
           ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
           : 'border-indigo-100/80 bg-white shadow-sm'
@@ -545,6 +547,7 @@ function ProblemRow({
   dark: boolean
 }) {
   const labelColors = getLabelColors(dark)
+  const rowKey = label.toLowerCase()
   if (content.includes('<')) {
     const tags = [...content.matchAll(/<\/?([a-zA-Z0-9-]+)\b/g)].map((m) => m[1].toLowerCase())
     const unknown = [...new Set(tags.filter((tag) => !ALLOWED_RICH_TAGS.has(tag)))]
@@ -556,7 +559,7 @@ function ProblemRow({
     }
   }
   return (
-    <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:gap-4">
+    <div className={`pdf-problem-row pdf-problem-row-${rowKey} flex flex-col gap-2.5 sm:flex-row sm:items-start sm:gap-4`}>
       <span
         className={`inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1 text-sm font-semibold ${labelColors[label]}`}
       >
@@ -598,7 +601,7 @@ export default function ProjectCard({ project, index }: Props) {
   return (
     <article
       id={`project-${index}`}
-      className={`rounded-xl border p-4 transition-colors duration-300 sm:p-5 md:p-8 ${
+      className={`pdf-project-card pdf-project-card-${index} rounded-xl border p-4 transition-colors duration-300 sm:p-5 md:p-8 ${
         dark
           ? 'border-[#3a3a3a] bg-[#2e2e2e] shadow-[0_2px_16px_rgba(0,0,0,0.25)]'
           : 'border-gray-100 bg-white shadow-[0_4px_32px_rgba(0,0,0,0.07)]'
@@ -607,7 +610,7 @@ export default function ProjectCard({ project, index }: Props) {
       <p
         className={`mb-3 text-sm font-semibold tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
       >
-        Project {index + 1}
+        프로젝트{index + 1}
       </p>
       <h3 className={`mb-2 text-xl font-bold sm:text-2xl md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
         {project.name}
@@ -618,7 +621,7 @@ export default function ProjectCard({ project, index }: Props) {
       </p>
 
       <div
-        className={`mb-5 rounded-2xl border p-4 sm:p-5 md:mb-6 ${
+        className={`pdf-project-tech mb-5 rounded-2xl border p-4 sm:p-5 md:mb-6 ${
           dark
             ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
             : 'border-indigo-100/80 bg-white shadow-sm'
@@ -646,48 +649,50 @@ export default function ProjectCard({ project, index }: Props) {
       </div>
 
       {showContextBlock ? (
-        <div className={`mb-6 space-y-4 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+        <div className={`pdf-project-flow mb-6 space-y-4 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
           {usePlanningVariantTop ? (
             <>
-              {overviewSection ? (
-                <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
-              ) : null}
-              <div
-                className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
-              >
-                <p
-                  className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+              <div className="pdf-project-summary-grid space-y-4">
+                {overviewSection ? (
+                  <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
+                ) : null}
+                <div
+                  className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                 >
-                  담당 업무
-                </p>
-                <ul className="m-0 list-none space-y-2.5 p-0">
-                  {filterFilledRoles(project.roles).map((role, idx) => (
-                    <li
-                      key={`${role.title}-${role.detail}-${idx}`}
-                      className={`flex gap-3 rounded-lg border p-3 transition-colors ${
-                        dark
-                          ? 'border-[#3a3a3a] bg-[#2e2e2e] hover:border-[#4a4a4a]'
-                          : 'border-gray-100 bg-white hover:border-blue-100'
-                      }`}
-                    >
-                      <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xl ${
-                          dark ? 'bg-[#383838]' : 'bg-gray-50'
+                  <p
+                    className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+                  >
+                    담당 업무
+                  </p>
+                  <ul className="m-0 list-none space-y-2.5 p-0">
+                    {filterFilledRoles(project.roles).map((role, idx) => (
+                      <li
+                        key={`${role.title}-${role.detail}-${idx}`}
+                        className={`flex gap-3 rounded-lg border p-3 transition-colors ${
+                          dark
+                            ? 'border-[#3a3a3a] bg-[#2e2e2e] hover:border-[#4a4a4a]'
+                            : 'border-gray-100 bg-white hover:border-blue-100'
                         }`}
-                        aria-hidden
                       >
-                        {role.icon}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-base font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
-                        <p
-                          className={`mt-0.5 whitespace-pre-line text-base leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
-                          dangerouslySetInnerHTML={{ __html: role.detail }}
-                        />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xl ${
+                            dark ? 'bg-[#383838]' : 'bg-gray-50'
+                          }`}
+                          aria-hidden
+                        >
+                          {role.icon}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className={`text-base font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
+                          <p
+                            className={`mt-0.5 whitespace-pre-line text-base leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                            dangerouslySetInnerHTML={{ __html: role.detail }}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
               {project.architectureImage ? (
                 <div
@@ -753,7 +758,12 @@ export default function ProjectCard({ project, index }: Props) {
                 </div>
               ) : null}
               {project.developerPerspective ? (
-                <ProjectBackgroundCard title="개발자 관점에서의 핵심 과제" body={project.developerPerspective} dark={dark} />
+                <ProjectBackgroundCard
+                  title="개발자 관점에서의 핵심 과제"
+                  body={project.developerPerspective}
+                  dark={dark}
+                  className="pdf-developer-perspective"
+                />
               ) : perspectiveSection ? (
                 <ProjectPerspectivePlanningSection
                   data={perspectiveSection}
@@ -772,16 +782,11 @@ export default function ProjectCard({ project, index }: Props) {
       ) : null}
 
       {project.problemSections ? (
-        <div className="mb-5 space-y-4 md:mb-6">
-          {project.problemEnvironment ? (
-            <div className={`rounded-lg border px-4 py-2.5 text-sm ${dark ? 'border-[#333333] bg-[#1e1e1e] text-[#888888]' : 'border-slate-200 bg-slate-50 text-slate-500'}`}>
-              <span className={`mr-2 font-semibold ${dark ? 'text-[#aaaaaa]' : 'text-slate-600'}`}>🖥️ 로컬 테스트 환경</span><span className="whitespace-pre-line">{project.problemEnvironment}</span>
-            </div>
-          ) : null}
+        <div className="pdf-problem-sections mb-5 space-y-4 md:mb-6">
           {project.problemSections.map((sec, i) => (
             <div
               key={i}
-              className={`space-y-3 rounded-lg border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
+              className={`pdf-problem-section pdf-problem-section-${i} space-y-3 rounded-lg border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
             >
               <p className={`text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                 {sec.headline}
@@ -795,7 +800,7 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
       ) : (
         <div
-          className={`mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
+          className={`pdf-legacy-problem-section mb-5 space-y-3 rounded-lg border p-3.5 md:mb-6 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-blue-100 bg-[#F8FAFF]'}`}
         >
           {project.problemHeadline ? (
             <p

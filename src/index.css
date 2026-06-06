@@ -32,10 +32,21 @@ body {
   background-color: #ffffff;
   color: #111827;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  section[id] {
+    scroll-margin-top: 1rem;
+  }
 }
 
 @keyframes blink {
@@ -84,9 +95,35 @@ body {
   border-left: 3px solid #1e3a5f;
 }
 
+.project-rich-content,
+.project-rich-content * {
+  max-width: 100%;
+}
+
+.project-rich-content .font-mono,
+.project-rich-content [class*='font-mono'] {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-rich-content table {
+  max-width: none;
+}
+
+.project-rich-content .overflow-hidden:has(table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-rich-content img {
+  display: block;
+  max-width: 100%;
+}
+
 @media (max-width: 640px) {
   .project-rich-content table {
-    min-width: 560px;
+    min-width: 520px;
   }
 
   .project-rich-content th,
@@ -101,6 +138,16 @@ body {
     max-height: 14rem;
     width: 100%;
     object-fit: contain;
+  }
+
+  .project-rich-content .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .project-rich-content .font-mono,
+  .project-rich-content [class*='font-mono'] {
+    font-size: 0.72rem;
+    line-height: 1.45;
   }
 }
 
@@ -595,46 +642,805 @@ body {
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
-    padding-top: 6mm !important;
-    padding-bottom: 6mm !important;
+    justify-content: flex-start !important;
+    padding-top: 17mm !important;
+    padding-bottom: 10mm !important;
   }
-  /* 헤더 영역 축소 */
-  [data-portfolio-mode='pdf-fluid'] #about .mb-10 { margin-bottom: 0.6rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about h2 { font-size: 1.4rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #about .max-w-5xl { padding: 0 2rem !important; max-width: 100% !important; }
+  /* Projects 페이지와 같은 헤더 비율 */
+  [data-portfolio-mode='pdf-fluid'] #about .mb-10 {
+    margin-bottom: 1.35rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #about span.mb-3 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #about h2 {
+    font-size: 2.35rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #about .mb-10 p {
+    max-width: 48rem !important;
+    margin-top: 0.55rem !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #about .max-w-5xl {
+    padding: 0 18mm !important;
+    max-width: 100% !important;
+  }
   /* 카드 컨테이너 간격 */
-  [data-portfolio-mode='pdf-fluid'] #about .gap-5 { gap: 0.55rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .gap-5 { gap: 0.85rem !important; }
   /* 왼쪽 번호 영역 */
   [data-portfolio-mode='pdf-fluid'] #about article > div:first-child {
-    width: 6.5rem !important;
-    padding-top: 0.8rem !important;
-    padding-bottom: 0.8rem !important;
+    width: 8rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
   /* 번호 크기 */
-  [data-portfolio-mode='pdf-fluid'] #about .text-5xl { font-size: 2rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .text-5xl { font-size: 2.45rem !important; }
   /* 카테고리명 */
-  [data-portfolio-mode='pdf-fluid'] #about .text-base.font-bold { font-size: 0.8rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about .text-base.font-bold { font-size: 0.95rem !important; }
   /* 오른쪽 콘텐츠 영역 */
   [data-portfolio-mode='pdf-fluid'] #about article > div:last-child {
-    padding: 0.75rem 1.25rem !important;
+    padding: 1rem 1.4rem !important;
   }
   /* 소제목 */
-  [data-portfolio-mode='pdf-fluid'] #about h3 { font-size: 0.9rem !important; margin-bottom: 0.3rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #about h3 { font-size: 1.05rem !important; margin-bottom: 0.45rem !important; }
   /* 본문 bullet */
-  [data-portfolio-mode='pdf-fluid'] #about ul li { font-size: 0.75rem !important; line-height: 1.4 !important; }
+  [data-portfolio-mode='pdf-fluid'] #about ul li { font-size: 0.88rem !important; line-height: 1.45 !important; }
 
   /* ════════════════════════════════════════════
      페이지 3 — Projects 섹션 헤더 (단독 페이지)
      ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #projects {
     break-before: page !important;
+    break-after: auto !important;
+    height: auto !important;
+    min-height: 210mm !important;
     padding-top: 4mm !important;
-    padding-bottom: 2mm !important;
+    padding-bottom: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
   }
-  /* 카드 목록은 다음 페이지부터 */
-  [data-portfolio-mode='pdf-fluid'] #projects > div > .flex.flex-col {
+  /* 페이지 3 — Projects 헤더 + 프로젝트 개요 */
+  [data-portfolio-mode='pdf-fluid'] #projects > div:first-child {
+    padding-top: 13mm !important;
+    padding-bottom: 5mm !important;
+    max-width: 100% !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects > div:first-child span {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects > div:first-child h2 {
+    font-size: 2.35rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects > div:first-child p {
+    max-width: 48rem !important;
+    margin-top: 0.55rem !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview {
+    min-height: 118mm !important;
+    padding: 0 18mm 10mm !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview > div {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-header {
+    margin-bottom: 0.75rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-header h2 {
+    font-size: 1.65rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-header p {
+    margin-left: 0 !important;
+    margin-top: 0.35rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.45 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.85rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card {
+    padding: 1rem !important;
+    border-radius: 1rem !important;
+    break-inside: avoid !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card .mb-4 {
+    margin-bottom: 0.55rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card h3 {
+    font-size: 1.35rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card p {
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card span {
+    font-size: 0.72rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-card .rounded-xl {
+    padding: 0.7rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .projects-overview-environment {
+    margin-top: 0.75rem !important;
+    padding: 0.65rem 0.9rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+    break-inside: avoid !important;
+  }
+  /* 상세 프로젝트 목록은 다음 페이지부터 */
+  [data-portfolio-mode='pdf-fluid'] #projects .project-detail-list {
     break-before: page !important;
+    padding-top: 9mm !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #projects .project-detail-list > div {
+    max-width: 100% !important;
+    padding-left: 18mm !important;
+    padding-right: 18mm !important;
+  }
+  /* 페이지 4 — 프로젝트1 상단 정보 + 담당 업무 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 {
+    min-height: 193mm !important;
+    padding: 1.45rem !important;
+    border-radius: 1rem !important;
+    box-sizing: border-box !important;
+    break-inside: auto !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 > p:first-child {
+    margin-bottom: 0.45rem !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.14em !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 > h3 {
+    margin-bottom: 0.5rem !important;
+    font-size: 2.22rem !important;
+    line-height: 1.16 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 > h3 + p {
+    margin-bottom: 1.05rem !important;
+    font-size: 1.02rem !important;
+    line-height: 1.35 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-tech {
+    margin-bottom: 1.05rem !important;
+    padding: 1rem 1.1rem !important;
+    border-radius: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-tech > p {
+    margin-bottom: 0.55rem !important;
+    font-size: 1.15rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-tech .gap-2 {
+    gap: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-tech span {
+    padding: 0.28rem 0.78rem !important;
+    font-size: 0.82rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid {
+    margin-bottom: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid > * {
+    margin: 0 !important;
+    break-inside: avoid !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid > div {
+    padding: 1.12rem !important;
+    border-radius: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid p.text-xl {
+    margin-bottom: 0.78rem !important;
+    font-size: 1.22rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .project-rich-content p {
+    font-size: 0.95rem !important;
+    line-height: 1.62 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid ul {
+    gap: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid li {
+    padding: 0.82rem !important;
+    gap: 0.75rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid li + li {
+    margin-top: 0.68rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid li > span:first-child {
+    width: 2.15rem !important;
+    height: 2.15rem !important;
+    border-radius: 0.65rem !important;
+    font-size: 1rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid li p:first-child {
+    font-size: 0.98rem !important;
+    line-height: 1.25 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-project-summary-grid li p:last-child {
+    margin-top: 0.32rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+  }
+  /* 페이지 5 — 프로젝트1 아키텍처 이미지 + 설명 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-wrap {
+    break-before: page !important;
+    min-height: 186mm !important;
+    max-height: 186mm !important;
+    overflow: hidden !important;
+    padding: 11mm 1rem 1rem !important;
+    border-radius: 1rem !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "title"
+      "image"
+      "details" !important;
+    gap: 0.55rem !important;
+    align-items: start !important;
+    align-content: start !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-wrap > p:first-child {
+    grid-area: title !important;
+    margin-bottom: 0 !important;
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-wrap > .relative {
+    grid-area: image !important;
+    align-self: center !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-wrap img {
+    max-height: 98mm !important;
+    width: 100% !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-wrap .absolute {
+    bottom: 0.65rem !important;
+    right: 0.65rem !important;
+    padding: 0.35rem 0.55rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details {
+    grid-area: details !important;
+    break-before: auto !important;
+    margin-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.48rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details > div {
+    padding: 0.62rem 0.85rem !important;
+    border-radius: 0.85rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details p.text-lg {
+    margin-bottom: 0.3rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details ul {
+    gap: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details li {
+    font-size: 0.72rem !important;
+    line-height: 1.32 !important;
+    gap: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details li + li {
+    margin-top: 0.22rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-developer-perspective {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 2.4rem 3rem !important;
+    border-radius: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    break-after: page !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-developer-perspective > p:first-child {
+    margin-bottom: 1.25rem !important;
+    font-size: 2rem !important;
+    line-height: 1.18 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-developer-perspective .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-developer-perspective .project-rich-content p {
+    font-size: 1.08rem !important;
+    line-height: 1.75 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-sections {
+    break-before: page !important;
+  }
+  /* 페이지 7 — 문제 해결 1: Problem + Thinking */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.45rem !important;
+    border-radius: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    box-sizing: border-box !important;
+    break-inside: auto !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 > p:first-child {
+    margin-bottom: 0.2rem !important;
+    font-size: 1.85rem !important;
+    line-height: 1.18 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row {
+    gap: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row > span:first-child {
+    min-width: 6.6rem !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row p {
+    font-size: 0.96rem !important;
+    line-height: 1.55 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-problem img {
+    max-height: 58mm !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution {
+    break-before: page !important;
+  }
+  /* 페이지 8 — 문제 해결 1: Solution 1단계 + 2단계 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution {
+    min-height: 186mm !important;
+    padding: 0.9rem !important;
+    border-radius: 1rem !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution > span:first-child,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result > span:first-child {
+    margin-bottom: 0.45rem !important;
+    min-width: 0 !important;
+    width: fit-content !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content {
+    overflow: visible !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div {
+    min-height: 171mm !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.42rem !important;
+    align-content: center !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:first-child {
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 0.48rem 0.65rem !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div > .font-mono {
+    order: 2 !important;
+    margin-top: 0.25rem !important;
+    padding: 0.45rem 0.6rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div > div:has(img) {
+    order: 3 !important;
+    margin-top: 0.25rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:first-child .font-mono {
+    font-size: 0.5rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:first-child img {
+    max-height: 29mm !important;
+    object-fit: contain !important;
+  }
+  /* 같은 페이지의 Solution 2단계 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:nth-child(2) {
+    break-before: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 0.48rem 0.65rem !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div .text-lg {
+    font-size: 0.82rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div .text-base {
+    font-size: 0.6rem !important;
+    line-height: 1.22 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:nth-child(2) .font-mono {
+    font-size: 0.5rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div:nth-child(2) img {
+    max-height: 29mm !important;
+    object-fit: contain !important;
+  }
+  /* 페이지 9 — 문제 해결 1: Result 요약 + 표 + 이미지 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 0.95rem !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content {
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-height: 168mm !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content > p:first-child {
+    margin-bottom: 0.45rem !important;
+    padding: 0.55rem 0.75rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1.28 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result table {
+    font-size: 0.62rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result th,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result td {
+    padding: 0.3rem 0.4rem !important;
+  }
+  /* 같은 페이지의 nGrinder Before/After 비교 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content > div:nth-child(2) {
+    margin-top: 0.55rem !important;
+    break-before: auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+    align-content: center !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content > div:nth-child(2) img {
+    max-height: 34mm !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content > div:nth-child(2) p {
+    margin-bottom: 0.2rem !important;
+    font-size: 0.48rem !important;
+    line-height: 1.15 !important;
+  }
+  /* 페이지 11 — 문제 해결 2: Problem + Thinking */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.45rem !important;
+    border-radius: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    box-sizing: border-box !important;
+    break-inside: auto !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 > p:first-child {
+    margin-bottom: 0.2rem !important;
+    font-size: 1.85rem !important;
+    line-height: 1.18 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row {
+    gap: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row > span:first-child {
+    min-width: 6.6rem !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row p {
+    font-size: 0.96rem !important;
+    line-height: 1.55 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .font-mono {
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.2rem !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  /* 페이지 12 — 문제 해결 2: Solution 코드 3단계 */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution .project-rich-content {
+    overflow: visible !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution .project-rich-content > div {
+    min-height: 166mm !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0.7rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution .project-rich-content > div > div {
+    padding: 0.72rem 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution .project-rich-content > div > div .text-lg {
+    font-size: 0.98rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-solution .font-mono {
+    font-size: 0.72rem !important;
+    line-height: 1.32 !important;
+  }
+  /* 페이지 13 — 문제 해결 2: Result */
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-result {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.3rem !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-result .project-rich-content {
+    overflow: visible !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-result .project-rich-content > div {
+    min-height: 150mm !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.8rem !important;
+    align-content: center !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-result img {
+    max-height: 58mm !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-section-1 .pdf-problem-row-result .project-rich-content p {
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+  /* 프로젝트2 — 상단 정보 + 담당 업무 */
+  [data-portfolio-mode='pdf-fluid'] #project-1 {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.45rem !important;
+    border-radius: 1rem !important;
+    box-sizing: border-box !important;
+    break-inside: auto !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 > p:first-child {
+    margin-bottom: 0.45rem !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.14em !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 > h3 {
+    margin-bottom: 0.5rem !important;
+    font-size: 2.2rem !important;
+    line-height: 1.16 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 > h3 + p {
+    margin-bottom: 1.05rem !important;
+    font-size: 1.02rem !important;
+    line-height: 1.35 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-tech {
+    margin-bottom: 1.05rem !important;
+    padding: 1rem 1.1rem !important;
+    border-radius: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-tech > p {
+    margin-bottom: 0.55rem !important;
+    font-size: 1.15rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-tech .gap-2 {
+    gap: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-tech span {
+    padding: 0.28rem 0.78rem !important;
+    font-size: 0.82rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr) !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid > * {
+    margin: 0 !important;
+    break-inside: avoid !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid > div {
+    padding: 1.12rem !important;
+    border-radius: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid p.text-xl {
+    margin-bottom: 0.78rem !important;
+    font-size: 1.22rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-1 .project-rich-content p {
+    font-size: 0.95rem !important;
+    line-height: 1.62 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid li {
+    padding: 0.82rem !important;
+    gap: 0.75rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid li + li {
+    margin-top: 0.68rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid li > span:first-child {
+    width: 2.15rem !important;
+    height: 2.15rem !important;
+    border-radius: 0.65rem !important;
+    font-size: 1rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid li p:first-child {
+    font-size: 0.98rem !important;
+    line-height: 1.25 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-project-summary-grid li p:last-child {
+    margin-top: 0.32rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+  }
+  /* 프로젝트2 — 아키텍처 */
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-wrap {
+    break-before: page !important;
+    min-height: 186mm !important;
+    max-height: 186mm !important;
+    overflow: hidden !important;
+    padding: 9mm 1rem 1rem !important;
+    border-radius: 1rem !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "title"
+      "image"
+      "details" !important;
+    gap: 0.55rem !important;
+    align-content: start !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-wrap > p:first-child {
+    grid-area: title !important;
+    margin-bottom: 0 !important;
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-wrap > .relative {
+    grid-area: image !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-wrap img {
+    max-height: 103mm !important;
+    width: 100% !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-details {
+    grid-area: details !important;
+    break-before: auto !important;
+    margin-top: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-details > div {
+    padding: 0.65rem 0.75rem !important;
+    border-radius: 0.85rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-details p.text-lg {
+    margin-bottom: 0.3rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.2 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-details li {
+    font-size: 0.68rem !important;
+    line-height: 1.3 !important;
+    gap: 0.4rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-arch-details li + li {
+    margin-top: 0.2rem !important;
+  }
+  /* 프로젝트2 — 개발자 관점 */
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-developer-perspective {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 2.4rem 3rem !important;
+    border-radius: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    break-after: page !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-developer-perspective > p:first-child {
+    margin-bottom: 1.25rem !important;
+    font-size: 2rem !important;
+    line-height: 1.18 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-developer-perspective .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-developer-perspective .project-rich-content p {
+    font-size: 1.08rem !important;
+    line-height: 1.75 !important;
+  }
+  /* 프로젝트2 — 인증 구조 문제 해결 */
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section {
+    break-before: page !important;
+    min-height: 186mm !important;
+    padding: 1.45rem !important;
+    border-radius: 1rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "title title"
+      "problem thinking"
+      "solution result" !important;
+    gap: 0.85rem !important;
+    align-content: center !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section > p:first-child {
+    grid-area: title !important;
+    font-size: 1.85rem !important;
+    line-height: 1.18 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row-problem { grid-area: problem !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row-thinking { grid-area: thinking !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row-solution { grid-area: solution !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row-result { grid-area: result !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row {
+    display: block !important;
+    min-width: 0 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .pdf-problem-row > span:first-child {
+    margin-bottom: 0.45rem !important;
+    width: fit-content !important;
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.82rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .project-rich-content,
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .project-rich-content p {
+    overflow: visible !important;
+    font-size: 0.74rem !important;
+    line-height: 1.36 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .project-rich-content img {
+    max-height: 48mm !important;
+    object-fit: contain !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .rounded-xl {
+    padding: 0.7rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-1 .pdf-legacy-problem-section .text-lg {
+    font-size: 0.92rem !important;
+    line-height: 1.2 !important;
   }
   [data-portfolio-mode='pdf-fluid'] #projects .mb-10,
   [data-portfolio-mode='pdf-fluid'] #projects .mb-16 { margin-bottom: 0.5rem !important; }
@@ -646,6 +1452,12 @@ body {
   [data-portfolio-mode='pdf-fluid'] .pdf-arch-wrap  { break-before: page !important; }
   /* 아키텍처 세부내용 → 새 페이지 */
   [data-portfolio-mode='pdf-fluid'] .pdf-arch-details { break-before: page !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-arch-details { break-before: auto !important; }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-developer-perspective {
+    break-before: page !important;
+    break-after: page !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #project-0 .pdf-problem-sections { break-before: page !important; }
 
   /* ════════════════════════════════════════════
      걸어온 여정 — 1페이지
@@ -653,15 +1465,57 @@ body {
   [data-portfolio-mode='pdf-fluid'] #experience {
     break-before: page !important;
     break-after: page !important;
-    padding-top: 5mm !important;
-    padding-bottom: 3mm !important;
+    height: 210mm !important;
+    min-height: 210mm !important;
+    max-height: 210mm !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #experience h2 { font-size: 1.25rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .mb-10 { margin-bottom: 0.5rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .space-y-3 > * + * { margin-top: 0.3rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .py-4 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #experience .px-4,
-  [data-portfolio-mode='pdf-fluid'] #experience .px-6 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #experience > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 18mm !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience .mb-10 {
+    margin-bottom: 1.3rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience span.mb-3 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience h2 {
+    font-size: 2.35rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience .mb-10 p {
+    margin-top: 0.55rem !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience ol {
+    margin-left: 0.4rem !important;
+    padding-left: 1.25rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience li {
+    padding-bottom: 0.65rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience li > div {
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience li h3 {
+    margin-top: 0.35rem !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #experience li p {
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
 
   /* ════════════════════════════════════════════
      앞으로의 방향 — 1페이지
@@ -669,37 +1523,167 @@ body {
   [data-portfolio-mode='pdf-fluid'] #closing {
     break-before: page !important;
     break-after: page !important;
-    padding-top: 5mm !important;
-    padding-bottom: 3mm !important;
+    height: 210mm !important;
+    min-height: 210mm !important;
+    max-height: 210mm !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
-  [data-portfolio-mode='pdf-fluid'] #closing h2 { font-size: 1.25rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 16mm !important;
+    box-sizing: border-box !important;
+  }
   [data-portfolio-mode='pdf-fluid'] #closing .mb-10,
-  [data-portfolio-mode='pdf-fluid'] #closing .mb-20 { margin-bottom: 0.6rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-8,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-16,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-20,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-24 { gap: 0.7rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .mb-20 {
+    margin-bottom: 1rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing span.mb-3 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing h2 {
+    font-size: 2.35rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .mb-10 p,
+  [data-portfolio-mode='pdf-fluid'] #closing .mb-20 p {
+    margin-top: 0.55rem !important;
+    font-size: 1.02rem !important;
+    line-height: 1.45 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .grid {
+    gap: 0.65rem 0.9rem !important;
+  }
   [data-portfolio-mode='pdf-fluid'] #closing .px-8,
   [data-portfolio-mode='pdf-fluid'] #closing .px-10,
-  [data-portfolio-mode='pdf-fluid'] #closing .px-12 { padding-left: 1rem !important; padding-right: 1rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .px-12 {
+    padding-left: 0.9rem !important;
+    padding-right: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .pt-4,
   [data-portfolio-mode='pdf-fluid'] #closing .pt-6,
   [data-portfolio-mode='pdf-fluid'] #closing .pt-7,
   [data-portfolio-mode='pdf-fluid'] #closing .pt-8,
+  [data-portfolio-mode='pdf-fluid'] #closing .pb-3,
   [data-portfolio-mode='pdf-fluid'] #closing .pb-5,
-  [data-portfolio-mode='pdf-fluid'] #closing .pb-6 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .pb-6 {
+    padding-top: 0.45rem !important;
+    padding-bottom: 0.45rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .py-3,
+  [data-portfolio-mode='pdf-fluid'] #closing .py-3\.5,
   [data-portfolio-mode='pdf-fluid'] #closing .py-5,
-  [data-portfolio-mode='pdf-fluid'] #closing .py-6 { padding-top: 0.35rem !important; padding-bottom: 0.35rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-3,
-  [data-portfolio-mode='pdf-fluid'] #closing .gap-3\.5 { gap: 0.3rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing .text-2xl { font-size: 1rem !important; }
-  [data-portfolio-mode='pdf-fluid'] #closing .h-14 { height: 2.25rem !important; width: 2.25rem !important; }
+  [data-portfolio-mode='pdf-fluid'] #closing .py-6 {
+    padding-top: 0.42rem !important;
+    padding-bottom: 0.42rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .gap-5 {
+    gap: 0.65rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .text-2xl {
+    font-size: 1.15rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing .h-14 {
+    height: 2.4rem !important;
+    width: 2.4rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #closing p,
+  [data-portfolio-mode='pdf-fluid'] #closing .closing-card-body-html {
+    font-size: 0.78rem !important;
+    line-height: 1.42 !important;
+  }
 
   /* ════════════════════════════════════════════
      자료 모음 + 연락하기 + 푸터 — 마지막 1페이지
      ════════════════════════════════════════════ */
   [data-portfolio-mode='pdf-fluid'] #resources {
     break-before: page !important;
-    padding-top: 5mm !important;
+    break-after: auto !important;
+    height: 126mm !important;
+    min-height: 126mm !important;
+    max-height: 126mm !important;
+    overflow: hidden !important;
+    padding: 12mm 0 3mm !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources > div,
+  [data-portfolio-mode='pdf-fluid'] #contact > div {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 18mm !important;
+    padding-right: 18mm !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources .mb-10,
+  [data-portfolio-mode='pdf-fluid'] #resources .mb-16 {
+    margin-bottom: 0.85rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources span.mb-3,
+  [data-portfolio-mode='pdf-fluid'] #contact span.mb-3 {
+    font-size: 0.82rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources h2,
+  [data-portfolio-mode='pdf-fluid'] #contact h2 {
+    font-size: 2rem !important;
+    line-height: 1.12 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.55rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources a {
+    padding: 0.65rem !important;
+    gap: 0.6rem !important;
+    border-radius: 0.75rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources .h-10 {
+    height: 2rem !important;
+    width: 2rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources a p:first-child {
+    font-size: 0.78rem !important;
+    line-height: 1.25 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #resources a p:last-child {
+    font-size: 0.66rem !important;
+    line-height: 1.3 !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact {
+    break-before: auto !important;
+    break-after: auto !important;
+    height: 84mm !important;
+    min-height: 84mm !important;
+    max-height: 84mm !important;
+    overflow: hidden !important;
+    padding: 4mm 0 8mm !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact .mb-8,
+  [data-portfolio-mode='pdf-fluid'] #contact .mb-12 {
+    margin-bottom: 0.9rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact p {
+    margin-top: 0.45rem !important;
+    font-size: 0.88rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact .gap-4,
+  [data-portfolio-mode='pdf-fluid'] #contact .gap-10 {
+    gap: 1.2rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact .h-10 {
+    width: 2.15rem !important;
+    height: 2.15rem !important;
+  }
+  [data-portfolio-mode='pdf-fluid'] #contact a span {
+    font-size: 0.9rem !important;
   }
   [data-portfolio-mode='pdf-fluid'] footer { position: static !important; }
 }

@@ -3,12 +3,12 @@
 export const HERO_SKILL_TAGS = [
   'Spring',
   'JPA',
-  'Quary DSL',
-  'JAVA',
+  'QueryDSL',
+  'Java',
 
   'PostgreSQL',
   'Redis',
-  'Jira',
+  'JIRA',
   'GCP',
 ] as const
 
@@ -143,7 +143,7 @@ export const CONTACT_LINKS = [
   },
   {
     icon: 'ri-links-line',
-    label: 'Linkedind',
+    label: 'LinkedIn',
     href: 'https://linkedin.com/in/minsoo-jeong-31861b401',
   },
 ] as const

@@ -17,6 +17,7 @@ export default function HeroSection() {
       className={`relative flex min-h-[88svh] md:min-h-screen items-center overflow-hidden transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div
+        aria-hidden="true"
         className="pointer-events-none absolute right-0 top-0 h-[420px] w-[420px] rounded-full"
         style={{
           transform: 'translate(30%, -30%)',
@@ -26,6 +27,7 @@ export default function HeroSection() {
         }}
       />
       <div
+        aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-0 h-[280px] w-[280px] rounded-full"
         style={{
           transform: 'translate(-40%, 40%)',
@@ -75,10 +77,10 @@ export default function HeroSection() {
               {HERO_PERSONAL_INFO.map((item) => (
                 <li
                   key={item.icon + item.text}
-                  className={`flex items-center gap-3 text-base ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}
+                  className={`flex min-w-0 items-center gap-3 text-base ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}
                 >
                   <span
-                    className={`flex h-5 w-5 items-center justify-center ${dark ? 'text-[#7a7a7a]' : 'text-[#1E3A5F]'}`}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center ${dark ? 'text-[#7a7a7a]' : 'text-[#1E3A5F]'}`}
                   >
                     <i className={`${item.icon} text-lg`} />
                   </span>
@@ -87,12 +89,12 @@ export default function HeroSection() {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`cursor-pointer transition-colors hover:underline ${dark ? 'hover:text-[#d0d0d0]' : 'hover:text-[#1E3A5F]'}`}
+                      className={`min-w-0 break-words transition-colors hover:underline ${dark ? 'hover:text-[#d0d0d0]' : 'hover:text-[#1E3A5F]'}`}
                     >
                       {item.text}
                     </a>
                   ) : (
-                    <span>{item.text}</span>
+                    <span className="min-w-0 break-words">{item.text}</span>
                   )}
                 </li>
               ))}
