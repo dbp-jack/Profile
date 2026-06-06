@@ -629,12 +629,12 @@ export default function ProjectCard({ project, index }: Props) {
                   <p className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
-                  <div className="relative">
+                  <div className="relative mx-auto max-w-5xl">
                     <img
                       src={`${__BASE_PATH__}${project.architectureImage.replace(/^\//, '')}`}
                       alt="아키텍처 다이어그램"
                       loading="lazy"
-                      className="w-full rounded-xl object-contain"
+                      className="mx-auto w-full rounded-xl object-contain md:w-[80%]"
                     />
                     <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-md border-2 border-[#2563EB] bg-white/90 px-2.5 py-1.5 shadow-sm dark:bg-[#1e2a3a]/90">
                       <span className="h-3.5 w-3.5 shrink-0 rounded-sm border-2 border-[#2563EB]" />
@@ -642,11 +642,13 @@ export default function ProjectCard({ project, index }: Props) {
                     </div>
                   </div>
                   {project.architectureDetails?.length ? (
-                    <div className="pdf-arch-details mt-4 space-y-3">
+                    <div className="pdf-arch-details mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
                       {project.architectureDetails.map((section, si) => (
                         <div
                           key={si}
-                          className={`rounded-xl border p-3.5 ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+                          className={`rounded-xl border p-3.5 ${
+                            si === 0 || si === project.architectureDetails!.length - 1 ? 'md:col-span-2' : ''
+                          } ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                         >
                           <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                             {section.title}
@@ -664,6 +666,7 @@ export default function ProjectCard({ project, index }: Props) {
                                     {item.label}
                                   </p>
                                 ) : null}
+                                {item.bullets.length ? (
                                 <ul className="space-y-1">
                                   {item.bullets.map((b, bi) => (
                                     <li key={bi} className={`flex gap-2 text-base leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
@@ -672,6 +675,7 @@ export default function ProjectCard({ project, index }: Props) {
                                     </li>
                                   ))}
                                 </ul>
+                                ) : null}
                               </div>
                             ))}
                           </div>
