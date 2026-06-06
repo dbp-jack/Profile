@@ -4,6 +4,12 @@ import { ABOUT_CARDS, ABOUT_SECTION } from '@/content/portfolio'
 
 const NUMS = ['01', '02', '03']
 
+const ABOUT_HIGHLIGHTS = [
+  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · SQL <span class="font-black text-[#2563EB]">42회 → 2회 축소</span>',
+  '팀 스프린트 <span class="font-black text-[#2563EB]">가시성 확보</span>',
+  '<span class="font-black text-[#2563EB]">기획·설계·개발 단독 주도</span>',
+] as const
+
 export default function AboutSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
@@ -57,7 +63,7 @@ export default function AboutSection() {
             return (
               <article
                 key={card.title}
-                className={`flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 sm:flex-row ${
+                className={`flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 sm:min-h-[9.5rem] sm:flex-row ${
                   dark
                     ? 'border-[#3d3d3d] bg-[#2e2e2e] hover:border-[#5a5a5a]'
                     : 'border-gray-200 bg-white hover:border-[#BFDBFE] hover:shadow-md'
@@ -65,35 +71,45 @@ export default function AboutSection() {
               >
                 {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-4 sm:w-36 sm:flex-col sm:justify-center sm:gap-1 sm:border-b-0 sm:border-r sm:px-0 sm:py-8 ${
+                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-4 sm:w-40 sm:flex-col sm:justify-center sm:gap-2 sm:border-b-0 sm:border-r sm:px-0 sm:py-6 ${
                     dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
                   <span className="text-4xl font-black leading-none text-[#2563EB] sm:text-5xl">
                     {NUMS[i]}
                   </span>
-                  <span className={`text-base font-bold sm:mt-1 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
-                    {card.title}
+                  <span className={`flex items-center gap-2 text-lg font-extrabold sm:flex-col sm:gap-1 sm:text-center ${dark ? 'text-[#d6d6d6]' : 'text-gray-800'}`}>
+                    <i className={`${card.icon} text-xl text-[#2563EB] sm:text-2xl`} aria-hidden />
+                    <span>{card.title}</span>
                   </span>
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className="flex min-w-0 flex-1 flex-col justify-center px-5 py-5 sm:px-8 sm:py-7">
+                <div className="flex min-w-0 flex-1 flex-col justify-center px-5 py-4 sm:px-8 sm:py-5">
                   {/* 소제목 */}
                   <h3
-                    className={`${i < 2 ? 'mb-3 text-lg' : 'mb-4 text-xl'} font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+                    className={`mb-2.5 text-xl font-extrabold leading-snug md:text-[1.3rem] ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
                     dangerouslySetInnerHTML={{ __html: card.subtitle }}
                   />
 
+                  <div
+                    className={`mb-3 inline-flex w-fit max-w-full rounded-lg border px-3 py-1.5 text-sm font-bold leading-snug md:text-[0.95rem] ${
+                      dark
+                        ? 'border-[#31558e] bg-[#233654] text-[#dbeafe]'
+                        : 'border-[#BFDBFE] bg-[#EFF6FF] text-[#172554]'
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: ABOUT_HIGHLIGHTS[i] }}
+                  />
+
                   {/* 체크 bullet 목록 */}
-                  <ul className={i === 0 ? 'space-y-0.5' : i === 1 ? 'space-y-1.5' : 'space-y-2'}>
+                  <ul className={i === 0 ? 'space-y-1' : i === 1 ? 'space-y-1.5' : 'space-y-2'}>
                     {bullets.map((line, j) => {
                       const noCheck = j === 0 && i < 2
                       return (
                       <li key={j} className="flex min-w-0 items-start gap-3">
                         {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
                         <span
-                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} ${i < 2 ? 'text-sm' : 'text-sm md:text-base'} leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed md:text-[0.95rem] ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>
