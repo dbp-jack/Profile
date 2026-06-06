@@ -1,0 +1,55 @@
+.project-rich-content,
+.project-rich-content * {
+  max-width: 100%;
+}
+
+.project-rich-content .font-mono,
+.project-rich-content [class*='font-mono'] {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-rich-content table {
+  max-width: none;
+}
+
+.project-rich-content .overflow-hidden:has(table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-rich-content img {
+  display: block;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .project-rich-content table {
+    min-width: 520px;
+  }
+
+  .project-rich-content th,
+  .project-rich-content td {
+    white-space: nowrap;
+    font-size: 0.75rem;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .project-rich-content img {
+    max-height: 14rem;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .project-rich-content .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .project-rich-content .font-mono,
+  .project-rich-content [class*='font-mono'] {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+}

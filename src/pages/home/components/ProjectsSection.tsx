@@ -1,5 +1,5 @@
 import { PROJECTS_SECTION } from '@/content/portfolio'
-import { PROJECTS } from '@/mocks/projects'
+import { PROJECTS } from '@/content/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import ProjectCard from './ProjectCard'
 import ProjectsOverview from './ProjectsOverview'

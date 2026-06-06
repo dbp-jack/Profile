@@ -1,15 +1,18 @@
 /** Shared copy + lists for the portfolio site and the `/pdf` A4 view (single source of truth). */
 
-export const HERO_SKILL_TAGS = [
-  'Spring',
-  'JPA',
-  'QueryDSL',
-  'Java',
-
-  'PostgreSQL',
-  'Redis',
-  'JIRA',
-  'GCP',
+export const HERO_SKILL_GROUPS = [
+  {
+    label: 'Core Backend',
+    tags: ['Java', 'Spring', 'JPA', 'QueryDSL'],
+  },
+  {
+    label: 'Data / Infra',
+    tags: ['PostgreSQL', 'Redis', 'GCP'],
+  },
+  {
+    label: 'Collaboration',
+    tags: ['JIRA'],
+  },
 ] as const
 
 export type HeroPersonalRow = {
@@ -26,16 +29,11 @@ export const HERO_PERSONAL_INFO: readonly HeroPersonalRow[] = [
     text: 'github.com/dbp-jack',
     href: 'https://github.com/dbp-jack',
   },
-  {
-    icon: 'ri-linkedin-box-fill',
-    text: 'linkedin.com/in/minsoo-jeong-31861b401',
-    href: 'https://linkedin.com/in/minsoo-jeong-31861b401',
-  },
 ] as const
 
 export const HERO_ROLE_BADGE = 'Backend Software Engineer'
 export const HERO_NAME = '정민수'
-export const HERO_ROLE_TITLE = '수치로 검증하고, 팀 흐름을 맞추는 백엔드 개발자입니다.'
+export const HERO_ROLE_TITLE = '수치로 검증하고, 팀 흐름을 맞추는 백엔드 개발자'
 export const HERO_TECH_STACK_LABEL = '기술 스택'
 
 export const ABOUT_SECTION = {

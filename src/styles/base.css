@@ -1,0 +1,103 @@
+/* 라이트박스 — 프로필 사진 제외한 모든 img에 클릭 커서 */
+img:not([src*="profile-photo"]) {
+  cursor: zoom-in;
+}
+
+/*
+  Global tokens / optional hovers:
+  - `--font-sans`: applied on `body` (see below).
+  - `.hero-item-1` … `.hero-item-4`: stagger delays (reserved for future hero motion).
+  - `.skill-row:hover`, `.project-card:hover`, `.about-card:hover`: global hover helpers;
+    some components use Tailwind hover instead — these remain for class-based use.
+*/
+:root {
+  --font-sans: 'Inter', 'Noto Sans KR', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  /*
+    한 단계 가독성 업 — 브라우저 기본(보통 16px) 대비 약 +1px에 해당.
+    Tailwind의 text-base/base/xl 등 rem 단위가 같은 비율로 커져 레이아웃 균형이 유지됩니다.
+  */
+  font-size: 106.25%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  section[id] {
+    scroll-margin-top: 1rem;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: #6B7280;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+.hero-item-1 {
+  animation-delay: 0ms;
+}
+.hero-item-2 {
+  animation-delay: 150ms;
+}
+.hero-item-3 {
+  animation-delay: 300ms;
+}
+.hero-item-4 {
+  animation-delay: 450ms;
+}
+
+.skill-row:hover {
+  background-color: #eff6ff;
+  border-radius: 6px;
+}
+
+.project-card:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+.about-card:hover {
+  border-left: 3px solid #1e3a5f;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}

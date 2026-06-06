@@ -1,10 +1,10 @@
 import React from 'react'
 import {
   HERO_NAME, HERO_ROLE_BADGE, HERO_ROLE_TITLE,
-  HERO_PERSONAL_INFO, HERO_SKILL_TAGS,
+  HERO_PERSONAL_INFO, HERO_SKILL_GROUPS,
   ABOUT_CARDS, EXPERIENCE_ITEMS, CLOSING_BLOCKS, RESOURCE_LINKS, CONTACT_LINKS,
 } from '@/content/portfolio'
-import { PROJECTS } from '@/mocks/projects'
+import { PROJECTS } from '@/content/projects'
 
 declare const __BASE_PATH__: string
 
@@ -16,6 +16,7 @@ const GRAY1      = '#f8fafc'
 const GRAY2      = '#e2e8f0'
 const GRAY3      = '#64748b'
 const WHITE      = '#ffffff'
+const HERO_SKILL_TAGS = HERO_SKILL_GROUPS.flatMap((group) => group.tags)
 
 /* ─── Slide wrapper ─── */
 function Slide({
