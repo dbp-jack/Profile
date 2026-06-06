@@ -23,7 +23,7 @@ export default function ContactSection() {
           >
             {CONTACT_SECTION.kicker}
           </span>
-          <h2 className={`text-4xl font-bold md:text-5xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
+          <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {CONTACT_SECTION.title}
           </h2>
           <p className={`mt-3 text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>

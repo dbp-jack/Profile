@@ -25,7 +25,7 @@ export default function PhilosophyClosingSection() {
         dark ? 'border-[#3d3d3d] bg-[#262626]' : 'border-gray-200 bg-[#f8fafc]'
       }`}
     >
-      <div className="mx-auto max-w-6xl px-6 lg:max-w-7xl lg:px-10">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="pdf-closing-bunch">
           <div className="mb-10 text-center md:mb-20">
             <span
@@ -46,7 +46,7 @@ export default function PhilosophyClosingSection() {
           </div>
 
           {/* 헤더 행 */}
-          <div className="grid grid-cols-1 gap-x-16 gap-y-3 md:grid-cols-2 lg:gap-x-20 xl:gap-x-24">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {CLOSING_BLOCKS.map((block) => (
               <div
                 key={block.titleKo}
@@ -57,17 +57,17 @@ export default function PhilosophyClosingSection() {
                 }`}
               >
                 <div
-                  className={`px-8 pb-3 pt-4 sm:px-10 md:px-12 ${
+                  className={`px-5 pb-3 pt-4 sm:px-6 ${
                     dark ? 'bg-[#363636]/50' : 'bg-gradient-to-br from-[#fafbff] to-white'
                   }`}
                 >
-                  <div className="flex items-start gap-5">
+                  <div className="flex items-start gap-4">
                     <div
-                      className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
                         dark ? 'bg-[#2a3148] text-[#b4c2f0]' : 'bg-[#EEF2FF] text-[#1e3a8a]'
                       }`}
                     >
-                      <i className={`${block.icon} text-3xl`} aria-hidden />
+                      <i className={`${block.icon} text-2xl`} aria-hidden />
                     </div>
                     <div className="min-w-0 pt-0.5">
                       <p
@@ -76,7 +76,7 @@ export default function PhilosophyClosingSection() {
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1.5 text-2xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1.5 text-xl font-extrabold leading-snug tracking-tight break-keep ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
                       >
                         {block.titleKo}
                       </h3>
@@ -107,7 +107,7 @@ export default function PhilosophyClosingSection() {
                 return (
                   <div
                     key={`${block.titleKo}-${rowIdx}`}
-                    className={`flex flex-col justify-center rounded-xl border px-6 py-3 md:px-8 md:py-3.5 ${blockShell}`}
+                    className={`flex flex-col justify-center rounded-xl border px-5 py-3 md:px-6 md:py-3.5 ${blockShell}`}
                   >
                     {para.includes('<') ? (
                       <div

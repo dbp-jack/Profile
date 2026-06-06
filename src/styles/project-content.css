@@ -24,6 +24,76 @@
   max-width: 100%;
 }
 
+#project-0 .pdf-problem-section-0 {
+  padding: 1rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row {
+  gap: 0.85rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row > span:first-child {
+  min-width: 5.25rem;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+#project-0 .pdf-problem-section-0 .project-rich-content {
+  font-size: 0.95rem;
+  line-height: 1.62;
+}
+
+#project-0 .pdf-problem-section-0 .project-rich-content img {
+  max-height: 22rem;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+#project-0 .pdf-problem-section-0 .project-rich-content [class*='rounded-xl'],
+#project-0 .pdf-problem-section-0 .project-rich-content [class*='rounded-lg'] {
+  border-radius: 0.65rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-problem .project-rich-content .grid {
+  gap: 0.5rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-problem .project-rich-content .grid > div {
+  padding: 0.45rem 0.7rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div {
+  gap: 0.85rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content > div > div {
+  padding: 0.75rem 0.85rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content .font-mono,
+#project-0 .pdf-problem-section-0 .pdf-problem-row-solution .project-rich-content [class*='font-mono'] {
+  padding: 0.75rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content > p:first-child {
+  margin-bottom: 0.75rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content table {
+  font-size: 0.88rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content th,
+#project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content td {
+  padding-block: 0.45rem;
+}
+
+#project-0 .pdf-problem-section-0 .pdf-problem-row-result .project-rich-content img {
+  max-height: 16rem;
+}
+
 @media (max-width: 640px) {
   .project-rich-content table {
     min-width: 520px;

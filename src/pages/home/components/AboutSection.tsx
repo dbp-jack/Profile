@@ -63,7 +63,7 @@ export default function AboutSection() {
             return (
               <article
                 key={card.title}
-                className={`flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 sm:min-h-[9.5rem] sm:flex-row ${
+                className={`flex flex-col overflow-hidden rounded-xl border transition-all duration-300 sm:min-h-[9rem] sm:flex-row ${
                   dark
                     ? 'border-[#3d3d3d] bg-[#2e2e2e] hover:border-[#5a5a5a]'
                     : 'border-gray-200 bg-white hover:border-[#BFDBFE] hover:shadow-md'
@@ -71,29 +71,29 @@ export default function AboutSection() {
               >
                 {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-4 sm:w-40 sm:flex-col sm:justify-center sm:gap-2 sm:border-b-0 sm:border-r sm:px-0 sm:py-6 ${
+                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-3.5 sm:w-36 sm:flex-col sm:justify-center sm:gap-1.5 sm:border-b-0 sm:border-r sm:px-0 sm:py-5 ${
                     dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
-                  <span className="text-4xl font-black leading-none text-[#2563EB] sm:text-5xl">
+                  <span className="text-3xl font-black leading-none text-[#2563EB] sm:text-4xl">
                     {NUMS[i]}
                   </span>
-                  <span className={`flex items-center gap-2 text-lg font-extrabold sm:flex-col sm:gap-1 sm:text-center ${dark ? 'text-[#d6d6d6]' : 'text-gray-800'}`}>
-                    <i className={`${card.icon} text-xl text-[#2563EB] sm:text-2xl`} aria-hidden />
+                  <span className={`flex items-center gap-2 text-base font-extrabold sm:flex-col sm:gap-1 sm:text-center ${dark ? 'text-[#d6d6d6]' : 'text-gray-800'}`}>
+                    <i className={`${card.icon} text-lg text-[#2563EB] sm:text-xl`} aria-hidden />
                     <span>{card.title}</span>
                   </span>
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className="flex min-w-0 flex-1 flex-col justify-center px-5 py-4 sm:px-8 sm:py-5">
+                <div className={`flex min-w-0 flex-1 flex-col justify-center px-5 sm:px-7 ${i === 0 ? 'py-3 sm:py-3' : 'py-4 sm:py-4'}`}>
                   {/* 소제목 */}
                   <h3
-                    className={`mb-2.5 text-xl font-extrabold leading-snug md:text-[1.3rem] ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+                    className={`${i === 0 ? 'mb-1.5' : 'mb-2'} text-lg font-extrabold leading-snug md:text-xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
                     dangerouslySetInnerHTML={{ __html: card.subtitle }}
                   />
 
                   <div
-                    className={`mb-3 inline-flex w-fit max-w-full rounded-lg border px-3 py-1.5 text-sm font-bold leading-snug md:text-[0.95rem] ${
+                    className={`${i === 0 ? 'mb-2' : 'mb-2.5'} inline-flex w-fit max-w-full rounded-lg border px-2.5 py-1.5 text-sm font-bold leading-snug ${
                       dark
                         ? 'border-[#31558e] bg-[#233654] text-[#dbeafe]'
                         : 'border-[#BFDBFE] bg-[#EFF6FF] text-[#172554]'
@@ -109,7 +109,7 @@ export default function AboutSection() {
                       <li key={j} className="flex min-w-0 items-start gap-3">
                         {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
                         <span
-                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed md:text-[0.95rem] ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>

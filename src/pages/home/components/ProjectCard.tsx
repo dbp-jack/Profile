@@ -626,7 +626,7 @@ export default function ProjectCard({ project, index }: Props) {
                       : 'border-indigo-100/80 bg-white shadow-sm'
                   }`}
                 >
-                  <p className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                  <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
                   <div className="relative mx-auto max-w-5xl">
@@ -650,11 +650,11 @@ export default function ProjectCard({ project, index }: Props) {
                             si === 0 || si === project.architectureDetails!.length - 1 ? 'md:col-span-2' : ''
                           } ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                         >
-                          <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                          <p className={`mb-2 text-base font-semibold uppercase tracking-wide md:text-lg ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                             {section.title}
                           </p>
                           {section.description ? (
-                            <p className={`mb-2 text-base leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                            <p className={`mb-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                               {section.description}
                             </p>
                           ) : null}
@@ -669,7 +669,7 @@ export default function ProjectCard({ project, index }: Props) {
                                 {item.bullets.length ? (
                                 <ul className="space-y-1">
                                   {item.bullets.map((b, bi) => (
-                                    <li key={bi} className={`flex gap-2 text-base leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                                    <li key={bi} className={`flex gap-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
                                       {b}
                                     </li>

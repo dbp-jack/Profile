@@ -12,7 +12,7 @@ export default function ProjectsSection() {
       className={`transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
       {/* 기존 헤더 — 건들지 않음 */}
-      <div className="mx-auto max-w-6xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
+      <div className="mx-auto max-w-5xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
         <div className="text-center">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
@@ -37,7 +37,7 @@ export default function ProjectsSection() {
 
       {/* 개별 프로젝트 카드 */}
       <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}>
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col gap-6 md:gap-8">
             {PROJECTS.map((project, i) => (
               <ProjectCard key={project.name} project={project} index={i} />

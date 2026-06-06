@@ -6,8 +6,8 @@ export default function ProjectsOverview() {
   const testEnvironment = PROJECTS.find((project) => project.problemEnvironment)?.problemEnvironment
 
   return (
-    <div className={`projects-overview ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'} px-6 pb-10 md:pb-12`}>
-      <div className="mx-auto max-w-6xl">
+    <div className={`projects-overview ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'} pb-10 md:pb-12`}>
+      <div className="mx-auto max-w-5xl px-6">
         {/* 헤더 */}
         <div className={`projects-overview-header mb-5 border-b pb-5 ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
           <div className="flex items-center gap-3">
