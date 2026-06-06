@@ -21,18 +21,18 @@ export default function ProjectsOverview() {
         </div>
 
         {/* 프로젝트 카드 2개 */}
-        <div className="projects-overview-grid grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
           {PROJECT_OVERVIEWS.map((project) => (
             <div
               key={project.name}
-              className={`projects-overview-card rounded-2xl border p-6 ${
+              className={`projects-overview-card rounded-xl border p-4 ${
                 dark
                   ? 'border-[#3d3d3d] bg-[#2a2a2a]'
                   : 'border-gray-200 bg-white'
               }`}
             >
               {/* 아이콘 + 배지 */}
-              <div className="mb-4 flex items-center justify-between">
+              <div className="mb-3 flex items-center justify-between">
                 <i className={`${project.icon} ${project.iconColor} text-2xl`} />
                 <span className={`rounded-full px-3 py-1 text-xs font-bold text-white ${project.badgeColor}`}>
                   {project.badge}
@@ -40,21 +40,21 @@ export default function ProjectsOverview() {
               </div>
 
               {/* 프로젝트명 */}
-              <h3 className={`mb-3 text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
+              <h3 className={`mb-2.5 text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
                 {project.name}
               </h3>
 
-              {/* 설명 */}
-              <p className={`mb-4 text-sm leading-relaxed ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}>
+              {/* 한 줄 정의 */}
+              <p className={`mb-3 text-base font-semibold leading-relaxed ${dark ? 'text-[#d0d0d0]' : 'text-gray-700'}`}>
                 {project.description}
               </p>
 
               {/* 기술 스택 칩 */}
-              <div className="mb-4 flex flex-wrap gap-2">
+              <div className="mb-3 flex flex-wrap gap-1.5">
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className={`rounded border px-2.5 py-0.5 font-mono text-xs ${
+                    className={`rounded border px-2 py-0.5 font-mono text-xs ${
                       dark
                         ? 'border-[#444] bg-[#333] text-[#b0b0b0]'
                         : 'border-gray-200 bg-gray-50 text-gray-600'
@@ -65,9 +65,20 @@ export default function ProjectsOverview() {
                 ))}
               </div>
 
+              {/* 담당 역할 */}
+              <div className={`mb-2 rounded-lg border px-3 py-2 ${dark ? 'border-[#3a3a3a] bg-[#242424]' : 'border-blue-100 bg-blue-50/50'}`}>
+                <div className="mb-1 flex items-center gap-2">
+                  <i className={`ri-user-settings-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
+                  <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>담당 역할</span>
+                </div>
+                <p className={`text-sm leading-relaxed ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}>
+                  {project.role}
+                </p>
+              </div>
+
               {/* 핵심 과제 */}
-              <div className={`rounded-xl p-4 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
-                <div className="mb-1.5 flex items-center gap-2">
+              <div className={`rounded-lg p-3 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
+                <div className="mb-1 flex items-center gap-2">
                   <i className={`${project.challengeIcon} text-sm ${dark ? 'text-[#888]' : 'text-gray-500'}`} />
                   <span className={`text-sm font-bold ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}>핵심 과제</span>
                 </div>
