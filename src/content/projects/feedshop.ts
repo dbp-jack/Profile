@@ -33,7 +33,7 @@ export const feedShopProject: ProjectData = {
       },
     ],
     serviceOverview:
-      '<span class="font-bold">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매를 넘어 피드 공유·투표·이벤트 참여로 유저가 스스로 활동하는 커뮤니티형 패션 커머스입니다.\n피드 투표 상위 참여자에게 포인트와 쿠폰을 지급하며,\n<span class="font-bold">\'구매가 곧 참여이자 보상\'</span>이 되는 선순환 구조로 재방문을 유도하도록 설계했습니다.',
+      '<span class="font-bold text-[#2563EB]">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매 이후에도 사용자가 <span class="font-semibold text-[#2563EB]">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계한 커뮤니티형 패션 커머스입니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해\n<span class="font-bold text-[#2563EB]">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 선순환 구조를 만들었습니다.',
     developerPerspective:
       '유저의 재방문을 유도하는 선순환 구조의 핵심은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">\'이벤트 참여\'</span>에 있습니다.\n한정된 기간 동안 보상을 얻기 위해 특정 시간에 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">유저 요청이 급증</span>하는 구조에서 상위 피드에 투표가 몰리는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">쏠림 현상</span>이 발생합니다.\n이때 <span class="font-semibold text-red-500 dark:text-red-400">응답 지연</span>과 <span class="font-semibold text-red-500 dark:text-red-400">데이터 정합성 이슈</span>가 생기면 서비스 신뢰도를 떨어뜨리는 치명적 요인이라 봤습니다.\n이를 해결하기 위해 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 문제</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성 보장</span>에 집중했습니다.',
     techStack: ['SpringBoot', 'QueryDSL', 'MySQL', 'Redis', 'GCP', 'Docker', 'GitHub', 'JIRA', 'JMeter'],

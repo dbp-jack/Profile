@@ -71,20 +71,20 @@ function ProjectBackgroundCard({
   if (!(body?.trim() ?? '').length) return null
   return (
     <div
-      className={`${className} rounded-2xl border p-4 sm:p-5 ${
+      className={`${className} rounded-xl border p-3.5 sm:p-4 ${
         dark
           ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
           : 'border-indigo-100/80 bg-white shadow-sm'
       }`}
     >
       <p
-        className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+        className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
       >
         {title}
       </p>
       <p
         lang="ko"
-        className={`whitespace-pre-line break-keep text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+        className={`whitespace-pre-line break-keep text-[0.95rem] leading-[1.68] md:text-base ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
         dangerouslySetInnerHTML={{ __html: body ?? '' }}
       />
     </div>
@@ -545,22 +545,22 @@ export default function ProjectCard({ project, index }: Props) {
       </p>
 
       <div
-        className={`pdf-project-tech mb-5 rounded-2xl border p-4 sm:p-5 md:mb-6 ${
+        className={`pdf-project-tech mb-4 rounded-xl border p-3.5 sm:p-4 md:mb-5 ${
           dark
             ? 'border-[#3d3d45] bg-[#2e2e2e] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
             : 'border-indigo-100/80 bg-white shadow-sm'
         }`}
       >
         <p
-          className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
         >
           기술 스택
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className={`rounded-full border px-3 py-1 text-sm font-medium ${
+              className={`rounded-full border px-2.5 py-0.5 text-sm font-medium ${
                 dark
                   ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
                   : 'border-[#1E3A5F]/15 bg-[#f0f4fa] text-[#1E3A5F]'
@@ -573,7 +573,7 @@ export default function ProjectCard({ project, index }: Props) {
       </div>
 
       {showContextBlock ? (
-        <div className={`pdf-project-flow mb-6 space-y-4 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+        <div className={`pdf-project-flow mb-5 space-y-3.5 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
           {usePlanningVariantTop ? (
             <>
               <div className="pdf-project-summary-grid space-y-4">
@@ -581,25 +581,25 @@ export default function ProjectCard({ project, index }: Props) {
                   <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
                 ) : null}
                 <div
-                  className={`rounded-xl border p-3.5 md:p-4 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+                  className={`rounded-xl border p-3 md:p-3.5 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                 >
                   <p
-                    className={`mb-3 text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+                    className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
                   >
                     담당 업무
                   </p>
-                  <ul className="m-0 list-none space-y-2.5 p-0">
+                  <ul className="m-0 list-none space-y-2 p-0">
                     {filterFilledRoles(project.roles).map((role, idx) => (
                       <li
                         key={`${role.title}-${role.detail}-${idx}`}
-                        className={`flex gap-3 rounded-lg border p-3 transition-colors ${
+                        className={`flex gap-3 rounded-lg border p-2.5 transition-colors ${
                           dark
                             ? 'border-[#3a3a3a] bg-[#2e2e2e] hover:border-[#4a4a4a]'
                             : 'border-gray-100 bg-white hover:border-blue-100'
                         }`}
                       >
                         <span
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xl ${
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-lg ${
                             dark ? 'bg-[#383838]' : 'bg-gray-50'
                           }`}
                           aria-hidden
@@ -607,9 +607,9 @@ export default function ProjectCard({ project, index }: Props) {
                           {role.icon}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className={`text-base font-bold ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
+                          <p className={`text-[0.95rem] font-bold md:text-base ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
                           <p
-                            className={`mt-0.5 whitespace-pre-line text-base leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                            className={`mt-0.5 whitespace-pre-line text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
                             dangerouslySetInnerHTML={{ __html: role.detail }}
                           />
                         </div>
