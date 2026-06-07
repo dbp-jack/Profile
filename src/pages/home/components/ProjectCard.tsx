@@ -642,23 +642,21 @@ export default function ProjectCard({ project, index }: Props) {
                     </div>
                   </div>
                   {project.architectureDetails?.length ? (
-                    <div className="pdf-arch-details mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+                    <div className="pdf-arch-details mt-2.5 grid grid-cols-1 gap-2">
                       {project.architectureDetails.map((section, si) => (
                         <div
                           key={si}
-                          className={`rounded-xl border p-3.5 ${
-                            si === 0 || si === project.architectureDetails!.length - 1 ? 'md:col-span-2' : ''
-                          } ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
+                          className={`rounded-xl border px-3 py-2.5 ${dark ? 'border-[#3a3a3a] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
                         >
-                          <p className={`mb-2 text-base font-semibold uppercase tracking-wide md:text-lg ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                          <p className={`mb-1 text-base font-semibold uppercase tracking-wide md:text-lg ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                             {section.title}
                           </p>
                           {section.description ? (
-                            <p className={`mb-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                            <p className={`mb-1.5 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                               {section.description}
                             </p>
                           ) : null}
-                          <div className="space-y-2">
+                          <div className="space-y-1">
                             {section.items.map((item, ii) => (
                               <div key={ii}>
                                 {item.label ? (
@@ -667,7 +665,7 @@ export default function ProjectCard({ project, index }: Props) {
                                   </p>
                                 ) : null}
                                 {item.bullets.length ? (
-                                <ul className="space-y-1">
+                                <ul className="space-y-0.5">
                                   {item.bullets.map((b, bi) => (
                                     <li key={bi} className={`flex gap-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
                                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
@@ -744,19 +742,35 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <a
           href={project.githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`rounded-lg border px-4 py-2 text-base font-medium transition-colors duration-300 ${
+          className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-base font-medium transition-colors duration-300 ${
             dark
               ? 'border-[#5a5a5a] text-[#b0b0b0] hover:bg-[#3a3a3a] hover:text-[#e0e0e0]'
               : 'border-[#1E3A5F] text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white'
           }`}
         >
-          GitHub
+          <i className="ri-github-fill text-lg" aria-hidden />
+          GitHub Repo
         </a>
+        {project.wikiUrl ? (
+          <a
+            href={project.wikiUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-base font-medium transition-colors duration-300 ${
+              dark
+                ? 'border-[#3d5f9f] text-[#9eb8f0] hover:bg-[#26344f] hover:text-[#dce7ff]'
+                : 'border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB] hover:text-white'
+            }`}
+          >
+            <i className="ri-book-open-line text-lg" aria-hidden />
+            기술 개선 기록
+          </a>
+        ) : null}
       </div>
     </article>
   )

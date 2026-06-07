@@ -72,5 +72,6 @@ export interface ProjectData {
     result: string
   }>
   githubUrl: string
+  wikiUrl?: string
   demoUrl?: string
 }

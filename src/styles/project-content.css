@@ -94,6 +94,22 @@
   max-height: 16rem;
 }
 
+#project-1 .pdf-developer-perspective .project-rich-content {
+  line-height: 1.58;
+}
+
+#project-1 .pdf-developer-perspective .project-rich-content [class*='mt-3'] {
+  margin-top: 0.5rem;
+}
+
+#project-1 .pdf-developer-perspective .project-rich-content [class*='space-y-2'] > * + * {
+  margin-top: 0.05rem !important;
+}
+
+#project-1 .pdf-developer-perspective .project-rich-content li {
+  gap: 0.4rem;
+}
+
 @media (max-width: 640px) {
   .project-rich-content table {
     min-width: 520px;
