@@ -164,14 +164,14 @@ export const CLOSING_BLOCKS = [
     titleEn: 'Development Philosophy',
     titleKo: '구현하기 전에 흐름을 먼저 설계합니다.',
     body:
-      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">설계 방식</span><span class="block leading-[1.72]">요구사항이 들어오면 구현 전에 전체 구조와 데이터 흐름을 먼저 설계합니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">실제 적용</span><span class="block leading-[1.72]">FeedShop에서 캐시 전략을 데이터 특성별로 분리하고,\n3M에서 도메인 책임부터 나눈 뒤 인증 흐름을 설계한 것이\n모두 이 접근에서 나온 결과입니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">지속적 개선</span><span class="block leading-[1.72]">기능 구현 후에도 더 나은 구조를 스스로 찾아보고,\n원인과 과정을 정리하며 개선하는 습관을 이어가고 있습니다.</span></div>',
+      '<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">설계 방식</span><span class="block leading-[1.58]">요구사항이 들어오면 구현 전에 전체 구조와\n데이터 흐름을 먼저 설계합니다.</span></div>\n\n<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">실제 적용</span><span class="block leading-[1.58]">FeedShop에서는 데이터 특성에 따라 캐시 전략을 분리했고,\n3M에서는 도메인 책임을 나누고, 인증 흐름을 설계했습니다.</span></div>\n\n<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">지속적 개선</span><span class="block leading-[1.58]">기능 구현 후에도 원인과 과정을 되짚으며,\n더 나은 구조로 다듬는 습관을 이어가고 있습니다.</span></div>',
   },
   {
     icon: 'ri-seedling-line',
     titleEn: 'Growth Direction',
     titleKo: '도구는 활용하되 판단은 양보하지 않습니다.',
     body:
-      '<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.72]">FeedShop 프론트엔드 작업을 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡은 뒤 AI 에이전트로 마무리하는 방식으로 직접 구현했습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.72]">PR마다 반복되는 코드리뷰 과정을 자동화하기 위해\nn8n 기반 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1.5 block text-base font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.72]">도구를 적극 활용하되, 어떤 구조로 만들지, 왜 이 기술을 선택할지,\n결과가 의도대로 동작하는지에 대한 판단과 책임은 스스로에게 둡니다.</span></div>',
+      '<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">도구 활용 방식</span><span class="block leading-[1.58]">FeedShop 프론트엔드는 생성형 AI로 프롬프트를 설계하고,\nAI 툴로 구조를 잡고, 에이전트를 활용해 마무리 구현했습니다.</span></div>\n\n<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">현재 성장 방향</span><span class="block leading-[1.58]">반복되는 코드리뷰 과정을 줄이기 위해,\nn8n 기반 코드리뷰 자동화 워크플로를 구상하고 있습니다.</span></div>\n\n<div><span class="mb-1 block text-base font-bold text-slate-900 dark:text-slate-100">판단과 책임</span><span class="block leading-[1.58]">도구를 활용하더라도 구조 설계, 기술 선택,\n결과 검증에 대한 판단과 책임은 직접 가져갑니다.</span></div>',
   },
 ] as const
 
