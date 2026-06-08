@@ -294,6 +294,9 @@ const codeTokenColor: Record<string, string> = {
   '@Cacheable': blue,
   '@Transactional': blue,
   '@UniqueConstraint': blue,
+  columnNames: blue,
+  event_id: blue,
+  voter_id: blue,
   fetchJoin: blue,
   leftJoin: blue,
   selectFrom: blue,
@@ -305,9 +308,13 @@ const codeTokenColor: Record<string, string> = {
   NOT_SUPPORTED: amber,
   DataIntegrityViolationException: red,
   increment: green,
+  redisTemplate: green,
+  opsForValue: green,
+  feedVotePersistenceService: green,
   saveVote: green,
   existsByEventIdAndUserId: red,
   save: red,
+  success: violet,
   return: violet,
   public: violet,
   if: violet,
@@ -1252,9 +1259,9 @@ function FeedShopP2ProblemThinkingSlide() {
 function FeedShopP2SolutionSlide() {
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.82fr 1.08fr 0.82fr', gap: 9, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.9fr 1.22fr 0.88fr', gap: 9, height: '100%' }}>
         <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
               <SectionLabel>Solution 1</SectionLabel>
               <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>1단계 — DB 유니크 제약 추가</h2>
@@ -1262,17 +1269,19 @@ function FeedShopP2SolutionSlide() {
                 <strong>(event_id, voter_id)</strong> 조합에 유니크 제약을 걸어 DB 레벨에서 중복 투표를 차단
               </p>
             </div>
-            <CodeBox
-              lines={[
-                '// FeedVote.java (24~26번 라인)',
-                '@UniqueConstraint(name = "uk_feed_votes_event_voter",',
-                '    columnNames = {"event_id", "voter_id"})',
-              ]}
-            />
+            <div style={{ display: 'grid', alignContent: 'center' }}>
+              <CodeBox
+                lines={[
+                  '// FeedVote.java (24~26번 라인)',
+                  '@UniqueConstraint(name = "uk_feed_votes_event_voter",',
+                  '    columnNames = {"event_id", "voter_id"})',
+                ]}
+              />
+            </div>
           </div>
         </Panel>
         <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
               <SectionLabel>Solution 2</SectionLabel>
               <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>2단계 — 저장 로직 분리 + 예외 처리</h2>
@@ -1280,23 +1289,25 @@ function FeedShopP2SolutionSlide() {
                 중복 삽입 시도는 <strong>DataIntegrityViolationException</strong>으로 감지하고, 예외 처리로 200 반환
               </p>
             </div>
-            <CodeBox
-              lines={[
-                '// FeedVoteService.java (59번 라인)',
-                '@Transactional(propagation = Propagation.NOT_SUPPORTED)',
-                'public FeedVoteResponseDto voteFeed(...) {',
-                '    try {',
-                '        savedVote = feedVotePersistenceService.saveVote(vote);',
-                '    } catch (DataIntegrityViolationException e) {',
-                '        return FeedVoteResponseDto.success(false, ...); // 중복 → 200 반환',
-                '    }',
-                '}',
-              ]}
-            />
+            <div style={{ display: 'grid', alignContent: 'center' }}>
+              <CodeBox
+                lines={[
+                  '// FeedVoteService.java (59번 라인)',
+                  '@Transactional(propagation = Propagation.NOT_SUPPORTED)',
+                  'public FeedVoteResponseDto voteFeed(...) {',
+                  '    try {',
+                  '        savedVote = feedVotePersistenceService.saveVote(vote);',
+                  '    } catch (DataIntegrityViolationException e) {',
+                  '        return FeedVoteResponseDto.success(false, ...); // 중복 → 200 반환',
+                  '    }',
+                  '}',
+                ]}
+              />
+            </div>
           </div>
         </Panel>
         <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
               <SectionLabel>Solution 3</SectionLabel>
               <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
@@ -1304,12 +1315,14 @@ function FeedShopP2SolutionSlide() {
                 카운터를 Redis로 분리해 DB 락 경합 자체를 제거
               </p>
             </div>
-            <CodeBox
-              lines={[
-                '// FeedVoteService.java',
-                'redisTemplate.opsForValue().increment("vote:count:" + feedId);',
-              ]}
-            />
+            <div style={{ display: 'grid', alignContent: 'center' }}>
+              <CodeBox
+                lines={[
+                  '// FeedVoteService.java',
+                  'redisTemplate.opsForValue().increment("vote:count:" + feedId);',
+                ]}
+              />
+            </div>
           </div>
         </Panel>
       </div>
