@@ -341,18 +341,18 @@ function renderCodeTokens(line: string) {
   )
 }
 
-function CodeBox({ lines }: { lines: string[] }) {
+function CodeBox({ lines, compact = false }: { lines: string[]; compact?: boolean }) {
   return (
     <pre
       style={{
-        margin: '8px 0 0',
+        margin: compact ? 0 : '8px 0 0',
         background: '#f1f5f9',
         border: `1px solid ${line}`,
         borderRadius: 9,
-        padding: '8px 10px',
+        padding: compact ? '7px 9px' : '8px 10px',
         color: '#111827',
-        fontSize: 9.5,
-        lineHeight: 1.42,
+        fontSize: compact ? 8.8 : 9.5,
+        lineHeight: compact ? 1.34 : 1.42,
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
         whiteSpace: 'pre-wrap',
       }}
@@ -1200,10 +1200,11 @@ function FeedShopP2ProblemThinkingSlide() {
                   </div>
                 ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.12fr 0.88fr', gap: 11, minHeight: 0 }}>
-              <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 6, minHeight: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 11, alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 6 }}>
                 <div style={{ color: red, fontSize: 12.5, fontWeight: 950 }}>수정 전 구조</div>
                 <CodeBox
+                  compact
                   lines={[
                     '// FeedVoteService.java — 수정 전 구조 (TOCTOU 취약)',
                     'if (feedVoteRepository.existsByEventIdAndUserId(eventId, userId)) {',
@@ -1214,7 +1215,7 @@ function FeedShopP2ProblemThinkingSlide() {
                   ]}
                 />
               </div>
-              <div style={{ display: 'grid', gap: 8, alignContent: 'center' }}>
+              <div style={{ display: 'grid', gap: 8, alignContent: 'start', paddingTop: 21 }}>
                 <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
                   <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 5 }}>① 중복 체크</div>
                   <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.36, fontWeight: 760 }}>
