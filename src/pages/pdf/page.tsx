@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import PortfolioBody from '@/pages/home/PortfolioBody'
+import PdfPortfolio from '@/pages/pdf/PdfPortfolio'
 
 /**
- * 웹과 동일한 섹션·스타일을 쓰고, 미리보기 폭을 A4 가로(297mm)에 맞춥니다.
- * 인쇄·PDF 저장 시 A4 landscape 비율로 저장됩니다.
+ * PDF 전용 A4 가로 슬라이드 레이아웃입니다.
+ * 웹 본문과 분리해 인쇄 시 페이지 중간 잘림을 줄입니다.
  */
 export default function PdfPortfolioPage() {
   const [isMobileViewport, setIsMobileViewport] = useState(
@@ -49,12 +49,11 @@ export default function PdfPortfolioPage() {
 
       <div className="overflow-x-auto pb-8 pt-14 sm:pb-10 print:overflow-visible print:pb-0 print:pt-0">
         <div
-          data-portfolio-mode="pdf-fluid"
           className={`portfolio-pdf-column mx-auto overflow-hidden ${
             isMobileViewport ? 'w-full max-w-none shadow-none' : 'w-[297mm] max-w-full shadow-2xl'
           } bg-[#0f172a] text-gray-100 print:overflow-visible print:mx-0 print:w-full print:max-w-none print:shadow-none`}
         >
-          <PortfolioBody pdfStackHeroAbout={!isMobileViewport} />
+          <PdfPortfolio />
         </div>
       </div>
     </div>

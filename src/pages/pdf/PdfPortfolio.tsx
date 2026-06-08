@@ -1,1094 +1,1356 @@
 import React from 'react'
 import {
-  HERO_NAME, HERO_ROLE_BADGE, HERO_ROLE_TITLE,
-  HERO_PERSONAL_INFO, HERO_SKILL_GROUPS,
-  ABOUT_CARDS, EXPERIENCE_ITEMS, CLOSING_BLOCKS, RESOURCE_LINKS, CONTACT_LINKS,
+  ABOUT_CARDS,
+  ABOUT_SECTION,
+  CLOSING_BLOCKS,
+  CLOSING_SECTION,
+  CONTACT_LINKS,
+  EXPERIENCE_ITEMS,
+  HERO_NAME,
+  HERO_PERSONAL_INFO,
+  HERO_ROLE_BADGE,
+  HERO_ROLE_TITLE,
+  HERO_SKILL_GROUPS,
+  PROJECTS_SECTION,
+  RESOURCE_LINKS,
+  RESOURCES_SECTION,
 } from '@/content/portfolio'
-import { PROJECTS } from '@/content/projects'
+import { PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
 
 declare const __BASE_PATH__: string
 
-/* ─── Design Tokens ─── */
-const NAVY       = '#0f172a'
-const BLUE       = '#2563eb'
-const BLUE_LIGHT = '#eff6ff'
-const GRAY1      = '#f8fafc'
-const GRAY2      = '#e2e8f0'
-const GRAY3      = '#64748b'
-const WHITE      = '#ffffff'
-const HERO_SKILL_TAGS = HERO_SKILL_GROUPS.flatMap((group) => group.tags)
+const navy = '#0f172a'
+const blue = '#2563eb'
+const slate = '#334155'
+const muted = '#64748b'
+const line = '#dbe3ef'
+const soft = '#f8fafc'
+const white = '#ffffff'
+const green = '#059669'
+const amber = '#d97706'
+const red = '#dc2626'
+const violet = '#7c3aed'
 
-/* ─── Slide wrapper ─── */
-function Slide({
-  children,
-  bg = WHITE,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  pageNum: _pageNum,
-  minHeight = false,
+const feedshop = PROJECTS[0]
+const m3 = PROJECTS[1]
+const heroSkillTags = HERO_SKILL_GROUPS.flatMap((group) => group.tags)
+
+function asset(path?: string): string {
+  if (!path) return ''
+  return `${__BASE_PATH__}${path.replace(/^\//, '')}`
+}
+
+function withAssetSrc(html = ''): string {
+  return html.replace(
+    /src="(?!http|data|\/\/)([^"]+)"/g,
+    (_, src) => `src="${asset(src)}"`,
+  )
+}
+
+function extractTable(html: string): string {
+  const tableStart = html.indexOf('<table')
+  if (tableStart < 0) return ''
+  const tableEnd = html.indexOf('</table>', tableStart) + '</table>'.length
+  const wrapStart = html.lastIndexOf('<div', tableStart)
+  const wrapEnd = html.indexOf('</div>', tableEnd) + '</div>'.length
+  return html.slice(wrapStart >= 0 ? wrapStart : tableStart, wrapEnd > 0 ? wrapEnd : tableEnd)
+}
+
+function extractAfterTable(html: string): string {
+  const tableEnd = html.indexOf('</table>')
+  if (tableEnd < 0) return html
+  const wrapEnd = html.indexOf('</div>', tableEnd) + '</div>'.length
+  return html.slice(wrapEnd > 0 ? wrapEnd : tableEnd + '</table>'.length)
+}
+
+function extractResultLead(html: string): string {
+  const tableStart = html.indexOf('<table')
+  if (tableStart < 0) return html
+  const beforeTable = html.slice(0, tableStart)
+  const leadStart = beforeTable.indexOf('<p')
+  const leadEnd = beforeTable.indexOf('</p>')
+  if (leadStart >= 0 && leadEnd >= 0) return beforeTable.slice(leadStart, leadEnd + '</p>'.length)
+  return beforeTable
+}
+
+function toPlainText(html: string): string {
+  return html
+    .replace(/<br\s*\/?>/g, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .trim()
+}
+
+function parseClosingItems(body: string): Array<{ title: string; text: string }> {
+  return Array.from(body.matchAll(/<div><span[^>]*>(.*?)<\/span><span[^>]*>(.*?)<\/span><\/div>/gs)).map((match) => ({
+    title: toPlainText(match[1]),
+    text: toPlainText(match[2]),
+  }))
+}
+
+function ParagraphRich({
+  html,
+  size,
+  lineHeight,
 }: {
-  children: React.ReactNode
-  bg?: string
-  pageNum: number
-  minHeight?: boolean
+  html: string
+  size: number
+  lineHeight: number
 }) {
+  const paragraphs = html.split(/\n+/).filter((line) => line.trim())
+
   return (
-    <div
+    <div style={{ display: 'grid', gap: 9 }}>
+      {paragraphs.map((paragraph) => (
+        <Rich key={paragraph} html={paragraph} size={size} lineHeight={lineHeight} />
+      ))}
+    </div>
+  )
+}
+
+function Slide({
+  eyebrow,
+  title,
+  subtitle,
+  children,
+  tone = 'light',
+  dense = false,
+}: {
+  eyebrow?: string
+  title?: string
+  subtitle?: string
+  children: React.ReactNode
+  tone?: 'light' | 'navy'
+  dense?: boolean
+}) {
+  const isNavy = tone === 'navy'
+  return (
+    <section
+      className="pdf-slide"
       style={{
         width: '297mm',
-        ...(minHeight ? { minHeight: '210mm' } : { height: '210mm' }),
-        background: bg,
-        overflow: 'hidden',
-        pageBreakAfter: 'always',
+        height: '210mm',
         breakAfter: 'page',
+        pageBreakAfter: 'always',
+        overflow: 'hidden',
         boxSizing: 'border-box',
-        fontFamily: "'Inter', 'Noto Sans KR', sans-serif",
+        background: isNavy ? navy : white,
+        color: isNavy ? white : navy,
+        fontFamily: "'Inter', 'Noto Sans KR', system-ui, sans-serif",
         position: 'relative',
+        padding: dense ? '13mm 16mm' : '16mm 18mm',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {/* 4px blue top strip */}
-      <div style={{ height: 4, background: BLUE, width: '100%' }} />
-      {children}
-    </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          height: 4,
+          width: '100%',
+          background: blue,
+        }}
+      />
+      {(eyebrow || title || subtitle) && (
+        <header style={{ flexShrink: 0, marginBottom: dense ? 12 : 16, position: 'relative', zIndex: 1 }}>
+          {eyebrow && (
+            <div
+              style={{
+                color: isNavy ? '#93c5fd' : blue,
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                marginBottom: 5,
+              }}
+            >
+              {eyebrow}
+            </div>
+          )}
+          {title && (
+            <h1
+              style={{
+                margin: 0,
+                fontSize: dense ? 25 : 30,
+                lineHeight: 1.16,
+                letterSpacing: '-0.02em',
+                fontWeight: 900,
+              }}
+            >
+              {title}
+            </h1>
+          )}
+          {subtitle && (
+            <p
+              style={{
+                margin: '7px 0 0',
+                color: isNavy ? '#cbd5e1' : muted,
+                fontSize: 13,
+                lineHeight: 1.5,
+              }}
+            >
+              {subtitle}
+            </p>
+          )}
+        </header>
+      )}
+      <div style={{ minHeight: 0, flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 1 }}>
+        {children}
+      </div>
+    </section>
   )
 }
 
-/* ─── Header bar ─── */
-function Header({ title, sub }: { title: string; sub?: string }) {
-  return (
-    <div style={{
-      height: 40,
-      background: NAVY,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 24px',
-    }}>
-      <span style={{ color: WHITE, fontWeight: 700, fontSize: 15 }}>{title}</span>
-      {sub && <span style={{ color: '#94a3b8', fontSize: 11 }}>{sub}</span>}
-    </div>
-  )
-}
-
-/* ─── Content area ─── */
-function Content({
-  children,
-  center = true,
-  padding = '16px 24px',
+function Rich({
+  html,
+  className = '',
+  size = 12,
+  lineHeight = 1.55,
 }: {
-  children: React.ReactNode
-  center?: boolean
-  padding?: string
+  html: string
+  className?: string
+  size?: number
+  lineHeight?: number
 }) {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: center ? 'center' : 'flex-start',
-      padding,
-      /* minHeight 부모에서도 중앙 정렬이 되도록 min-height 고정값 사용 */
-      minHeight: 'calc(210mm - 44px)',
-      boxSizing: 'border-box',
-    }}>
-      {children}
-    </div>
-  )
-}
-
-
-/* ─── HTML Content wrapper (이미지 src에 BASE_PATH 주입) ─── */
-function HtmlContent({ html }: { html: string }) {
-  const fixed = html.replace(
-    /src="(?!http|data|\/\/)([^"]+)"/g,
-    (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`
-  )
-  return (
     <div
-      className="pdf-content"
-      style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
-      dangerouslySetInnerHTML={{ __html: fixed }}
+      className={`pdf-rich ${className}`}
+      style={{ fontSize: size, lineHeight, color: slate }}
+      dangerouslySetInnerHTML={{ __html: withAssetSrc(html) }}
     />
   )
 }
 
-/* ════════════════════════════════════════════════════════
-   PAGE 1 — Hero (웹 HeroSection과 동일한 레이아웃)
-════════════════════════════════════════════════════════ */
-function HeroSlide() {
+function SectionLabel({ children, color = blue }: { children: React.ReactNode; color?: string }) {
   return (
-    <div style={{
-      width: '297mm', height: '210mm',
-      background: WHITE,
-      overflow: 'hidden',
-      pageBreakAfter: 'always',
-      breakAfter: 'page',
-      boxSizing: 'border-box',
-      fontFamily: "'Inter', 'Noto Sans KR', sans-serif",
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-    }}>
-      {/* 메인 콘텐츠 — 텍스트 왼쪽, 사진 오른쪽 */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 44,
-        padding: '0 52px',
-        width: '100%',
-        boxSizing: 'border-box',
-      }}>
-        {/* 왼쪽: 텍스트 */}
-        <div style={{ minWidth: 0, flex: 1, maxWidth: 500 }}>
-          {/* 뱃지 */}
-          <div style={{
-            display: 'inline-block',
-            border: `1px solid ${NAVY}`,
-            color: NAVY,
-            borderRadius: 999,
-            padding: '4px 14px',
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: 2,
-            textTransform: 'uppercase',
-            marginBottom: 10,
-          }}>
-            {HERO_ROLE_BADGE}
-          </div>
-
-          {/* 이름 */}
-          <div style={{
-            fontSize: 54,
-            fontWeight: 800,
-            color: '#111827',
-            lineHeight: 1.1,
-            marginBottom: 8,
-            letterSpacing: '-1px',
-          }}>
-            {HERO_NAME}
-          </div>
-
-          {/* 태그라인 */}
-          <p style={{
-            fontSize: 14,
-            color: '#6b7280',
-            lineHeight: 1.6,
-            marginBottom: 14,
-          }}>
-            {HERO_ROLE_TITLE}
-          </p>
-
-          {/* 구분선 */}
-          <div style={{ height: 1, background: `${NAVY}12`, marginBottom: 12 }} />
-
-          {/* 연락처 */}
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, marginBottom: 14 }}>
-            {HERO_PERSONAL_INFO.map((item) => (
-              <li key={item.text} style={{
-                display: 'flex', alignItems: 'center', gap: 9,
-                fontSize: 12.5, color: '#4b5563',
-                marginBottom: 5,
-              }}>
-                <i className={item.icon} style={{ color: NAVY, fontSize: 13, width: 18, textAlign: 'center', flexShrink: 0 }} />
-                <span>{item.text}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* 기술 스택 라벨 */}
-          <p style={{
-            fontSize: 10, fontWeight: 700,
-            textTransform: 'uppercase', letterSpacing: 2,
-            color: BLUE, marginBottom: 7,
-          }}>
-            기술 스택
-          </p>
-
-          {/* 기술 스택 태그 */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-            {HERO_SKILL_TAGS.map((tag) => (
-              <span key={tag} style={{
-                border: `1px solid ${BLUE}22`,
-                background: BLUE_LIGHT,
-                color: NAVY,
-                borderRadius: 999,
-                padding: '3px 11px',
-                fontSize: 11,
-                fontWeight: 500,
-                whiteSpace: 'nowrap',
-              }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* 오른쪽: 증명사진 */}
-        <div style={{ flexShrink: 0 }}>
-          <div style={{
-            width: 162, height: 216,
-            borderRadius: 14,
-            border: `1.5px solid ${NAVY}20`,
-            background: '#f4f7fb',
-            overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(15,23,42,0.10)',
-          }}>
-            <img
-              src={`${__BASE_PATH__}profile-photo.png`}
-              alt="정민수 증명사진"
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            />
-          </div>
-        </div>
-      </div>
-
+    <div
+      style={{
+        color,
+        fontSize: 10,
+        fontWeight: 900,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+        marginBottom: 7,
+      }}
+    >
+      {children}
     </div>
   )
 }
 
-/* ════════════════════════════════════════════════════════
-   PROJECT SLIDES helper
-════════════════════════════════════════════════════════ */
-const feedshop = PROJECTS[0]
-const m3 = PROJECTS[1]
-
-/* ─── Page 2: FeedShop overview + tech + roles (합쳐서 1페이지) ─── */
-function FeedShopOverview() {
+function Panel({
+  children,
+  pad = 12,
+  borderColor = line,
+  background = soft,
+  accent,
+}: {
+  children: React.ReactNode
+  pad?: number
+  borderColor?: string
+  background?: string
+  accent?: string
+}) {
   return (
-    <Slide pageNum={2}>
-      <Header title="FeedShop — Service Overview · Tech Stack · Roles" sub={`${feedshop.period} · ${feedshop.teamSize} · ${feedshop.contribution}`} />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '18px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {/* 1. SERVICE OVERVIEW */}
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>SERVICE OVERVIEW</div>
-            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: feedshop.serviceOverview ?? '' }} />
+    <div
+      style={{
+        background,
+        border: `1px solid ${borderColor}`,
+        borderRadius: 12,
+        padding: pad,
+        minHeight: 0,
+        borderTop: accent ? `4px solid ${accent}` : `1px solid ${borderColor}`,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+function KpiCard({
+  label,
+  value,
+  caption,
+  color = blue,
+}: {
+  label: string
+  value: string
+  caption?: string
+  color?: string
+}) {
+  return (
+    <div
+      style={{
+        background: white,
+        border: `1px solid ${color}30`,
+        borderTop: `4px solid ${color}`,
+        borderRadius: 14,
+        padding: '13px 14px',
+      }}
+    >
+      <div style={{ color, fontSize: 25, lineHeight: 1, fontWeight: 950, letterSpacing: '-0.03em' }}>{value}</div>
+      <div style={{ marginTop: 6, color: navy, fontSize: 12, fontWeight: 950 }}>{label}</div>
+      {caption && <div style={{ marginTop: 4, color: muted, fontSize: 10.5, lineHeight: 1.35 }}>{caption}</div>}
+    </div>
+  )
+}
+
+function CodeBox({ lines }: { lines: string[] }) {
+  return (
+    <pre
+      style={{
+        margin: '8px 0 0',
+        background: '#f1f5f9',
+        border: `1px solid ${line}`,
+        borderRadius: 9,
+        padding: '8px 10px',
+        color: '#111827',
+        fontSize: 9.5,
+        lineHeight: 1.42,
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+        whiteSpace: 'pre-wrap',
+      }}
+    >
+      {lines.join('\n')}
+    </pre>
+  )
+}
+
+function ProjectCaseCover({
+  projectName,
+  eyebrow,
+  statement,
+  description,
+  metrics,
+}: {
+  projectName: string
+  eyebrow: string
+  statement: string
+  description: string
+  metrics: Array<{ label: string; value: string; caption?: string; color?: string }>
+}) {
+  return (
+    <Slide tone="navy" dense>
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: '1.08fr 0.92fr',
+          gap: 28,
+          alignItems: 'center',
+        }}
+      >
+        <div>
+          <div style={{ color: '#93c5fd', fontSize: 12, fontWeight: 900, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 10 }}>
+            {eyebrow}
           </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          {/* 2. TECH STACK */}
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {feedshop.techStack.map(t => (
-                <span key={t} style={{
-                  background: BLUE_LIGHT, color: BLUE, borderRadius: 6,
-                  padding: '3px 10px', fontSize: 12, fontWeight: 600,
-                }}>{t}</span>
-              ))}
-            </div>
+          <h1 style={{ margin: 0, color: white, fontSize: 43, lineHeight: 1.12, fontWeight: 950, letterSpacing: '-0.035em' }}>
+            {projectName}
+          </h1>
+          <p style={{ margin: '20px 0 0', color: '#e2e8f0', fontSize: 25, lineHeight: 1.34, fontWeight: 900, letterSpacing: '-0.025em' }}>
+            {statement}
+          </p>
+          <p style={{ margin: '18px 0 0', color: '#94a3b8', fontSize: 13.5, lineHeight: 1.6, maxWidth: 620 }}>
+            {description}
+          </p>
+        </div>
+        <div style={{ display: 'grid', gap: 12 }}>
+          {metrics.map((metric) => (
+            <KpiCard key={metric.label} {...metric} />
+          ))}
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
+function Tags({ items }: { items: readonly string[] }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+      {items.map((item) => (
+        <span
+          key={item}
+          style={{
+            padding: '5px 10px',
+            borderRadius: 999,
+            background: '#eff6ff',
+            border: '1px solid #bfdbfe',
+            color: '#1e3a8a',
+            fontSize: 12,
+            fontWeight: 850,
+          }}
+        >
+          {item}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+function HeroSlide() {
+  return (
+    <Slide tone="light">
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: '180px 1fr',
+          gap: 42,
+          alignItems: 'center',
+          padding: '0 18mm',
+        }}
+      >
+        <div
+          style={{
+            width: 178,
+            height: 236,
+            borderRadius: 18,
+            overflow: 'hidden',
+            border: `1px solid ${line}`,
+            background: '#f1f5f9',
+          }}
+        >
+          <img src={asset('profile-photo.png')} alt="정민수 증명사진" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+        <div>
+          <div
+            style={{
+              display: 'inline-flex',
+              border: `1px solid ${navy}`,
+              borderRadius: 999,
+              padding: '5px 15px',
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: '0.17em',
+              textTransform: 'uppercase',
+              marginBottom: 14,
+            }}
+          >
+            {HERO_ROLE_BADGE}
           </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          {/* 3. ROLES */}
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {feedshop.roles.map(role => (
-                <div key={role.title} style={{
-                  background: GRAY1, border: `1px solid ${GRAY2}`,
-                  borderRadius: 8, padding: '9px 14px',
-                  display: 'flex', alignItems: 'flex-start', gap: 10,
-                }}>
-                  <span style={{ fontSize: 18, flexShrink: 0 }}>{role.icon}</span>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 3 }}>{role.title}</div>
-                    <div style={{ fontSize: 12, color: '#475569', lineHeight: 1.5 }}
-                      dangerouslySetInnerHTML={{ __html: role.detail }} />
-                  </div>
+          <h1 style={{ margin: 0, fontSize: 58, lineHeight: 1.08, fontWeight: 950 }}>
+            {HERO_NAME}
+          </h1>
+          <p style={{ margin: '12px 0 18px', fontSize: 20, color: '#6b7280', fontWeight: 800 }}>
+            {HERO_ROLE_TITLE}
+          </p>
+          <div style={{ height: 1, background: line, marginBottom: 16 }} />
+          <div style={{ display: 'grid', gap: 7, marginBottom: 18 }}>
+            {HERO_PERSONAL_INFO.map((row) => (
+              <div key={row.text} style={{ display: 'flex', alignItems: 'center', gap: 10, color: slate, fontSize: 14 }}>
+                <i className={row.icon} style={{ color: navy, fontSize: 15, width: 18 }} />
+                <span>{row.text}</span>
+              </div>
+            ))}
+          </div>
+          <SectionLabel>기술 스택</SectionLabel>
+          <Tags items={heroSkillTags} />
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
+function AboutSlide() {
+  return (
+    <Slide eyebrow={ABOUT_SECTION.kicker} title={ABOUT_SECTION.title} subtitle={ABOUT_SECTION.intro}>
+      <div style={{ display: 'grid', gridTemplateRows: 'repeat(3, 1fr)', gap: 10, height: '100%' }}>
+        {ABOUT_CARDS.map((card, idx) => (
+          <Panel key={card.title} pad={12} background={white} accent={idx === 0 ? blue : idx === 1 ? green : violet}>
+            <div style={{ display: 'grid', gridTemplateColumns: '96px 1fr', gap: 18, alignItems: 'center', height: '100%' }}>
+              <div style={{ borderRight: `1px solid ${line}`, height: '100%', display: 'grid', placeItems: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ color: blue, fontSize: 34, fontWeight: 950, lineHeight: 1 }}>{String(idx + 1).padStart(2, '0')}</div>
+                  <div style={{ marginTop: 8, fontWeight: 950, fontSize: 14.2, lineHeight: 1.25 }}>{card.title}</div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function FeedShopTechRoles() { return null }
-
-/* ─── Page 4: FeedShop architecture image ─── */
-function FeedShopArchImage() {
-  return (
-    <Slide pageNum={4} minHeight>
-      <Header title="FeedShop — Architecture" sub="인프라 구조도 · Architecture Details" />
-      <div style={{
-        height: 'calc(210mm - 44px)',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: '16px 28px', boxSizing: 'border-box',
-      }}>
-        {/* 이미지 (크게) */}
-        <img
-          src={`${__BASE_PATH__}${feedshop.architectureImage?.replace(/^\//, '')}`}
-          alt="FeedShop Architecture"
-          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', marginBottom: 16 }}
-        />
-        <div style={{ height: 1, background: GRAY2, width: '100%', marginBottom: 16 }} />
-        {/* Architecture Details — 세로 나열 */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {feedshop.architectureDetails?.map(section => (
-            <div key={section.title}>
-              <div style={{
-                fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 6,
-                paddingBottom: 4, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
-              }}>
-                {section.title}
               </div>
-              {section.items.map((item, idx) => (
-                <ul key={idx} style={{ margin: '4px 0 0', paddingLeft: 18 }}>
-                  {item.bullets.map((b, bi) => (
-                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.65, marginBottom: 3 }}>{b}</li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function FeedShopArchDetails() { return null }
-
-/* ─── Pages 6–9: FeedShop Problem 1 ─── */
-function FeedShopP1Problem() {
-  const sec = feedshop.problemSections![0]
-  return (
-    <Slide pageNum={6} minHeight>
-      <Header title={`FeedShop — ${sec.headline}`} sub="Problem" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        {feedshop.developerPerspective && (
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: feedshop.developerPerspective }} />
-          </div>
-        )}
-        <div style={{ height: 1, background: GRAY2 }} />
-        {feedshop.problemEnvironment && (
-          <div style={{ padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}` }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: GRAY3, marginBottom: 3 }}>🖥️ 로컬 테스트 환경</div>
-            <div style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>{feedshop.problemEnvironment}</div>
-          </div>
-        )}
-        <div style={{ height: 1, background: GRAY2 }} />
-        <div>
-          <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-/* Thinking + Solution 1단계 */
-function FeedShopP1Thinking() {
-  const sec = feedshop.problemSections![0]
-  // solution HTML에서 1단계만 추출 (2단계 시작 전까지)
-  const sol = sec.solution
-  const idx2 = sol.indexOf('2단계')
-  const block2Start = idx2 > 0 ? sol.lastIndexOf('<div', idx2) : sol.length
-  const stage1Html = sol.substring(0, block2Start) + '</div>'
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-
-  return (
-    <Slide pageNum={7} minHeight>
-      <Header title="FeedShop — Problem 1 / Thinking · Solution 1단계" sub="쿼리 최적화" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div>
-          <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(sec.thinking) }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        <div>
-          <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-/* Solution 2단계 */
-function FeedShopP1Solution() {
-  const sec = feedshop.problemSections![0]
-  const sol = sec.solution
-  const idx2 = sol.indexOf('2단계')
-  const block2Start = idx2 > 0 ? sol.lastIndexOf('<div', idx2) : 0
-  const stage2Html = sol.substring(block2Start)
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-
-  // result에서 표만 추출 (<table>...</table>)
-  const result = sec.result
-  const tableStart = result.indexOf('<table')
-  const tableEnd = result.indexOf('</table>') + '</table>'.length
-  // 표 감싸는 div까지 추출
-  const wrapStart = result.lastIndexOf('<div', tableStart)
-  const wrapEnd = result.indexOf('</div>', tableEnd) + '</div>'.length
-  const tableWrapHtml = wrapStart >= 0 ? result.substring(wrapStart, wrapEnd) : ''
-
-  return (
-    <Slide pageNum={8} minHeight>
-      <Header title="FeedShop — Problem 1 / Solution 2단계" sub="캐시 전략 적용" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div>
-          <div style={{ fontSize: 10, color: '#2563eb', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 2단계</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(stage2Html) }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        <div>
-          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>RESULT — 성능 수치</div>
-          <div className="pdf-content" style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(tableWrapHtml) }} />
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function FeedShopP1Result() {
-  const sec = feedshop.problemSections![0]
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-  // 표 이후 이미지 그리드만 추출
-  const result = sec.result
-  const tableEnd = result.indexOf('</table>') + '</table>'.length
-  const afterTableDiv = result.indexOf('</div>', tableEnd) + '</div>'.length
-  const imagesHtml = result.substring(afterTableDiv)
-
-  return (
-    <Slide pageNum={9} minHeight>
-      <Header title="FeedShop — Problem 1 / 결과" sub="nGrinder Before / After" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div>
-          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>RESULT — nGrinder 성능 비교</div>
-          <div className="pdf-content" style={{ fontSize: 12, lineHeight: 1.6, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(imagesHtml) }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        {/* 핵심 성과 요약 */}
-        <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 12, padding: '14px 18px' }}>
-          <div style={{ fontSize: 11, fontWeight: 800, color: '#065f46', marginBottom: 10 }}>🎯 핵심 성과 요약</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 20px' }}>
-            {[
-              '응답시간 91% 단축 (6,818ms → 638ms, 동시 1,000명)',
-              'TPS 216% 향상 (138.7 → 438.3, 동시 1,000명)',
-              'SQL 실행 횟수 42회 → 0회 (Cache Hit 시)',
-              '쿼리 최적화 + Redis 캐시 2-Layer 전략',
-            ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', fontSize: 12, color: '#065f46' }}>
-                <span style={{ color: '#059669', flexShrink: 0, fontWeight: 700 }}>✓</span>
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-/* ─── Pages 10–12: FeedShop Problem 2 ─── */
-function FeedShopP2Problem() {
-  const sec = feedshop.problemSections![1]
-  return (
-    <Slide pageNum={10} minHeight>
-      <Header title={`FeedShop — ${sec.headline}`} sub="Problem · Thinking" />
-      <Content center padding="14px 24px">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
-          <div>
-            <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: sec.problem.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
-            <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: sec.thinking.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`) }} />
-          </div>
-        </div>
-      </Content>
-    </Slide>
-  )
-}
-
-function FeedShopP2Thinking() { return null }
-
-function FeedShopP2SolutionResult() {
-  const sec = feedshop.problemSections![1]
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-  return (
-    <Slide pageNum={12} minHeight>
-      <Header title="FeedShop — Problem 2 / 해결 & 결과" sub="Solution + Result" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div>
-          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(sec.solution) }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        {/* 설계 요약 */}
-        <div style={{ background: BLUE_LIGHT, border: `1px solid ${BLUE}22`, borderRadius: 10, padding: '12px 16px' }}>
-          <div style={{ fontSize: 10, fontWeight: 800, color: NAVY, marginBottom: 8 }}>설계 요약</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px 16px' }}>
-            {[
-              ['DB 유니크 제약', '물리적 중복 차단 (코드 레벨 우회 불가)'],
-              ['NOT_SUPPORTED 전파', '외부 트랜잭션 없이 예외 처리 가능'],
-              ['Redis INCR', '원자적 연산으로 락 경합 제거'],
-              ['DB = Redis 정합성', '항상 일치 보장'],
-            ].map(([k, v]) => (
-              <div key={k} style={{ fontSize: 11, color: '#334155', lineHeight: 1.5 }}>
-                <span style={{ fontWeight: 700, color: NAVY }}>{k}: </span>{v}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        {/* 수치 강조 카드 */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10 }}>
-          {[
-            { num: '0%', label: '에러율', sub: '동시 50명 ~ 3,000명', color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
-            { num: '0건', label: '중복 투표', sub: 'DB 유니크 제약 + 예외 처리', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
-            { num: '100%', label: '데이터 정합성', sub: 'DB count = Redis count', color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe' },
-            { num: '3,000명', label: '확장성', sub: 'nGrinder 부하 테스트 검증', color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
-          ].map((s) => (
-            <div key={s.label} style={{
-              background: s.bg, border: `1px solid ${s.border}`,
-              borderRadius: 10, padding: '10px 8px', textAlign: 'center',
-            }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.num}</div>
-              <div style={{ fontSize: 10, fontWeight: 700, color: s.color, marginTop: 3 }}>{s.label}</div>
-              <div style={{ fontSize: 8.5, color: '#6b7280', marginTop: 2 }}>{s.sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-/* ─── Pages 13–19: 3M Project ─── */
-function M3Overview() {
-  return (
-    <Slide pageNum={13}>
-      <Header title="3M — Service Overview · Tech Stack · Roles" sub={`${m3.period} · ${m3.teamSize} · ${m3.contribution}`} />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '14px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>SERVICE OVERVIEW</div>
-            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: m3.serviceOverview ?? '' }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>DEVELOPER PERSPECTIVE</div>
-            <div style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-              dangerouslySetInnerHTML={{ __html: m3.developerPerspective ?? '' }} />
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>TECH STACK</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {[...m3.techStack, 'Eureka', 'RabbitMQ', 'Zipkin'].map(t => (
-                <span key={t} style={{ background: BLUE_LIGHT, color: BLUE, borderRadius: 6, padding: '3px 10px', fontSize: 12, fontWeight: 600 }}>{t}</span>
-              ))}
-            </div>
-          </div>
-          <div style={{ height: 1, background: GRAY2 }} />
-          <div>
-            <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>ROLES</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {m3.roles.map(role => (
-                <div key={role.title} style={{
-                  background: GRAY1, border: `1px solid ${GRAY2}`,
-                  borderRadius: 8, padding: '8px 12px',
-                  display: 'flex', alignItems: 'flex-start', gap: 8,
-                }}>
-                  <span style={{ fontSize: 16, flexShrink: 0 }}>{role.icon}</span>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{role.title}</div>
-                    <HtmlContent html={role.detail} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function M3TechRoles() { return null }
-
-
-function M3ArchImage() {
-  return (
-    <Slide pageNum={15} minHeight>
-      <Header title="3M — Architecture" sub="인프라 구조도 · Architecture Details" />
-      <div style={{
-        height: 'calc(210mm - 44px)', display: 'flex', flexDirection: 'column',
-        justifyContent: 'space-evenly', padding: '14px 28px', boxSizing: 'border-box',
-      }}>
-        {/* 이미지 */}
-        <img
-          src={`${__BASE_PATH__}${m3.architectureImage?.replace(/^\//, '')}`}
-          alt="3M Architecture"
-          style={{ maxWidth: '100%', maxHeight: '95mm', objectFit: 'contain', display: 'block', margin: '0 auto' }}
-        />
-        <div style={{ height: 1, background: GRAY2, width: '100%' }} />
-        {/* Architecture Details — 세로 나열 */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {m3.architectureDetails?.map(section => (
-            <div key={section.title}>
-              <div style={{
-                fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 5,
-                paddingBottom: 3, borderBottom: `2px solid ${BLUE}`, display: 'inline-block',
-              }}>
-                {section.title}
-              </div>
-              {section.description && (
-                <p style={{ fontSize: 12, color: GRAY3, marginBottom: 3, lineHeight: 1.5 }}>{section.description}</p>
-              )}
-              {section.items.map((item, idx) => (
-                <ul key={idx} style={{ margin: '3px 0 0', paddingLeft: 18 }}>
-                  {item.bullets.map((b, bi) => (
-                    <li key={bi} style={{ fontSize: 12, color: '#334155', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function M3ArchDetails() { return null }
-
-function M3ProblemThinking() {
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-  // solution에서 1단계만 추출 (2단계 시작 전까지)
-  const sol = m3.solution ?? ''
-  const idx2 = sol.indexOf('2단계')
-  const stage1Html = idx2 > 0 ? sol.substring(0, sol.lastIndexOf('<div', idx2)) + '</div>' : sol
-
-  return (
-    <Slide pageNum={17} minHeight>
-      <Header title={`3M — ${m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'}`} sub="Problem · Thinking · Solution 1단계" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        <div>
-          <div style={{ fontSize: 10, color: '#ef4444', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>PROBLEM</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(m3.problem ?? '') }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        <div>
-          <div style={{ fontSize: 10, color: '#f59e0b', fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>THINKING</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(m3.thinking ?? '') }} />
-        </div>
-        <div style={{ height: 1, background: GRAY2 }} />
-        <div>
-          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 7 }}>SOLUTION — 1단계</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(stage1Html) }} />
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-function M3Solution() { return null }
-
-function M3Result() {
-  const fixSrc = (html: string) => html.replace(/src="(?!http|data|\/\/)([^"]+)"/g, (_, p) => `src="${__BASE_PATH__}${p.replace(/^\//, '')}"`)
-
-  const stage2Content = [
-    'Gateway 인증 필터에서 JWT 검증 후 X-User-* 헤더로 사용자 컨텍스트 전달',
-    '권한 검증은 AOP(@RequiresMasterRole)로 분리 → 역할 체크 로직 통합',
-    '대부분 경로에서 User 서비스 재호출 없이 처리, 추가 정보 필요 시에만 선택 호출',
-  ]
-
-  return (
-    <Slide pageNum={19} minHeight>
-      <Header title="3M — Solution 2단계 · Result" sub="인증 흐름 단순화 · 결과" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        {/* 2단계 — 인증 흐름 단순화 */}
-        <div style={{ background: GRAY1, border: `1px solid ${GRAY2}`, borderRadius: 12, padding: '16px 20px' }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 10, paddingBottom: 6, borderBottom: `2px solid ${BLUE}`, display: 'inline-block' }}>
-            2단계 — 인증 흐름 단순화
-          </div>
-          <ul style={{ margin: 0, paddingLeft: 20 }}>
-            {stage2Content.map((b, i) => (
-              <li key={i} style={{ fontSize: 13, color: '#334155', lineHeight: 1.7, marginBottom: 4 }}>{b}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div style={{ height: 1, background: GRAY2 }} />
-
-        {/* Result */}
-        <div>
-          <div style={{ fontSize: 10, color: '#059669', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>RESULT</div>
-          <div className="pdf-content" style={{ fontSize: 13, lineHeight: 1.65, color: '#334155' }}
-            dangerouslySetInnerHTML={{ __html: fixSrc(m3.result ?? '') }} />
-        </div>
-      </div>
-    </Slide>
-  )
-}
-
-/* ─── Page 20: Experience ─── */
-function ExperiencePage() {
-  const categoryColor: Record<string, string> = {
-    '경력': '#7c3aed',
-    '교육': BLUE,
-    '대외활동': '#059669',
-  }
-  return (
-    <Slide pageNum={20}>
-      <Header title="Experience — 걸어온 여정" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '16px 28px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        {EXPERIENCE_ITEMS.map((item, idx) => (
-          <div key={idx} style={{
-            display: 'flex', gap: 20,
-            padding: '14px 0',
-            borderBottom: idx < EXPERIENCE_ITEMS.length - 1 ? `1px solid ${GRAY2}` : 'none',
-            alignItems: 'flex-start',
-          }}>
-            <div style={{ minWidth: 140, flexShrink: 0 }}>
-              <div style={{ fontSize: 13, color: GRAY3, fontWeight: 600, marginBottom: 5 }}>{item.period}</div>
-              <div style={{
-                display: 'inline-block',
-                background: categoryColor[item.category] ?? BLUE,
-                color: WHITE, borderRadius: 4,
-                padding: '3px 10px', fontSize: 12, fontWeight: 700,
-              }}>
-                {item.category}
+              <div style={{ display: 'grid', alignContent: 'center', gap: 8 }}>
+                <h2 style={{ margin: 0, fontSize: 20.2, fontWeight: 950, lineHeight: 1.25 }}>{card.subtitle}</h2>
+                <Rich html={card.description.replace(/\n/g, '<br/>')} size={14.1} lineHeight={1.46} />
               </div>
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 5 }}>{item.title}</div>
-              <div style={{ fontSize: 14, color: '#334155', lineHeight: 1.65 }}>{item.detail}</div>
-            </div>
-          </div>
+          </Panel>
         ))}
       </div>
     </Slide>
   )
 }
 
-/* ─── Page 21: About ─── */
-function AboutPage() {
-  const accentColors = [
-    { border: '#2563eb', bg: '#eff6ff', iconBg: '#dbeafe', text: '#1e40af' },
-    { border: '#059669', bg: '#ecfdf5', iconBg: '#d1fae5', text: '#065f46' },
-    { border: '#7c3aed', bg: '#f5f3ff', iconBg: '#ede9fe', text: '#5b21b6' },
+function ProjectsOverviewSlide() {
+  const highlights = [
+    {
+      title: '핵심 성과',
+      items: [
+        ['91% 단축', '동시 1,000명 기준 응답시간 6,818ms → 638ms'],
+        ['SQL Count 42 → 0', 'fetchJoin + Redis Cache Hit 기준'],
+        ['중복 투표 0건', '동시 3,000명 부하 테스트 기준'],
+      ],
+      color: blue,
+    },
+    {
+      title: '핵심 성과',
+      items: [
+        ['CBO 0건', 'UserService → Auth 도메인 결합도 제거'],
+        ['단방향 의존', 'Feign DTO 중심 참조, 순환 의존 없음'],
+        ['Gateway\n권한 판단', 'JWT payload 기반 User 재조회 감소'],
+      ],
+      color: violet,
+    },
   ]
-  return (
-    <Slide pageNum={21}>
-      {/* 상단 헤더 영역 */}
-      <div style={{ background: NAVY, padding: '20px 32px 16px' }}>
-        <div style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 5 }}>About</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: '#ffffff', marginBottom: 5 }}>저는 이렇게 일합니다</div>
-        <div style={{ fontSize: 13, color: '#94a3b8' }}>문제는 수치로 파악해 해결하고, 협력은 팀 흐름을 맞춰 정리하며, 맡은 임무는 끝까지 완수합니다.</div>
-      </div>
 
-      {/* 카드 3개 — 남은 높이 꽉 채우기 */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'stretch',
-        gap: 16,
-        padding: '18px 28px',
-        flex: 1,
-        height: 'calc(210mm - 108px)',
-        boxSizing: 'border-box',
-      }}>
-        {ABOUT_CARDS.map((card, i) => {
-          const c = accentColors[i % accentColors.length]
-          return (
-            <div key={card.title} style={{
-              flex: 1,
-              background: c.bg,
-              border: `1.5px solid ${c.border}22`,
-              borderRadius: 14,
-              padding: '22px 20px',
-              display: 'flex',
-              flexDirection: 'column',
-              borderTop: `4px solid ${c.border}`,
-            }}>
-              {/* 아이콘 + 제목 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
-                <div style={{
-                  width: 42, height: 42, borderRadius: 12,
-                  background: c.iconBg,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  <i className={card.icon} style={{ color: c.border, fontSize: 22 }} />
+  return (
+    <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle="핵심 프로젝트를 목적·역할·문제 해결 중심으로 요약했습니다.">
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 13, minHeight: 0 }}>
+          {PROJECT_OVERVIEWS.map((project, idx) => (
+            <Panel key={project.name} pad={14} background={white} accent={idx === 0 ? blue : violet}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto auto auto auto', alignContent: 'space-between', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ color: blue, fontWeight: 900, fontSize: 12 }}>프로젝트 {idx + 1}</span>
+                  <span style={{ background: idx === 0 ? blue : violet, color: white, borderRadius: 999, padding: '5px 10px', fontSize: 10.5, fontWeight: 900 }}>{project.badge}</span>
                 </div>
-                <div style={{ fontSize: 19, fontWeight: 800, color: NAVY }}>{card.title}</div>
+                <h2 style={{ margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: '-0.03em' }}>{project.name}</h2>
+                <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.52, fontWeight: 750 }}>{project.description}</p>
+                <div
+                  style={{
+                    borderRadius: 14,
+                    border: `1px solid ${highlights[idx].color}24`,
+                    background: idx === 0 ? '#f8fbff' : '#fbf9ff',
+                    padding: '10px 12px',
+                  }}
+                >
+                  <div
+                    style={{
+                      color: highlights[idx].color,
+                      fontSize: 10,
+                      fontWeight: 950,
+                      letterSpacing: '0.13em',
+                      textTransform: 'uppercase',
+                      marginBottom: 8,
+                    }}
+                  >
+                    {highlights[idx].title}
+                  </div>
+                  <div style={{ display: 'grid', gap: 6 }}>
+                    {highlights[idx].items.map(([value, caption]) => (
+                      <div
+                        key={value}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '110px 1fr',
+                          gap: 10,
+                          alignItems: 'center',
+                          borderRadius: 12,
+                          padding: '8px 10px',
+                          background: white,
+                          border: `1px solid ${highlights[idx].color}30`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: highlights[idx].color,
+                            fontSize: 17.5,
+                            fontWeight: 950,
+                            lineHeight: 1.12,
+                            whiteSpace: 'pre-line',
+                          }}
+                        >
+                          {value}
+                        </div>
+                        <div style={{ color: slate, fontSize: 11.2, lineHeight: 1.38, fontWeight: 800 }}>{caption}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Tags items={project.tech} />
+                <Panel pad={9} background={idx === 0 ? '#eff6ff' : '#f5f3ff'} borderColor={idx === 0 ? '#bfdbfe' : '#ddd6fe'}>
+                  <SectionLabel color={idx === 0 ? blue : violet}>핵심 과제</SectionLabel>
+                  <p style={{ margin: 0, color: slate, fontSize: 12.5, lineHeight: 1.48, fontWeight: 760 }}>{project.challenge}</p>
+                </Panel>
               </div>
-
-              {/* 소제목 */}
-              <div
-                style={{ fontSize: 13, color: c.text, fontWeight: 700, marginBottom: 14, lineHeight: 1.4 }}
-                dangerouslySetInnerHTML={{ __html: card.subtitle }}
-              />
-
-              {/* 구분선 */}
-              <div style={{ height: 1, background: `${c.border}30`, marginBottom: 14 }} />
-
-              {/* 내용 */}
-              <div
-                className="pdf-content"
-                style={{ fontSize: 13, color: '#334155', lineHeight: 1.75, flex: 1 }}
-                dangerouslySetInnerHTML={{ __html: card.description.replace(/\n\n/g, '<br/><br/>') }}
-              />
-            </div>
-          )
-        })}
-      </div>
-
-    </Slide>
-  )
-}
-
-/* ─── Page 22: Closing ─── */
-/* ─── Closing + Resources 합쳐서 1페이지 ─── */
-function ClosingPage() {
-  return (
-    <Slide pageNum={22}>
-      <Header title="앞으로의 방향 — Closing · 자료 모음 · 연락처" />
-      <div style={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly',
-        padding: '14px 24px', height: 'calc(210mm - 44px)', boxSizing: 'border-box',
-      }}>
-        {/* Closing 카드 2개 */}
-        <div style={{ display: 'flex', gap: 14 }}>
-          {CLOSING_BLOCKS.map(block => (
-            <div key={block.titleEn} style={{
-              flex: 1, background: GRAY1, border: `1px solid ${GRAY2}`,
-              borderRadius: 12, padding: '16px 18px',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                <i className={block.icon} style={{ color: BLUE, fontSize: 18 }} />
-                <div style={{ fontSize: 9, color: GRAY3, fontWeight: 700, letterSpacing: 1 }}>{block.titleEn}</div>
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 800, color: NAVY, marginBottom: 10 }}>{block.titleKo}</div>
-              <HtmlContent html={block.body} />
-            </div>
+            </Panel>
           ))}
         </div>
-
-        <div style={{ height: 1, background: GRAY2 }} />
-
-        {/* Resources */}
-        <div>
-          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>RESOURCES</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-            {RESOURCE_LINKS.map(link => (
-              <div key={link.label} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '8px 14px', background: GRAY1, borderRadius: 8, border: `1px solid ${GRAY2}`,
-              }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 15, flexShrink: 0 }} />
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{link.label}</div>
-                  <div style={{ fontSize: 11, color: GRAY3 }}>{link.description}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ height: 1, background: GRAY2 }} />
-
-        {/* Contact */}
-        <div>
-          <div style={{ fontSize: 10, color: BLUE, fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>CONTACT</div>
-          <div style={{ display: 'flex', gap: 12 }}>
-            {CONTACT_LINKS.map(link => (
-              <div key={link.label} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 18px', background: BLUE_LIGHT, borderRadius: 8, border: `1px solid #bfdbfe`,
-              }}>
-                <i className={link.icon} style={{ color: BLUE, fontSize: 16 }} />
-                <span style={{ fontSize: 14, fontWeight: 600, color: NAVY }}>{link.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        {feedshop.problemEnvironment && (
+          <Panel pad={10} background="#f1f5f9">
+            <div style={{ fontSize: 11, fontWeight: 900, color: navy, marginBottom: 3 }}>로컬 테스트 환경</div>
+            <div style={{ fontSize: 11, color: slate, whiteSpace: 'pre-line' }}>{feedshop.problemEnvironment}</div>
+          </Panel>
+        )}
       </div>
     </Slide>
   )
 }
 
-function ResourcesContactPage() { return null }
+function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title: string }) {
+  const roleColors = [blue, green, violet]
+  const roleLabels = ['Domain Ownership', 'Deployment', 'Team Leading']
 
-/* ─── Page 24: Final contact card ─── */
-function FinalContactSlide() {
   return (
-    <div style={{
-      width: '297mm',
-      height: '210mm',
-      background: NAVY,
-      overflow: 'hidden',
-      pageBreakAfter: 'always',
-      breakAfter: 'page',
-      boxSizing: 'border-box',
-      fontFamily: "'Inter', 'Noto Sans KR', sans-serif",
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
-      <div style={{ height: 4, background: BLUE, width: '100%', flexShrink: 0 }} />
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 16,
-      }}>
-        <div style={{ fontSize: 9, color: '#94a3b8', fontWeight: 700, letterSpacing: 2 }}>CONTACT</div>
-        <div style={{ fontSize: 36, fontWeight: 800, color: WHITE }}>{HERO_NAME}</div>
-        <div style={{ fontSize: 14, color: '#94a3b8' }}>{HERO_ROLE_BADGE}</div>
-        <div style={{ height: 1, width: 80, background: BLUE, margin: '4px 0' }} />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
-          {HERO_PERSONAL_INFO.map(row => (
-            <div key={row.text} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <i className={row.icon} style={{ color: BLUE, fontSize: 14 }} />
-              <span style={{ color: '#cbd5e1', fontSize: 13 }}>{row.text}</span>
-            </div>
-          ))}
-        </div>
-        <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-          {CONTACT_LINKS.map(link => (
-            <div key={link.label} style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px',
-              background: '#1e293b',
-              borderRadius: 6,
-              border: `1px solid #334155`,
-            }}>
-              <i className={link.icon} style={{ color: BLUE, fontSize: 14 }} />
-              <span style={{ color: '#94a3b8', fontSize: 12 }}>{link.label}</span>
-            </div>
-          ))}
+    <Slide eyebrow={title} title="서비스 소개 · 기술 스택 · 담당 업무" subtitle={`${project.period} · ${project.teamSize} · ${project.contribution ?? ''}`}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 12, height: '100%' }}>
+        <Panel pad={18} background={white} accent={blue}>
+          <div style={{ display: 'grid', gap: 10 }}>
+            <SectionLabel>Service Overview</SectionLabel>
+            <ParagraphRich html={project.serviceOverview ?? project.projectOverview ?? ''} size={16.3} lineHeight={1.48} />
+          </div>
+        </Panel>
+        <Panel pad={13} background="#f8fbff" accent={green}>
+          <SectionLabel>Tech Stack</SectionLabel>
+          <Tags items={project.techStack} />
+        </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${project.roles.length}, 1fr)`, gap: 11, minHeight: 0 }}>
+          {project.roles.map((role, idx) => {
+            const color = roleColors[idx % roleColors.length]
+            const detailLines = role.detail.split(/\n+/).filter(Boolean)
+
+            return (
+            <Panel key={role.title} pad={0} background={white} accent={color}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}>
+                <div
+                  style={{
+                    padding: '13px 14px 11px',
+                    background: idx === 0 ? '#eff6ff' : idx === 1 ? '#ecfdf5' : '#f5f3ff',
+                    borderBottom: `1px solid ${color}33`,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ color, fontSize: 9.8, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase', marginBottom: 5 }}>
+                        ROLE {String(idx + 1).padStart(2, '0')}
+                      </div>
+                      <h3 style={{ margin: 0, color: navy, fontSize: 19.2, fontWeight: 950, lineHeight: 1.18 }}>{role.title}</h3>
+                    </div>
+                    <div
+                      style={{
+                        width: 38,
+                        height: 38,
+                        borderRadius: 12,
+                        background: white,
+                        border: `1px solid ${color}40`,
+                        display: 'grid',
+                        placeItems: 'center',
+                        fontSize: 22,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {role.icon}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ padding: '16px 16px 12px', display: 'grid', alignContent: 'start' }}>
+                  <div style={{ display: 'grid', gap: detailLines.length > 1 ? 9 : 0 }}>
+                    {detailLines.map((line) => (
+                      <div
+                        key={line}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '10px 1fr',
+                          gap: 10,
+                          alignItems: 'start',
+                          padding: detailLines.length > 1 ? '7px 0' : 0,
+                        }}
+                      >
+                        <span style={{ width: 8, height: 8, borderRadius: 999, background: color, marginTop: 8 }} />
+                        <Rich html={line} size={15.6} lineHeight={1.42} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    margin: '0 16px 15px',
+                    borderRadius: 10,
+                    border: `1px solid ${color}2f`,
+                    background: idx === 0 ? '#f8fbff' : idx === 1 ? '#f7fefb' : '#fbf9ff',
+                    color,
+                    padding: '8px 10px',
+                    fontSize: 10.8,
+                    fontWeight: 950,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    textAlign: 'center',
+                  }}
+                >
+                  {roleLabels[idx] ?? 'Responsibility'}
+                </div>
+              </div>
+            </Panel>
+            )
+          })}
         </div>
       </div>
-    </div>
+    </Slide>
   )
 }
 
-/* ════════════════════════════════════════════════════════
-   ROOT COMPONENT
-════════════════════════════════════════════════════════ */
+function ArchitectureSlide({ project, title }: { project: typeof feedshop; title: string }) {
+  return (
+    <Slide eyebrow={title} title="아키텍처" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '90mm 1fr', gap: 11, height: '100%' }}>
+        <Panel pad={8} background={white} accent={blue}>
+          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <img
+            src={asset(project.architectureImage)}
+            alt={`${title} architecture`}
+            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+          />
+            <div
+              style={{
+                position: 'absolute',
+                right: 10,
+                bottom: 8,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                border: `2px solid ${blue}`,
+                borderRadius: 8,
+                background: 'rgba(255,255,255,0.94)',
+                color: blue,
+                padding: '5px 9px',
+                fontSize: 12.6,
+                fontWeight: 950,
+              }}
+            >
+              <span style={{ width: 9, height: 9, border: `2px solid ${blue}`, display: 'inline-block' }} />
+              맡은 작업
+            </div>
+          </div>
+        </Panel>
+        <div style={{ display: 'grid', gridTemplateRows: `repeat(${project.architectureDetails?.length ?? 1}, 1fr)`, gap: 8, minHeight: 0 }}>
+          {project.architectureDetails?.map((section, sectionIdx) => (
+            <Panel key={section.title} pad={0} background="#f8fafc" accent={blue}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '48px 1fr', alignItems: 'center' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    borderRight: `1px solid ${line}`,
+                    display: 'grid',
+                    placeItems: 'center',
+                    color: blue,
+                    fontSize: 18,
+                    fontWeight: 950,
+                  }}
+                >
+                  {String(sectionIdx + 1).padStart(2, '0')}
+                </div>
+                <div style={{ padding: '11px 13px' }}>
+              <h3 style={{ margin: '0 0 5px', color: blue, fontSize: 17.8, fontWeight: 950, lineHeight: 1.16, textTransform: 'uppercase' }}>{section.title}</h3>
+              {section.description && <p style={{ margin: '0 0 5px', color: slate, fontSize: 13.4, lineHeight: 1.38, fontWeight: 760 }}>{section.description}</p>}
+              {section.items.map((item, idx) => (
+                <ul key={idx} style={{ margin: 0, paddingLeft: 18, color: slate }}>
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet} style={{ fontSize: 13.6, lineHeight: 1.38, marginBottom: 3, fontWeight: 760 }}>{bullet}</li>
+                  ))}
+                </ul>
+              ))}
+                </div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP1ProblemSlide() {
+  const metrics = [
+    { label: 'SQL Count', value: '42회', caption: '요청 1회 기준', tone: red },
+    { label: '동시 1,000명', value: '6,818ms', caption: 'TPS 138.7', tone: red },
+    { label: '동시 100명', value: '645ms', caption: 'TPS 154.6', tone: red },
+  ]
+
+  return (
+    <Slide eyebrow="FeedShop" title={feedshop.problemSections![0].headline} subtitle="Developer Perspective · Problem" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
+        <Panel pad={12} background={white} accent={blue}>
+          <SectionLabel>Developer Perspective</SectionLabel>
+          <Rich html={(feedshop.developerPerspective ?? '').replace(/\n/g, '<br/>')} size={13.7} lineHeight={1.44} />
+        </Panel>
+        <Panel pad={13} background="#f8fafc" accent={red}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.9fr', gap: 12, alignItems: 'stretch' }}>
+              <div>
+                <SectionLabel color={red}>Problem Cause</SectionLabel>
+                <div style={{ display: 'grid', gap: 8 }}>
+                  {[
+                    ['N+1 쿼리 발생', '이벤트 목록 조회 시 eventDetail, rewards 연관 데이터 로딩'],
+                    ['메모리 필터링 구조', '전체 조회 후 필터링 → 데이터 증가 시 성능 저하 우려'],
+                  ].map(([title, desc]) => (
+                    <div key={title} style={{ display: 'grid', gridTemplateColumns: '9px 1fr', gap: 9, alignItems: 'start' }}>
+                      <span style={{ width: 8, height: 8, borderRadius: 999, background: red, marginTop: 8 }} />
+                      <div>
+                        <div style={{ color: navy, fontSize: 15.2, fontWeight: 950, lineHeight: 1.22 }}>{title}</div>
+                        <div style={{ color: slate, fontSize: 12.8, fontWeight: 720, lineHeight: 1.38, marginTop: 2 }}>{desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <SectionLabel color={red}>Measured Impact</SectionLabel>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7 }}>
+                  {metrics.map((metric) => (
+                    <div
+                      key={metric.label}
+                      style={{
+                        borderRadius: 12,
+                        border: `1px solid ${metric.tone}30`,
+                        background: white,
+                        padding: '10px 9px',
+                      }}
+                    >
+                      <div style={{ color: muted, fontSize: 10.7, fontWeight: 900, lineHeight: 1.2 }}>{metric.label}</div>
+                      <div style={{ color: metric.tone, fontSize: 22, fontWeight: 950, lineHeight: 1.05, marginTop: 6 }}>{metric.value}</div>
+                      <div style={{ color: slate, fontSize: 10.8, fontWeight: 800, marginTop: 5 }}>{metric.caption}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderRadius: 12,
+                background: '#fff7ed',
+                border: '1px solid #fed7aa',
+                padding: '9px 12px',
+              }}
+            >
+              <div style={{ color: '#9a3412', fontSize: 13, fontWeight: 950 }}>Scouter Evidence</div>
+              <div style={{ color: red, fontSize: 14.2, fontWeight: 950 }}>요청 1회당 SQL 42회 반복 실행 확인</div>
+            </div>
+            <div style={{ minHeight: 0 }}>
+              <img
+                src={asset('before-scouter-sql42.png')}
+                alt="Scouter XLog SQL Count 42"
+                style={{ width: '100%', height: '100%', maxHeight: '70mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+              />
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP1ThinkingSolutionSlide() {
+  const thinkingCards = [
+    ['1. 쿼리 비효율', 'N+1이 발생하는 조회 구조 자체를 먼저 개선해야 했습니다.'],
+    ['2. 반복 조회 비용', '이벤트 목록은 조회 빈번 / 변경 적음 특성이라 @Cacheable + Redis 적용이 적합했습니다.'],
+    ['접근 순서', '캐시만 적용하면 Cache Miss 시 N+1 문제가 그대로 남기 때문에, 쿼리 최적화로 근본 원인을 먼저 제거한 뒤 캐시를 얹는 순서로 접근했습니다.'],
+  ]
+
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — Thinking · Solution 1단계" subtitle="쿼리 최적화" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
+        <Panel pad={12} background={white} accent={amber}>
+          <SectionLabel color={amber}>Thinking</SectionLabel>
+          <div style={{ color: slate, fontSize: 12.8, fontWeight: 760, lineHeight: 1.36, marginBottom: 8 }}>
+            문제를 두 레이어로 분리해 접근했습니다.
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.05fr 1.35fr', gap: 9 }}>
+            {thinkingCards.map(([label, text], idx) => (
+              <div
+                key={label}
+                style={{
+                  borderRadius: 12,
+                  border: `1px solid ${idx === 2 ? amber : line}`,
+                  background: idx === 2 ? '#fff7ed' : '#f8fafc',
+                  padding: '10px 11px',
+                  minHeight: 82,
+                }}
+              >
+                <div style={{ color: idx === 2 ? amber : navy, fontSize: 13.1, fontWeight: 950, lineHeight: 1.2 }}>{label}</div>
+                <div style={{ color: slate, fontSize: 11.9, lineHeight: 1.36, fontWeight: 760, marginTop: 6 }}>{text}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel pad={12} background={white} accent={blue}>
+          <SectionLabel>Solution 1</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 9, height: '100%' }}>
+            <div
+              style={{
+                borderRadius: 13,
+                background: '#eff6ff',
+                border: '1px solid #bfdbfe',
+                padding: '11px 13px',
+              }}
+            >
+              <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19.5, fontWeight: 950, lineHeight: 1.18 }}>1단계 — 쿼리 최적화</h3>
+              <div style={{ color: slate, fontSize: 14.1, lineHeight: 1.4, fontWeight: 780 }}>
+                QueryDSL leftJoin + fetchJoin으로 연관 데이터를 한 번에 조회해 <span style={{ color: blue, fontWeight: 950 }}>N+1 제거</span>,
+                페이징 count 쿼리는 <span style={{ color: blue, fontWeight: 950 }}>countDistinct</span>로 분리 보정
+              </div>
+            </div>
+            <CodeBox lines={[
+              '// EventQueryRepositoryImpl.java (109~116번 라인)',
+              'queryFactory.selectFrom(event)',
+              '    .leftJoin(event.eventDetail, detail).fetchJoin()',
+              '    .leftJoin(event.rewards, reward).fetchJoin()',
+              '    .where(event.deletedAt.isNull())',
+              '    .offset(pageable.getOffset())',
+              '    .limit(pageable.getPageSize())',
+              '    .fetch();',
+              '// count 쿼리: countDistinct로 rewards join 중복 제거',
+            ]} />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderRadius: 12,
+                background: white,
+                border: '1px solid #bfdbfe',
+                padding: '8px 12px',
+              }}
+            >
+              <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter Evidence</div>
+              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950 }}>SQL Count 42회 → 2회</div>
+            </div>
+            <div style={{ minHeight: 0 }}>
+              <img
+                src={asset('phase1-scouter-sql2.png')}
+                alt="fetchJoin SQL 2회"
+                style={{ width: '100%', height: '100%', maxHeight: '38mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+              />
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP1SolutionResultSlide() {
+  const cacheStrategies = [
+    ['캐시 대상', '이벤트 목록', '조회 빈번 · 변경 적음'],
+    ['캐시 방식', '@Cacheable + Redis', '분산 환경 캐시 유지'],
+    ['정합성', 'TTL · @CacheEvict', '변경 시 캐시 무효화'],
+  ]
+
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — Solution 2단계" subtitle="Redis 캐시 전략 적용" dense>
+      <div style={{ display: 'grid', height: '100%' }}>
+        <Panel pad={12} background={white} accent={blue}>
+          <SectionLabel>Solution 2</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr', gap: 9, height: '100%' }}>
+            <div>
+              <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.18 }}>2단계 — 캐시 전략 적용</h3>
+              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.4, fontWeight: 760 }}>
+                반복 조회 비용을 줄이기 위해 이벤트 목록 특성에 맞춰 Redis 캐시를 적용했습니다.
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+              {cacheStrategies.map(([label, value, caption]) => (
+                <div key={label} style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
+                  <div style={{ color: blue, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginTop: 4, lineHeight: 1.18 }}>{value}</div>
+                  <div style={{ color: slate, fontSize: 11.2, fontWeight: 760, marginTop: 3, lineHeight: 1.28 }}>{caption}</div>
+                </div>
+              ))}
+            </div>
+            <CodeBox lines={[
+              '// EventReadService.java (122~123번 라인)',
+              '// [Phase 2-A] 이벤트 목록 Redis 캐시 적용 — Cache Hit 시 DB 조회 0회',
+              '@Cacheable(value = "availableEvents", key = "\'feed-available\'", unless = "#result.isEmpty()")',
+              'public List<EventSummaryDto> getFeedAvailableEvents() { ... }',
+            ]} />
+            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, minHeight: 0 }}>
+              <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', color: blue, fontSize: 16.2, fontWeight: 950, padding: '9px 12px' }}>
+                Cache Hit 시 SQL Count 0회
+              </div>
+              <img
+                src={asset('phase2a-scouter-cache-hit2.png')}
+                alt="Cache Hit SQL 0회"
+                style={{ width: '100%', height: '100%', maxHeight: '50mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+              />
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP1ResultImagesSlide() {
+  const sec = feedshop.problemSections![0]
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 결과" subtitle="Before / After 성능 비교" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 10, height: '100%' }}>
+        <Panel pad={10} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
+          <SectionLabel color={green}>Result Table</SectionLabel>
+          <Rich html={extractResultLead(sec.result)} size={12.8} lineHeight={1.36} />
+          <Rich html={extractTable(sec.result)} size={10.4} lineHeight={1.3} className="pdf-table-fit" />
+        </Panel>
+        <Panel pad={10} background={white} accent={blue}>
+          <Rich html={extractResultLead(sec.result)} size={11.6} lineHeight={1.45} />
+          <Rich html={extractAfterTable(sec.result)} size={11.4} lineHeight={1.38} className="pdf-result-grid" />
+        </Panel>
+        <Panel pad={11} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+            {[
+              ['응답시간', '91% 단축'],
+              ['TPS', '216% 향상'],
+              ['SQL Count', '42회 → 0회'],
+              ['전략', 'fetchJoin + Redis'],
+            ].map(([label, value]) => (
+              <div key={label} style={{ textAlign: 'center' }}>
+                <div style={{ color: green, fontSize: 18, fontWeight: 950 }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 10, fontWeight: 800 }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP2ProblemThinkingSlide() {
+  const sec = feedshop.problemSections![1]
+  return (
+    <Slide eyebrow="FeedShop" title={sec.headline} subtitle="Problem · Thinking" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 11, height: '100%' }}>
+        <Panel pad={11} background={white} accent={red}>
+          <SectionLabel color={red}>Problem</SectionLabel>
+          <Rich html={sec.problem} size={11.5} lineHeight={1.42} className="pdf-code-fit" />
+        </Panel>
+        <Panel pad={11} background={white} accent={amber}>
+          <SectionLabel color={amber}>Thinking</SectionLabel>
+          <Rich html={sec.thinking} size={12} lineHeight={1.48} />
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP2SolutionSlide() {
+  const sec = feedshop.problemSections![1]
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
+      <Panel pad={11} background={white} accent={blue}>
+        <Rich html={sec.solution} size={11.1} lineHeight={1.38} className="pdf-code-fit" />
+      </Panel>
+    </Slide>
+  )
+}
+
+function FeedShopP2ResultSlide() {
+  const sec = feedshop.problemSections![1]
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — Result" subtitle="정합성 검증 · nGrinder 부하 테스트" dense>
+      <Panel pad={11} background={white} accent={green}>
+        <Rich html={sec.result} size={10.5} lineHeight={1.32} className="pdf-result-grid pdf-p2-result" />
+      </Panel>
+    </Slide>
+  )
+}
+
+function M3ProblemThinkingSlide() {
+  return (
+    <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
+        <Panel pad={11} background={white} accent={red}>
+          <SectionLabel color={red}>Problem</SectionLabel>
+          <Rich html={m3.problem ?? ''} size={12.2} lineHeight={1.5} />
+        </Panel>
+        <Panel pad={11} background={white} accent={amber}>
+          <SectionLabel color={amber}>Thinking</SectionLabel>
+          <Rich html={m3.thinking ?? ''} size={12} lineHeight={1.5} />
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function M3SolutionResultSlide() {
+  return (
+    <Slide eyebrow="3M" title="Solution · Result" subtitle="서비스 경계 분리와 인증 흐름 단순화" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%' }}>
+        <Panel pad={11} background={white} accent={blue}>
+          <SectionLabel>Solution</SectionLabel>
+          <Rich html={m3.solution ?? ''} size={11.2} lineHeight={1.42} className="pdf-compact-images" />
+        </Panel>
+        <Panel pad={11} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <SectionLabel color={green}>Result</SectionLabel>
+          <Rich html={m3.result ?? ''} size={12} lineHeight={1.5} />
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function ExperienceSlide() {
+  return (
+    <Slide eyebrow="Experience" title="걸어온 여정" subtitle="직무 관련성이 높은 경험부터 최신순으로 정리했습니다.">
+      <div style={{ display: 'grid', gap: 8, height: '100%' }}>
+        {EXPERIENCE_ITEMS.map((item) => (
+          <Panel key={`${item.period}-${item.title}`} pad={10} background={white} accent={blue}>
+            <div style={{ display: 'grid', gridTemplateColumns: '112px 1fr', gap: 14, alignItems: 'center' }}>
+              <div>
+                <div style={{ color: muted, fontSize: 11, fontWeight: 800 }}>{item.period}</div>
+                <div style={{ display: 'inline-block', marginTop: 5, background: blue, color: white, borderRadius: 999, padding: '3px 9px', fontSize: 10, fontWeight: 900 }}>{item.category}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 14.5, fontWeight: 900, marginBottom: 4 }}>{item.title}</div>
+                <div style={{ color: slate, fontSize: 12, lineHeight: 1.5 }}>{item.detail}</div>
+              </div>
+            </div>
+          </Panel>
+        ))}
+      </div>
+    </Slide>
+  )
+}
+
+function ClosingResourcesSlide() {
+  return (
+    <Slide eyebrow={CLOSING_SECTION.kicker} title={CLOSING_SECTION.title} subtitle={CLOSING_SECTION.subtitle} dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 12, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, minHeight: 0 }}>
+          {CLOSING_BLOCKS.map((block, idx) => {
+            const color = idx === 0 ? blue : violet
+            const items = parseClosingItems(block.body)
+
+            return (
+            <Panel key={block.titleEn} pad={0} background={white} accent={color}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr' }}>
+                <div
+                  style={{
+                    padding: '12px 15px 10px',
+                    background: idx === 0 ? '#eff6ff' : '#f5f3ff',
+                    borderBottom: `1px solid ${idx === 0 ? '#bfdbfe' : '#ddd6fe'}`,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <div
+                      style={{
+                        width: 39,
+                        height: 39,
+                        borderRadius: 10,
+                        display: 'grid',
+                        placeItems: 'center',
+                        background: white,
+                        color,
+                        fontWeight: 950,
+                        fontSize: 15,
+                      }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <div style={{ color, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>{block.titleEn}</div>
+                      <div style={{ fontSize: 18.4, fontWeight: 950, color: navy, lineHeight: 1.2 }}>{block.titleKo}</div>
+                    </div>
+                    <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 24, opacity: 0.85 }} />
+                  </div>
+                </div>
+                <div style={{ padding: '11px 15px 13px', display: 'grid', gridTemplateRows: `repeat(${items.length || 1}, 1fr)`, gap: 8 }}>
+                  {items.length > 0 ? items.map((item) => (
+                    <div
+                      key={item.title}
+                      style={{
+                        borderRadius: 12,
+                        background: idx === 0 ? '#f8fbff' : '#fbf9ff',
+                        border: `1px solid ${color}1f`,
+                        padding: '10px 12px',
+                        display: 'grid',
+                        alignContent: 'center',
+                        gap: 6,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                        <span style={{ width: 7, height: 7, borderRadius: 999, background: color, flexShrink: 0 }} />
+                        <h3 style={{ margin: 0, color: navy, fontSize: 15.2, fontWeight: 950, lineHeight: 1.18 }}>{item.title}</h3>
+                      </div>
+                      <p style={{ margin: 0, color: slate, fontSize: 12.9, lineHeight: 1.43, fontWeight: 720, whiteSpace: 'pre-line' }}>{item.text}</p>
+                    </div>
+                  )) : (
+                    <Rich html={block.body} size={11.4} lineHeight={1.46} />
+                  )}
+                </div>
+              </div>
+            </Panel>
+            )
+          })}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.72fr', gap: 12 }}>
+          <Panel pad={12} background="#f8fbff" accent={green}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
+              <i className="ri-links-line" style={{ color: green, fontSize: 18 }} />
+              <div style={{ color: green, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{RESOURCES_SECTION.title}</div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '9px 13px' }}>
+              {RESOURCE_LINKS.map((link) => (
+                <div key={link.label} style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <i className={link.icon} style={{ color: green, fontSize: 16, flexShrink: 0 }} />
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 12.4, fontWeight: 950, color: navy, marginBottom: 2 }}>{link.label}</div>
+                    <div style={{ fontSize: 8.8, color: muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.url}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+          <Panel pad={0} background={navy} borderColor={navy}>
+            <div style={{ height: '100%', padding: '14px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ color: '#93c5fd', fontSize: 10.8, fontWeight: 950, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Contact</div>
+              <div style={{ color: white, fontSize: 25, fontWeight: 950, marginBottom: 9 }}>{HERO_NAME}</div>
+              <div style={{ display: 'grid', gap: 6 }}>
+                {CONTACT_LINKS.map((link) => (
+                  <div key={link.label} style={{ color: '#cbd5e1', fontSize: 12.3, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <i className={link.icon} style={{ color: '#93c5fd', marginRight: 7 }} />
+                    {link.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Panel>
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
 export default function PdfPortfolio() {
   return (
     <>
       <style>{`
-        .pdf-content img { max-width: 100%; height: auto; object-fit: contain; }
-        .pdf-content table { width: 100%; font-size: 11px; }
-        .pdf-content pre, .pdf-content .font-mono { font-size: 10px; }
-
-        /* 강조 키워드 스타일 */
-        .pdf-content strong, .pdf-content b,
-        .pdf-content .font-bold { font-weight: 700 !important; }
-        .pdf-content .font-semibold { font-weight: 600 !important; }
-
-        /* 색상 강조 */
-        .pdf-content .text-\\[\\#2563EB\\], .pdf-content [style*="color: #2563"] { color: #2563eb !important; }
-        .pdf-content .text-blue-600, .pdf-content .text-blue-700 { color: #2563eb !important; font-weight: 600; }
-        .pdf-content .text-blue-300, .pdf-content .text-\\[\\#8aa8e8\\] { color: #2563eb !important; font-weight: 600; }
-        .pdf-content .text-red-600, .pdf-content .text-red-300 { color: #dc2626 !important; font-weight: 600; }
-        .pdf-content .text-red-500, .pdf-content .text-red-400 { color: #ef4444 !important; font-weight: 600; }
-        .pdf-content .text-emerald-600, .pdf-content .text-emerald-400 { color: #059669 !important; font-weight: 600; }
-        .pdf-content .text-amber-600, .pdf-content .text-amber-300 { color: #d97706 !important; font-weight: 700; }
-        .pdf-content .text-slate-900, .pdf-content .text-slate-100 { color: #0f172a !important; font-weight: 700; }
-
-        /* Closing 카드 소제목 */
-        .pdf-content .block.font-bold { display: block; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-
-        /* 코드 인라인 */
-        .pdf-content .font-mono { font-family: monospace; background: #f1f5f9; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
-
-        /* 링크 색상 */
-        .pdf-content a { color: #2563eb; font-weight: 600; }
+        @page { size: A4 landscape; margin: 0; }
+        .pdf-slide {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+        .pdf-rich * { max-width: 100%; box-sizing: border-box; }
+        .pdf-rich p { margin: 0; }
+        .pdf-rich ul { margin: 0; padding-left: 16px; }
+        .pdf-rich li { margin-bottom: 2px; }
+        .pdf-rich .font-bold,
+        .pdf-rich .font-semibold,
+        .pdf-rich strong,
+        .pdf-rich b { font-weight: 800 !important; }
+        .pdf-rich .text-\\[\\#2563EB\\],
+        .pdf-rich .text-blue-700,
+        .pdf-rich .text-blue-600,
+        .pdf-rich .text-\\[\\#8aa8e8\\] { color: ${blue} !important; }
+        .pdf-rich .text-red-600,
+        .pdf-rich .text-red-500,
+        .pdf-rich .text-red-400,
+        .pdf-rich .text-red-300 { color: ${red} !important; }
+        .pdf-rich .text-emerald-600,
+        .pdf-rich .text-emerald-400 { color: ${green} !important; }
+        .pdf-rich .text-amber-600,
+        .pdf-rich .text-amber-300 { color: ${amber} !important; }
+        .pdf-rich img {
+          display: block;
+          width: 100%;
+          max-height: 56mm;
+          object-fit: contain;
+          border-radius: 8px;
+        }
+        .pdf-rich .grid,
+        .pdf-rich [class*="grid"] { display: grid; }
+        .pdf-rich .grid-cols-2,
+        .pdf-rich [class*="grid-cols-2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .pdf-rich .gap-3,
+        .pdf-rich [class*="gap-3"] { gap: 8px; }
+        .pdf-result-grid img { max-height: 56mm; }
+        .pdf-p2-result img { max-height: 50mm; }
+        .pdf-compact-images img { max-height: 60mm; }
+        .pdf-rich table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 9.6px;
+        }
+        .pdf-rich th,
+        .pdf-rich td {
+          padding: 4px 6px !important;
+          border-top: 1px solid #e2e8f0;
+        }
+        .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          font-size: 8.8px !important;
+          line-height: 1.34 !important;
+          padding: 7px 9px !important;
+          overflow: hidden !important;
+          max-height: 39mm !important;
+        }
+        .pdf-rich span[class*="font-mono"] {
+          font-family: inherit !important;
+          font-size: inherit !important;
+          line-height: inherit !important;
+          color: inherit !important;
+          background: transparent !important;
+          padding: 0 !important;
+          border-radius: 0 !important;
+        }
+        .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] span[class*="font-mono"],
+        .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] [class*="font-mono"] {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+          font-size: inherit !important;
+          color: inherit !important;
+          background: transparent !important;
+        }
+        .pdf-code-fit img { max-height: 36mm; }
+        .pdf-code-fit [class*="bg-\\[\\#1a1a1a\\]"],
+        .pdf-code-fit [class*="font-mono"] { max-height: 34mm !important; }
+        .pdf-rich .rounded-xl,
+        .pdf-rich [class*="rounded-xl"] { border-radius: 10px; }
+        .pdf-rich .rounded-lg,
+        .pdf-rich [class*="rounded-lg"] { border-radius: 8px; }
       `}</style>
 
-      {/* Page 1 */}
       <HeroSlide />
+      <AboutSlide />
+      <ProjectsOverviewSlide />
 
-      {/* Page 2: About */}
-      <AboutPage />
+      <ProjectCaseCover
+        eyebrow="Backend Case Study 01"
+        projectName="FeedShop"
+        statement="이벤트 조회 병목과 투표 동시성을 수치로 검증하며 해결했습니다."
+        description="커뮤니티 재방문 구조의 핵심인 이벤트 참여 흐름을 지키기 위해, 조회 성능과 투표 정합성을 각각 다른 부하 축으로 분리해 접근했습니다."
+        metrics={[
+          { label: '응답시간 단축', value: '-91%', caption: '동시 1,000명 기준 6,818ms → 638ms', color: green },
+          { label: 'SQL Count', value: '42 → 0', caption: 'fetchJoin + Redis Cache Hit', color: blue },
+          { label: '중복 투표', value: '0건', caption: '동시 3,000명 검증 · DB = Redis', color: violet },
+        ]}
+      />
+      <ProjectIntroSlide project={feedshop} title="FeedShop" />
+      <ArchitectureSlide project={feedshop} title="FeedShop" />
+      <FeedShopP1ProblemSlide />
+      <FeedShopP1ThinkingSolutionSlide />
+      <FeedShopP1SolutionResultSlide />
+      <FeedShopP1ResultImagesSlide />
+      <FeedShopP2ProblemThinkingSlide />
+      <FeedShopP2SolutionSlide />
+      <FeedShopP2ResultSlide />
 
-      {/* Pages 3–: FeedShop */}
-      <FeedShopOverview />
-      <FeedShopTechRoles />
-      <FeedShopArchImage />
-      <FeedShopArchDetails />
-      <FeedShopP1Problem />
-      <FeedShopP1Thinking />
-      <FeedShopP1Solution />
-      <FeedShopP1Result />
-      <FeedShopP2Problem />
-      <FeedShopP2Thinking />
-      <FeedShopP2SolutionResult />
+      <ProjectCaseCover
+        eyebrow="Backend Case Study 02"
+        projectName="3M"
+        statement="Auth·User·Gateway 책임을 분리해 인증 흐름의 결합도를 낮췄습니다."
+        description="다수 서비스가 연결되는 B2B 물류 시스템에서 인증 정책 변경과 사용자 조회 장애가 전체 인증 흐름으로 번지지 않도록 서비스 경계를 재설계했습니다."
+        metrics={[
+          { label: 'UserService → Auth', value: 'CBO 0건', caption: '인증 정책 변경 시 User 배포 영향 제거', color: green },
+          { label: 'Auth → User', value: '단방향', caption: 'Feign DTO 중심 참조 · 순환 의존 없음', color: blue },
+          { label: '인증 판단', value: 'Gateway', caption: 'JWT payload 기반 User 재조회 감소', color: violet },
+        ]}
+      />
+      <ProjectIntroSlide project={m3} title="3M" />
+      <ArchitectureSlide project={m3} title="3M" />
+      <M3ProblemThinkingSlide />
+      <M3SolutionResultSlide />
 
-      {/* Pages 13–19: 3M */}
-      <M3Overview />
-      <M3TechRoles />
-      <M3ArchImage />
-      <M3ArchDetails />
-      <M3ProblemThinking />
-      <M3Solution />
-      <M3Result />
-
-      {/* Pages 20–24: Portfolio sections */}
-      <ExperiencePage />
-      <ClosingPage />
-      <ResourcesContactPage />
-      <FinalContactSlide />
+      <ExperienceSlide />
+      <ClosingResourcesSlide />
     </>
   )
 }
