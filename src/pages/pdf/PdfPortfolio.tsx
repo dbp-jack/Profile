@@ -1127,12 +1127,12 @@ function FeedShopP1ResultImagesSlide() {
   ]
 
   return (
-    <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 증거" subtitle="Before / After 부하 테스트 이미지" dense>
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 부하 테스트 결과" subtitle="Before / After 성능 수치 비교" dense>
       <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 9, height: '100%' }}>
         <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
           <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 12, alignItems: 'center' }}>
             <div>
-              <SectionLabel color={green}>Evidence Focus</SectionLabel>
+              <SectionLabel color={green}>Load Test Focus</SectionLabel>
               <div style={{ color: navy, fontSize: 16.4, fontWeight: 950, lineHeight: 1.22 }}>동시 사용자 증가 구간에서 개선 효과를 검증</div>
             </div>
             <div style={{ color: slate, fontSize: 12.6, lineHeight: 1.42, fontWeight: 760 }}>
