@@ -989,30 +989,30 @@ function FeedShopP1ResultImagesSlide() {
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 결과" subtitle="Before / After 성능 비교" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 9, height: '100%' }}>
-        <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.25fr repeat(4, 0.75fr)', gap: 8, alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto minmax(0, 1fr)', gap: 7, height: '100%' }}>
+        <Panel pad={8} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.15fr repeat(4, 0.72fr)', gap: 7, alignItems: 'center' }}>
             <div>
               <SectionLabel color={green}>Result Summary</SectionLabel>
-              <Rich html={extractResultLead(sec.result)} size={11.8} lineHeight={1.34} />
+              <Rich html={extractResultLead(sec.result)} size={11.2} lineHeight={1.3} />
             </div>
             {kpis.map(([label, value]) => (
-              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 42, display: 'grid', alignContent: 'center' }}>
-                <div style={{ color: green, fontSize: 18.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 10.5, fontWeight: 850, marginTop: 3 }}>{label}</div>
+              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 36, display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 17.6, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 10.1, fontWeight: 850, marginTop: 2 }}>{label}</div>
               </div>
             ))}
           </div>
         </Panel>
-        <Panel pad={10} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
+        <Panel pad={8} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
           <SectionLabel color={green}>Result Table</SectionLabel>
-          <Rich html={extractTable(sec.result)} size={10.4} lineHeight={1.3} className="pdf-table-fit" />
+          <Rich html={extractTable(sec.result)} size={9.8} lineHeight={1.24} className="pdf-table-fit pdf-table-compact" />
         </Panel>
-        <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
+        <Panel pad={8} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 7, height: '100%' }}>
             {resultImages.map(([label, src]) => (
-              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 4 }}>
-                <div style={{ color: navy, fontSize: 10.8, fontWeight: 950, lineHeight: 1.2 }}>{label}</div>
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 3 }}>
+                <div style={{ color: navy, fontSize: 10.4, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
                 <img
                   src={asset(src)}
                   alt={`nGrinder ${label}`}
@@ -1298,6 +1298,13 @@ export default function PdfPortfolio() {
         .pdf-rich td {
           padding: 4px 6px !important;
           border-top: 1px solid #e2e8f0;
+        }
+        .pdf-table-compact table {
+          font-size: 9.1px !important;
+        }
+        .pdf-table-compact th,
+        .pdf-table-compact td {
+          padding: 2.5px 5px !important;
         }
         .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] {
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
