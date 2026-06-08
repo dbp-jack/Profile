@@ -1107,17 +1107,64 @@ function FeedShopP1ResultImagesSlide() {
 }
 
 function FeedShopP2ProblemThinkingSlide() {
-  const sec = feedshop.problemSections![1]
   return (
-    <Slide eyebrow="FeedShop" title={sec.headline} subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 11, height: '100%' }}>
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — 피드 투표 동시성 문제" subtitle="Problem · Thinking" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1.05fr 0.95fr', gap: 10, height: '100%' }}>
         <Panel pad={11} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <Rich html={sec.problem} size={11.5} lineHeight={1.42} className="pdf-code-fit" />
+          <div style={{ display: 'grid', gridTemplateColumns: '0.92fr 1.08fr', gap: 12, alignItems: 'stretch' }}>
+            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 9 }}>
+              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.45, fontWeight: 780 }}>
+                중복 투표 방지 로직이 코드 레벨에만 존재하고, DB 유니크 제약이 없어 동시 요청 시
+                <strong style={{ color: red, fontWeight: 950 }}> TOCTOU 취약점</strong>이 발생했습니다.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                {[
+                  ['원인', 'DB 제약 없음'],
+                  ['취약점', '검사-저장 사이 틈'],
+                  ['결과', '중복 투표 삽입'],
+                ].map(([label, value]) => (
+                  <div key={label} style={{ border: `1px solid #fecaca`, borderRadius: 10, background: '#fff7f7', padding: '10px 9px', display: 'grid', alignContent: 'center' }}>
+                    <div style={{ color: red, fontSize: 10.5, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                    <div style={{ color: navy, fontSize: 13, fontWeight: 950, lineHeight: 1.2 }}>{value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 6 }}>수정 전 구조</div>
+              <CodeBox
+                lines={[
+                  '// FeedVoteService.java — 수정 전 구조 (TOCTOU 취약)',
+                  'if (feedVoteRepository.existsByEventIdAndUserId(eventId, userId)) {',
+                  '    return FeedVoteResponseDto.success(false, ...); // 체크',
+                  '}',
+                  'feedVoteRepository.save(vote); // 저장',
+                  '// 동시 요청 시 두 스레드가 모두 통과 가능',
+                ]}
+              />
+            </div>
+          </div>
         </Panel>
         <Panel pad={11} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <Rich html={sec.thinking} size={12} lineHeight={1.48} />
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 9 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
+              {[
+                ['DB 유니크 제약', '코드 레벨 우회를 막는 물리적 중복 차단'],
+                ['NOT_SUPPORTED', '제약 위반 예외 발생 시 정상 응답 처리'],
+                ['Redis INCR', 'DB 락과 분리된 원자적 카운터 관리'],
+              ].map(([title, text]) => (
+                <div key={title} style={{ border: `1px solid #fed7aa`, background: '#fff7ed', borderRadius: 11, padding: '11px 12px', minHeight: 76 }}>
+                  <div style={{ color: amber, fontSize: 13.2, fontWeight: 950, marginBottom: 5 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 13.3, lineHeight: 1.38, fontWeight: 900 }}>
+              👉 Redis INCR로 DB 트랜잭션과 분리된 원자적 연산 구성 - 락 경합 구조 자체를 제거
+            </div>
+          </div>
         </Panel>
       </div>
     </Slide>
@@ -1125,23 +1172,130 @@ function FeedShopP2ProblemThinkingSlide() {
 }
 
 function FeedShopP2SolutionSlide() {
-  const sec = feedshop.problemSections![1]
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
-      <Panel pad={11} background={white} accent={blue}>
-        <Rich html={sec.solution} size={11.1} lineHeight={1.38} className="pdf-code-fit" />
-      </Panel>
+      <div style={{ display: 'grid', gridTemplateRows: '0.82fr 1.08fr 0.82fr', gap: 9, height: '100%' }}>
+        <Panel pad={10} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+            <div>
+              <SectionLabel>Solution 1</SectionLabel>
+              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>1단계 — DB 유니크 제약 추가</h2>
+              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+                <strong>(event_id, voter_id)</strong> 조합에 유니크 제약을 걸어 DB 레벨에서 중복 투표를 차단
+              </p>
+            </div>
+            <CodeBox
+              lines={[
+                '// FeedVote.java (24~26번 라인)',
+                '@UniqueConstraint(name = "uk_feed_votes_event_voter",',
+                '    columnNames = {"event_id", "voter_id"})',
+              ]}
+            />
+          </div>
+        </Panel>
+        <Panel pad={10} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+            <div>
+              <SectionLabel>Solution 2</SectionLabel>
+              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>2단계 — 저장 로직 분리 + 예외 처리</h2>
+              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+                중복 삽입 시도는 <strong>DataIntegrityViolationException</strong>으로 감지하고, 예외 처리로 200 반환
+              </p>
+            </div>
+            <CodeBox
+              lines={[
+                '// FeedVoteService.java (59번 라인)',
+                '@Transactional(propagation = Propagation.NOT_SUPPORTED)',
+                'public FeedVoteResponseDto voteFeed(...) {',
+                '    try {',
+                '        savedVote = feedVotePersistenceService.saveVote(vote);',
+                '    } catch (DataIntegrityViolationException e) {',
+                '        return FeedVoteResponseDto.success(false, ...); // 중복 → 200 반환',
+                '    }',
+                '}',
+              ]}
+            />
+          </div>
+        </Panel>
+        <Panel pad={10} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.74fr 1.26fr', gap: 12, alignItems: 'start' }}>
+            <div>
+              <SectionLabel>Solution 3</SectionLabel>
+              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
+              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+                카운터를 Redis로 분리해 DB 락 경합 자체를 제거
+              </p>
+            </div>
+            <CodeBox
+              lines={[
+                '// FeedVoteService.java',
+                'redisTemplate.opsForValue().increment("vote:count:" + feedId);',
+              ]}
+            />
+          </div>
+        </Panel>
+      </div>
     </Slide>
   )
 }
 
 function FeedShopP2ResultSlide() {
-  const sec = feedshop.problemSections![1]
+  const resultImages = [
+    ['정합성 검증 — DB count와 Redis count 일치', 'phase2b-redis-count-verify.png'],
+    ['nGrinder — 동시 500명 요청 성공', 'phase2b-redis-v500.png'],
+    ['nGrinder — 동시 1,000명 요청 성공', 'phase2b-redis-v1000.png'],
+    ['nGrinder — 동시 3,000명 요청 성공', 'phase2b-redis-v3000.png'],
+  ]
+  const kpis = [
+    ['에러율', '0%'],
+    ['중복 투표', '0건'],
+    ['정합성', 'DB = Redis'],
+    ['검증 구간', '500→3,000명'],
+  ]
+
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Result" subtitle="정합성 검증 · nGrinder 부하 테스트" dense>
-      <Panel pad={11} background={white} accent={green}>
-        <Rich html={sec.result} size={10.5} lineHeight={1.32} className="pdf-result-grid pdf-p2-result" />
-      </Panel>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 9, height: '100%' }}>
+        <Panel pad={9} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.16fr repeat(4, 0.72fr)', gap: 8, alignItems: 'center' }}>
+            <div style={{ color: slate, fontSize: 12.7, lineHeight: 1.38, fontWeight: 830 }}>
+              동시 500→3,000명 전 구간 <strong style={{ color: green }}>에러율 0%</strong>,
+              <strong style={{ color: green }}> 중복 투표 0건</strong> 확인,
+              <strong style={{ color: blue }}> DB count = Redis count</strong> 투표 수 정합성 검증
+            </div>
+            {kpis.map(([label, value]) => (
+              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 40, display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 18.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 10.3, fontWeight: 850, marginTop: 3 }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel pad={8} background={white} accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
+            {resultImages.map(([label, src]) => (
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 3 }}>
+                <div style={{ color: navy, fontSize: 11, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
+                <img
+                  src={asset(src)}
+                  alt={label}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    minHeight: 0,
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    borderRadius: 8,
+                    border: `1px solid ${line}`,
+                    display: 'block',
+                    background: white,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
     </Slide>
   )
 }
