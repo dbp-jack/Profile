@@ -749,6 +749,53 @@ function ArchitectureSlide({ project, title }: { project: typeof feedshop; title
   )
 }
 
+function FeedShopDeveloperPerspectiveSlide() {
+  const focusItems = [
+    ['이벤트 목록 조회 병목', '재방문 흐름 진입점인 이벤트 목록이 느려지면 탐색 단계에서 이탈 가능성이 커집니다.'],
+    ['투표 동시성 보장', '랭킹 상위 피드에 투표가 몰릴 때 데이터 정합성이 흔들리면 서비스 신뢰도가 떨어집니다.'],
+  ]
+
+  return (
+    <Slide eyebrow="FeedShop" title="개발자 관점에서의 핵심 과제" subtitle="서비스 흐름을 지키기 위해 분리한 두 가지 부하 축" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 12, height: '100%' }}>
+        <Panel pad={17} background={white} accent={blue}>
+          <div style={{ height: '100%', display: 'grid', alignContent: 'center', gap: 13 }}>
+            <SectionLabel>Developer Perspective</SectionLabel>
+            <ParagraphRich html={feedshop.developerPerspective ?? ''} size={16.2} lineHeight={1.5} />
+          </div>
+        </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {focusItems.map(([title, desc], idx) => (
+            <Panel key={title} pad={15} background={idx === 0 ? '#eff6ff' : '#fff7ed'} borderColor={idx === 0 ? '#bfdbfe' : '#fed7aa'} accent={idx === 0 ? blue : amber}>
+              <div style={{ display: 'grid', gridTemplateColumns: '42px 1fr', gap: 12, alignItems: 'center' }}>
+                <div
+                  style={{
+                    width: 42,
+                    height: 42,
+                    borderRadius: 12,
+                    background: white,
+                    color: idx === 0 ? blue : amber,
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontSize: 18,
+                    fontWeight: 950,
+                  }}
+                >
+                  {String(idx + 1).padStart(2, '0')}
+                </div>
+                <div>
+                  <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 18.2, fontWeight: 950, lineHeight: 1.18 }}>{title}</h3>
+                  <p style={{ margin: 0, color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>{desc}</p>
+                </div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
 function FeedShopP1ProblemSlide() {
   const metrics = [
     { label: 'SQL Count', value: '42회', caption: '요청 1회 기준', tone: red },
@@ -757,12 +804,8 @@ function FeedShopP1ProblemSlide() {
   ]
 
   return (
-    <Slide eyebrow="FeedShop" title={feedshop.problemSections![0].headline} subtitle="Developer Perspective · Problem" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
-        <Panel pad={12} background={white} accent={blue}>
-          <SectionLabel>Developer Perspective</SectionLabel>
-          <Rich html={(feedshop.developerPerspective ?? '').replace(/\n/g, '<br/>')} size={13.7} lineHeight={1.44} />
-        </Panel>
+    <Slide eyebrow="FeedShop" title={feedshop.problemSections![0].headline} subtitle="Problem · Scouter Evidence" dense>
+      <div style={{ display: 'grid', height: '100%' }}>
         <Panel pad={13} background="#f8fafc" accent={red}>
           <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.9fr', gap: 12, alignItems: 'stretch' }}>
@@ -1356,6 +1399,7 @@ export default function PdfPortfolio() {
       />
       <ProjectIntroSlide project={feedshop} title="FeedShop" />
       <ArchitectureSlide project={feedshop} title="FeedShop" />
+      <FeedShopDeveloperPerspectiveSlide />
       <FeedShopP1ProblemSlide />
       <FeedShopP1ThinkingSolutionSlide />
       <FeedShopP1SolutionResultSlide />
