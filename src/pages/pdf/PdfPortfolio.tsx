@@ -290,6 +290,50 @@ function KpiCard({
   )
 }
 
+const codeTokenColor: Record<string, string> = {
+  '@Cacheable': blue,
+  '@Transactional': blue,
+  '@UniqueConstraint': blue,
+  fetchJoin: blue,
+  leftJoin: blue,
+  selectFrom: blue,
+  where: blue,
+  offset: blue,
+  limit: blue,
+  fetch: blue,
+  countDistinct: blue,
+  NOT_SUPPORTED: amber,
+  DataIntegrityViolationException: red,
+  increment: green,
+  saveVote: green,
+  existsByEventIdAndUserId: red,
+  save: red,
+  return: violet,
+  public: violet,
+  if: violet,
+  try: violet,
+  catch: violet,
+}
+
+function renderCodeTokens(line: string) {
+  const commentIndex = line.indexOf('//')
+  const codePart = commentIndex >= 0 ? line.slice(0, commentIndex) : line
+  const commentPart = commentIndex >= 0 ? line.slice(commentIndex) : ''
+  const tokenPattern = new RegExp(`(${Object.keys(codeTokenColor).map((token) => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g')
+  const parts = codePart.split(tokenPattern)
+
+  return (
+    <>
+      {parts.map((part, idx) => (
+        <span key={`${part}-${idx}`} style={codeTokenColor[part] ? { color: codeTokenColor[part], fontWeight: 900 } : undefined}>
+          {part}
+        </span>
+      ))}
+      {commentPart && <span style={{ color: muted }}>{commentPart}</span>}
+    </>
+  )
+}
+
 function CodeBox({ lines }: { lines: string[] }) {
   return (
     <pre
@@ -306,7 +350,12 @@ function CodeBox({ lines }: { lines: string[] }) {
         whiteSpace: 'pre-wrap',
       }}
     >
-      {lines.join('\n')}
+      {lines.map((line, idx) => (
+        <React.Fragment key={`${line}-${idx}`}>
+          {renderCodeTokens(line)}
+          {idx < lines.length - 1 ? '\n' : null}
+        </React.Fragment>
+      ))}
     </pre>
   )
 }
