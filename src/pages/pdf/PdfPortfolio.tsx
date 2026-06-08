@@ -1601,111 +1601,143 @@ function ExperienceSlide() {
   )
 }
 
-function ClosingResourcesSlide() {
+function ClosingSlide() {
   return (
     <Slide eyebrow={CLOSING_SECTION.kicker} title={CLOSING_SECTION.title} subtitle={CLOSING_SECTION.subtitle} dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 12, height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, minHeight: 0 }}>
-          {CLOSING_BLOCKS.map((block, idx) => {
-            const color = idx === 0 ? blue : violet
-            const items = parseClosingItems(block.body)
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15, height: '100%' }}>
+        {CLOSING_BLOCKS.map((block, idx) => {
+          const color = idx === 0 ? blue : violet
+          const items = parseClosingItems(block.body)
 
-            return (
-            <Panel key={block.titleEn} pad={0} background={white} accent={color}>
-              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr' }}>
-                <div
-                  style={{
-                    padding: '12px 15px 10px',
-                    background: idx === 0 ? '#eff6ff' : '#f5f3ff',
-                    borderBottom: `1px solid ${idx === 0 ? '#bfdbfe' : '#ddd6fe'}`,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
-                    <div
-                      style={{
-                        width: 39,
-                        height: 39,
-                        borderRadius: 10,
-                        display: 'grid',
-                        placeItems: 'center',
-                        background: white,
-                        color,
-                        fontWeight: 950,
-                        fontSize: 15,
-                      }}
-                    >
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <div style={{ color, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>{block.titleEn}</div>
-                      <div style={{ fontSize: 18.4, fontWeight: 950, color: navy, lineHeight: 1.2 }}>{block.titleKo}</div>
-                    </div>
-                    <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 24, opacity: 0.85 }} />
+          return (
+          <Panel key={block.titleEn} pad={0} background={white} accent={color}>
+            <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr' }}>
+              <div
+                style={{
+                  padding: '15px 17px 13px',
+                  background: idx === 0 ? '#eff6ff' : '#f5f3ff',
+                  borderBottom: `1px solid ${idx === 0 ? '#bfdbfe' : '#ddd6fe'}`,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
+                  <div
+                    style={{
+                      width: 45,
+                      height: 45,
+                      borderRadius: 12,
+                      display: 'grid',
+                      placeItems: 'center',
+                      background: white,
+                      color,
+                      fontWeight: 950,
+                      fontSize: 17,
+                    }}
+                  >
+                    {idx + 1}
                   </div>
-                </div>
-                <div style={{ padding: '11px 15px 13px', display: 'grid', gridTemplateRows: `repeat(${items.length || 1}, 1fr)`, gap: 8 }}>
-                  {items.length > 0 ? items.map((item) => (
-                    <div
-                      key={item.title}
-                      style={{
-                        borderRadius: 12,
-                        background: idx === 0 ? '#f8fbff' : '#fbf9ff',
-                        border: `1px solid ${color}1f`,
-                        padding: '10px 12px',
-                        display: 'grid',
-                        alignContent: 'center',
-                        gap: 6,
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                        <span style={{ width: 7, height: 7, borderRadius: 999, background: color, flexShrink: 0 }} />
-                        <h3 style={{ margin: 0, color: navy, fontSize: 15.2, fontWeight: 950, lineHeight: 1.18 }}>{item.title}</h3>
-                      </div>
-                      <p style={{ margin: 0, color: slate, fontSize: 12.9, lineHeight: 1.43, fontWeight: 720, whiteSpace: 'pre-line' }}>{item.text}</p>
-                    </div>
-                  )) : (
-                    <Rich html={block.body} size={11.4} lineHeight={1.46} />
-                  )}
+                  <div>
+                    <div style={{ color, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 3 }}>{block.titleEn}</div>
+                    <div style={{ fontSize: 20.5, fontWeight: 950, color: navy, lineHeight: 1.18 }}>{block.titleKo}</div>
+                  </div>
+                  <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 28, opacity: 0.85 }} />
                 </div>
               </div>
-            </Panel>
-            )
-          })}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.72fr', gap: 12 }}>
-          <Panel pad={12} background="#f8fbff" accent={green}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
-              <i className="ri-links-line" style={{ color: green, fontSize: 18 }} />
-              <div style={{ color: green, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{RESOURCES_SECTION.title}</div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '9px 13px' }}>
-              {RESOURCE_LINKS.map((link) => (
-                <div key={link.label} style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <i className={link.icon} style={{ color: green, fontSize: 16, flexShrink: 0 }} />
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 12.4, fontWeight: 950, color: navy, marginBottom: 2 }}>{link.label}</div>
-                    <div style={{ fontSize: 8.8, color: muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.url}</div>
+              <div style={{ padding: '14px 17px 16px', display: 'grid', gridTemplateRows: `repeat(${items.length || 1}, 1fr)`, gap: 10 }}>
+                {items.length > 0 ? items.map((item) => (
+                  <div
+                    key={item.title}
+                    style={{
+                      borderRadius: 13,
+                      background: idx === 0 ? '#f8fbff' : '#fbf9ff',
+                      border: `1px solid ${color}22`,
+                      padding: '13px 14px',
+                      display: 'grid',
+                      alignContent: 'center',
+                      gap: 7,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: 999, background: color, flexShrink: 0 }} />
+                      <h3 style={{ margin: 0, color: navy, fontSize: 16.8, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</h3>
+                    </div>
+                    <p style={{ margin: 0, color: slate, fontSize: 13.9, lineHeight: 1.48, fontWeight: 740, whiteSpace: 'pre-line' }}>{item.text}</p>
                   </div>
+                )) : (
+                  <Rich html={block.body} size={12.5} lineHeight={1.5} />
+                )}
+              </div>
+            </div>
+          </Panel>
+          )
+        })}
+      </div>
+    </Slide>
+  )
+}
+
+function ResourcesContactSlide() {
+  return (
+    <Slide eyebrow={RESOURCES_SECTION.kicker} title="자료 모음 · 연락하기" subtitle="프로젝트 문서와 연락 채널을 마지막에 정리했습니다." dense>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.32fr 0.82fr', gap: 14, height: '100%' }}>
+        <Panel pad={18} background="#f8fbff" accent={green}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <i className="ri-links-line" style={{ color: green, fontSize: 23 }} />
+              <div>
+                <SectionLabel color={green}>{RESOURCES_SECTION.title}</SectionLabel>
+                <div style={{ color: slate, fontSize: 12.8, fontWeight: 760 }}>프로젝트 기획, 협업 가이드, 실습 기록을 확인할 수 있는 자료입니다.</div>
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 11 }}>
+              {RESOURCE_LINKS.map((link, idx) => (
+                <div
+                  key={link.label}
+                  style={{
+                    border: '1px solid #bbf7d0',
+                    background: white,
+                    borderRadius: 14,
+                    padding: '15px 14px',
+                    minHeight: 92,
+                    display: 'grid',
+                    gridTemplateRows: 'auto auto 1fr',
+                    gap: 6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 17, fontWeight: 950 }}>
+                      <i className={link.icon} />
+                    </div>
+                    <div style={{ color: green, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.1em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
+                  </div>
+                  <div style={{ color: navy, fontSize: 15.5, fontWeight: 950, lineHeight: 1.2 }}>{link.label}</div>
+                  <div style={{ color: muted, fontSize: 10.2, lineHeight: 1.28, fontWeight: 720, wordBreak: 'break-all' }}>{link.url}</div>
                 </div>
               ))}
             </div>
-          </Panel>
-          <Panel pad={0} background={navy} borderColor={navy}>
-            <div style={{ height: '100%', padding: '14px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{ color: '#93c5fd', fontSize: 10.8, fontWeight: 950, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>Contact</div>
-              <div style={{ color: white, fontSize: 25, fontWeight: 950, marginBottom: 9 }}>{HERO_NAME}</div>
-              <div style={{ display: 'grid', gap: 6 }}>
-                {CONTACT_LINKS.map((link) => (
-                  <div key={link.label} style={{ color: '#cbd5e1', fontSize: 12.3, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    <i className={link.icon} style={{ color: '#93c5fd', marginRight: 7 }} />
-                    {link.label}
-                  </div>
-                ))}
-              </div>
+          </div>
+        </Panel>
+        <Panel pad={0} background={navy} borderColor={navy}>
+          <div style={{ height: '100%', padding: '24px 24px', display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 16 }}>
+            <div>
+              <div style={{ color: '#93c5fd', fontSize: 12, fontWeight: 950, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 8 }}>Contact</div>
+              <div style={{ color: white, fontSize: 32, fontWeight: 950, lineHeight: 1.05, marginBottom: 8 }}>{HERO_NAME}</div>
+              <div style={{ color: '#cbd5e1', fontSize: 13.2, lineHeight: 1.4, fontWeight: 760 }}>백엔드 개발자로서 수치 검증과 구조 설계를 바탕으로 문제를 끝까지 해결합니다.</div>
             </div>
+            <div style={{ display: 'grid', alignContent: 'center', gap: 12 }}>
+              {CONTACT_LINKS.map((link) => (
+                <div key={link.label} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 11, alignItems: 'center' }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 18 }}>
+                    <i className={link.icon} />
+                  </div>
+                  <div style={{ color: '#e2e8f0', fontSize: 14.2, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.label}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ borderTop: '1px solid #334155', paddingTop: 13, color: '#94a3b8', fontSize: 10.8, lineHeight: 1.4, fontWeight: 720 }}>
+              Portfolio · Backend Software Engineer
+            </div>
+          </div>
           </Panel>
-        </div>
       </div>
     </Slide>
   )
@@ -1851,7 +1883,8 @@ export default function PdfPortfolio() {
       <M3ResultSlide />
 
       <ExperienceSlide />
-      <ClosingResourcesSlide />
+      <ClosingSlide />
+      <ResourcesContactSlide />
     </>
   )
 }
