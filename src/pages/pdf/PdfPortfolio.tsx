@@ -1518,12 +1518,37 @@ function M3SolutionSlide() {
                 </div>
               ))}
             </div>
-            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: 8, display: 'grid', placeItems: 'center' }}>
-              <img
-                src={asset('3m-jwt-flow.png')}
-                alt="Gateway JWT 인증 흐름"
-                style={{ width: '100%', height: '100%', maxHeight: '52mm', objectFit: 'contain', display: 'block' }}
-              />
+            <div style={{ minHeight: 0, border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: 14, display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 11 }}>
+              <div style={{ color: blue, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Gateway 중심 인증 흐름
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 8 }}>
+                {[
+                  ['Client', 'JWT 포함 요청'],
+                  ['Gateway', 'JWT 검증'],
+                  ['Service', 'X-User-* 헤더 기반 처리'],
+                ].map(([title, desc], idx) => (
+                  <React.Fragment key={title}>
+                    <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 13, padding: '15px 11px', minHeight: 86, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
+                      <div style={{ color: idx === 1 ? blue : navy, fontSize: 16, fontWeight: 950, lineHeight: 1.1, marginBottom: 7 }}>{title}</div>
+                      <div style={{ color: slate, fontSize: 11.7, lineHeight: 1.28, fontWeight: 760 }}>{desc}</div>
+                    </div>
+                    {idx < 2 ? (
+                      <div style={{ color: blue, fontSize: 22, fontWeight: 950 }}>→</div>
+                    ) : null}
+                  </React.Fragment>
+                ))}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                <div style={{ border: '1px solid #ddd6fe', background: '#f5f3ff', borderRadius: 11, padding: '10px 11px' }}>
+                  <div style={{ color: violet, fontSize: 11.5, fontWeight: 950, marginBottom: 4 }}>권한 판단</div>
+                  <div style={{ color: navy, fontSize: 12, lineHeight: 1.32, fontWeight: 800 }}>AOP(@RequiresMasterRole)로 역할 체크 통합</div>
+                </div>
+                <div style={{ border: '1px solid #bbf7d0', background: '#ecfdf5', borderRadius: 11, padding: '10px 11px' }}>
+                  <div style={{ color: green, fontSize: 11.5, fontWeight: 950, marginBottom: 4 }}>호출 최소화</div>
+                  <div style={{ color: navy, fontSize: 12, lineHeight: 1.32, fontWeight: 800 }}>추가 정보 필요 시에만 User 서비스 선택 호출</div>
+                </div>
+              </div>
             </div>
             <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 11, padding: '12px 13px', color: navy, fontSize: 13.2, lineHeight: 1.35, fontWeight: 880 }}>
               이후 요청은 User 서비스 재호출 없이 Gateway에서 권한을 판단하고, 인증 의존성을 Gateway로 수렴시켰습니다.
