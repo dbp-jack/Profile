@@ -1457,18 +1457,122 @@ function M3ProblemThinkingSlide() {
   )
 }
 
-function M3SolutionResultSlide() {
+function M3SolutionSlide() {
   return (
-    <Slide eyebrow="3M" title="Solution · Result" subtitle="서비스 경계 분리와 인증 흐름 단순화" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%' }}>
-        <Panel pad={11} background={white} accent={blue}>
-          <SectionLabel>Solution</SectionLabel>
-          <Rich html={m3.solution ?? ''} size={11.2} lineHeight={1.42} className="pdf-compact-images" />
+    <Slide eyebrow="3M" title="Solution" subtitle="서비스 경계 분리와 인증 흐름 단순화" dense>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, height: '100%' }}>
+        <Panel pad={14} background={white} accent={blue}>
+          <SectionLabel>Solution 1</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 10, height: '100%' }}>
+            <div>
+              <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
+                1단계 — 서비스 경계 분리
+              </div>
+              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.42, fontWeight: 780 }}>
+                인증은 <strong>Auth</strong> 모듈, 사용자 관리는 <strong>User</strong> 모듈로 분리해 서비스 경계를 명확히 했습니다.
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              {[
+                ['Auth', '로그인/회원가입 처리'],
+                ['JWT', 'access/refresh 발급 · userId · role 포함'],
+              ].map(([label, text]) => (
+                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '11px 12px' }}>
+                  <div style={{ color: blue, fontSize: 12, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 12.3, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: 8, display: 'grid', placeItems: 'center' }}>
+              <img
+                src={asset('3m-auth-user-class-diagram.png')}
+                alt="Auth/User 도메인 분리 클래스 구조"
+                style={{ width: '100%', height: '100%', maxHeight: '62mm', objectFit: 'contain', display: 'block' }}
+              />
+            </div>
+            <div style={{ color: muted, fontSize: 10.6, lineHeight: 1.25, fontWeight: 720, textAlign: 'right' }}>
+              Auth/User 도메인 분리 클래스 구조 — Auth는 인증에 필요한 최소 정보만 보관, Feign으로 단방향 통신
+            </div>
+          </div>
         </Panel>
-        <Panel pad={11} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <SectionLabel color={green}>Result</SectionLabel>
-          <Rich html={m3.result ?? ''} size={12} lineHeight={1.5} />
+        <Panel pad={14} background={white} accent={blue}>
+          <SectionLabel>Solution 2</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 10, height: '100%' }}>
+            <div>
+              <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
+                2단계 — 인증 흐름 단순화
+              </div>
+              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.42, fontWeight: 780 }}>
+                Gateway 인증 필터에서 JWT를 검증하고 <strong>X-User-*</strong> 헤더로 사용자 컨텍스트를 전달했습니다.
+              </div>
+            </div>
+            <div style={{ display: 'grid', gap: 8 }}>
+              {[
+                ['Gateway', 'JWT 검증 후 사용자 컨텍스트 전달'],
+                ['User 재조회 감소', '추가 정보가 필요한 경우에만 선택 호출'],
+                ['AOP 권한 제어', '@RequiresMasterRole로 역할 체크 로직 통합'],
+              ].map(([label, text]) => (
+                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '11px 12px', display: 'grid', gridTemplateColumns: '104px 1fr', gap: 10, alignItems: 'center' }}>
+                  <div style={{ color: blue, fontSize: 12.2, fontWeight: 950 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 12.6, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: 8, display: 'grid', placeItems: 'center' }}>
+              <img
+                src={asset('3m-jwt-flow.png')}
+                alt="Gateway JWT 인증 흐름"
+                style={{ width: '100%', height: '100%', maxHeight: '52mm', objectFit: 'contain', display: 'block' }}
+              />
+            </div>
+            <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 11, padding: '12px 13px', color: navy, fontSize: 13.2, lineHeight: 1.35, fontWeight: 880 }}>
+              이후 요청은 User 서비스 재호출 없이 Gateway에서 권한을 판단하고, 인증 의존성을 Gateway로 수렴시켰습니다.
+            </div>
+          </div>
         </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function M3ResultSlide() {
+  return (
+    <Slide eyebrow="3M" title="Result" subtitle="결합도 제거와 인증 흐름 영향 범위 축소" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
+        <Panel pad={14} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <SectionLabel color={green}>Result Summary</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+            {[
+              ['결합도(CBO) 0건', 'UserService → Auth', '인증 정책 변경 시 User 모듈 배포 영향 제거', green],
+              ['단방향', 'Auth → User', 'Feign 호출용 DTO 중심 참조 · 순환 의존 없음', blue],
+              ['Gateway', '권한 판단', 'JWT payload 기반 User 재조회 감소', violet],
+            ].map(([value, label, caption, color]) => (
+              <div key={label} style={{ border: `1px solid ${color}33`, borderRadius: 13, background: white, padding: '16px 15px', minHeight: 98, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
+                <div style={{ color, fontSize: 21, fontWeight: 950, lineHeight: 1.05, marginBottom: 6 }}>{value}</div>
+                <div style={{ color: navy, fontSize: 12.6, fontWeight: 900, marginBottom: 5 }}>{label}</div>
+                <div style={{ color: slate, fontSize: 11.3, lineHeight: 1.28, fontWeight: 720 }}>{caption}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, minHeight: 0 }}>
+          {[
+            ['배포 영향 제거', '인증 정책 변경 시 User 모듈 배포 영향 제거', 'Auth·Gateway 중심으로 인증 정책 변경 범위를 제한했습니다.', green],
+            ['순환 의존 없음', 'Feign DTO 중심의 단방향 참조로 제한', 'Auth → User 흐름은 유지하되 역방향 참조가 생기지 않도록 경계를 고정했습니다.', blue],
+            ['변경 범위 수렴', '한 도메인 수정이 다른 도메인 배포로 이어지지 않는 구조 확보', '인증 정책과 사용자 정책의 변경 이유를 각 모듈 안으로 수렴시켰습니다.', violet],
+          ].map(([title, headline, body, color]) => (
+            <Panel key={title} pad={15} background={white} accent={color}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10 }}>
+                <div style={{ color, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{title}</div>
+                <div style={{ color: navy, fontSize: 17, lineHeight: 1.22, fontWeight: 950 }}>{headline}</div>
+                <div style={{ color: slate, fontSize: 13.1, lineHeight: 1.45, fontWeight: 760, alignSelf: 'center' }}>{body}</div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+        <div style={{ border: `1px solid ${line}`, background: soft, borderRadius: 12, padding: '12px 14px', color: slate, fontSize: 11.7, lineHeight: 1.4, fontWeight: 720 }}>
+          ※ CBO: 소스 코드 import 정적 분석으로 측정 — 실제 코드에서 참조된 외부 클래스 수 기준
+        </div>
       </div>
     </Slide>
   )
@@ -1743,7 +1847,8 @@ export default function PdfPortfolio() {
       <ProjectIntroSlide project={m3} title="3M" />
       <ArchitectureSlide project={m3} title="3M" />
       <M3ProblemThinkingSlide />
-      <M3SolutionResultSlide />
+      <M3SolutionSlide />
+      <M3ResultSlide />
 
       <ExperienceSlide />
       <ClosingResourcesSlide />
