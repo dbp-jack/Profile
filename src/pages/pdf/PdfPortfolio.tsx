@@ -1332,10 +1332,10 @@ function FeedShopP2SolutionSlide() {
 
 function FeedShopP2ResultSlide() {
   const resultImages = [
-    ['정합성 검증 — DB count와 Redis count 일치', 'phase2b-redis-count-verify.png'],
-    ['nGrinder — 동시 500명 요청 성공', 'phase2b-redis-v500.png'],
-    ['nGrinder — 동시 1,000명 요청 성공', 'phase2b-redis-v1000.png'],
-    ['nGrinder — 동시 3,000명 요청 성공', 'phase2b-redis-v3000.png'],
+    ['정합성 검증 — DB count와 Redis count 일치', 'phase2b-redis-count-verify.png', 'Redis INCR 결과와 API 조회 count가 동일해 투표 수 정합성을 확인'],
+    ['nGrinder — 동시 500명 요청 성공', 'phase2b-redis-v500.png', '동시 500명 구간에서 에러 없이 요청 성공, 중복 투표 0건 유지'],
+    ['nGrinder — 동시 1,000명 요청 성공', 'phase2b-redis-v1000.png', '동시 1,000명 구간에서도 DB 제약 + Redis 카운터 구조가 유지됨'],
+    ['nGrinder — 동시 3,000명 요청 성공', 'phase2b-redis-v3000.png', '최대 검증 구간에서 에러율 0%, DB count와 Redis count 일치 확인'],
   ]
   const kpis = [
     ['에러율', '0%'],
@@ -1346,27 +1346,27 @@ function FeedShopP2ResultSlide() {
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Result" subtitle="정합성 검증 · nGrinder 부하 테스트" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 9, height: '100%' }}>
-        <Panel pad={9} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 10, height: '100%' }}>
+        <Panel pad={12} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
           <div style={{ display: 'grid', gridTemplateColumns: '1.16fr repeat(4, 0.72fr)', gap: 8, alignItems: 'center' }}>
-            <div style={{ color: slate, fontSize: 12.7, lineHeight: 1.38, fontWeight: 830 }}>
+            <div style={{ color: slate, fontSize: 13.1, lineHeight: 1.42, fontWeight: 830 }}>
               동시 500→3,000명 전 구간 <strong style={{ color: green }}>에러율 0%</strong>,
               <strong style={{ color: green }}> 중복 투표 0건</strong> 확인,
               <strong style={{ color: blue }}> DB count = Redis count</strong> 투표 수 정합성 검증
             </div>
             {kpis.map(([label, value]) => (
-              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 40, display: 'grid', alignContent: 'center' }}>
-                <div style={{ color: green, fontSize: 18.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 10.3, fontWeight: 850, marginTop: 3 }}>{label}</div>
+              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 48, display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 19.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 10.7, fontWeight: 850, marginTop: 4 }}>{label}</div>
               </div>
             ))}
           </div>
         </Panel>
-        <Panel pad={8} background={white} accent={green}>
+        <Panel pad={10} background={white} accent={green}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
-            {resultImages.map(([label, src]) => (
-              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 3 }}>
-                <div style={{ color: navy, fontSize: 11, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
+            {resultImages.map(([label, src, caption]) => (
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 4 }}>
+                <div style={{ color: navy, fontSize: 11.1, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
                 <img
                   src={asset(src)}
                   alt={label}
@@ -1382,6 +1382,7 @@ function FeedShopP2ResultSlide() {
                     background: white,
                   }}
                 />
+                <div style={{ color: slate, fontSize: 9.7, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
           </div>
