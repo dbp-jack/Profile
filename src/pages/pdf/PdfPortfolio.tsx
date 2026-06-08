@@ -1173,40 +1173,54 @@ function FeedShopP1ResultImagesSlide() {
 function FeedShopP2ProblemThinkingSlide() {
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — 피드 투표 동시성 문제" subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1.05fr 0.95fr', gap: 10, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '1.18fr 0.82fr', gap: 10, height: '100%' }}>
         <Panel pad={11} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.92fr 1.08fr', gap: 12, alignItems: 'stretch' }}>
-            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 9 }}>
-              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.45, fontWeight: 780 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10, height: '100%' }}>
+            <div style={{ color: slate, fontSize: 14.2, lineHeight: 1.45, fontWeight: 780 }}>
                 중복 투표 방지 로직이 코드 레벨에만 존재하고, DB 유니크 제약이 없어 동시 요청 시
                 <strong style={{ color: red, fontWeight: 950 }}> TOCTOU 취약점</strong>이 발생했습니다.
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
                 {[
                   ['원인', 'DB 제약 없음'],
-                  ['취약점', '검사-저장 사이 틈'],
+                ['취약점', '중복 체크와 저장 사이 틈'],
                   ['결과', '중복 투표 삽입'],
                 ].map(([label, value]) => (
-                  <div key={label} style={{ border: `1px solid #fecaca`, borderRadius: 10, background: '#fff7f7', padding: '10px 9px', display: 'grid', alignContent: 'center' }}>
-                    <div style={{ color: red, fontSize: 10.5, fontWeight: 950, marginBottom: 4 }}>{label}</div>
-                    <div style={{ color: navy, fontSize: 13, fontWeight: 950, lineHeight: 1.2 }}>{value}</div>
+                <div key={label} style={{ border: `1px solid #fecaca`, borderRadius: 11, background: '#fff7f7', padding: '12px 12px', display: 'grid', alignContent: 'center' }}>
+                  <div style={{ color: red, fontSize: 11.2, fontWeight: 950, marginBottom: 5 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 15, fontWeight: 950, lineHeight: 1.2 }}>{value}</div>
                   </div>
                 ))}
-              </div>
             </div>
-            <div>
-              <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 6 }}>수정 전 구조</div>
-              <CodeBox
-                lines={[
-                  '// FeedVoteService.java — 수정 전 구조 (TOCTOU 취약)',
-                  'if (feedVoteRepository.existsByEventIdAndUserId(eventId, userId)) {',
-                  '    return FeedVoteResponseDto.success(false, ...); // 체크',
-                  '}',
-                  'feedVoteRepository.save(vote); // 저장',
-                  '// 동시 요청 시 두 스레드가 모두 통과 가능',
-                ]}
-              />
+            <div style={{ display: 'grid', gridTemplateColumns: '1.12fr 0.88fr', gap: 11, minHeight: 0 }}>
+              <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 6, minHeight: 0 }}>
+                <div style={{ color: red, fontSize: 12.5, fontWeight: 950 }}>수정 전 구조</div>
+                <CodeBox
+                  lines={[
+                    '// FeedVoteService.java — 수정 전 구조 (TOCTOU 취약)',
+                    'if (feedVoteRepository.existsByEventIdAndUserId(eventId, userId)) {',
+                    '    return FeedVoteResponseDto.success(false, ...); // 중복 체크',
+                    '}',
+                    'feedVoteRepository.save(vote); // 투표 저장',
+                    '// 동시 요청 시 두 스레드가 모두 통과 가능',
+                  ]}
+                />
+              </div>
+              <div style={{ display: 'grid', gap: 8, alignContent: 'center' }}>
+                <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
+                  <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 5 }}>① 중복 체크</div>
+                  <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.36, fontWeight: 760 }}>
+                    <strong style={{ color: red }}>existsByEventIdAndUserId</strong> 통과 후 저장 전까지 경쟁 구간이 생김
+                  </div>
+                </div>
+                <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
+                  <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 5 }}>② 투표 저장</div>
+                  <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.36, fontWeight: 760 }}>
+                    두 요청이 동시에 통과하면 <strong style={{ color: red }}>save</strong>가 중복 실행될 수 있음
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </Panel>
@@ -1219,13 +1233,13 @@ function FeedShopP2ProblemThinkingSlide() {
                 ['NOT_SUPPORTED', '제약 위반 예외 발생 시 정상 응답 처리'],
                 ['Redis INCR', 'DB 락과 분리된 원자적 카운터 관리'],
               ].map(([title, text]) => (
-                <div key={title} style={{ border: `1px solid #fed7aa`, background: '#fff7ed', borderRadius: 11, padding: '11px 12px', minHeight: 76 }}>
-                  <div style={{ color: amber, fontSize: 13.2, fontWeight: 950, marginBottom: 5 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+                <div key={title} style={{ border: `1px solid #fed7aa`, background: '#fff7ed', borderRadius: 11, padding: '12px 13px', minHeight: 84 }}>
+                  <div style={{ color: amber, fontSize: 13.6, fontWeight: 950, marginBottom: 6 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 12.3, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 13.3, lineHeight: 1.38, fontWeight: 900 }}>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '12px 14px', color: '#9a3412', fontSize: 13.7, lineHeight: 1.38, fontWeight: 900 }}>
               👉 Redis INCR로 DB 트랜잭션과 분리된 원자적 연산 구성 - 락 경합 구조 자체를 제거
             </div>
           </div>
