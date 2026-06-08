@@ -807,9 +807,9 @@ function FeedShopP1ProblemSlide() {
     <Slide eyebrow="FeedShop" title={feedshop.problemSections![0].headline} subtitle="Problem · Scouter Evidence" dense>
       <div style={{ display: 'grid', height: '100%' }}>
         <Panel pad={13} background="#f8fafc" accent={red}>
-          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.9fr', gap: 12, alignItems: 'stretch' }}>
-              <div>
+          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.08fr 0.92fr', gap: 12, alignItems: 'stretch' }}>
+              <div style={{ display: 'grid', gap: 10 }}>
                 <SectionLabel color={red}>Problem Cause</SectionLabel>
                 <div style={{ display: 'grid', gap: 8 }}>
                   {[
@@ -825,47 +825,52 @@ function FeedShopP1ProblemSlide() {
                     </div>
                   ))}
                 </div>
+                <div style={{ borderTop: `1px solid #fecaca`, paddingTop: 10 }}>
+                  <SectionLabel color={red}>Measured Impact</SectionLabel>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                    {metrics.map((metric) => (
+                      <div
+                        key={metric.label}
+                        style={{
+                          borderRadius: 12,
+                          border: `1px solid ${metric.tone}30`,
+                          background: white,
+                          padding: '10px 10px',
+                        }}
+                      >
+                        <div style={{ color: muted, fontSize: 10.8, fontWeight: 900, lineHeight: 1.2 }}>{metric.label}</div>
+                        <div style={{ color: metric.tone, fontSize: 22.5, fontWeight: 950, lineHeight: 1.05, marginTop: 6 }}>{metric.value}</div>
+                        <div style={{ color: slate, fontSize: 10.8, fontWeight: 800, marginTop: 5 }}>{metric.caption}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div>
-                <SectionLabel color={red}>Measured Impact</SectionLabel>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7 }}>
-                  {metrics.map((metric) => (
-                    <div
-                      key={metric.label}
-                      style={{
-                        borderRadius: 12,
-                        border: `1px solid ${metric.tone}30`,
-                        background: white,
-                        padding: '10px 9px',
-                      }}
-                    >
-                      <div style={{ color: muted, fontSize: 10.7, fontWeight: 900, lineHeight: 1.2 }}>{metric.label}</div>
-                      <div style={{ color: metric.tone, fontSize: 22, fontWeight: 950, lineHeight: 1.05, marginTop: 6 }}>{metric.value}</div>
-                      <div style={{ color: slate, fontSize: 10.8, fontWeight: 800, marginTop: 5 }}>{metric.caption}</div>
-                    </div>
-                  ))}
+              <div
+                style={{
+                  borderRadius: 12,
+                  background: '#fff7ed',
+                  border: '1px solid #fed7aa',
+                  padding: '13px 14px',
+                  display: 'grid',
+                  alignContent: 'center',
+                  gap: 8,
+                }}
+              >
+                <SectionLabel color={red}>Scouter Evidence</SectionLabel>
+                <div style={{ color: navy, fontSize: 18, fontWeight: 950, lineHeight: 1.22 }}>
+                  요청 1회당 SQL 42회 반복 실행 확인
+                </div>
+                <div style={{ color: '#9a3412', fontSize: 12.6, lineHeight: 1.45, fontWeight: 780 }}>
+                  `/api/events/all` 요청마다 동일한 연관 데이터 조회가 반복되어 목록 조회 성능 병목으로 이어졌습니다.
                 </div>
               </div>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderRadius: 12,
-                background: '#fff7ed',
-                border: '1px solid #fed7aa',
-                padding: '9px 12px',
-              }}
-            >
-              <div style={{ color: '#9a3412', fontSize: 13, fontWeight: 950 }}>Scouter Evidence</div>
-              <div style={{ color: red, fontSize: 14.2, fontWeight: 950 }}>요청 1회당 SQL 42회 반복 실행 확인</div>
-            </div>
-            <div style={{ minHeight: 0 }}>
+            <div style={{ minHeight: 0, display: 'grid' }}>
               <img
                 src={asset('before-scouter-sql42.png')}
                 alt="Scouter XLog SQL Count 42"
-                style={{ width: '100%', height: '100%', maxHeight: '70mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '88mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block', background: white }}
               />
             </div>
           </div>
