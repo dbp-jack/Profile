@@ -1396,11 +1396,11 @@ function FeedShopP2ResultSlide() {
 function M3ProblemThinkingSlide() {
   return (
     <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.9fr 1.1fr', gap: 10, height: '100%' }}>
-        <Panel pad={12} background={white} accent={red}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.95fr 1.25fr', gap: 11, height: '100%' }}>
+        <Panel pad={14} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 10, height: '100%' }}>
-            <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.45, fontWeight: 780 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12, height: '100%' }}>
+            <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.45, fontWeight: 800 }}>
               인증(Auth)과 사용자(User) 책임이 강하게 결합되어, 인증 정책 변경과 사용자 조회 장애가
               전체 인증 흐름에 영향을 줄 수 있는 구조였습니다.
             </div>
@@ -1410,18 +1410,18 @@ function M3ProblemThinkingSlide() {
                 ['재조회 의존', '매 요청마다 User 서비스 재조회로 서비스 간 호출 의존 증가'],
                 ['SPOF 구조', 'User 장애 시 인증 흐름 전체에 영향'],
               ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '13px 13px', display: 'grid', alignContent: 'center', gap: 6 }}>
-                  <div style={{ color: red, fontSize: 12, fontWeight: 950 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 12.7, lineHeight: 1.38, fontWeight: 760 }}>{desc}</div>
+                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '15px 15px', display: 'grid', alignContent: 'center', gap: 8, minHeight: 92 }}>
+                  <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 13.3, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
                 </div>
               ))}
             </div>
           </div>
         </Panel>
-        <Panel pad={12} background={white} accent={amber}>
+        <Panel pad={14} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 9, height: '100%' }}>
-            <div style={{ color: slate, fontSize: 12.9, fontWeight: 760, lineHeight: 1.38 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
+            <div style={{ color: slate, fontSize: 13.5, fontWeight: 780, lineHeight: 1.4 }}>
               문제를 두 레이어로 분리해 접근했습니다.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 9 }}>
@@ -1429,9 +1429,9 @@ function M3ProblemThinkingSlide() {
                 ['1. 모듈 경계 혼재', '책임 기준으로 Auth / User 분리 필요'],
                 ['2. 런타임 재호출', '토큰 컨텍스트로 User 호출 자체를 줄이는 구조 필요'],
               ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid ${line}`, background: '#f8fafc', borderRadius: 12, padding: '12px 13px' }}>
-                  <div style={{ color: navy, fontSize: 13.6, fontWeight: 950, marginBottom: 6 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 12.5, lineHeight: 1.38, fontWeight: 760 }}>{desc}</div>
+                <div key={title} style={{ border: `1px solid ${line}`, background: '#f8fafc', borderRadius: 12, padding: '15px 15px', minHeight: 82 }}>
+                  <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginBottom: 7 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 13.2, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
                 </div>
               ))}
             </div>
@@ -1440,14 +1440,14 @@ function M3ProblemThinkingSlide() {
                 ['Auth', '인증 정책 변경 시 영향이 Auth·Gateway로 수렴하도록 경계 설계', '변경 주기와 장애 영향이 다른 인증·사용자 책임을 같은 모듈에 두지 않도록 분리'],
                 ['User 재호출', '로그인 시점, 컨텍스트를 토큰에 포함 → 이후 요청은 경로에서 재조회 없이 권한 판단', '추가 정보가 필요한 경우에만 User 서비스 선택 호출'],
               ].map(([label, main, sub]) => (
-                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 12, padding: '12px 13px', display: 'grid', alignContent: 'center' }}>
-                  <div style={{ color: blue, fontSize: 12.5, fontWeight: 950, marginBottom: 6 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 13.2, lineHeight: 1.35, fontWeight: 900 }}>{main}</div>
-                  <div style={{ color: muted, fontSize: 11.3, lineHeight: 1.35, fontWeight: 720, marginTop: 5 }}>{sub}</div>
+                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 12, padding: '15px 15px', display: 'grid', alignContent: 'center' }}>
+                  <div style={{ color: blue, fontSize: 13.2, fontWeight: 950, marginBottom: 7 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 14, lineHeight: 1.35, fontWeight: 900 }}>{main}</div>
+                  <div style={{ color: muted, fontSize: 12, lineHeight: 1.35, fontWeight: 740, marginTop: 6 }}>{sub}</div>
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '12px 14px', color: '#9a3412', fontSize: 13.6, lineHeight: 1.38, fontWeight: 900 }}>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '14px 15px', color: '#9a3412', fontSize: 14.2, lineHeight: 1.38, fontWeight: 900 }}>
               👉 책임 경계 분리와 인증 흐름 단순화를 함께 가져가야 한다고 판단
             </div>
           </div>
