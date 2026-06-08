@@ -56,13 +56,6 @@ function extractTable(html: string): string {
   return html.slice(wrapStart >= 0 ? wrapStart : tableStart, wrapEnd > 0 ? wrapEnd : tableEnd)
 }
 
-function extractAfterTable(html: string): string {
-  const tableEnd = html.indexOf('</table>')
-  if (tableEnd < 0) return html
-  const wrapEnd = html.indexOf('</div>', tableEnd) + '</div>'.length
-  return html.slice(wrapEnd > 0 ? wrapEnd : tableEnd + '</table>'.length)
-}
-
 function extractResultLead(html: string): string {
   const tableStart = html.indexOf('<table')
   if (tableStart < 0) return html
@@ -981,29 +974,60 @@ function FeedShopP1SolutionResultSlide() {
 
 function FeedShopP1ResultImagesSlide() {
   const sec = feedshop.problemSections![0]
+  const kpis = [
+    ['응답시간', '91% 단축'],
+    ['TPS', '216% 향상'],
+    ['SQL Count', '42회 → 0회'],
+    ['전략', 'fetchJoin + Redis'],
+  ]
+  const resultImages = [
+    ['동시 100명 Before', 'before-ngrinder-v100.png'],
+    ['동시 100명 After', 'phase2a-ngrinder-v100.png'],
+    ['동시 1,000명 Before', 'before-ngrinder-v1000.png'],
+    ['동시 1,000명 After', 'phase2a-ngrinder-v1000.png'],
+  ]
+
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 결과" subtitle="Before / After 성능 비교" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 10, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 9, height: '100%' }}>
+        <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.25fr repeat(4, 0.75fr)', gap: 8, alignItems: 'center' }}>
+            <div>
+              <SectionLabel color={green}>Result Summary</SectionLabel>
+              <Rich html={extractResultLead(sec.result)} size={11.8} lineHeight={1.34} />
+            </div>
+            {kpis.map(([label, value]) => (
+              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 42, display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 18.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 10.5, fontWeight: 850, marginTop: 3 }}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
         <Panel pad={10} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
           <SectionLabel color={green}>Result Table</SectionLabel>
-          <Rich html={extractResultLead(sec.result)} size={12.8} lineHeight={1.36} />
           <Rich html={extractTable(sec.result)} size={10.4} lineHeight={1.3} className="pdf-table-fit" />
         </Panel>
         <Panel pad={10} background={white} accent={blue}>
-          <Rich html={extractResultLead(sec.result)} size={11.6} lineHeight={1.45} />
-          <Rich html={extractAfterTable(sec.result)} size={11.4} lineHeight={1.38} className="pdf-result-grid" />
-        </Panel>
-        <Panel pad={11} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-            {[
-              ['응답시간', '91% 단축'],
-              ['TPS', '216% 향상'],
-              ['SQL Count', '42회 → 0회'],
-              ['전략', 'fetchJoin + Redis'],
-            ].map(([label, value]) => (
-              <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ color: green, fontSize: 18, fontWeight: 950 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 10, fontWeight: 800 }}>{label}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
+            {resultImages.map(([label, src]) => (
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 4 }}>
+                <div style={{ color: navy, fontSize: 10.8, fontWeight: 950, lineHeight: 1.2 }}>{label}</div>
+                <img
+                  src={asset(src)}
+                  alt={`nGrinder ${label}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    minHeight: 0,
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    borderRadius: 8,
+                    border: `1px solid ${line}`,
+                    display: 'block',
+                    background: white,
+                  }}
+                />
               </div>
             ))}
           </div>
