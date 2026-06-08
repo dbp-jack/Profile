@@ -1080,7 +1080,7 @@ function FeedShopP1ResultTableSlide() {
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — 성능 개선 결과" subtitle="QueryDSL fetchJoin + Redis 캐시 적용 결과" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 10, height: '100%' }}>
+      <div style={{ display: 'grid', alignContent: 'center', gap: 11, height: '100%' }}>
         <Panel pad={13} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
           <div style={{ display: 'grid', gridTemplateColumns: '1.1fr repeat(4, 0.78fr)', gap: 10, alignItems: 'center' }}>
             <div>
@@ -1099,43 +1099,52 @@ function FeedShopP1ResultTableSlide() {
           <SectionLabel color={green}>Result Table</SectionLabel>
           <Rich html={extractTable(sec.result)} size={12.2} lineHeight={1.36} className="pdf-table-fit" />
         </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
+            <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>Before</div>
+            <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
+              N+1 쿼리와 반복 조회 비용이 겹쳐 동시 1,000명 기준 응답시간이 6.8초까지 증가했습니다.
+            </div>
+          </Panel>
+          <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
+            <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>After</div>
+            <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
+              fetchJoin으로 쿼리 수를 줄이고 Redis Cache Hit로 DB 조회를 제거해 병목을 완화했습니다.
+            </div>
+          </Panel>
+        </div>
       </div>
     </Slide>
   )
 }
 
 function FeedShopP1ResultImagesSlide() {
-  const imageKpis = [
-    ['응답시간', '91% 단축'],
-    ['TPS', '216% 향상'],
-    ['SQL Count', '42회 → 0회'],
-    ['전략', 'fetchJoin + Redis'],
-  ]
   const resultImages = [
-    ['동시 100명 Before', 'before-ngrinder-v100.png'],
-    ['동시 100명 After', 'phase2a-ngrinder-v100.png'],
-    ['동시 1,000명 Before', 'before-ngrinder-v1000.png'],
-    ['동시 1,000명 After', 'phase2a-ngrinder-v1000.png'],
+    ['동시 100명 Before', 'before-ngrinder-v100.png', '평균 응답시간 645ms, TPS 154.6 수준에서 처리량 한계 확인'],
+    ['동시 100명 After', 'phase2a-ngrinder-v100.png', '응답시간 209ms, TPS 470.1로 개선되어 단기 트래픽 대응 폭 확대'],
+    ['동시 1,000명 Before', 'before-ngrinder-v1000.png', '평균 응답시간 6,818ms까지 증가하며 조회 병목이 뚜렷하게 드러남'],
+    ['동시 1,000명 After', 'phase2a-ngrinder-v1000.png', '응답시간 638ms, TPS 438.3으로 개선되어 고부하 구간 안정화'],
   ]
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 증거" subtitle="Before / After 부하 테스트 이미지" dense>
       <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 9, height: '100%' }}>
-        <Panel pad={8} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-            {imageKpis.map(([label, value]) => (
-              <div key={label} style={{ textAlign: 'center', minHeight: 40, display: 'grid', alignContent: 'center' }}>
-                <div style={{ color: green, fontSize: 19.2, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 10.6, fontWeight: 850, marginTop: 3 }}>{label}</div>
-              </div>
-            ))}
+        <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 12, alignItems: 'center' }}>
+            <div>
+              <SectionLabel color={green}>Evidence Focus</SectionLabel>
+              <div style={{ color: navy, fontSize: 16.4, fontWeight: 950, lineHeight: 1.22 }}>동시 사용자 증가 구간에서 개선 효과를 검증</div>
+            </div>
+            <div style={{ color: slate, fontSize: 12.6, lineHeight: 1.42, fontWeight: 760 }}>
+              같은 부하 조건에서 Before / After를 나란히 비교해 응답시간, TPS, 고부하 안정성 변화를 확인했습니다.
+            </div>
           </div>
         </Panel>
         <Panel pad={8} background={white} accent={blue}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
-            {resultImages.map(([label, src]) => (
-              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 3 }}>
-                <div style={{ color: navy, fontSize: 11, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
+            {resultImages.map(([label, src, caption]) => (
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 4 }}>
+                <div style={{ color: navy, fontSize: 11.2, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
                 <img
                   src={asset(src)}
                   alt={`nGrinder ${label}`}
@@ -1151,6 +1160,7 @@ function FeedShopP1ResultImagesSlide() {
                     background: white,
                   }}
                 />
+                <div style={{ color: slate, fontSize: 9.8, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
           </div>
