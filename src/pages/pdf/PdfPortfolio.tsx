@@ -736,6 +736,8 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
 }
 
 function ArchitectureSlide({ project, title }: { project: typeof feedshop; title: string }) {
+  const ownershipLabel = project.architectureOwnershipLabel ?? '맡은 작업'
+
   return (
     <Slide eyebrow={title} title="아키텍처" dense>
       <div style={{ display: 'grid', gridTemplateRows: '90mm 1fr', gap: 11, height: '100%' }}>
@@ -764,7 +766,7 @@ function ArchitectureSlide({ project, title }: { project: typeof feedshop; title
               }}
             >
               <span style={{ width: 9, height: 9, border: `2px solid ${blue}`, display: 'inline-block' }} />
-              맡은 작업
+              {ownershipLabel}
             </div>
           </div>
         </Panel>
@@ -1110,13 +1112,15 @@ function FeedShopP1ResultTableSlide() {
           <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
             <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>Before</div>
             <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
-              N+1 쿼리와 반복 조회 비용이 겹쳐 동시 1,000명 기준 응답시간이 6.8초까지 증가했습니다.
+              N+1 쿼리와 반복 조회 비용이 겹쳐<br />
+              동시 1,000명 기준 응답시간이 6.8초까지 증가했습니다.
             </div>
           </Panel>
           <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
             <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>After</div>
             <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
-              fetchJoin으로 쿼리 수를 줄이고 Redis Cache Hit로 DB 조회를 제거해 병목을 완화했습니다.
+              fetchJoin으로 쿼리 수를 줄이고<br />
+              Redis Cache Hit로 DB 조회를 제거해 병목을 완화했습니다.
             </div>
           </Panel>
         </div>
@@ -1143,7 +1147,8 @@ function FeedShopP1ResultImagesSlide() {
               <div style={{ color: navy, fontSize: 16.4, fontWeight: 950, lineHeight: 1.22 }}>동시 사용자 증가 구간에서 개선 효과를 검증</div>
             </div>
             <div style={{ color: slate, fontSize: 12.6, lineHeight: 1.42, fontWeight: 760 }}>
-              같은 부하 조건에서 Before / After를 나란히 비교해 응답시간, TPS, 고부하 안정성 변화를 확인했습니다.
+              같은 부하 조건에서 Before / After를 나란히 비교해<br />
+              응답시간, TPS, 고부하 안정성 변화를 확인했습니다.
             </div>
           </div>
         </Panel>
@@ -1200,7 +1205,7 @@ function FeedShopP2ProblemThinkingSlide() {
                   </div>
                 ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 11, alignItems: 'start' }}>
+            <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 8, alignItems: 'start' }}>
               <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 6 }}>
                 <div style={{ color: red, fontSize: 12.5, fontWeight: 950 }}>수정 전 구조</div>
                 <CodeBox
@@ -1215,7 +1220,7 @@ function FeedShopP2ProblemThinkingSlide() {
                   ]}
                 />
               </div>
-              <div style={{ display: 'grid', gap: 8, alignContent: 'start', paddingTop: 21 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignContent: 'start' }}>
                 <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
                   <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 5 }}>① 중복 체크</div>
                   <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.36, fontWeight: 760 }}>
@@ -1396,10 +1401,10 @@ function FeedShopP2ResultSlide() {
 function M3ProblemThinkingSlide() {
   return (
     <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.95fr 1.25fr', gap: 11, height: '100%' }}>
-        <Panel pad={14} background={white} accent={red}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.72fr 1.35fr', gap: 11, height: '100%' }}>
+        <Panel pad={13} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, height: '100%' }}>
             <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.45, fontWeight: 800 }}>
               인증(Auth)과 사용자(User) 책임이 강하게 결합되어, 인증 정책 변경과 사용자 조회 장애가
               전체 인증 흐름에 영향을 줄 수 있는 구조였습니다.
@@ -1410,7 +1415,7 @@ function M3ProblemThinkingSlide() {
                 ['재조회 의존', '매 요청마다 User 서비스 재조회로 서비스 간 호출 의존 증가'],
                 ['SPOF 구조', 'User 장애 시 인증 흐름 전체에 영향'],
               ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '15px 15px', display: 'grid', alignContent: 'center', gap: 8, minHeight: 92 }}>
+                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '12px 14px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 70 }}>
                   <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
                   <div style={{ color: slate, fontSize: 13.3, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
                 </div>
@@ -1463,7 +1468,7 @@ function M3SolutionSlide() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, height: '100%' }}>
         <Panel pad={14} background={white} accent={blue}>
           <SectionLabel>Solution 1</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 10, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10, height: '100%' }}>
             <div>
               <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
                 1단계 — 서비스 경계 분리
@@ -1483,15 +1488,15 @@ function M3SolutionSlide() {
                 </div>
               ))}
             </div>
-            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: 8, display: 'grid', placeItems: 'center' }}>
+            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: '7px 8px 8px', display: 'grid', gridTemplateRows: '1fr auto', gap: 6 }}>
               <img
                 src={asset('3m-auth-user-class-diagram.png')}
                 alt="Auth/User 도메인 분리 클래스 구조"
-                style={{ width: '100%', height: '100%', maxHeight: '62mm', objectFit: 'contain', display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '68mm', objectFit: 'contain', display: 'block' }}
               />
-            </div>
-            <div style={{ color: muted, fontSize: 10.6, lineHeight: 1.25, fontWeight: 720, textAlign: 'right' }}>
-              Auth/User 도메인 분리 클래스 구조 — Auth는 인증에 필요한 최소 정보만 보관, Feign으로 단방향 통신
+              <div style={{ color: muted, fontSize: 10.3, lineHeight: 1.22, fontWeight: 720, textAlign: 'right' }}>
+                Auth/User 도메인 분리 클래스 구조 — Auth는 인증에 필요한 최소 정보만 보관, Feign으로 단방향 통신
+              </div>
             </div>
           </div>
         </Panel>
@@ -1563,7 +1568,7 @@ function M3SolutionSlide() {
 function M3ResultSlide() {
   return (
     <Slide eyebrow="3M" title="Result" subtitle="결합도 제거와 인증 흐름 영향 범위 축소" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
         <Panel pad={14} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
           <SectionLabel color={green}>Result Summary</SectionLabel>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
@@ -1580,17 +1585,39 @@ function M3ResultSlide() {
             ))}
           </div>
         </Panel>
+        <Panel pad={13} background="#f8fbff" borderColor="#bfdbfe" accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 10 }}>
+            {[
+              ['정책 변경', 'Auth·Gateway 중심으로 반영', blue],
+              ['영향 차단', 'User 모듈 배포 영향 제거', green],
+              ['인증 처리', 'Gateway에서 권한 판단', violet],
+            ].map(([title, desc, color], idx) => (
+              <React.Fragment key={title}>
+                <div style={{ border: `1px solid ${color}33`, background: white, borderRadius: 12, padding: '12px 14px', textAlign: 'center' }}>
+                  <div style={{ color, fontSize: 14.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 12.1, lineHeight: 1.3, fontWeight: 760 }}>{desc}</div>
+                </div>
+                {idx < 2 ? <div style={{ color: blue, fontSize: 21, fontWeight: 950 }}>→</div> : null}
+              </React.Fragment>
+            ))}
+          </div>
+        </Panel>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, minHeight: 0 }}>
           {[
             ['배포 영향 제거', '인증 정책 변경 시 User 모듈 배포 영향 제거', 'Auth·Gateway 중심으로 인증 정책 변경 범위를 제한했습니다.', green],
             ['순환 의존 없음', 'Feign DTO 중심의 단방향 참조로 제한', 'Auth → User 흐름은 유지하되 역방향 참조가 생기지 않도록 경계를 고정했습니다.', blue],
             ['변경 범위 수렴', '한 도메인 수정이 다른 도메인 배포로 이어지지 않는 구조 확보', '인증 정책과 사용자 정책의 변경 이유를 각 모듈 안으로 수렴시켰습니다.', violet],
-          ].map(([title, headline, body, color]) => (
+          ].map(([title, headline, body, color], idx) => (
             <Panel key={title} pad={15} background={white} accent={color}>
-              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10 }}>
-                <div style={{ color, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{title}</div>
-                <div style={{ color: navy, fontSize: 17, lineHeight: 1.22, fontWeight: 950 }}>{headline}</div>
-                <div style={{ color: slate, fontSize: 13.1, lineHeight: 1.45, fontWeight: 760, alignSelf: 'center' }}>{body}</div>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                  <div style={{ width: 31, height: 31, borderRadius: 9, display: 'grid', placeItems: 'center', color: white, background: color, fontSize: 13.2, fontWeight: 950 }}>
+                    {idx + 1}
+                  </div>
+                  <div style={{ color, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{title}</div>
+                </div>
+                <div style={{ color: navy, fontSize: 18.2, lineHeight: 1.24, fontWeight: 950 }}>{headline}</div>
+                <div style={{ border: `1px solid ${color}24`, background: `${color}0d`, borderRadius: 12, padding: '13px 13px', color: slate, fontSize: 13.7, lineHeight: 1.43, fontWeight: 760, alignSelf: 'stretch', display: 'grid', alignContent: 'center' }}>{body}</div>
               </div>
             </Panel>
           ))}
@@ -1667,7 +1694,7 @@ function ClosingSlide() {
                   <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 28, opacity: 0.85 }} />
                 </div>
               </div>
-              <div style={{ padding: '14px 17px 16px', display: 'grid', gridTemplateRows: `repeat(${items.length || 1}, 1fr)`, gap: 10 }}>
+              <div style={{ padding: '16px 17px', display: 'grid', alignContent: 'center', gap: 13 }}>
                 {items.length > 0 ? items.map((item) => (
                   <div
                     key={item.title}
@@ -1675,21 +1702,24 @@ function ClosingSlide() {
                       borderRadius: 13,
                       background: idx === 0 ? '#f8fbff' : '#fbf9ff',
                       border: `1px solid ${color}22`,
-                      padding: '13px 14px',
+                      padding: '12px 14px',
                       display: 'grid',
                       alignContent: 'center',
-                      gap: 7,
+                      gap: 6,
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ width: 8, height: 8, borderRadius: 999, background: color, flexShrink: 0 }} />
-                      <h3 style={{ margin: 0, color: navy, fontSize: 16.8, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</h3>
+                      <h3 style={{ margin: 0, color: navy, fontSize: 15.8, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</h3>
                     </div>
-                    <p style={{ margin: 0, color: slate, fontSize: 13.9, lineHeight: 1.48, fontWeight: 740, whiteSpace: 'pre-line' }}>{item.text}</p>
+                    <p style={{ margin: 0, color: slate, fontSize: 12.9, lineHeight: 1.42, fontWeight: 740, whiteSpace: 'pre-line' }}>{item.text}</p>
                   </div>
                 )) : (
                   <Rich html={block.body} size={12.5} lineHeight={1.5} />
                 )}
+                <div style={{ borderRadius: 12, background: idx === 0 ? '#eff6ff' : '#f5f3ff', border: `1px solid ${color}2a`, padding: '11px 13px', color, fontSize: 13.2, fontWeight: 950, lineHeight: 1.25 }}>
+                  {idx === 0 ? '흐름 설계 → 적용 사례 → 개선 습관' : '도구 활용 → 자동화 확장 → 판단 책임'}
+                </div>
               </div>
             </div>
           </Panel>
@@ -1704,8 +1734,8 @@ function ResourcesContactSlide() {
   return (
     <Slide eyebrow={RESOURCES_SECTION.kicker} title="자료 모음 · 연락하기" subtitle="프로젝트 문서와 연락 채널을 마지막에 정리했습니다." dense>
       <div style={{ display: 'grid', gridTemplateColumns: '1.32fr 0.82fr', gap: 14, height: '100%' }}>
-        <Panel pad={18} background="#f8fbff" accent={green}>
-          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 14 }}>
+        <Panel pad={16} background="#f8fbff" accent={green}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <i className="ri-links-line" style={{ color: green, fontSize: 23 }} />
               <div>
@@ -1713,30 +1743,34 @@ function ResourcesContactSlide() {
                 <div style={{ color: slate, fontSize: 12.8, fontWeight: 760 }}>프로젝트 기획, 협업 가이드, 실습 기록을 확인할 수 있는 자료입니다.</div>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 11 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
               {RESOURCE_LINKS.map((link, idx) => (
-                <div
+                <a
                   key={link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     border: '1px solid #bbf7d0',
                     background: white,
-                    borderRadius: 14,
-                    padding: '15px 14px',
-                    minHeight: 92,
+                    borderRadius: 12,
+                    padding: '10px 11px',
+                    minHeight: 62,
                     display: 'grid',
-                    gridTemplateRows: 'auto auto 1fr',
-                    gap: 6,
+                    gridTemplateRows: 'auto auto',
+                    gap: 5,
+                    textDecoration: 'none',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                    <div style={{ width: 30, height: 30, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 17, fontWeight: 950 }}>
+                    <div style={{ width: 26, height: 26, borderRadius: 8, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 15, fontWeight: 950 }}>
                       <i className={link.icon} />
                     </div>
-                    <div style={{ color: green, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.1em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
+                    <div style={{ color: green, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.09em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
+                    <i className="ri-arrow-right-up-line" style={{ marginLeft: 'auto', color: green, fontSize: 14 }} />
                   </div>
-                  <div style={{ color: navy, fontSize: 15.5, fontWeight: 950, lineHeight: 1.2 }}>{link.label}</div>
-                  <div style={{ color: muted, fontSize: 10.2, lineHeight: 1.28, fontWeight: 720, wordBreak: 'break-all' }}>{link.url}</div>
-                </div>
+                  <div style={{ color: navy, fontSize: 13.8, fontWeight: 950, lineHeight: 1.18 }}>{link.label}</div>
+                </a>
               ))}
             </div>
           </div>
@@ -1750,12 +1784,18 @@ function ResourcesContactSlide() {
             </div>
             <div style={{ display: 'grid', alignContent: 'center', gap: 12 }}>
               {CONTACT_LINKS.map((link) => (
-                <div key={link.label} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 11, alignItems: 'center' }}>
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.href?.startsWith('http') ? '_blank' : undefined}
+                  rel={link.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 11, alignItems: 'center', textDecoration: 'none' }}
+                >
                   <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 18 }}>
                     <i className={link.icon} />
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: 14.2, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.label}</div>
-                </div>
+                </a>
               ))}
             </div>
             <div style={{ borderTop: '1px solid #334155', paddingTop: 13, color: '#94a3b8', fontSize: 10.8, lineHeight: 1.4, fontWeight: 720 }}>

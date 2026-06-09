@@ -8,6 +8,7 @@ export const threeMProject: ProjectData = {
     description:
       '지역 허브 기반 주문·배송과 인증 경로를 안정적으로 연결하는 B2B 물류 관리 시스템',
     architectureImage: '/m3_infra.png',
+    architectureOwnershipLabel: '전체 아키텍처 직접 구성',
     architectureDetails: [
       {
         title: 'Docker Compose',
@@ -51,7 +52,7 @@ export const threeMProject: ProjectData = {
     roles: [
       {
         icon: '🧱',
-        title: '책임 경계 설계 / 인증 흐름 구현',
+        title: '책임 경계 설계/인증 흐름 구현',
         detail: 'SRP 중심으로 인증 / 유저 / 게이트웨이 역할 분리\nJWT 발급 및 Gateway 필터 기반 토큰 검증, AOP 기반 권한 제어 구현',
       },
       {

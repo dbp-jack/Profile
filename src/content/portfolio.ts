@@ -207,4 +207,28 @@ export const RESOURCE_LINKS: readonly ResourceLink[] = [
     description: 'https://docs.google.com/document/d/1XJ-STnZLo71kvtlduvHiM2kWS64wpwrl8-c4MY4anvE/edit?usp=sharing',
     url: 'https://docs.google.com/document/d/1XJ-STnZLo71kvtlduvHiM2kWS64wpwrl8-c4MY4anvE/edit?usp=sharing',
   },
+  {
+    icon: 'ri-github-fill',
+    label: 'FeedShop GitHub',
+    description: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring',
+    url: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring',
+  },
+  {
+    icon: 'ri-book-open-line',
+    label: 'FeedShop Wiki',
+    description: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki',
+    url: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki',
+  },
+  {
+    icon: 'ri-github-fill',
+    label: '3M GitHub',
+    description: 'https://github.com/sparta-i4u/sparta-msa',
+    url: 'https://github.com/sparta-i4u/sparta-msa',
+  },
+  {
+    icon: 'ri-book-open-line',
+    label: '3M Wiki',
+    description: 'https://github.com/sparta-i4u/sparta-msa/wiki',
+    url: 'https://github.com/sparta-i4u/sparta-msa/wiki',
+  },
 ]

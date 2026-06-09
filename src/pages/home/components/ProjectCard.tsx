@@ -638,7 +638,7 @@ export default function ProjectCard({ project, index }: Props) {
                     />
                     <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-md border-2 border-[#2563EB] bg-white/90 px-2.5 py-1.5 shadow-sm dark:bg-[#1e2a3a]/90">
                       <span className="h-3.5 w-3.5 shrink-0 rounded-sm border-2 border-[#2563EB]" />
-                      <span className="text-xs font-semibold text-[#2563EB]">맡은 작업</span>
+                      <span className="text-xs font-semibold text-[#2563EB]">{project.architectureOwnershipLabel ?? '맡은 작업'}</span>
                     </div>
                   </div>
                   {project.architectureDetails?.length ? (

@@ -19,6 +19,8 @@ export interface ProjectData {
   serviceOverview?: string
   /** 아키텍처 이미지 URL — 서비스 소개와 담당 업무 사이에 노출 (선택). */
   architectureImage?: string
+  /** 아키텍처 이미지 위 담당 범위 표시 문구 (기본값: 맡은 작업). */
+  architectureOwnershipLabel?: string
   /** 아키텍처 이미지 아래 세부 작업 내용 카드 (선택). */
   architectureDetails?: Array<{
     title: string

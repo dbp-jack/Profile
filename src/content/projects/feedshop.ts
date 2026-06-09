@@ -33,7 +33,7 @@ export const feedShopProject: ProjectData = {
       },
     ],
     serviceOverview:
-      '<span class="font-bold">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매 이후에도 사용자가 <span class="font-semibold">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계한 커뮤니티형 패션 커머스입니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해 <span class="font-bold">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 선순환 구조를 만들었습니다.',
+      '<span class="font-bold">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매 이후에도 사용자가 <span class="font-semibold">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계한 커뮤니티형 패션 커머스입니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해\n<span class="font-bold">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 선순환 구조를 만들었습니다.',
     developerPerspective:
       '유저 재방문을 만드는 선순환 구조의 핵심은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 참여</span>였습니다.\n이벤트 기간에는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">요청이 특정 시간에 몰리고</span>, 랭킹 상위 피드에 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표가 집중</span>되는 구조적 특성이 있었습니다.\n이때 이벤트 목록 조회가 느려지거나 <span class="font-semibold text-red-500 dark:text-red-400">투표 데이터 정합성</span>이 흔들리면 서비스 신뢰도를 떨어트리는 치명적 요인이라 판단했습니다.\n그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 문제</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성 보장</span>을 핵심 과제로 설정했습니다.',
     techStack: ['SpringBoot', 'QueryDSL', 'MySQL', 'Redis', 'Docker', 'GCP', 'GitHub', 'JIRA', 'nGrinder', 'Scouter'],
