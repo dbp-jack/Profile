@@ -1694,30 +1694,30 @@ function ClosingSlide() {
                   <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 28, opacity: 0.85 }} />
                 </div>
               </div>
-              <div style={{ padding: '16px 17px', display: 'grid', alignContent: 'center', gap: 13 }}>
+              <div style={{ padding: '18px 18px 16px', display: 'grid', alignContent: 'start', gap: 11 }}>
                 {items.length > 0 ? items.map((item) => (
                   <div
                     key={item.title}
                     style={{
                       borderRadius: 13,
                       background: idx === 0 ? '#f8fbff' : '#fbf9ff',
-                      border: `1px solid ${color}22`,
-                      padding: '12px 14px',
+                      border: `1px solid ${color}28`,
+                      padding: '13px 16px',
                       display: 'grid',
                       alignContent: 'center',
-                      gap: 6,
+                      gap: 7,
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ width: 8, height: 8, borderRadius: 999, background: color, flexShrink: 0 }} />
                       <h3 style={{ margin: 0, color: navy, fontSize: 15.8, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</h3>
                     </div>
-                    <p style={{ margin: 0, color: slate, fontSize: 12.9, lineHeight: 1.42, fontWeight: 740, whiteSpace: 'pre-line' }}>{item.text}</p>
+                    <p style={{ margin: 0, color: slate, fontSize: 13.2, lineHeight: 1.48, fontWeight: 740, whiteSpace: 'pre-line' }}>{item.text}</p>
                   </div>
                 )) : (
                   <Rich html={block.body} size={12.5} lineHeight={1.5} />
                 )}
-                <div style={{ borderRadius: 12, background: idx === 0 ? '#eff6ff' : '#f5f3ff', border: `1px solid ${color}2a`, padding: '11px 13px', color, fontSize: 13.2, fontWeight: 950, lineHeight: 1.25 }}>
+                <div style={{ borderRadius: 12, background: idx === 0 ? '#eff6ff' : '#f5f3ff', border: `1px solid ${color}2a`, padding: '11px 13px', color, fontSize: 13.2, fontWeight: 950, lineHeight: 1.25, marginTop: 2 }}>
                   {idx === 0 ? '흐름 설계 → 적용 사례 → 개선 습관' : '도구 활용 → 자동화 확장 → 판단 책임'}
                 </div>
               </div>
