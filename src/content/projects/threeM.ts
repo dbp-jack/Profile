@@ -45,7 +45,7 @@ export const threeMProject: ProjectData = {
       },
     ],
     serviceOverview:
-      '업체 → 허브 → 배송 담당자로 이어지는 <span class="font-bold">B2B 물류 흐름을 통합 관리하는 플랫폼</span>입니다.\n다수의 기업·허브·배송 담당자가 함께 사용하는 구조 특성상 인증과 권한 관리를 핵심이었으며,\nAuth·User·Gateway 도메인을 전담하며, 서비스 간 의존성을 최소화하는 인증 구조를 설계했습니다.',
+      '업체 → 허브 → 배송 담당자로 이어지는 <span class="font-bold">B2B 물류 흐름을 통합 관리하는 플랫폼</span>입니다.\n다수의 기업·허브·배송 담당자가 함께 사용하는 구조 특성상 인증과 권한 관리가 핵심이었으며,\nAuth·User·Gateway 도메인을 전담하며, 서비스 간 의존성을 최소화하는 인증 구조를 설계했습니다.',
     developerPerspective:
       'B2B 물류 시스템은 여러 서비스가 인증 흐름에 함께 연결되는 구조라,\n인증 정책 변경과 사용자 조회 방식이 전체 서비스 안정성에 직접 영향을 줄 수 있었습니다.<ul class="mt-3 space-y-2 list-none pl-0"><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span><span class="font-semibold text-red-500 dark:text-red-400">인증·사용자 책임 혼재</span> - 인증 정책 변경 시 User 도메인까지 배포 영향 확산</span></li><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span><span class="font-semibold text-red-500 dark:text-red-400">매 요청마다 User 서비스 재조회</span> - 서비스 간 결합도 증가, User 장애 시 인증 흐름 전체에 영향을 미치는 <span class="font-semibold text-red-500 dark:text-red-400">단일 장애점(SPOF)</span> 구조</span></li></ul><div class="mt-3 font-semibold text-amber-600 dark:text-amber-300">👉 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">SRP</span> 중심으로 책임을 분리하고, JWT payload에 <span class="font-mono font-semibold text-[#2563EB] dark:text-[#8aa8e8]">userId·role</span>을 포함해 이후 요청은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Gateway에서 직접 권한 판단</span>하도록 설계했습니다.</div>',
     techStack: ['SpringBoot', 'JWT', 'Spring Cloud Gateway', 'PostgreSQL', 'Redis', 'Docker', 'JIRA'],

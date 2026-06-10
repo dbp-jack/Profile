@@ -185,19 +185,19 @@ export type ResourceLink = {
 export const RESOURCE_LINKS: readonly ResourceLink[] = [
   {
     icon: 'ri-slideshow-2-line',
-    label: '첫번째 프로젝트 기획서',
+    label: '첫 번째 프로젝트 기획서',
     description: 'https://docs.google.com/document/d/11mKsXb3GQRfinyc0fYjn6MvsodHfxJZRFBkXZiOP6eA/edit?usp=sharing',
     url: 'https://docs.google.com/document/d/11mKsXb3GQRfinyc0fYjn6MvsodHfxJZRFBkXZiOP6eA/edit?usp=sharing',
   },
   {
     icon: 'ri-notion-fill',
-    label: '인턴쉽 및 현장실습',
+    label: '인턴십 및 현장실습',
     description: 'https://slime-face-7c4.notion.site/ICT-1fceeaa2f0af80a7aa88cd0bd37bdb7d?source=copy_link',
     url: 'https://slime-face-7c4.notion.site/ICT-1fceeaa2f0af80a7aa88cd0bd37bdb7d?source=copy_link',
   },
   {
     icon: 'ri-article-line',
-    label: 'JIRA 가이드 라인',
+    label: 'JIRA 가이드라인',
     description: 'https://dev99-tale.tistory.com/69',
     url: 'https://dev99-tale.tistory.com/69',
   },
