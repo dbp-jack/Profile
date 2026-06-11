@@ -1039,11 +1039,18 @@ function FeedShopP1SolutionResultSlide() {
       <div style={{ display: 'grid', height: '100%' }}>
         <Panel pad={12} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr', gap: 9, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto auto 1fr', gap: 9, height: '100%' }}>
             <div>
               <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.18 }}>2단계 — 캐시 전략 적용</h3>
               <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.4, fontWeight: 760 }}>
                 반복 조회 비용을 줄이기 위해 이벤트 목록 특성에 맞춰 Redis 캐시를 적용했습니다.
+              </div>
+            </div>
+            <div style={{ borderRadius: 10, border: '1px solid #fde68a', background: '#fffbeb', padding: '8px 11px' }}>
+              <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>Redis 선택 이유</div>
+              <div style={{ color: '#78350f', fontSize: 11.2, lineHeight: 1.42, fontWeight: 760 }}>
+                인메모리 캐시(ConcurrentMapCacheManager) 먼저 검토 → GCP Cloud Run 수평 확장 시 인스턴스마다 캐시가 달라 <strong style={{ fontWeight: 950 }}>캐시 불일치</strong> 발생 가능
+                → Redis(외부 공유 캐시)로 전환해 모든 인스턴스가 동일한 캐시 참조
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
@@ -1068,7 +1075,7 @@ function FeedShopP1SolutionResultSlide() {
               <img
                 src={asset('phase2a-scouter-cache-hit2.png')}
                 alt="Cache Hit SQL 0회"
-                style={{ width: '100%', height: '100%', maxHeight: '50mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '40mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
           </div>
@@ -1108,22 +1115,30 @@ function FeedShopP1ResultTableSlide() {
           <SectionLabel color={green}>Result Table</SectionLabel>
           <Rich html={extractTable(sec.result)} size={12.2} lineHeight={1.36} className="pdf-table-fit" />
         </Panel>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
-            <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>Before</div>
-            <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
-              N+1 쿼리와 반복 조회 비용이 겹쳐<br />
-              동시 1,000명 기준 응답시간이 6.8초까지 증가했습니다.
+        <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
+          <SectionLabel color={green}>단계별 개선 흐름 (동시 1,000명 기준)</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', gap: 8, alignItems: 'center', marginTop: 6 }}>
+            <div style={{ textAlign: 'center', border: '1px solid #fecaca', borderRadius: 10, background: '#fff7f7', padding: '8px 10px' }}>
+              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>Before</div>
+              <div style={{ color: red, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>6,818ms</div>
             </div>
-          </Panel>
-          <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
-            <div style={{ color: green, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>After</div>
-            <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>
-              fetchJoin으로 쿼리 수를 줄이고<br />
-              Redis Cache Hit로 DB 조회를 제거해 병목을 완화했습니다.
+            <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
+            <div style={{ textAlign: 'center', border: '1px solid #fed7aa', borderRadius: 10, background: '#fff7ed', padding: '8px 10px' }}>
+              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>fetchJoin 적용 후</div>
+              <div style={{ color: amber, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>4,191ms</div>
+              <div style={{ color: amber, fontSize: 11, fontWeight: 900 }}>-39%</div>
             </div>
-          </Panel>
-        </div>
+            <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
+            <div style={{ textAlign: 'center', border: '1px solid #bbf7d0', borderRadius: 10, background: '#ecfdf5', padding: '8px 10px' }}>
+              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>Redis 캐시 후</div>
+              <div style={{ color: green, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>638ms</div>
+              <div style={{ color: green, fontSize: 11, fontWeight: 900 }}>-91%</div>
+            </div>
+          </div>
+          <div style={{ marginTop: 7, color: slate, fontSize: 11, lineHeight: 1.38, fontWeight: 760 }}>
+            fetchJoin 단독 적용 시 39% 개선 · Redis 캐시 추가 후 최종 91% 개선 — 두 단계 각각의 기여를 수치로 확인
+          </div>
+        </Panel>
       </div>
     </Slide>
   )
@@ -1265,13 +1280,13 @@ function FeedShopP2ProblemThinkingSlide() {
 function FeedShopP2SolutionSlide() {
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.9fr 1.22fr 0.88fr', gap: 9, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.62fr 1.48fr 1.05fr', gap: 9, height: '100%' }}>
         <Panel pad={10} background={white} accent={blue}>
           <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
               <SectionLabel>Solution 1</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>1단계 — DB 유니크 제약 추가</h2>
-              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>1단계 — DB 유니크 제약 추가</h2>
+              <p style={{ margin: '6px 0 0', color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 780 }}>
                 <strong>(event_id, voter_id)</strong> 조합에 유니크 제약을 걸어 DB 레벨에서 중복 투표를 차단
               </p>
             </div>
@@ -1287,23 +1302,38 @@ function FeedShopP2SolutionSlide() {
           </div>
         </Panel>
         <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 7, height: '100%' }}>
             <div>
               <SectionLabel>Solution 2</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>2단계 — 저장 로직 분리 + 예외 처리</h2>
-              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>2단계 — 저장 로직 분리 + 예외 처리</h2>
+              <p style={{ margin: '6px 0 0', color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 780 }}>
                 중복 삽입 시도는 <strong>DataIntegrityViolationException</strong>으로 감지하고, 예외 처리로 200 반환
               </p>
             </div>
+            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
+              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>NOT_SUPPORTED 선택 과정</div>
+              <div style={{ display: 'grid', gap: 4 }}>
+                {([
+                  ['❌ 시도 1', 'REQUIRES_NEW → 내부 rollback이 외부 Hibernate Session 오염, 정상 작업(포인트 지급 등)까지 전부 실패'],
+                  ['❌ 시도 2', 'noRollbackFor → JPA flush() 이전에 세션 오염 먼저 발생, 효과 없음'],
+                  ['✅ 최종', 'NOT_SUPPORTED → saveVote·earnPoints·recordActivity 각각이 독립 트랜잭션, 예외가 다른 작업으로 전파되지 않음'],
+                ] as const).map(([label, text]) => (
+                  <div key={label} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 6, alignItems: 'start' }}>
+                    <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, paddingTop: 1 }}>{label}</div>
+                    <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
             <div style={{ display: 'grid', alignContent: 'center' }}>
               <CodeBox
+                compact
                 lines={[
                   '// FeedVoteService.java (59번 라인)',
                   '@Transactional(propagation = Propagation.NOT_SUPPORTED)',
                   'public FeedVoteResponseDto voteFeed(...) {',
-                  '    try {',
-                  '        savedVote = feedVotePersistenceService.saveVote(vote);',
-                  '    } catch (DataIntegrityViolationException e) {',
+                  '    try { savedVote = feedVotePersistenceService.saveVote(vote); }',
+                  '    catch (DataIntegrityViolationException e) {',
                   '        return FeedVoteResponseDto.success(false, ...); // 중복 → 200 반환',
                   '    }',
                   '}',
@@ -1313,13 +1343,24 @@ function FeedShopP2SolutionSlide() {
           </div>
         </Panel>
         <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 7, height: '100%' }}>
             <div>
               <SectionLabel>Solution 3</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
-              <p style={{ margin: '8px 0 0', color: slate, fontSize: 12.4, lineHeight: 1.42, fontWeight: 780 }}>
+              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
+              <p style={{ margin: '6px 0 0', color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 780 }}>
                 카운터를 Redis로 분리해 DB 락 경합 자체를 제거
               </p>
+            </div>
+            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
+              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
+              <div style={{ display: 'grid', gap: 3 }}>
+                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>
+                  <strong>기존:</strong> feed_votes INSERT(event_id FK → S-lock) + feeds UPDATE(X-lock) 교차 → 두 잠금이 서로를 기다리는 <strong>데드락</strong> 발생
+                </div>
+                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>
+                  <strong>Redis INCR:</strong> DB 잠금 체계 바깥에서 단일 명령어로 카운터 처리 → lock 없이 데드락 구조적 제거
+                </div>
+              </div>
             </div>
             <div style={{ display: 'grid', alignContent: 'center' }}>
               <CodeBox
@@ -1502,28 +1543,45 @@ function M3SolutionSlide() {
         </Panel>
         <Panel pad={14} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 10, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr auto', gap: 9, height: '100%' }}>
             <div>
-              <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
+              <div style={{ color: navy, fontSize: 18, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
                 2단계 — 인증 흐름 단순화
               </div>
-              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.42, fontWeight: 780 }}>
+              <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.38, fontWeight: 780 }}>
                 Gateway 인증 필터에서 JWT를 검증하고 <strong>X-User-*</strong> 헤더로 사용자 컨텍스트를 전달했습니다.
               </div>
             </div>
-            <div style={{ display: 'grid', gap: 8 }}>
+            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
+              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>JWT payload 설계 대안 비교</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+                <div style={{ borderRadius: 8, border: '1px solid #fecaca', background: '#fff7f7', padding: '6px 8px' }}>
+                  <div style={{ color: '#991b1b', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>❌ 대안 1</div>
+                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>매 요청마다 Auth 재조회 → Auth가 SPOF, 네트워크 왕복 지속</div>
+                </div>
+                <div style={{ borderRadius: 8, border: '1px solid #fecaca', background: '#fff7f7', padding: '6px 8px' }}>
+                  <div style={{ color: '#991b1b', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>❌ 대안 2</div>
+                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>Auth 내 로컬 캐시 → 스케일아웃 시 인스턴스 간 캐시 불일치</div>
+                </div>
+                <div style={{ borderRadius: 8, border: '1px solid #bbf7d0', background: '#ecfdf5', padding: '6px 8px' }}>
+                  <div style={{ color: '#065f46', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>✅ 선택</div>
+                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>JWT payload에 userId·role → stateless, 재조회 없이 인가 완결</div>
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'grid', gap: 7 }}>
               {[
                 ['Gateway', 'JWT 검증 후 사용자 컨텍스트 전달'],
                 ['User 재조회 감소', '추가 정보가 필요한 경우에만 선택 호출'],
                 ['AOP 권한 제어', '@RequiresMasterRole로 역할 체크 로직 통합'],
               ].map(([label, text]) => (
-                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '11px 12px', display: 'grid', gridTemplateColumns: '104px 1fr', gap: 10, alignItems: 'center' }}>
-                  <div style={{ color: blue, fontSize: 12.2, fontWeight: 950 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 12.6, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
+                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 10, padding: '9px 11px', display: 'grid', gridTemplateColumns: '104px 1fr', gap: 10, alignItems: 'center' }}>
+                  <div style={{ color: blue, fontSize: 11.8, fontWeight: 950 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 12.2, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
                 </div>
               ))}
             </div>
-            <div style={{ minHeight: 0, border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: 14, display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 11 }}>
+            <div style={{ minHeight: 0, border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: 12, display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 9 }}>
               <div style={{ color: blue, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 Gateway 중심 인증 흐름
               </div>
@@ -1534,7 +1592,7 @@ function M3SolutionSlide() {
                   ['Service', 'X-User-* 헤더 기반 처리'],
                 ].map(([title, desc], idx) => (
                   <React.Fragment key={title}>
-                    <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 13, padding: '15px 11px', minHeight: 86, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
+                    <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 13, padding: '11px 9px', minHeight: 72, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
                       <div style={{ color: idx === 1 ? blue : navy, fontSize: 16, fontWeight: 950, lineHeight: 1.1, marginBottom: 7 }}>{title}</div>
                       <div style={{ color: slate, fontSize: 11.7, lineHeight: 1.28, fontWeight: 760 }}>{desc}</div>
                     </div>
@@ -1555,8 +1613,13 @@ function M3SolutionSlide() {
                 </div>
               </div>
             </div>
-            <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 11, padding: '12px 13px', color: navy, fontSize: 13.2, lineHeight: 1.35, fontWeight: 880 }}>
-              이후 요청은 User 서비스 재호출 없이 Gateway에서 권한을 판단하고, 인증 의존성을 Gateway로 수렴시켰습니다.
+            <div style={{ display: 'grid', gap: 6 }}>
+              <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 10, padding: '9px 12px', color: navy, fontSize: 12.4, lineHeight: 1.35, fontWeight: 880 }}>
+                이후 요청은 User 서비스 재호출 없이 Gateway에서 권한을 판단하고, 인증 의존성을 Gateway로 수렴시켰습니다.
+              </div>
+              <div style={{ border: '1px solid #e2e8f0', background: '#f8fafc', borderRadius: 9, padding: '7px 11px', color: muted, fontSize: 10.4, lineHeight: 1.35, fontWeight: 740 }}>
+                <strong style={{ color: slate, fontWeight: 900 }}>한계:</strong> blacklist 미구현으로 로그아웃 후 access token 만료 전(1시간)까지 유효. 즉시 무효화 필요 시 Redis blacklist 전략 필요.
+              </div>
             </div>
           </div>
         </Panel>
