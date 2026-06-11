@@ -33,7 +33,7 @@ export const HERO_PERSONAL_INFO: readonly HeroPersonalRow[] = [
 
 export const HERO_ROLE_BADGE = 'Backend Software Engineer'
 export const HERO_NAME = '정민수'
-export const HERO_ROLE_TITLE = '수치로 검증하고, 팀 흐름을 맞추는 백엔드 개발자'
+export const HERO_ROLE_TITLE = '수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자'
 export const HERO_TECH_STACK_LABEL = '기술 스택'
 
 export const ABOUT_SECTION = {
