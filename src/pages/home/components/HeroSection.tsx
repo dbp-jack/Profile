@@ -8,7 +8,42 @@ import {
   HERO_TECH_STACK_LABEL,
 } from '@/content/portfolio'
 
-export default function HeroSection() {
+export type HeroVariant = 'current' | 'revised'
+
+type HeroSectionProps = {
+  variant?: HeroVariant
+}
+
+const HERO_PROOF_ITEMS = [
+  {
+    label: '조회 성능',
+    value: '91% 단축',
+    detail: '6,818ms → 638ms',
+    context: '동시 1,000명 기준',
+  },
+  {
+    label: '처리량',
+    value: '+216%',
+    detail: 'TPS 138.7 → 438.3',
+    context: '동일 부하 조건',
+  },
+  {
+    label: '투표 동시성',
+    value: 'HTTP 오류 0건',
+    detail: 'DB 중복 저장 0건',
+    context: '동시 50~3,000명 구간',
+  },
+  {
+    label: '팀 흐름',
+    value: '추적 가능',
+    detail: 'JIRA 티켓 기준 · Slack 알림',
+    context: '주간 스프린트 운영',
+  },
+] as const
+
+const REVISED_TECH_STACK = ['Java', 'Spring Boot', 'QueryDSL', 'Redis', 'GCP'] as const
+
+export default function HeroSection({ variant = 'current' }: HeroSectionProps) {
   const { dark } = useDarkMode()
   const infoRows = HERO_PERSONAL_INFO.filter((item) => !item.href)
   const githubLink = HERO_PERSONAL_INFO.find((item) => item.href?.includes('github.com'))
@@ -111,54 +146,115 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div
-            className={`hero-tech-panel rounded-2xl border px-4 py-4 md:px-6 md:py-5 ${
-              dark
-                ? 'border-[#3f3f46] bg-[#2b2b2f]/80'
-                : 'border-[#1E3A5F]/12 bg-[#F8FAFC]'
-            }`}
-          >
+          {variant === 'current' ? (
             <div
-              className={`mb-3 flex items-center gap-3 border-b pb-3 ${
-                dark ? 'border-[#3d3d44]' : 'border-slate-200'
+              className={`hero-tech-panel rounded-2xl border px-4 py-4 md:px-6 md:py-5 ${
+                dark
+                  ? 'border-[#3f3f46] bg-[#2b2b2f]/80'
+                  : 'border-[#1E3A5F]/12 bg-[#F8FAFC]'
               }`}
             >
-              <span
-                className={`text-sm font-extrabold tracking-wide ${dark ? 'text-[#cfd7e6]' : 'text-[#2563EB]'}`}
+              <div
+                className={`mb-3 flex items-center gap-3 border-b pb-3 ${
+                  dark ? 'border-[#3d3d44]' : 'border-slate-200'
+                }`}
               >
-                {HERO_TECH_STACK_LABEL}
-              </span>
-              <span className={`h-px flex-1 ${dark ? 'bg-[#3d3d44]' : 'bg-slate-200'}`} />
-            </div>
+                <span
+                  className={`text-sm font-extrabold tracking-wide ${dark ? 'text-[#cfd7e6]' : 'text-[#2563EB]'}`}
+                >
+                  {HERO_TECH_STACK_LABEL}
+                </span>
+                <span className={`h-px flex-1 ${dark ? 'bg-[#3d3d44]' : 'bg-slate-200'}`} />
+              </div>
 
-            <div className="space-y-2.5">
-              {HERO_SKILL_GROUPS.map((group) => (
-                <div key={group.label} className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                  <span
-                    className={`w-32 shrink-0 text-xs font-bold uppercase tracking-wider ${
-                      dark ? 'text-[#8f95a3]' : 'text-slate-500'
-                    }`}
-                  >
-                    {group.label}
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {group.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium ${
-                          dark
-                            ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
-                            : 'border-[#1E3A5F]/15 bg-white text-[#1E3A5F] shadow-[0_1px_0_rgba(15,23,42,0.04)]'
-                        }`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
+              <div className="space-y-2.5">
+                {HERO_SKILL_GROUPS.map((group) => (
+                  <div key={group.label} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <span
+                      className={`w-32 shrink-0 text-xs font-bold uppercase tracking-wider ${
+                        dark ? 'text-[#8f95a3]' : 'text-slate-500'
+                      }`}
+                    >
+                      {group.label}
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {group.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium ${
+                            dark
+                              ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
+                              : 'border-[#1E3A5F]/15 bg-white text-[#1E3A5F] shadow-[0_1px_0_rgba(15,23,42,0.04)]'
+                          }`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className={`hero-proof-panel overflow-hidden rounded-2xl border ${
+                dark
+                  ? 'border-[#3f3f46] bg-[#29292d]'
+                  : 'border-[#1E3A5F]/15 bg-[#F8FAFC]'
+              }`}
+            >
+              <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between md:px-6">
+                <div>
+                  <p className={`text-sm font-extrabold ${dark ? 'text-[#cfd7e6]' : 'text-[#2563EB]'}`}>
+                    이력서 핵심 근거
+                  </p>
+                  <p className={`mt-1 text-sm ${dark ? 'text-[#969ba7]' : 'text-slate-500'}`}>
+                    대표 성과를 수치와 운영 결과로 먼저 보여드립니다.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {REVISED_TECH_STACK.map((tag) => (
+                    <span
+                      key={tag}
+                      className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                        dark
+                          ? 'border-[#44444b] bg-[#333339] text-[#c5c8d0]'
+                          : 'border-[#1E3A5F]/15 bg-white text-[#1E3A5F]'
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className={`grid grid-cols-2 border-t lg:grid-cols-4 ${dark ? 'border-[#3d3d44]' : 'border-slate-200'}`}>
+                {HERO_PROOF_ITEMS.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className={`px-4 py-4 md:px-5 ${
+                      index > 0 ? dark ? 'border-[#3d3d44]' : 'border-slate-200' : ''
+                    } ${index % 2 === 1 ? 'border-l' : ''} ${index >= 2 ? 'border-t' : ''} ${
+                      index > 0 ? 'lg:border-l' : ''
+                    } ${index >= 2 ? 'lg:border-t-0' : ''}`}
+                  >
+                    <p className={`text-xs font-bold ${dark ? 'text-[#8f95a3]' : 'text-slate-500'}`}>
+                      {item.label}
+                    </p>
+                    <p className={`mt-1 text-xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
+                      {item.value}
+                    </p>
+                    <p className={`mt-1 text-sm font-semibold ${dark ? 'text-[#c2c6ce]' : 'text-[#1E3A5F]'}`}>
+                      {item.detail}
+                    </p>
+                    <p className={`mt-0.5 text-xs ${dark ? 'text-[#858a95]' : 'text-slate-500'}`}>
+                      {item.context}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

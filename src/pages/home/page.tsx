@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import PortfolioBody from './PortfolioBody'
 import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
+import type { HeroVariant } from './components/HeroSection'
 
 export default function Home() {
   const { dark } = useDarkMode()
+  const [heroVariant, setHeroVariant] = useState<HeroVariant>('current')
 
   return (
     <div
@@ -24,9 +27,9 @@ export default function Home() {
       <div className="md:hidden">
         <Navbar />
       </div>
-      <Sidebar />
+      <Sidebar heroVariant={heroVariant} onHeroVariantChange={setHeroVariant} />
       <div className="pt-16 md:pt-0 md:pl-14">
-        <PortfolioBody />
+        <PortfolioBody heroVariant={heroVariant} />
       </div>
     </div>
   )
