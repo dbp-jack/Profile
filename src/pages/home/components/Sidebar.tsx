@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { HERO_NAME } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import type { HeroVariant } from './HeroSection'
 
 const NAV_LINKS = [
   { label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
@@ -13,17 +12,7 @@ const NAV_LINKS = [
   { label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
 ]
 
-type SidebarProps = {
-  heroVariant: HeroVariant
-  onHeroVariantChange: (variant: HeroVariant) => void
-}
-
-const HERO_VARIANTS = [
-  { value: 'current', label: '현재 버전', icon: 'ri-file-copy-2-line' },
-  { value: 'revised', label: '수정 버전', icon: 'ri-sparkling-2-line' },
-] as const
-
-export default function Sidebar({ heroVariant, onHeroVariantChange }: SidebarProps) {
+export default function Sidebar() {
   const { dark, toggle } = useDarkMode()
   const [hovered, setHovered] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
@@ -117,48 +106,7 @@ export default function Sidebar({ heroVariant, onHeroVariantChange }: SidebarPro
             )
           })}
         </nav>
-        <div className={`flex-shrink-0 border-t px-2 pt-3 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}>
-          <span
-            className={`mb-1 block overflow-hidden whitespace-nowrap px-2 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ${
-              hovered ? 'max-w-[140px] opacity-100' : 'max-w-0 opacity-0'
-            } ${dark ? 'text-[#707070]' : 'text-slate-400'}`}
-          >
-            Hero 비교
-          </span>
-          {HERO_VARIANTS.map((item) => {
-            const isSelected = heroVariant === item.value
-            return (
-              <button
-                key={item.value}
-                type="button"
-                onClick={() => onHeroVariantChange(item.value)}
-                aria-label={`Hero ${item.label} 보기`}
-                aria-pressed={isSelected}
-                className={`mb-1 flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-2 py-2 text-left transition-colors ${
-                  isSelected
-                    ? dark
-                      ? 'bg-[#333333] text-[#e0e0e0]'
-                      : 'bg-[#EFF6FF] text-[#1E3A5F]'
-                    : dark
-                      ? 'text-[#707070] hover:bg-[#2a2a2a] hover:text-[#b0b0b0]'
-                      : 'text-gray-500 hover:bg-gray-50 hover:text-[#1E3A5F]'
-                }`}
-              >
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-lg">
-                  <i className={item.icon} />
-                </span>
-                <span
-                  className={`overflow-hidden whitespace-nowrap text-sm font-semibold transition-all duration-300 ${
-                    hovered ? 'max-w-[120px] opacity-100' : 'max-w-0 opacity-0'
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </button>
-            )
-          })}
-        </div>
-        <div className={`flex-shrink-0 border-t px-2 pb-6 pt-3 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}>
+        <div className={`flex-shrink-0 border-t px-2 pb-6 pt-4 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}>
           <button
             onClick={toggle}
             aria-label="Toggle dark mode"
