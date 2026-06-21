@@ -97,14 +97,10 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
         </div>
 
         <section
-          className={`projects-workflow mt-5 rounded-xl border px-4 py-4 md:px-5 ${
-            dark
-              ? 'border-[#3d3d3d] bg-[#242424]'
-              : 'border-blue-100 bg-white'
-          }`}
+          className={`projects-workflow mt-5 border-y py-4 ${dark ? 'border-[#3d3d3d]' : 'border-blue-100'}`}
           aria-labelledby="projects-workflow-title"
         >
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.95fr)] lg:items-center">
+          <div className="grid gap-3 lg:grid-cols-[220px_1fr] lg:gap-6">
             <div>
               <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                 {PROJECT_WORKFLOW.label}
@@ -112,28 +108,15 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
               <h3 id="projects-workflow-title" className={`mt-1 text-lg font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
                 {PROJECT_WORKFLOW.title}
               </h3>
-              <p className={`mt-2 text-sm leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+            </div>
+            <div>
+              <p className={`text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
                 {PROJECT_WORKFLOW.description}
               </p>
+              <p className={`mt-2 text-xs font-semibold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+                {PROJECT_WORKFLOW.summary}
+              </p>
             </div>
-            <ol className={`grid grid-cols-1 gap-0 overflow-hidden rounded-lg border sm:grid-cols-2 lg:grid-cols-4 ${dark ? 'border-[#3d3d3d]' : 'border-slate-200'}`}>
-              {PROJECT_WORKFLOW.steps.map((step, index) => (
-                <li
-                  key={step.label}
-                  className={`min-w-0 px-3 py-3 ${
-                    index > 0 ? dark ? 'border-t border-[#3d3d3d] sm:border-l lg:border-t-0' : 'border-t border-slate-200 sm:border-l lg:border-t-0' : ''
-                  } ${index === 2 && !dark ? 'bg-blue-50/60' : index === 2 ? 'bg-[#293344]' : ''}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs font-extrabold tabular-nums ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <strong className={`text-sm ${dark ? 'text-[#e0e0e0]' : 'text-slate-800'}`}>{step.label}</strong>
-                  </div>
-                  <p className={`mt-1.5 text-xs leading-relaxed ${dark ? 'text-[#9a9a9a]' : 'text-slate-500'}`}>{step.detail}</p>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
