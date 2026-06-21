@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_ENABLE_PORTFOLIO_ADMIN?: string
+  readonly VITE_PUBLIC_PORTFOLIO_URL?: string
   readonly VITE_PRIVATE_API_URL?: string
 }
 

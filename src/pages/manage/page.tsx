@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 import { DEFAULT_PROJECT_IDS, PROJECTS } from '@/content/projects'
 import NotFound from '@/pages/NotFound'
 import PortfolioBody from '@/pages/home/PortfolioBody'
-import { PORTFOLIO_MANAGER_ENABLED } from '@/portfolio-builder/access'
+import {
+  PORTFOLIO_MANAGER_ENABLED,
+  PUBLIC_PORTFOLIO_URL,
+} from '@/portfolio-builder/access'
 import { PORTFOLIO_BLOCK_DEFINITIONS } from '@/portfolio-builder/block-registry'
 import {
   DEFAULT_PUBLIC_PRESET,
@@ -98,7 +101,7 @@ export default function PortfolioManagerPage() {
     [blockIds, projectIds, copyProfileId, companyKey],
   )
   const publicUrl = useMemo(
-    () => new URL(publicPath.replace(/^\//, ''), `${window.location.origin}${__BASE_PATH__}`).toString(),
+    () => new URL(publicPath.replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
     [publicPath],
   )
 
