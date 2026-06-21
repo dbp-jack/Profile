@@ -1380,9 +1380,9 @@ function FeedShopP2SolutionSlide() {
 function FeedShopP2ResultSlide() {
   const resultImages = [
     ['정합성 검증 — DB count와 Redis count 일치', 'phase2b-redis-count-verify.png', 'Redis INCR 결과와 API 조회 count가 동일해 투표 수 정합성을 확인'],
-    ['nGrinder — 동시 500명 요청 성공', 'vuser500_result.png', '동시 500명 구간에서 에러 없이 요청 성공, 중복 투표 0건 유지'],
-    ['nGrinder — 동시 1,000명 요청 성공', 'vuser1000_result.png', '동시 1,000명 구간에서도 DB 제약 + Redis 카운터 구조가 유지됨'],
-    ['nGrinder — 동시 3,000명 요청 성공', 'vuser3000_result.png', '최대 검증 구간에서 에러율 0%, DB count와 Redis count 일치 확인'],
+    ['nGrinder — 동시 500명 요청 성공', 'vuser500_result.png', '평균 TPS 588.1 · 평균 응답 833ms · 68,548건 성공 / 오류 0건 — TPS가 대체로 550~650 구간을 유지'],
+    ['nGrinder — 동시 1,000명 요청 성공', 'vuser1000_result.png', '평균 TPS 437.0 · 평균 응답 2.19초 · 48,231건 성공 / 오류 0건 — 부하 증가에 따른 응답 지연 확인'],
+    ['nGrinder — 동시 3,000명 요청 성공', 'vuser3000_result.png', '평균 TPS 551.1 · 평균 응답 5.00초 · 63,026건 성공 / 오류 0건 — 정합성은 유지했지만 고부하 처리 지연 한계 확인'],
   ]
   const kpis = [
     ['에러율', '0%'],
