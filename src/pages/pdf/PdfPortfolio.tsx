@@ -1059,7 +1059,7 @@ function FeedShopP1SolutionResultSlide() {
               </div>
             </div>
             <div style={{ borderRadius: 10, border: '1px solid #fde68a', background: '#fffbeb', padding: '8px 11px' }}>
-              <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>Redis 선택 이유</div>
+              <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>분산 캐시로 Redis를 선택한 이유</div>
               <div style={{ color: '#78350f', fontSize: 11.2, lineHeight: 1.42, fontWeight: 760 }}>
                 인메모리 캐시(ConcurrentMapCacheManager) 먼저 검토 → GCP Cloud Run 수평 확장 시 인스턴스마다 캐시가 달라 <strong style={{ fontWeight: 950 }}>캐시 불일치</strong> 발생 가능
                 → Redis(외부 공유 캐시)로 전환해 모든 인스턴스가 동일한 캐시 참조
@@ -1539,28 +1539,47 @@ function M3ProblemThinkingSlide() {
           <SectionLabel color={amber}>Thinking</SectionLabel>
           <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 9, height: '100%' }}>
             <div style={{ color: slate, fontSize: 13, fontWeight: 780, lineHeight: 1.38 }}>
-              모듈 경계와 요청마다 발생하는 User 재호출을 함께 줄이기 위해 대안을 비교했습니다.
+              문제를 서비스 경계와 인증 컨텍스트 전달 두 레이어로 분리해 비교했습니다.
             </div>
-            <div style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}`, alignSelf: 'stretch' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.15fr 1.55fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 10.2, fontWeight: 950 }}>
-                {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 8px' }}>{label}</div>)}
-              </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.92fr 1.08fr', gap: 9, minHeight: 0 }}>
               {[
-                ['Auth·User 책임 혼재', '구현·공유 간단', '인증 정책 변경이 User 배포까지 확산', '제외'],
-                ['매 요청 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애가 인증 전체로 전파', '제외'],
-                ['Gateway 로컬 캐시', 'User 호출 감소', '스케일아웃 시 캐시 불일치·무효화', '제외'],
-                ['Auth/User 분리 + JWT', '변경 경계 분리·Gateway 권한 판단', '토큰 만료 전 role 변경 지연', '최종 선택'],
-              ].map(([option, strength, limit, decision], idx) => (
-                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.15fr 1.55fr 0.72fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 10.5, lineHeight: 1.3, fontWeight: 760 }}>
-                  <div style={{ padding: '8px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
-                  <div style={{ padding: '8px' }}>{strength}</div>
-                  <div style={{ padding: '8px' }}>{limit}</div>
-                  <div style={{ padding: '8px', fontWeight: 950, color: idx === 3 ? blue : red }}>{decision}</div>
+                {
+                  title: '서비스 경계',
+                  rows: [
+                    ['책임 혼재', '구현·공유 간단', '정책 변경이 User 배포까지 확산', '제외'],
+                    ['Auth/User 분리', '변경·배포 경계 분리', '서비스 간 계약 관리 필요', '선택'],
+                  ],
+                },
+                {
+                  title: '인증 컨텍스트 전달',
+                  rows: [
+                    ['매 요청 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
+                    ['Gateway 로컬 캐시', 'User 호출 감소', '캐시 불일치·무효화', '제외'],
+                    ['JWT userId·role', '재조회 없이 권한 판단', '토큰 만료 전 role 변경 지연', '선택'],
+                  ],
+                },
+              ].map((group) => (
+                <div key={group.title} style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}`, alignSelf: 'stretch' }}>
+                  <div style={{ background: '#f1f5f9', color: navy, fontSize: 11.5, fontWeight: 950, padding: '7px 8px' }}>{group.title}</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.05fr 1.35fr 0.65fr', background: '#f8fafc', color: slate, fontSize: 8.6, fontWeight: 950 }}>
+                    {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 6px' }}>{label}</div>)}
+                  </div>
+                  {group.rows.map(([option, strength, limit, decision]) => {
+                    const selected = decision === '선택'
+                    return (
+                      <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.05fr 1.35fr 0.65fr', borderTop: `1px solid ${selected ? '#bfdbfe' : line}`, background: selected ? '#eff6ff' : white, color: navy, fontSize: 8.8, lineHeight: 1.28, fontWeight: 760 }}>
+                        <div style={{ padding: '6px', fontWeight: 920, color: selected ? blue : navy }}>{option}</div>
+                        <div style={{ padding: '6px' }}>{strength}</div>
+                        <div style={{ padding: '6px' }}>{limit}</div>
+                        <div style={{ padding: '6px', fontWeight: 950, color: selected ? blue : red }}>{decision}</div>
+                      </div>
+                    )
+                  })}
                 </div>
               ))}
             </div>
             <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 12.6, lineHeight: 1.38, fontWeight: 900 }}>
-              인증과 사용자의 변경 경계를 분리하고, JWT 컨텍스트로 User 재조회를 제거해 장애 전파 범위를 줄였습니다.
+              변경 이유가 다른 Auth·User를 분리하고, JWT 컨텍스트로 재조회를 제거해 장애 전파 범위를 줄였습니다.
             </div>
           </div>
         </Panel>
