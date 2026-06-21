@@ -123,8 +123,8 @@ export const COLLABORATION_SECTION = {
       label: 'Organize',
       title: '일정·자료 통합 관리',
       description: '스프린트 일정과 기술·테스트 자료를 Confluence에 체계화.',
-      image: '/collaboration-jira-guidelines.png',
-      alt: 'JIRA 페이지에 협업 규칙과 기술 자료를 정리해 배포한 화면',
+      image: '/collaboration-confluence-materials.png',
+      alt: 'Confluence에 스프린트 일정과 프로젝트 자료를 체계적으로 정리한 화면',
     },
   ],
 } as const
