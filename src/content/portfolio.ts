@@ -76,10 +76,26 @@ export const PROJECTS_SECTION = {
 
 export const PROJECT_WORKFLOW = {
   label: 'AI 활용 방식',
-  title: 'AI에 바로 구현을 맡기지 않습니다',
+  title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다',
   description:
-    '구현 전에 요구사항 문서로 목적·작업 범위·완료 기준을 먼저 정의합니다. 기획과 구조·데이터 흐름·기술 선택은 직접 수행하고, AI는 정의된 범위 안에서 구현을 보조합니다. 완성된 결과는 요구사항과 실제 동작을 대조해 직접 검증·수정합니다.',
-  summary: '요구사항 문서화 · 직접 기획·설계 · AI 구현 보조 · 직접 검증·수정',
+    '요구사항과 설계 판단은 직접 수행하고, AI는 문서로 정의한 범위의 코드 작성에 활용합니다. 완성된 결과는 다시 직접 검증하고 수정합니다.',
+  phases: [
+    {
+      owner: '직접 수행',
+      detail: '요구사항·완료 기준 정의 · 구조·데이터 흐름·기술 선택',
+      tone: 'direct',
+    },
+    {
+      owner: 'AI 활용',
+      detail: '정의된 범위의 코드 작성 · 반복 작업 수행',
+      tone: 'ai',
+    },
+    {
+      owner: '직접 검증',
+      detail: '요구사항·실제 동작 대조 · 결과 수정',
+      tone: 'direct',
+    },
+  ],
 } as const
 
 export const COLLABORATION_SECTION = {

@@ -100,7 +100,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
           className={`projects-workflow mt-5 border-y py-4 ${dark ? 'border-[#3d3d3d]' : 'border-blue-100'}`}
           aria-labelledby="projects-workflow-title"
         >
-          <div className="grid gap-3 lg:grid-cols-[220px_1fr] lg:gap-6">
+          <div className="grid gap-4 lg:grid-cols-[270px_1fr] lg:gap-8">
             <div>
               <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                 {PROJECT_WORKFLOW.label}
@@ -113,9 +113,21 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
               <p className={`text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
                 {PROJECT_WORKFLOW.description}
               </p>
-              <p className={`mt-2 text-xs font-semibold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-                {PROJECT_WORKFLOW.summary}
-              </p>
+              <div className={`mt-3 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${dark ? 'divide-[#444]' : 'divide-slate-200'}`}>
+                {PROJECT_WORKFLOW.phases.map((phase) => {
+                  const isAi = phase.tone === 'ai'
+                  return (
+                    <div key={phase.owner} className="py-2 md:px-4 md:py-0 first:pl-0 last:pr-0">
+                      <p className={`text-xs font-extrabold ${isAi ? 'text-[#7C3AED]' : dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+                        {phase.owner}
+                      </p>
+                      <p className={`mt-1 text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+                        {phase.detail}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </section>

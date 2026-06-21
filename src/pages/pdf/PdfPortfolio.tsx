@@ -624,14 +624,21 @@ function ProjectsOverviewSlide() {
             </Panel>
           ))}
         </div>
-        <div style={{ borderTop: '1px solid #bfdbfe', borderBottom: '1px solid #bfdbfe', padding: '8px 2px', display: 'grid', gridTemplateColumns: '220px 1fr', gap: 14, alignItems: 'center' }}>
+        <div style={{ borderTop: '1px solid #bfdbfe', borderBottom: '1px solid #bfdbfe', padding: '8px 2px', display: 'grid', gridTemplateColumns: '235px 1fr', gap: 14, alignItems: 'center' }}>
             <div>
               <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
               <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
             </div>
             <div>
               <div style={{ color: slate, fontSize: 9.5, lineHeight: 1.38, fontWeight: 720 }}>{PROJECT_WORKFLOW.description}</div>
-              <div style={{ color: blue, fontSize: 8.7, lineHeight: 1.3, fontWeight: 900, marginTop: 4 }}>{PROJECT_WORKFLOW.summary}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 5 }}>
+                {PROJECT_WORKFLOW.phases.map((phase, index) => (
+                  <div key={phase.owner} style={{ paddingLeft: index === 0 ? 0 : 8, paddingRight: 8, borderLeft: index === 0 ? 'none' : `1px solid ${line}` }}>
+                    <div style={{ color: phase.tone === 'ai' ? violet : blue, fontSize: 8.2, fontWeight: 950 }}>{phase.owner}</div>
+                    <div style={{ color: slate, fontSize: 7.7, lineHeight: 1.3, fontWeight: 720, marginTop: 1 }}>{phase.detail}</div>
+                  </div>
+                ))}
+              </div>
             </div>
         </div>
         {feedshop.problemEnvironment && (
