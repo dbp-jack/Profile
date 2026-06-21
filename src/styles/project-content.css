@@ -138,4 +138,66 @@
     font-size: 0.72rem;
     line-height: 1.45;
   }
+
+  .project-rich-content table.decision-table {
+    display: block;
+    min-width: 0;
+  }
+
+  .project-rich-content table.decision-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .project-rich-content table.decision-table tbody {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.65rem;
+    background: transparent;
+  }
+
+  .project-rich-content table.decision-table tr {
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 0.65rem;
+  }
+
+  .dark .project-rich-content table.decision-table tr {
+    border-color: #45454d;
+  }
+
+  .project-rich-content table.decision-table td {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.5rem 0.7rem !important;
+    border-top: 1px solid rgb(226 232 240);
+    white-space: normal;
+    line-height: 1.45;
+  }
+
+  .project-rich-content table.decision-table td:first-child {
+    border-top: 0;
+  }
+
+  .dark .project-rich-content table.decision-table td {
+    border-color: #45454d;
+  }
+
+  .project-rich-content table.decision-table td::before {
+    color: rgb(100 116 139);
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+
+  .project-rich-content table.decision-table td:nth-child(1)::before { content: '검토안'; }
+  .project-rich-content table.decision-table td:nth-child(2)::before { content: '장점'; }
+  .project-rich-content table.decision-table td:nth-child(3)::before { content: '한계'; }
+  .project-rich-content table.decision-table td:nth-child(4)::before { content: '판단'; }
 }
