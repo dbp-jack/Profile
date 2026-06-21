@@ -254,7 +254,7 @@ export default function PortfolioManagerPage() {
       </header>
 
       <div className="mx-auto grid max-w-[1600px] gap-5 px-4 py-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-6">
-        <aside className="h-fit space-y-5 rounded-lg border border-slate-200 bg-white p-4 lg:sticky lg:top-24">
+        <aside className="h-fit space-y-5 rounded-lg border border-slate-200 bg-white p-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:overscroll-contain">
           <section>
             <h2 className="text-sm font-extrabold">프리셋</h2>
             <div className="mt-3 space-y-2">
