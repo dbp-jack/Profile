@@ -3,6 +3,7 @@ import { PROJECTS } from '@/content/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import ProjectCard from './ProjectCard'
 import ProjectsOverview from './ProjectsOverview'
+import CollaborationSection from './CollaborationSection'
 import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 export default function ProjectsSection() {
@@ -39,6 +40,8 @@ export default function ProjectsSection() {
 
       {/* 프로젝트 개요 */}
       <ProjectsOverview projectIds={projectIds} />
+
+      <CollaborationSection />
 
       {/* 개별 프로젝트 카드 */}
       <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}>

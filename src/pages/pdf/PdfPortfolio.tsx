@@ -2,6 +2,7 @@ import React from 'react'
 import {
   ABOUT_CARDS,
   ABOUT_SECTION,
+  COLLABORATION_SECTION,
   CLOSING_BLOCKS,
   CLOSING_SECTION,
   CONTACT_LINKS,
@@ -639,6 +640,51 @@ function ProjectsOverviewSlide() {
             <div style={{ fontSize: 11, color: slate, whiteSpace: 'pre-line' }}>{feedshop.problemEnvironment}</div>
           </Panel>
         )}
+      </div>
+    </Slide>
+  )
+}
+
+function CollaborationEvidence({
+  item,
+  imageHeight,
+}: {
+  item: (typeof COLLABORATION_SECTION.evidence)[number]
+  imageHeight: string
+}) {
+  return (
+    <Panel pad={9} background={white} borderColor="#cbd5e1">
+      <div style={{ display: 'grid', gridTemplateRows: `${imageHeight} auto`, gap: 7, height: '100%' }}>
+        <div style={{ minHeight: 0, borderRadius: 8, overflow: 'hidden', border: `1px solid ${line}`, background: soft }}>
+          <img src={asset(item.image)} alt={item.alt} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+        </div>
+        <div>
+          <div style={{ color: blue, fontSize: 8.5, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase' }}>{item.label}</div>
+          <div style={{ marginTop: 2, color: navy, fontSize: 13.2, fontWeight: 950 }}>{item.title}</div>
+          <div style={{ marginTop: 2, color: slate, fontSize: 9.6, lineHeight: 1.35, fontWeight: 700 }}>{item.description}</div>
+        </div>
+      </div>
+    </Panel>
+  )
+}
+
+function CollaborationSlide() {
+  const [sprint, slack, guide] = COLLABORATION_SECTION.evidence
+
+  return (
+    <Slide eyebrow={COLLABORATION_SECTION.kicker} title={COLLABORATION_SECTION.title} subtitle={COLLABORATION_SECTION.intro} dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr 0.82fr auto', gap: 9, height: '100%', minHeight: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, minHeight: 0 }}>
+          <CollaborationEvidence item={sprint} imageHeight="42mm" />
+          <CollaborationEvidence item={slack} imageHeight="42mm" />
+        </div>
+        <CollaborationEvidence item={guide} imageHeight="30mm" />
+        <a
+          href={COLLABORATION_SECTION.guideUrl}
+          style={{ color: blue, fontSize: 9.5, fontWeight: 900, textDecoration: 'none' }}
+        >
+          JIRA 가이드라인 보기 · {COLLABORATION_SECTION.guideUrl}
+        </a>
       </div>
     </Slide>
   )
@@ -2048,6 +2094,7 @@ export default function PdfPortfolio() {
       <HeroSlide />
       <AboutSlide />
       <ProjectsOverviewSlide />
+      <CollaborationSlide />
 
       <ProjectCaseCover
         eyebrow="Backend Case Study 01"
