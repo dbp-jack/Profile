@@ -1,6 +1,7 @@
 import type { ProjectData } from './types'
 
 export const feedShopProject: ProjectData = {
+    id: 'feedshop',
     name: 'FeedShop - B2C | 피드 기반 패션 커뮤니티 쇼핑몰 플랫폼',
     period: '2025.05 – 2025.09',
     teamSize: '4명 / 부팀장',

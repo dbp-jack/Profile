@@ -1,4 +1,5 @@
 export type ProjectOverviewItem = {
+  id: string
   name: string
   badge: string
   badgeColor: string
@@ -13,6 +14,7 @@ export type ProjectOverviewItem = {
 
 export const PROJECT_OVERVIEWS: ProjectOverviewItem[] = [
   {
+    id: 'feedshop',
     name: 'FeedShop',
     badge: 'B2C PLATFORM',
     badgeColor: 'bg-[#2563EB]',
@@ -25,6 +27,7 @@ export const PROJECT_OVERVIEWS: ProjectOverviewItem[] = [
     challengeIcon: 'ri-settings-3-line',
   },
   {
+    id: 'three-m',
     name: '3M',
     badge: 'B2B LOGISTICS',
     badgeColor: 'bg-[#2563EB]',

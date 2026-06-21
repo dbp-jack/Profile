@@ -1,9 +1,14 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
 
-export default function ProjectsOverview() {
+export default function ProjectsOverview({ projectIds }: { projectIds: readonly string[] }) {
   const { dark } = useDarkMode()
-  const testEnvironment = PROJECTS.find((project) => project.problemEnvironment)?.problemEnvironment
+  const selectedOverviews = projectIds
+    .map((projectId) => PROJECT_OVERVIEWS.find((project) => project.id === projectId))
+    .filter((project): project is (typeof PROJECT_OVERVIEWS)[number] => Boolean(project))
+  const testEnvironment = projectIds
+    .map((projectId) => PROJECTS.find((project) => project.id === projectId))
+    .find((project) => project?.problemEnvironment)?.problemEnvironment
 
   return (
     <div className={`projects-overview ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'} pb-10 md:pb-12`}>
@@ -22,7 +27,7 @@ export default function ProjectsOverview() {
 
         {/* 프로젝트 카드 2개 */}
         <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
-          {PROJECT_OVERVIEWS.map((project) => (
+          {selectedOverviews.map((project) => (
             <div
               key={project.name}
               className={`projects-overview-card rounded-xl border p-4 ${

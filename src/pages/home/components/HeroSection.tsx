@@ -3,13 +3,14 @@ import {
   HERO_NAME,
   HERO_PERSONAL_INFO,
   HERO_ROLE_BADGE,
-  HERO_ROLE_TITLE,
   HERO_SKILL_GROUPS,
   HERO_TECH_STACK_LABEL,
 } from '@/content/portfolio'
+import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 export default function HeroSection() {
   const { dark } = useDarkMode()
+  const { copyProfile } = usePortfolioComposition()
   const infoRows = HERO_PERSONAL_INFO.filter((item) => !item.href)
   const githubLink = HERO_PERSONAL_INFO.find((item) => item.href?.includes('github.com'))
 
@@ -73,7 +74,7 @@ export default function HeroSection() {
                   dark ? 'text-[#9ca3af]' : 'text-gray-500'
                 }`}
               >
-                {HERO_ROLE_TITLE}
+                {copyProfile.heroRoleTitle}
               </p>
 
               <ul className="mb-4 flex flex-col gap-2.5">

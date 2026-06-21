@@ -1,28 +1,43 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { HERO_NAME } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
+import type { PortfolioBlockId } from '@/portfolio-builder/types'
 
 const NAV_LINKS = [
-  { label: 'Hero', href: '#hero' },
-  { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: '마무리', href: '#closing' },
-  { label: 'Resources', href: '#resources' },
-  { label: 'Contact', href: '#contact' },
-]
+  { blockId: 'hero', label: 'Hero', href: '#hero' },
+  { blockId: 'about', label: 'About', href: '#about' },
+  { blockId: 'projects', label: 'Projects', href: '#projects' },
+  { blockId: 'experience', label: 'Experience', href: '#experience' },
+  { blockId: 'closing', label: '마무리', href: '#closing' },
+  { blockId: 'resources', label: 'Resources', href: '#resources' },
+  { blockId: 'contact', label: 'Contact', href: '#contact' },
+] as const satisfies readonly {
+  blockId: PortfolioBlockId
+  label: string
+  href: string
+}[]
 
-export default function Navbar() {
+type NavbarProps = {
+  blockIds?: readonly PortfolioBlockId[]
+}
+
+export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: NavbarProps) {
   const [scrolled, setScrolled] = useState(() => window.scrollY > 60)
   const [activeSection, setActiveSection] = useState('hero')
   const [menuOpen, setMenuOpen] = useState(false)
   const { dark, toggle } = useDarkMode()
+  const visibleNavLinks = useMemo(
+    () => NAV_LINKS.filter((link) => blockIds.includes(link.blockId)),
+    [blockIds],
+  )
+  const firstVisibleHref = visibleNavLinks[0]?.href ?? '#hero'
 
   const handleScroll = useCallback(() => {
     /* `scrolled` toggles nav chrome once the page is scrolled past 60px. */
     setScrolled(window.scrollY > 60)
     let current = 'hero'
-    const sectionIds = NAV_LINKS.map((link) => link.href.replace('#', ''))
+    const sectionIds = visibleNavLinks.map((link) => link.href.replace('#', ''))
     for (const sectionId of sectionIds) {
       const el = document.getElementById(sectionId)
       if (el && el.getBoundingClientRect().top <= 80) {
@@ -30,7 +45,7 @@ export default function Navbar() {
       }
     }
     setActiveSection(current)
-  }, [])
+  }, [visibleNavLinks])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -60,13 +75,13 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <span
           className={`cursor-pointer whitespace-nowrap text-lg font-bold ${logoColor}`}
-          onClick={() => scrollTo('#hero')}
+          onClick={() => scrollTo(firstVisibleHref)}
         >
           {HERO_NAME}
         </span>
 
         <ul className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => {
+          {visibleNavLinks.map((link) => {
             const isActive = activeSection === link.href.replace('#', '')
             return (
               <li key={link.href}>
@@ -113,7 +128,7 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className={`border-t shadow-sm md:hidden ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}>
-          {NAV_LINKS.map((link) => (
+          {visibleNavLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}

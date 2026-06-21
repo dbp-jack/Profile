@@ -1,6 +1,7 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
 import { ABOUT_CARDS, ABOUT_SECTION } from '@/content/portfolio'
+import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 const NUMS = ['01', '02', '03']
 
@@ -12,6 +13,7 @@ const ABOUT_HIGHLIGHTS = [
 
 export default function AboutSection() {
   const { dark } = useDarkMode()
+  const { copyProfile } = usePortfolioComposition()
   const { ref, visible } = useFadeIn()
 
   return (
@@ -48,7 +50,7 @@ export default function AboutSection() {
             {ABOUT_SECTION.title}
           </h2>
           <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
-            {ABOUT_SECTION.intro}
+            {copyProfile.aboutIntro}
           </p>
         </div>
 

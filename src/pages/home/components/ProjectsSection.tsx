@@ -3,9 +3,14 @@ import { PROJECTS } from '@/content/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import ProjectCard from './ProjectCard'
 import ProjectsOverview from './ProjectsOverview'
+import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 export default function ProjectsSection() {
   const { dark } = useDarkMode()
+  const { projectIds, copyProfile } = usePortfolioComposition()
+  const selectedProjects = projectIds
+    .map((projectId) => PROJECTS.find((project) => project.id === projectId))
+    .filter((project): project is (typeof PROJECTS)[number] => Boolean(project))
   return (
     <section
       id="projects"
@@ -27,20 +32,20 @@ export default function ProjectsSection() {
           <p
             className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
           >
-            {PROJECTS_SECTION.subtitle}
+            {copyProfile.projectsSubtitle}
           </p>
         </div>
       </div>
 
       {/* 프로젝트 개요 */}
-      <ProjectsOverview />
+      <ProjectsOverview projectIds={projectIds} />
 
       {/* 개별 프로젝트 카드 */}
       <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}>
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col gap-6 md:gap-8">
-            {PROJECTS.map((project, i) => (
-              <ProjectCard key={project.name} project={project} index={i} />
+            {selectedProjects.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i} />
             ))}
           </div>
         </div>

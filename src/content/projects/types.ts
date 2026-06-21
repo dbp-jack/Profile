@@ -5,6 +5,8 @@ export interface ProjectRoleItem {
 }
 
 export interface ProjectData {
+  /** 기업별 조합 링크에서 사용하는 변경되지 않는 공개 식별자 */
+  id: string
   name: string
   period: string
   teamSize: string

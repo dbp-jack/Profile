@@ -1,6 +1,7 @@
 import type { ProjectData } from './types'
 
 export const threeMProject: ProjectData = {
+    id: 'three-m',
     name: '3M - B2B | 물류 관리 및 배송 시스템',
     period: '2025.03 – 2025.04',
     teamSize: '4명 / 팀장',
