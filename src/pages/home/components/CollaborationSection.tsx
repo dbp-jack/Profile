@@ -12,32 +12,28 @@ export default function CollaborationSection() {
       aria-labelledby="collaboration-title"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="grid gap-5 border-b pb-6 md:grid-cols-[1fr_1.35fr] md:items-end md:gap-10">
-          <div>
-            <p className={`text-xs font-bold uppercase tracking-[0.18em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-              {COLLABORATION_SECTION.kicker}
-            </p>
-            <h3
-              id="collaboration-title"
-              className={`mt-2 text-2xl font-extrabold leading-snug md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}
-            >
-              {COLLABORATION_SECTION.title}
-            </h3>
-          </div>
-          <div>
-            <p className={`text-sm leading-7 md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
-              {COLLABORATION_SECTION.intro}
-            </p>
-            <a
-              href={COLLABORATION_SECTION.guideUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={`mt-3 inline-flex items-center gap-1.5 text-sm font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
-            >
-              <i className="ri-external-link-line" aria-hidden="true" />
-              JIRA 가이드라인 보기
-            </a>
-          </div>
+        <div className="border-b pb-6">
+          <p className={`text-xs font-bold uppercase tracking-[0.18em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+            {COLLABORATION_SECTION.kicker}
+          </p>
+          <h3
+            id="collaboration-title"
+            className={`mt-2 text-2xl font-extrabold leading-snug md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}
+          >
+            {COLLABORATION_SECTION.title}
+          </h3>
+          <p className={`mt-3 max-w-4xl text-sm leading-7 md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
+            {COLLABORATION_SECTION.intro}
+          </p>
+          <a
+            href={COLLABORATION_SECTION.guideUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={`mt-3 inline-flex items-center gap-1.5 text-sm font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
+          >
+            <i className="ri-external-link-line" aria-hidden="true" />
+            JIRA 가이드라인 보기
+          </a>
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">

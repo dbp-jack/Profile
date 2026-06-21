@@ -100,29 +100,29 @@ export const PROJECT_WORKFLOW = {
 
 export const COLLABORATION_SECTION = {
   kicker: 'Collaboration',
-  title: '협업 체계가 없던 팀에 주간 스프린트 흐름을 만들었습니다',
+  title: '협업 체계가 없던 팀에 만든 주간 스프린트 흐름',
   intro:
-    '스프린트 일정과 작업 범위가 구두로만 공유되던 상태에서 JIRA 가이드라인과 주간 스프린트 운영 방식을 정리했습니다. JIRA 이슈와 커밋 변경을 Slack에 자동 공유해 팀 전체가 진행 상황을 즉시 확인할 수 있도록 했습니다.',
+    '스프린트가 없던 팀에 주간 스프린트 방식을 도입하고, 스크럼으로 작업 범위와 진행 상황을 정리. JIRA 이슈·커밋은 Slack에 자동 공유하고, 일정·기술 자료는 Confluence에서 통합 관리.',
   guideUrl: 'https://dev99-tale.tistory.com/69',
   evidence: [
     {
       label: 'Plan',
       title: '주간 스프린트 운영',
-      description: '백로그를 스프린트 단위로 나누고 담당·상태·완료 범위를 관리했습니다.',
+      description: '백로그를 스프린트 단위로 나누고 담당·상태·완료 범위를 관리.',
       image: '/collaboration-jira-sprint.png',
       alt: 'JIRA 백로그에서 주간 스프린트와 업무 상태를 관리한 화면',
     },
     {
       label: 'Automate',
       title: 'JIRA-Slack 자동 공유',
-      description: '이슈 생성과 연결된 커밋 정보를 팀 채널에 자동 공유했습니다.',
+      description: '이슈 생성과 연결된 커밋 정보를 팀 채널에 자동 공유.',
       image: '/collaboration-slack-automation.png',
       alt: 'JIRA 이슈와 Git 커밋 변경 사항이 Slack에 자동 공유된 화면',
     },
     {
-      label: 'Document',
-      title: '협업 가이드라인 배포',
-      description: '티켓 규칙·스프린트 운영·기술 결정과 테스트 자료를 문서화했습니다.',
+      label: 'Organize',
+      title: '일정·자료 통합 관리',
+      description: '스프린트 일정과 기술·테스트 자료를 Confluence에 체계화.',
       image: '/collaboration-jira-guidelines.png',
       alt: 'JIRA 페이지에 협업 규칙과 기술 자료를 정리해 배포한 화면',
     },
