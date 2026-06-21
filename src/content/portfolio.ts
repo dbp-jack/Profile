@@ -74,6 +74,19 @@ export const PROJECTS_SECTION = {
     '각 프로젝트는 무엇을 만들었는지보다, 왜 그렇게 만들었는지에 집중합니다.',
 } as const
 
+export const PROJECT_WORKFLOW = {
+  label: '프로젝트 수행 방식',
+  title: '설계한 뒤 도구를 활용합니다',
+  description:
+    'AI에 바로 구현을 맡기지 않고, 요구사항 문서로 목적·작업 범위·완료 기준을 먼저 정의합니다. 기획과 구조 설계는 직접 수행하고, AI는 정의된 범위의 구현을 보조하며 결과는 직접 검증·수정합니다.',
+  steps: [
+    { label: '요구사항 정의', detail: '목적·범위·완료 기준 문서화' },
+    { label: '직접 기획·설계', detail: '구조·데이터 흐름·기술 선택' },
+    { label: 'AI 구현 보조', detail: '정의된 범위 내 구현·반복 작업' },
+    { label: '직접 검증·수정', detail: '요구사항·동작·결과 일치 확인' },
+  ],
+} as const
+
 export const EXPERIENCE_SECTION = {
   kicker: 'Experience',
   title: '걸어온 여정',

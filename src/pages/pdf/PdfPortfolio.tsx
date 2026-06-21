@@ -12,6 +12,7 @@ import {
   HERO_ROLE_TITLE,
   HERO_SKILL_GROUPS,
   PROJECTS_SECTION,
+  PROJECT_WORKFLOW,
   RESOURCE_LINKS,
   RESOURCES_SECTION,
 } from '@/content/portfolio'
@@ -551,7 +552,7 @@ function ProjectsOverviewSlide() {
 
   return (
     <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle="핵심 프로젝트를 목적·역할·문제 해결 중심으로 요약했습니다.">
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto auto', gap: 9, height: '100%' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 13, minHeight: 0 }}>
           {PROJECT_OVERVIEWS.map((project, idx) => (
             <Panel key={project.name} pad={14} background={white} accent={idx === 0 ? blue : violet}>
@@ -622,6 +623,26 @@ function ProjectsOverviewSlide() {
             </Panel>
           ))}
         </div>
+        <Panel pad={9} background="#f8fbff" borderColor="#bfdbfe">
+          <div style={{ display: 'grid', gridTemplateColumns: '235px 1fr', gap: 12, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
+              <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
+              <div style={{ color: slate, fontSize: 9.4, lineHeight: 1.35, fontWeight: 720, marginTop: 4 }}>
+                기획·구조 설계는 직접 수행하고, AI는 정의된 범위의 구현을 보조합니다.
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: `1px solid ${line}`, borderRadius: 10, overflow: 'hidden' }}>
+              {PROJECT_WORKFLOW.steps.map((step, index) => (
+                <div key={step.label} style={{ padding: '7px 8px', background: index === 2 ? '#eff6ff' : white, borderLeft: index > 0 ? `1px solid ${line}` : 'none' }}>
+                  <div style={{ color: blue, fontSize: 8.5, fontWeight: 950 }}>{String(index + 1).padStart(2, '0')}</div>
+                  <div style={{ color: navy, fontSize: 9.5, fontWeight: 950, marginTop: 2, lineHeight: 1.15 }}>{step.label}</div>
+                  <div style={{ color: muted, fontSize: 8.2, fontWeight: 700, marginTop: 3, lineHeight: 1.25 }}>{step.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Panel>
         {feedshop.problemEnvironment && (
           <Panel pad={10} background="#f1f5f9">
             <div style={{ fontSize: 11, fontWeight: 900, color: navy, marginBottom: 3 }}>로컬 테스트 환경</div>
