@@ -1439,23 +1439,56 @@ function FeedShopP2ResultSlide() {
   )
 }
 
-function FeedShopReflectionSlide() {
-  const reflection = feedshop.projectReflection
-  if (!reflection) return null
-
+function ProjectReflectionSlide({
+  eyebrow,
+  subtitle,
+  reflection,
+  evidence,
+}: {
+  eyebrow: string
+  subtitle: string
+  reflection: NonNullable<typeof feedshop.projectReflection>
+  evidence: string
+}) {
   return (
-    <Slide eyebrow="FeedShop" title="프로젝트 회고" subtitle="두 핵심 흐름을 개선하며 느낀 점" dense>
+    <Slide eyebrow={eyebrow} title="프로젝트 회고" subtitle={subtitle} dense>
       <div style={{ display: 'grid', alignContent: 'center', height: '100%' }}>
         <Panel pad={24} background={white} borderColor="#bfdbfe" accent={blue}>
           <SectionLabel>Retrospective</SectionLabel>
           <div style={{ color: navy, fontSize: 26, lineHeight: 1.18, fontWeight: 950, marginBottom: 18 }}>{reflection.title}</div>
           <Rich html={reflection.body} size={18} lineHeight={1.7} />
           <div style={{ marginTop: 18, color: muted, fontSize: 11.4, fontWeight: 760 }}>
-            근거: FeedShop Wiki 성능 개선 작업 · 이벤트 조회 성능 및 피드 투표 동시성
+            근거: {evidence}
           </div>
         </Panel>
       </div>
     </Slide>
+  )
+}
+
+function FeedShopReflectionSlide() {
+  const reflection = feedshop.projectReflection
+  if (!reflection) return null
+  return (
+    <ProjectReflectionSlide
+      eyebrow="FeedShop"
+      subtitle="두 핵심 흐름을 개선하며 느낀 점"
+      reflection={reflection}
+      evidence="FeedShop Wiki 성능 개선 작업 · 이벤트 조회 성능 및 피드 투표 동시성"
+    />
+  )
+}
+
+function M3ReflectionSlide() {
+  const reflection = m3.projectReflection
+  if (!reflection) return null
+  return (
+    <ProjectReflectionSlide
+      eyebrow="3M"
+      subtitle="허브 관리자 권한 흐름을 끝까지 검증한 과정"
+      reflection={reflection}
+      evidence="3M Wiki · Auth/User/Gateway 통합 테스트 결과 보고서"
+    />
   )
 }
 
@@ -2030,6 +2063,7 @@ export default function PdfPortfolio() {
       <M3ProblemThinkingSlide />
       <M3SolutionSlide />
       <M3ResultSlide />
+      <M3ReflectionSlide />
 
       <ExperienceSlide />
       <ClosingSlide />
