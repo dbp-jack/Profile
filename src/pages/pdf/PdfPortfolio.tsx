@@ -1266,21 +1266,27 @@ function FeedShopP2ProblemThinkingSlide() {
         </Panel>
         <Panel pad={11} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 9 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 7 }}>
+            <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1.15fr 1.55fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 9.6, fontWeight: 950 }}>
+                {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 7px' }}>{label}</div>)}
+              </div>
               {[
-                ['DB 유니크 제약', '코드 레벨 우회를 막는 물리적 중복 차단'],
-                ['NOT_SUPPORTED', '제약 위반 예외 발생 시 정상 응답 처리'],
-                ['Redis INCR', 'DB 락과 분리된 원자적 카운터 관리'],
-              ].map(([title, text]) => (
-                <div key={title} style={{ border: `1px solid #fed7aa`, background: '#fff7ed', borderRadius: 11, padding: '12px 13px', minHeight: 84 }}>
-                  <div style={{ color: amber, fontSize: 13.6, fontWeight: 950, marginBottom: 6 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 12.3, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+                ['코드 중복 검사', '구현 단순', '동시 요청이 검사를 함께 통과', '제외'],
+                ['DB 내 저장·카운터 갱신', '트랜잭션 단일 처리', '락 교차로 데드락·처리량 저하', '제외'],
+                ['DB 유니크 제약', '중복 물리 차단', '예외·카운터 락 별도 처리', '부분 적용'],
+                ['제약 + NOT_SUPPORTED + INCR', '중복·예외·카운터 분리', 'DB·Redis 정합성 검증 필요', '최종 선택'],
+              ].map(([option, strength, limit, decision], idx) => (
+                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.25fr 1.15fr 1.55fr 0.72fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 9.3, lineHeight: 1.25, fontWeight: 760 }}>
+                  <div style={{ padding: '5px 7px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                  <div style={{ padding: '5px 7px' }}>{strength}</div>
+                  <div style={{ padding: '5px 7px' }}>{limit}</div>
+                  <div style={{ padding: '5px 7px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '12px 14px', color: '#9a3412', fontSize: 13.7, lineHeight: 1.38, fontWeight: 900 }}>
-              👉 Redis INCR로 DB 트랜잭션과 분리된 원자적 연산 구성 - 락 경합 구조 자체를 제거
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 10, padding: '8px 11px', color: '#9a3412', fontSize: 11.4, lineHeight: 1.34, fontWeight: 900 }}>
+              중복 차단은 DB 제약으로 보장하고, 빈번한 카운터 갱신은 Redis 원자 연산으로 분리해 락 경합을 제거했습니다.
             </div>
           </div>
         </Panel>
@@ -1531,35 +1537,30 @@ function M3ProblemThinkingSlide() {
         </Panel>
         <Panel pad={14} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
-            <div style={{ color: slate, fontSize: 13.5, fontWeight: 780, lineHeight: 1.4 }}>
-              문제를 두 레이어로 분리해 접근했습니다.
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 9, height: '100%' }}>
+            <div style={{ color: slate, fontSize: 13, fontWeight: 780, lineHeight: 1.38 }}>
+              모듈 경계와 요청마다 발생하는 User 재호출을 함께 줄이기 위해 대안을 비교했습니다.
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 9 }}>
+            <div style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}`, alignSelf: 'stretch' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.15fr 1.55fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 10.2, fontWeight: 950 }}>
+                {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 8px' }}>{label}</div>)}
+              </div>
               {[
-                ['1. 모듈 경계 혼재', '책임 기준으로 Auth / User 분리 필요'],
-                ['2. 런타임 재호출', '토큰 컨텍스트로 User 호출 자체를 줄이는 구조 필요'],
-              ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid ${line}`, background: '#f8fafc', borderRadius: 12, padding: '15px 15px', minHeight: 82 }}>
-                  <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginBottom: 7 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 13.2, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
+                ['Auth·User 책임 혼재', '구현·공유 간단', '인증 정책 변경이 User 배포까지 확산', '제외'],
+                ['매 요청 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애가 인증 전체로 전파', '제외'],
+                ['Gateway 로컬 캐시', 'User 호출 감소', '스케일아웃 시 캐시 불일치·무효화', '제외'],
+                ['Auth/User 분리 + JWT', '변경 경계 분리·Gateway 권한 판단', '토큰 만료 전 role 변경 지연', '최종 선택'],
+              ].map(([option, strength, limit, decision], idx) => (
+                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.15fr 1.55fr 0.72fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 10.5, lineHeight: 1.3, fontWeight: 760 }}>
+                  <div style={{ padding: '8px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                  <div style={{ padding: '8px' }}>{strength}</div>
+                  <div style={{ padding: '8px' }}>{limit}</div>
+                  <div style={{ padding: '8px', fontWeight: 950, color: idx === 3 ? blue : red }}>{decision}</div>
                 </div>
               ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9, minHeight: 0 }}>
-              {[
-                ['Auth', '인증 정책 변경 시 영향이 Auth·Gateway로 수렴하도록 경계 설계', '변경 주기와 장애 영향이 다른 인증·사용자 책임을 같은 모듈에 두지 않도록 분리'],
-                ['User 재호출', '로그인 시점, 컨텍스트를 토큰에 포함 → 이후 요청은 경로에서 재조회 없이 권한 판단', '추가 정보가 필요한 경우에만 User 서비스 선택 호출'],
-              ].map(([label, main, sub]) => (
-                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 12, padding: '15px 15px', display: 'grid', alignContent: 'center' }}>
-                  <div style={{ color: blue, fontSize: 13.2, fontWeight: 950, marginBottom: 7 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 14, lineHeight: 1.35, fontWeight: 900 }}>{main}</div>
-                  <div style={{ color: muted, fontSize: 12, lineHeight: 1.35, fontWeight: 740, marginTop: 6 }}>{sub}</div>
-                </div>
-              ))}
-            </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '14px 15px', color: '#9a3412', fontSize: 14.2, lineHeight: 1.38, fontWeight: 900 }}>
-              👉 책임 경계 분리와 인증 흐름 단순화를 함께 가져가야 한다고 판단
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 12.6, lineHeight: 1.38, fontWeight: 900 }}>
+              인증과 사용자의 변경 경계를 분리하고, JWT 컨텍스트로 User 재조회를 제거해 장애 전파 범위를 줄였습니다.
             </div>
           </div>
         </Panel>
@@ -1608,30 +1609,13 @@ function M3SolutionSlide() {
         </Panel>
         <Panel pad={14} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr auto', gap: 9, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
             <div>
               <div style={{ color: navy, fontSize: 18, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
                 2단계 — 인증 흐름 단순화
               </div>
               <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.38, fontWeight: 780 }}>
                 Gateway 인증 필터에서 JWT를 검증하고 <strong>X-User-*</strong> 헤더로 사용자 컨텍스트를 전달했습니다.
-              </div>
-            </div>
-            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>JWT payload 설계 대안 비교</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
-                <div style={{ borderRadius: 8, border: '1px solid #fecaca', background: '#fff7f7', padding: '6px 8px' }}>
-                  <div style={{ color: '#991b1b', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>❌ 대안 1</div>
-                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>매 요청마다 Auth 재조회 → Auth가 SPOF, 네트워크 왕복 지속</div>
-                </div>
-                <div style={{ borderRadius: 8, border: '1px solid #fecaca', background: '#fff7f7', padding: '6px 8px' }}>
-                  <div style={{ color: '#991b1b', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>❌ 대안 2</div>
-                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>Auth 내 로컬 캐시 → 스케일아웃 시 인스턴스 간 캐시 불일치</div>
-                </div>
-                <div style={{ borderRadius: 8, border: '1px solid #bbf7d0', background: '#ecfdf5', padding: '6px 8px' }}>
-                  <div style={{ color: '#065f46', fontSize: 10, fontWeight: 950, marginBottom: 3 }}>✅ 선택</div>
-                  <div style={{ color: '#78350f', fontSize: 9.8, lineHeight: 1.36, fontWeight: 760 }}>JWT payload에 userId·role → stateless, 재조회 없이 인가 완결</div>
-                </div>
               </div>
             </div>
             <div style={{ display: 'grid', gap: 7 }}>
