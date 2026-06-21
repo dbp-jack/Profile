@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { DEFAULT_PROJECT_IDS, PROJECTS } from '@/content/projects'
 import NotFound from '@/pages/NotFound'
 import PortfolioBody from '@/pages/home/PortfolioBody'
@@ -29,6 +28,25 @@ function normalizeCompanyKey(value: string): string {
     .replace(/[^a-z0-9-]/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
+}
+
+function hasSameOrder(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((item, index) => item === right[index])
+}
+
+function matchesPreset(
+  preset: PortfolioPreset,
+  blockIds: readonly PortfolioBlockId[],
+  projectIds: readonly string[],
+  copyProfileId: string,
+  companyKey: string,
+): boolean {
+  return (
+    hasSameOrder(preset.blocks, blockIds) &&
+    hasSameOrder(preset.projectIds, projectIds) &&
+    preset.copyProfileId === copyProfileId &&
+    normalizeCompanyKey(preset.companyKey ?? '') === companyKey
+  )
 }
 
 function loadSavedBlocks(): readonly PortfolioBlockId[] {
@@ -104,6 +122,21 @@ export default function PortfolioManagerPage() {
     () => new URL(publicPath.replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
     [publicPath],
   )
+  const activePreset = useMemo(
+    () =>
+      [...PUBLIC_PRESETS, ...customPresets].find((preset) =>
+        matchesPreset(preset, blockIds, projectIds, copyProfileId, companyKey),
+      ),
+    [blockIds, companyKey, copyProfileId, customPresets, projectIds],
+  )
+  const selectedProjectNames = useMemo(
+    () =>
+      projectIds
+        .map((projectId) => PROJECTS.find((project) => project.id === projectId)?.name.split(' - ')[0])
+        .filter((projectName): projectName is string => Boolean(projectName)),
+    [projectIds],
+  )
+  const selectedCopyProfile = getCopyProfile(copyProfileId)
 
   if (!PORTFOLIO_MANAGER_ENABLED) return <NotFound />
 
@@ -228,15 +261,18 @@ export default function PortfolioManagerPage() {
             <h1 className="mt-1 text-xl font-extrabold">포트폴리오 블록 조합</h1>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Link
-              to="/"
+            <a
+              href={publicPath}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-md border border-slate-300 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50"
             >
-              공개 화면
-            </Link>
+              현재 조합 보기
+            </a>
             <button
               type="button"
               onClick={copyPublicUrl}
+              title={publicUrl}
               className="inline-flex items-center gap-2 rounded-md bg-[#1E3A5F] px-3 py-2 text-sm font-bold text-white hover:bg-[#152a45]"
             >
               <i
@@ -247,7 +283,7 @@ export default function PortfolioManagerPage() {
                 ? '복사됨'
                 : copyStatus === 'failed'
                   ? '링크를 직접 복사하세요'
-                  : '공개 링크 복사'}
+                  : '현재 조합 링크 복사'}
             </button>
           </div>
         </div>
@@ -255,49 +291,111 @@ export default function PortfolioManagerPage() {
 
       <div className="mx-auto grid max-w-[1600px] gap-5 px-4 py-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-6">
         <aside className="h-fit space-y-5 rounded-lg border border-slate-200 bg-white p-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:overscroll-contain">
+          <section className="rounded-lg border border-blue-200 bg-blue-50/80 p-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-xs font-extrabold uppercase tracking-[0.12em] text-blue-600">
+                현재 적용
+              </span>
+              <span className="rounded-full bg-white px-2 py-1 text-[0.68rem] font-bold text-blue-700 ring-1 ring-blue-200">
+                {activePreset ? '저장된 프리셋' : '수동 편집'}
+              </span>
+            </div>
+            <p className="mt-2 text-base font-extrabold text-slate-900">
+              {activePreset?.name ?? '사용자 조합'}
+            </p>
+            <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-600">
+              <p>
+                <span className="font-bold text-slate-800">문구</span> · {selectedCopyProfile.name}
+              </p>
+              <p>
+                <span className="font-bold text-slate-800">프로젝트</span> ·{' '}
+                {selectedProjectNames.join(', ')}
+              </p>
+              <p>
+                <span className="font-bold text-slate-800">블록</span> · {blockIds.length}개
+                {companyKey ? ` · company=${companyKey}` : ' · 공통 공개 링크'}
+              </p>
+            </div>
+          </section>
+
           <section>
-            <h2 className="text-sm font-extrabold">프리셋</h2>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-extrabold">프리셋</h2>
+              <span className="text-xs font-semibold text-slate-400">
+                {activePreset?.name ?? '사용자 조합'}
+              </span>
+            </div>
             <div className="mt-3 space-y-2">
-              {PUBLIC_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  onClick={() => applyPreset(preset)}
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-left hover:border-[#2563EB] hover:bg-blue-50"
-                >
-                  <span className="block text-sm font-bold">{preset.name}</span>
-                  <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                    {preset.description}
-                  </span>
-                </button>
-              ))}
-              {customPresets.map((preset) => (
-                <div
-                  key={preset.id}
-                  className="flex items-stretch overflow-hidden rounded-md border border-emerald-200 bg-emerald-50/50"
-                >
+              {PUBLIC_PRESETS.map((preset) => {
+                const selected = activePreset?.id === preset.id
+                return (
                   <button
+                    key={preset.id}
                     type="button"
                     onClick={() => applyPreset(preset)}
-                    className="min-w-0 flex-1 px-3 py-2.5 text-left hover:bg-emerald-50"
+                    aria-pressed={selected}
+                    className={`w-full rounded-md border px-3 py-2.5 text-left transition-colors ${
+                      selected
+                        ? 'border-blue-400 bg-blue-50 ring-1 ring-blue-200'
+                        : 'border-slate-200 hover:border-[#2563EB] hover:bg-blue-50'
+                    }`}
                   >
-                    <span className="block truncate text-sm font-bold">{preset.name}</span>
-                    <span className="mt-0.5 block text-xs text-slate-500">
-                      {preset.companyKey ? `company=${preset.companyKey} · ` : ''}
+                    <span className="flex items-center justify-between gap-2 text-sm font-bold">
+                      {preset.name}
+                      {selected ? (
+                        <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[0.65rem] text-white">
+                          선택됨
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
                       {preset.description}
                     </span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => deleteCustomPreset(preset.id)}
-                    aria-label={`${preset.name} 프리셋 삭제`}
-                    title="프리셋 삭제"
-                    className="flex w-10 items-center justify-center border-l border-emerald-200 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                )
+              })}
+              {customPresets.map((preset) => {
+                const selected = activePreset?.id === preset.id
+                return (
+                  <div
+                    key={preset.id}
+                    className={`flex items-stretch overflow-hidden rounded-md border ${
+                      selected
+                        ? 'border-emerald-400 bg-emerald-50 ring-1 ring-emerald-200'
+                        : 'border-emerald-200 bg-emerald-50/50'
+                    }`}
                   >
-                    <i className="ri-delete-bin-line" aria-hidden="true" />
-                  </button>
-                </div>
-              ))}
+                    <button
+                      type="button"
+                      onClick={() => applyPreset(preset)}
+                      aria-pressed={selected}
+                      className="min-w-0 flex-1 px-3 py-2.5 text-left hover:bg-emerald-50"
+                    >
+                      <span className="flex items-center justify-between gap-2 text-sm font-bold">
+                        <span className="truncate">{preset.name}</span>
+                        {selected ? (
+                          <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-0.5 text-[0.65rem] text-white">
+                            선택됨
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="mt-0.5 block text-xs text-slate-500">
+                        {preset.companyKey ? `company=${preset.companyKey} · ` : ''}
+                        {preset.description}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteCustomPreset(preset.id)}
+                      aria-label={`${preset.name} 프리셋 삭제`}
+                      title="프리셋 삭제"
+                      className="flex w-10 items-center justify-center border-l border-emerald-200 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <i className="ri-delete-bin-line" aria-hidden="true" />
+                    </button>
+                  </div>
+                )
+              })}
             </div>
             <div className="mt-3 flex gap-2">
               <div className="min-w-0 flex-1 space-y-2">
