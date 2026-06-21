@@ -624,6 +624,12 @@ function ProjectsOverviewSlide() {
             </Panel>
           ))}
         </div>
+        {feedshop.problemEnvironment && (
+          <Panel pad={10} background="#f1f5f9">
+            <div style={{ fontSize: 11, fontWeight: 900, color: navy, marginBottom: 3 }}>로컬 테스트 환경</div>
+            <div style={{ fontSize: 11, color: slate, whiteSpace: 'pre-line' }}>{feedshop.problemEnvironment}</div>
+          </Panel>
+        )}
         <div style={{ borderTop: '1px solid #bfdbfe', borderBottom: '1px solid #bfdbfe', padding: '8px 2px' }}>
             <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
             <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
@@ -637,12 +643,6 @@ function ProjectsOverviewSlide() {
               ))}
             </div>
         </div>
-        {feedshop.problemEnvironment && (
-          <Panel pad={10} background="#f1f5f9">
-            <div style={{ fontSize: 11, fontWeight: 900, color: navy, marginBottom: 3 }}>로컬 테스트 환경</div>
-            <div style={{ fontSize: 11, color: slate, whiteSpace: 'pre-line' }}>{feedshop.problemEnvironment}</div>
-          </Panel>
-        )}
       </div>
     </Slide>
   )

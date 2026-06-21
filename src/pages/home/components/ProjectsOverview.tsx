@@ -96,6 +96,21 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
           ))}
         </div>
 
+        {testEnvironment ? (
+          <div
+            className={`projects-overview-environment mt-5 rounded-xl border px-4 py-3 text-sm ${
+              dark
+                ? 'border-[#333333] bg-[#1e1e1e] text-[#9a9a9a]'
+                : 'border-slate-200 bg-white text-slate-500'
+            }`}
+          >
+            <span className={`mr-2 font-semibold ${dark ? 'text-[#d0d0d0]' : 'text-slate-700'}`}>
+              🖥️ 로컬 테스트 환경
+            </span>
+            <span className="whitespace-pre-line">{testEnvironment}</span>
+          </div>
+        ) : null}
+
         <section
           className={`projects-workflow mt-5 border-y py-4 ${dark ? 'border-[#3d3d3d]' : 'border-blue-100'}`}
           aria-labelledby="projects-workflow-title"
@@ -128,20 +143,6 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
           </div>
         </section>
 
-        {testEnvironment ? (
-          <div
-            className={`projects-overview-environment mt-5 rounded-xl border px-4 py-3 text-sm ${
-              dark
-                ? 'border-[#333333] bg-[#1e1e1e] text-[#9a9a9a]'
-                : 'border-slate-200 bg-white text-slate-500'
-            }`}
-          >
-            <span className={`mr-2 font-semibold ${dark ? 'text-[#d0d0d0]' : 'text-slate-700'}`}>
-              🖥️ 로컬 테스트 환경
-            </span>
-            <span className="whitespace-pre-line">{testEnvironment}</span>
-          </div>
-        ) : null}
       </div>
     </div>
   )
