@@ -80,6 +80,13 @@ export const feedShopProject: ProjectData = {
           '동시 500→3,000명 전 구간 <span class="font-bold text-emerald-600 dark:text-emerald-400">에러율 0%</span>, <span class="font-bold text-emerald-600 dark:text-emerald-400">중복 투표 0건 확인</span>, <span class="font-bold text-[#2563EB] dark:text-[#8aa8e8]">DB count = Redis count 투표 수 정합성 검증</span><div class="mt-4 grid grid-cols-2 gap-3"><div><p class="mb-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">정합성 검증 — DB count와 Redis count 일치</p><img loading="lazy" src="phase2b-redis-count-verify.png" alt="Redis count 검증" class="w-full rounded-lg border border-slate-200 object-contain dark:border-[#4a4a52]"/></div><div><p class="mb-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">nGrinder — 동시 500명 요청 성공</p><img loading="lazy" src="vuser500_result.png" alt="nGrinder 동시 500명 부하 테스트 결과" class="w-full rounded-lg border border-slate-200 object-contain dark:border-[#4a4a52]"/><p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">평균 TPS 588.1 · 평균 응답 833ms · 68,548건 성공 / 오류 0건 — TPS가 대체로 550~650 구간을 유지</p></div><div><p class="mb-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">nGrinder — 동시 1,000명 요청 성공</p><img loading="lazy" src="vuser1000_result.png" alt="nGrinder 동시 1,000명 부하 테스트 결과" class="w-full rounded-lg border border-slate-200 object-contain dark:border-[#4a4a52]"/><p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">평균 TPS 437.0 · 평균 응답 2.19초 · 48,231건 성공 / 오류 0건 — 부하 증가에 따른 응답 지연 확인</p></div><div><p class="mb-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">nGrinder — 동시 3,000명 요청 성공</p><img loading="lazy" src="vuser3000_result.png" alt="nGrinder 동시 3,000명 부하 테스트 결과" class="w-full rounded-lg border border-slate-200 object-contain dark:border-[#4a4a52]"/><p class="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">평균 TPS 551.1 · 평균 응답 5.00초 · 63,026건 성공 / 오류 0건 — 정합성은 유지했지만 고부하 처리 지연 한계 확인</p></div></div>',
       },
     ],
+    projectReflection: {
+      title: '트래픽 특성에 맞게 책임 레이어를 나눴습니다',
+      body:
+        '재방문 진입점인 이벤트 목록은 처음엔 전체 조회·메모리 필터링으로 처리했지만, N+1을 확인해 쿼리 최적화 후 Redis 캐시를 적용했습니다.<br/>이벤트 투표가 집중되는 상황에서는 코드 중복 검사만으로 부족해 DB 유니크 제약과 Redis INCR로 정합성을 보장했습니다.<br/>두 문제를 통해 트래픽 특성에 맞는 책임 레이어를 먼저 정하고, 결과를 수치로 검증해야 한다고 느꼈습니다.',
+      sourceUrl:
+        'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0-%EC%9E%91%EC%97%85',
+    },
     githubUrl: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring',
     wikiUrl: 'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki',
   }

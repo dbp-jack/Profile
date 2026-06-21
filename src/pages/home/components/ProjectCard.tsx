@@ -742,6 +742,40 @@ export default function ProjectCard({ project, index }: Props) {
         </div>
       )}
 
+      {project.projectReflection ? (
+        <section
+          className={`mb-5 rounded-xl border px-4 py-4 md:mb-6 md:px-5 ${dark ? 'border-[#3a4658] bg-[#252b34]' : 'border-blue-100 bg-slate-50/80'}`}
+          aria-labelledby={`${project.id}-reflection-title`}
+        >
+          <p
+            id={`${project.id}-reflection-title`}
+            className={`mb-3 text-base font-extrabold ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
+          >
+            프로젝트 회고
+          </p>
+          <div className={`rounded-lg border px-4 py-3.5 ${dark ? 'border-[#3f4650] bg-[#2c3139]' : 'border-slate-200 bg-white'}`}>
+            <strong className={`mb-1.5 block text-base ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+              {project.projectReflection.title}
+            </strong>
+            <p
+              className={`text-sm font-medium leading-relaxed md:text-base ${dark ? 'text-slate-200' : 'text-slate-700'}`}
+              dangerouslySetInnerHTML={{ __html: project.projectReflection.body }}
+            />
+            {project.projectReflection.sourceUrl ? (
+              <a
+                href={project.projectReflection.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2 ${dark ? 'text-blue-300' : 'text-[#2563EB]'}`}
+              >
+                Wiki 트러블슈팅 기록 보기
+                <i className="ri-external-link-line" aria-hidden />
+              </a>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
       <div className="flex flex-wrap gap-3">
         <a
           href={project.githubUrl}

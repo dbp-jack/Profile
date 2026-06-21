@@ -75,6 +75,12 @@ export interface ProjectData {
     solution: string
     result: string
   }>
+  /** 프로젝트의 문제 해결 섹션을 모두 마친 뒤 노출하는 통합 회고 (선택). */
+  projectReflection?: {
+    title: string
+    body: string
+    sourceUrl?: string
+  }
   githubUrl: string
   wikiUrl?: string
   demoUrl?: string

@@ -1111,10 +1111,6 @@ function FeedShopP1ResultTableSlide() {
             ))}
           </div>
         </Panel>
-        <Panel pad={13} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
-          <SectionLabel color={green}>Result Table</SectionLabel>
-          <Rich html={extractTable(sec.result)} size={12.2} lineHeight={1.36} className="pdf-table-fit" />
-        </Panel>
         <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
           <SectionLabel color={green}>단계별 개선 흐름 (동시 1,000명 기준)</SectionLabel>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', gap: 8, alignItems: 'center', marginTop: 6 }}>
@@ -1138,6 +1134,10 @@ function FeedShopP1ResultTableSlide() {
           <div style={{ marginTop: 7, color: slate, fontSize: 11, lineHeight: 1.38, fontWeight: 760 }}>
             fetchJoin 단독 적용 시 39% 개선 · Redis 캐시 추가 후 최종 91% 개선 — 두 단계 각각의 기여를 수치로 확인
           </div>
+        </Panel>
+        <Panel pad={13} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
+          <SectionLabel color={green}>Result Table</SectionLabel>
+          <Rich html={extractTable(sec.result)} size={12.2} lineHeight={1.36} className="pdf-table-fit" />
         </Panel>
       </div>
     </Slide>
@@ -1432,6 +1432,26 @@ function FeedShopP2ResultSlide() {
                 <div style={{ color: slate, fontSize: 9.7, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
+          </div>
+        </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopReflectionSlide() {
+  const reflection = feedshop.projectReflection
+  if (!reflection) return null
+
+  return (
+    <Slide eyebrow="FeedShop" title="프로젝트 회고" subtitle="두 핵심 흐름을 개선하며 느낀 점" dense>
+      <div style={{ display: 'grid', alignContent: 'center', height: '100%' }}>
+        <Panel pad={24} background={white} borderColor="#bfdbfe" accent={blue}>
+          <SectionLabel>Retrospective</SectionLabel>
+          <div style={{ color: navy, fontSize: 26, lineHeight: 1.18, fontWeight: 950, marginBottom: 18 }}>{reflection.title}</div>
+          <Rich html={reflection.body} size={18} lineHeight={1.7} />
+          <div style={{ marginTop: 18, color: muted, fontSize: 11.4, fontWeight: 760 }}>
+            근거: FeedShop Wiki 성능 개선 작업 · 이벤트 조회 성능 및 피드 투표 동시성
           </div>
         </Panel>
       </div>
@@ -1992,6 +2012,7 @@ export default function PdfPortfolio() {
       <FeedShopP2ProblemThinkingSlide />
       <FeedShopP2SolutionSlide />
       <FeedShopP2ResultSlide />
+      <FeedShopReflectionSlide />
 
       <ProjectCaseCover
         eyebrow="Backend Case Study 02"
