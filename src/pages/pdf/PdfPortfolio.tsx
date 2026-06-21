@@ -939,10 +939,11 @@ function FeedShopP1ProblemSlide() {
 }
 
 function FeedShopP1ThinkingSolutionSlide() {
-  const thinkingCards = [
-    ['1. 쿼리 비효율', 'N+1이 발생하는 조회 구조 자체를 먼저 개선해야 했습니다.'],
-    ['2. 반복 조회 비용', '이벤트 목록은 조회 빈번 / 변경 적음 특성이라 @Cacheable + Redis 적용이 적합했습니다.'],
-    ['접근 순서', '캐시만 적용하면 Cache Miss 시 N+1 문제가 그대로 남기 때문에, 쿼리 최적화로 근본 원인을 먼저 제거한 뒤 캐시를 얹는 순서로 접근했습니다.'],
+  const alternatives = [
+    ['findAll() + 메모리 필터링', '구현 단순', '데이터 증가 시 조회량·N+1 확대', '제외'],
+    ['Redis 캐시만 적용', '반복 조회 감소', 'Cache Miss 시 N+1 유지', '제외'],
+    ['QueryDSL fetchJoin', 'SQL 42회 → 2회', '반복 조회마다 DB 접근', '부분 적용'],
+    ['fetchJoin + Redis', '쿼리 개선 후 반복 조회 제거', '캐시 정합성 관리 필요', '최종 선택'],
   ]
 
   return (
@@ -950,25 +951,36 @@ function FeedShopP1ThinkingSolutionSlide() {
       <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
         <Panel pad={12} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ color: slate, fontSize: 12.8, fontWeight: 760, lineHeight: 1.36, marginBottom: 8 }}>
-            문제를 두 레이어로 분리해 접근했습니다.
+          <div style={{ color: slate, fontSize: 12.5, fontWeight: 760, lineHeight: 1.34, marginBottom: 7 }}>
+            쿼리 비효율과 반복 조회 비용을 분리한 뒤 해결방안을 비교했습니다.
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.05fr 1.35fr', gap: 9 }}>
-            {thinkingCards.map(([label, text], idx) => (
+          <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.12fr 1.52fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 9.7, fontWeight: 950 }}>
+              {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 7px' }}>{label}</div>)}
+            </div>
+            {alternatives.map(([option, strength, limit, decision], idx) => (
               <div
-                key={label}
+                key={option}
                 style={{
-                  borderRadius: 12,
-                  border: `1px solid ${idx === 2 ? amber : line}`,
-                  background: idx === 2 ? '#fff7ed' : '#f8fafc',
-                  padding: '10px 11px',
-                  minHeight: 82,
+                  display: 'grid',
+                  gridTemplateColumns: '1.22fr 1.12fr 1.52fr 0.72fr',
+                  borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`,
+                  background: idx === 3 ? '#eff6ff' : white,
+                  color: navy,
+                  fontSize: 9.5,
+                  lineHeight: 1.28,
+                  fontWeight: 760,
                 }}
               >
-                <div style={{ color: idx === 2 ? amber : navy, fontSize: 13.1, fontWeight: 950, lineHeight: 1.2 }}>{label}</div>
-                <div style={{ color: slate, fontSize: 11.9, lineHeight: 1.36, fontWeight: 760, marginTop: 6 }}>{text}</div>
+                <div style={{ padding: '5px 7px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                <div style={{ padding: '5px 7px' }}>{strength}</div>
+                <div style={{ padding: '5px 7px' }}>{limit}</div>
+                <div style={{ padding: '5px 7px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
               </div>
             ))}
+          </div>
+          <div style={{ marginTop: 7, borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', color: '#9a3412', padding: '7px 9px', fontSize: 10.6, lineHeight: 1.32, fontWeight: 850 }}>
+            캐시로 문제를 가리기보다 쿼리 구조를 먼저 개선하고, 반복 조회 비용만 Redis로 분리했습니다.
           </div>
         </Panel>
         <Panel pad={12} background={white} accent={blue}>
