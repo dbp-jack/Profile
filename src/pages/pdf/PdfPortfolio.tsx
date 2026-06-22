@@ -1472,7 +1472,7 @@ function M3ProblemThinkingSlide() {
               {[
                 ['책임 혼재', '인증 정책 변경 시 User 도메인까지 배포 영향 확산'],
                 ['요청별 재조회 대안', '최신 role은 반영하지만 호출 증가·User 장애 전파 위험'],
-                ['JWT 컨텍스트 대안', '일반 권한 판단은 빠르지만 role 변경·탈퇴의 즉시 반영 한계'],
+                ['JWT 컨텍스트 대안', '일반 권한 판단을 Gateway로 집중해 인증 경로 단순화'],
               ].map(([title, desc]) => (
                 <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '12px 14px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 70 }}>
                   <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
@@ -1502,7 +1502,7 @@ function M3ProblemThinkingSlide() {
                   rows: [
                     ['요청별 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
                     ['Gateway 로컬 캐시', 'User 호출 감소', '캐시 불일치·무효화', '제외'],
-                    ['JWT userId·role', '일반 경로에서 Gateway 권한 판단', '토큰 만료 전 role 변경 지연', '선택'],
+                    ['JWT userId·role', '일반 경로에서 Gateway 권한 판단', '클레임·헤더 계약 관리', '선택'],
                   ],
                 },
               ].map((group) => (
@@ -1628,12 +1628,9 @@ function M3SolutionSlide() {
                 </div>
               </div>
             </div>
-            <div style={{ display: 'grid', gap: 6 }}>
+            <div>
               <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 10, padding: '9px 12px', color: navy, fontSize: 12.4, lineHeight: 1.35, fontWeight: 880 }}>
                 일반 요청의 권한은 Gateway에서 판단하고, 사용자 상세 정보가 필요한 경우에만 User를 호출합니다.
-              </div>
-              <div style={{ border: '1px solid #e2e8f0', background: '#f8fafc', borderRadius: 9, padding: '7px 11px', color: muted, fontSize: 10.4, lineHeight: 1.35, fontWeight: 740 }}>
-                <strong style={{ color: slate, fontWeight: 900 }}>한계:</strong> 기존 JWT는 만료 전 role 변경·탈퇴를 즉시 반영하지 않고, blacklist도 구현되어 있지 않습니다.
               </div>
             </div>
           </div>
