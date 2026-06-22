@@ -14,7 +14,7 @@ export default function ResourcesSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`py-16 md:py-24 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#f8fafc]'}`}
+      className={`py-16 md:py-24 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-10 text-center md:mb-16">

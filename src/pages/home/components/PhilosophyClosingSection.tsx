@@ -22,7 +22,7 @@ export default function PhilosophyClosingSection() {
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
       className={`border-t py-20 md:py-24 transition-colors duration-300 ${
-        dark ? 'border-[#3d3d3d] bg-[#262626]' : 'border-gray-200 bg-[#f8fafc]'
+        dark ? 'border-[#3d3d3d] bg-[#242424]' : 'border-gray-200 bg-white'
       }`}
     >
       <div className="mx-auto max-w-5xl px-6">
