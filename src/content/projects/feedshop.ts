@@ -53,7 +53,7 @@ export const feedShopProject: ProjectData = {
       {
         icon: '👥',
         title: '팀 리딩(부팀장)',
-        detail: '스프린트 계획·우선순위 조율, <a href="https://dev99-tale.tistory.com/69" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#1d4ed8]">JIRA 기반 협업 가이드라인</a> 직접 설계·배포, JIRA-Slack 알림 연동으로 팀 협업 알림 체계 구축',
+        detail: '스프린트 계획·우선순위 조율, <a href="https://dev99-tale.tistory.com/69" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#2563EB] underline underline-offset-2 hover:text-[#1d4ed8]">JIRA 기반 협업 가이드라인</a> 직접 설계·배포,\nJIRA-Slack 알림 연동으로 팀 협업 알림 체계 구축',
       },
     ],
     problemEnvironment: 'MacBook Air M2 · 24GB |\n Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 | nGrinder 3.5.9 · Scouter 2.21.3',
