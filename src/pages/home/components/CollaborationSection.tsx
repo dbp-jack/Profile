@@ -46,7 +46,7 @@ export default function CollaborationSection() {
             >
               <div className={`aspect-[16/10] overflow-hidden ${dark ? 'bg-[#1e1e1e]' : 'bg-white'}`}>
                 <img
-                  src={item.image}
+                  src={`${import.meta.env.BASE_URL}${item.image.replace(/^\//, '')}`}
                   alt={item.alt}
                   className="h-full w-full cursor-zoom-in object-contain"
                   loading="lazy"
