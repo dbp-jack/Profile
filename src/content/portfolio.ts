@@ -155,7 +155,7 @@ export const EXPERIENCE_ITEMS: readonly ExperienceItem[] = [
     period: '2025.02 – 2025.05',
     category: '교육',
     title: '팀스파르타 — AI 활용 백엔드 아키텍처 심화 과정',
-    detail: 'DDD 설계 · Kafka · Redis 분산처리 · JMeter 성능 테스트 · 테코톡 발표 (분산 트랜잭션)',
+    detail: 'Kafka · Redis 분산처리 · JMeter 성능 테스트 · 테코톡 발표 (분산 트랜잭션)',
   },
   {
     period: '2023.09 – 2024.01',
