@@ -26,7 +26,7 @@ export default function ContactSection() {
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {CONTACT_SECTION.title}
           </h2>
-          <p className={`mt-3 text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
             {CONTACT_SECTION.subtitle}
           </p>
         </div>

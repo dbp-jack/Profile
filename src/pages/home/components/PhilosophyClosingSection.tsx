@@ -34,12 +34,12 @@ export default function PhilosophyClosingSection() {
               {CLOSING_SECTION.kicker}
             </span>
             <h2
-              className={`break-keep text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+              className={`break-keep text-3xl font-bold tracking-tight text-balance md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
             >
               {CLOSING_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-4 max-w-2xl text-lg leading-relaxed break-keep ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed break-keep md:text-base ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
             >
               {CLOSING_SECTION.subtitle}
             </p>
