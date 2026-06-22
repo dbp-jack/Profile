@@ -15,7 +15,7 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className={`transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
+      className={`transition-colors duration-300 ${dark ? 'bg-[#272b30]' : 'bg-[#EEF2F6]'}`}
     >
       {/* 기존 헤더 — 건들지 않음 */}
       <div className="mx-auto max-w-5xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
@@ -44,7 +44,7 @@ export default function ProjectsSection() {
       <CollaborationSection />
 
       {/* 개별 프로젝트 카드 */}
-      <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}>
+      <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#272b30]' : 'bg-[#EEF2F6]'}`}>
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col gap-6 md:gap-8">
             {selectedProjects.map((project, i) => (

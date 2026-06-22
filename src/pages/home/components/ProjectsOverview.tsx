@@ -12,7 +12,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
     .find((project) => project?.problemEnvironment)?.problemEnvironment
 
   return (
-    <div className={`projects-overview ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'} pb-10 md:pb-12`}>
+    <div className={`projects-overview ${dark ? 'bg-[#272b30]' : 'bg-[#EEF2F6]'} pb-10 md:pb-12`}>
       <div className="mx-auto max-w-5xl px-6">
         {/* 헤더 */}
         <div className={`projects-overview-header mb-5 border-b pb-5 ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
