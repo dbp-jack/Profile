@@ -1526,7 +1526,9 @@ function M3ProblemThinkingSlide() {
               ))}
             </div>
             <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 12.6, lineHeight: 1.38, fontWeight: 900 }}>
-              변경 이유가 다른 Auth·User를 분리하고, 일반 권한 판단은 JWT 컨텍스트로 Gateway에서 처리하는 안을 적용했습니다.
+              Auth와 User는 변경되는 이유(인증 정책 vs 사용자 정보)가 서로 다르므로 분리했고,
+              <br />
+              일반 권한 판단은 JWT 컨텍스트로 Gateway에서 처리하는 안을 적용했습니다.
             </div>
           </div>
         </Panel>
