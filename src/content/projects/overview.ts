@@ -34,7 +34,7 @@ export const PROJECT_OVERVIEWS: ProjectOverviewItem[] = [
     icon: 'ri-truck-line',
     iconColor: 'text-[#2563EB]',
     description: 'B2B 물류 관리 및 배송 시스템',
-    tech: ['SpringBoot', 'JWT', 'PostgreSQL', 'Redis', 'Docker'],
+    tech: ['SpringBoot', 'JWT', 'Gateway', 'PostgreSQL', 'Docker'],
     role: 'Auth·User·Gateway 도메인, Docker 기반 인프라 통합, 팀 리딩',
     challenge: '인증 책임 분리와 Gateway 중심 인증 흐름 설계',
     challengeIcon: 'ri-shield-check-line',

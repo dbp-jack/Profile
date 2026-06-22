@@ -40,7 +40,7 @@ export const ABOUT_SECTION = {
   kicker: 'About',
   title: '저는 이렇게 일합니다',
   intro:
-    '문제는 수치로 파악해 해결하고, 협력은 팀 흐름을 맞춰 정리하며, 맡은 임무는 끝까지 완수합니다.',
+    'QueryDSL N+1 최적화·Redis 투표 동시성 제어·Gateway 인증 경계 적용 경험을 갖춘 Java·Spring 백엔드 개발자',
 } as const
 
 export const ABOUT_CARDS = [

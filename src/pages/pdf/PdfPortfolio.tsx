@@ -292,83 +292,6 @@ function KpiCard({
   )
 }
 
-const codeTokenColor: Record<string, string> = {
-  '@Cacheable': blue,
-  '@Transactional': blue,
-  '@UniqueConstraint': blue,
-  columnNames: blue,
-  event_id: blue,
-  voter_id: blue,
-  fetchJoin: blue,
-  leftJoin: blue,
-  selectFrom: blue,
-  where: blue,
-  offset: blue,
-  limit: blue,
-  fetch: blue,
-  countDistinct: blue,
-  NOT_SUPPORTED: amber,
-  DataIntegrityViolationException: red,
-  increment: green,
-  redisTemplate: green,
-  opsForValue: green,
-  feedVotePersistenceService: green,
-  saveVote: green,
-  existsByEventIdAndUserId: red,
-  save: red,
-  success: violet,
-  return: violet,
-  public: violet,
-  if: violet,
-  try: violet,
-  catch: violet,
-}
-
-function renderCodeTokens(line: string) {
-  const commentIndex = line.indexOf('//')
-  const codePart = commentIndex >= 0 ? line.slice(0, commentIndex) : line
-  const commentPart = commentIndex >= 0 ? line.slice(commentIndex) : ''
-  const tokenPattern = new RegExp(`(${Object.keys(codeTokenColor).map((token) => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g')
-  const parts = codePart.split(tokenPattern)
-
-  return (
-    <>
-      {parts.map((part, idx) => (
-        <span key={`${part}-${idx}`} style={codeTokenColor[part] ? { color: codeTokenColor[part], fontWeight: 900 } : undefined}>
-          {part}
-        </span>
-      ))}
-      {commentPart && <span style={{ color: muted }}>{commentPart}</span>}
-    </>
-  )
-}
-
-function CodeBox({ lines, compact = false }: { lines: string[]; compact?: boolean }) {
-  return (
-    <pre
-      style={{
-        margin: compact ? 0 : '8px 0 0',
-        background: '#f1f5f9',
-        border: `1px solid ${line}`,
-        borderRadius: 9,
-        padding: compact ? '7px 9px' : '8px 10px',
-        color: '#111827',
-        fontSize: compact ? 8.8 : 9.5,
-        lineHeight: compact ? 1.34 : 1.42,
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-        whiteSpace: 'pre-wrap',
-      }}
-    >
-      {lines.map((line, idx) => (
-        <React.Fragment key={`${line}-${idx}`}>
-          {renderCodeTokens(line)}
-          {idx < lines.length - 1 ? '\n' : null}
-        </React.Fragment>
-      ))}
-    </pre>
-  )
-}
-
 function ProjectCaseCover({
   projectName,
   eyebrow,
@@ -1045,7 +968,7 @@ function FeedShopP1ThinkingSolutionSlide() {
         </Panel>
         <Panel pad={12} background={white} accent={blue}>
           <SectionLabel>Solution 1</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 9, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr', gap: 9, height: '100%' }}>
             <div
               style={{
                 borderRadius: 13,
@@ -1060,17 +983,9 @@ function FeedShopP1ThinkingSolutionSlide() {
                 페이징 count 쿼리는 <span style={{ color: blue, fontWeight: 950 }}>countDistinct</span>로 분리 보정
               </div>
             </div>
-            <CodeBox lines={[
-              '// EventQueryRepositoryImpl.java (109~116번 라인)',
-              'queryFactory.selectFrom(event)',
-              '    .leftJoin(event.eventDetail, detail).fetchJoin()',
-              '    .leftJoin(event.rewards, reward).fetchJoin()',
-              '    .where(event.deletedAt.isNull())',
-              '    .offset(pageable.getOffset())',
-              '    .limit(pageable.getPageSize())',
-              '    .fetch();',
-              '// count 쿼리: countDistinct로 rewards join 중복 제거',
-            ]} />
+            <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '10px 12px', color: navy, fontSize: 12.4, lineHeight: 1.4, fontWeight: 820 }}>
+              <strong style={{ color: blue }}>fetchJoin</strong>으로 eventDetail·rewards를 한 번에 조회하고, 페이징 count는 <strong style={{ color: blue }}>countDistinct</strong>로 분리
+            </div>
             <div
               style={{
                 display: 'flex',
@@ -1082,16 +997,19 @@ function FeedShopP1ThinkingSolutionSlide() {
                 padding: '8px 12px',
               }}
             >
-              <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter Evidence</div>
+                <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter 측정</div>
               <div style={{ color: blue, fontSize: 16.2, fontWeight: 950 }}>SQL Count 42회 → 2회</div>
             </div>
             <div style={{ minHeight: 0 }}>
               <img
                 src={asset('phase1-scouter-sql2.png')}
                 alt="fetchJoin SQL 2회"
-                style={{ width: '100%', height: '100%', maxHeight: '38mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '45mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
+            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+              구현 코드·실패 과정·커밋 근거 → Wiki
+            </a>
           </div>
         </Panel>
       </div>
@@ -1111,7 +1029,7 @@ function FeedShopP1SolutionResultSlide() {
       <div style={{ display: 'grid', height: '100%' }}>
         <Panel pad={12} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto auto 1fr', gap: 9, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr auto', gap: 9, height: '100%' }}>
             <div>
               <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.18 }}>2단계 — 캐시 전략 적용</h3>
               <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.4, fontWeight: 760 }}>
@@ -1134,12 +1052,6 @@ function FeedShopP1SolutionResultSlide() {
                 </div>
               ))}
             </div>
-            <CodeBox lines={[
-              '// EventReadService.java (122~123번 라인)',
-              '// [Phase 2-A] 이벤트 목록 Redis 캐시 적용 — Cache Hit 시 DB 조회 0회',
-              '@Cacheable(value = "availableEvents", key = "\'feed-available\'", unless = "#result.isEmpty()")',
-              'public List<EventSummaryDto> getFeedAvailableEvents() { ... }',
-            ]} />
             <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, minHeight: 0 }}>
               <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', color: blue, fontSize: 16.2, fontWeight: 950, padding: '9px 12px' }}>
                 Cache Hit 시 SQL Count 0회
@@ -1147,9 +1059,12 @@ function FeedShopP1SolutionResultSlide() {
               <img
                 src={asset('phase2a-scouter-cache-hit2.png')}
                 alt="Cache Hit SQL 0회"
-                style={{ width: '100%', height: '100%', maxHeight: '40mm', objectFit: 'cover', objectPosition: 'top', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '56mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
+            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+              @Cacheable·TTL·무효화 구현 상세 → Wiki
+            </a>
           </div>
         </Panel>
       </div>
@@ -1293,20 +1208,7 @@ function FeedShopP2ProblemThinkingSlide() {
                 ))}
             </div>
             <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 8, alignItems: 'start' }}>
-              <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 6 }}>
-                <div style={{ color: red, fontSize: 12.5, fontWeight: 950 }}>수정 전 구조</div>
-                <CodeBox
-                  compact
-                  lines={[
-                    '// FeedVoteService.java — 수정 전 구조 (TOCTOU 취약)',
-                    'if (feedVoteRepository.existsByEventIdAndUserId(eventId, userId)) {',
-                    '    return FeedVoteResponseDto.success(false, ...); // 중복 체크',
-                    '}',
-                    'feedVoteRepository.save(vote); // 투표 저장',
-                    '// 동시 요청 시 두 스레드가 모두 통과 가능',
-                  ]}
-                />
-              </div>
+              <div style={{ color: red, fontSize: 12.5, fontWeight: 950 }}>수정 전 경쟁 구간</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignContent: 'start' }}>
                 <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
                   <div style={{ color: red, fontSize: 12, fontWeight: 950, marginBottom: 5 }}>① 중복 체크</div>
@@ -1321,6 +1223,9 @@ function FeedShopP2ProblemThinkingSlide() {
                   </div>
                 </div>
               </div>
+              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%ED%94%BC%EB%93%9C-%ED%88%AC%ED%91%9C-%EB%8F%99%EC%8B%9C%EC%84%B1-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+                수정 전 코드·재현 근거 → Wiki
+              </a>
             </div>
           </div>
         </Panel>
@@ -1368,14 +1273,8 @@ function FeedShopP2SolutionSlide() {
                 <strong>(event_id, voter_id)</strong> 조합에 유니크 제약을 걸어 DB 레벨에서 중복 투표를 차단
               </p>
             </div>
-            <div style={{ display: 'grid', alignContent: 'center' }}>
-              <CodeBox
-                lines={[
-                  '// FeedVote.java (24~26번 라인)',
-                  '@UniqueConstraint(name = "uk_feed_votes_event_voter",',
-                  '    columnNames = {"event_id", "voter_id"})',
-                ]}
-              />
+            <div style={{ borderRadius: 11, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '10px 12px', color: navy, fontSize: 12.2, lineHeight: 1.38, fontWeight: 820 }}>
+              DB 제약은 중복 INSERT를 막는 <strong style={{ color: blue }}>최종 방어선</strong>
             </div>
           </div>
         </Panel>
@@ -1403,20 +1302,8 @@ function FeedShopP2SolutionSlide() {
                 ))}
               </div>
             </div>
-            <div style={{ display: 'grid', alignContent: 'center' }}>
-              <CodeBox
-                compact
-                lines={[
-                  '// FeedVoteService.java (59번 라인)',
-                  '@Transactional(propagation = Propagation.NOT_SUPPORTED)',
-                  'public FeedVoteResponseDto voteFeed(...) {',
-                  '    try { savedVote = feedVotePersistenceService.saveVote(vote); }',
-                  '    catch (DataIntegrityViolationException e) {',
-                  '        return FeedVoteResponseDto.success(false, ...); // 중복 → 200 반환',
-                  '    }',
-                  '}',
-                ]}
-              />
+            <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 11px', color: navy, fontSize: 11.2, lineHeight: 1.4, fontWeight: 800 }}>
+              저장·flush는 REQUIRED에서 끝내고, 트랜잭션 밖에서 지정된 유니크 제약 위반만 중복 응답으로 변환
             </div>
           </div>
         </Panel>
@@ -1440,13 +1327,13 @@ function FeedShopP2SolutionSlide() {
                 </div>
               </div>
             </div>
-            <div style={{ display: 'grid', alignContent: 'center' }}>
-              <CodeBox
-                lines={[
-                  '// FeedVoteService.java',
-                  'redisTemplate.opsForValue().increment("vote:count:" + feedId);',
-                ]}
-              />
+            <div style={{ display: 'grid', gap: 6, alignContent: 'center' }}>
+              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 11px', color: navy, fontSize: 11.2, lineHeight: 1.4, fontWeight: 800 }}>
+                Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 복구하고 정기 보정
+              </div>
+              <div style={{ color: '#92400e', fontSize: 10.4, lineHeight: 1.35, fontWeight: 800 }}>
+                한계: DB·Redis 간 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 보장 범위 밖
+              </div>
             </div>
           </div>
         </Panel>
@@ -1465,7 +1352,7 @@ function FeedShopP2ResultSlide() {
   const kpis = [
     ['에러율', '0%'],
     ['중복 투표', '0건'],
-    ['정합성', 'DB = Redis'],
+    ['정합성', '부하 테스트 구간에서 DB = Redis'],
     ['검증 구간', '500→3,000명'],
   ]
 
@@ -1578,14 +1465,14 @@ function M3ProblemThinkingSlide() {
           <SectionLabel color={red}>Problem</SectionLabel>
           <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, height: '100%' }}>
             <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.45, fontWeight: 800 }}>
-              인증(Auth)과 사용자(User) 책임이 강하게 결합되어, 인증 정책 변경과 사용자 조회 장애가
-              전체 인증 흐름에 영향을 줄 수 있는 구조였습니다.
+              Auth·User를 하나로 두는 안과 요청마다 User를 조회하는 안을 비교해,
+              책임 경계와 인증 컨텍스트 전달 방식을 결정했습니다.
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
               {[
                 ['책임 혼재', '인증 정책 변경 시 User 도메인까지 배포 영향 확산'],
-                ['재조회 의존', '매 요청마다 User 서비스 재조회로 서비스 간 호출 의존 증가'],
-                ['SPOF 구조', 'User 장애 시 인증 흐름 전체에 영향'],
+                ['요청별 재조회 대안', '최신 role은 반영하지만 호출 증가·User 장애 전파 위험'],
+                ['JWT 컨텍스트 대안', '일반 권한 판단은 빠르지만 role 변경·탈퇴의 즉시 반영 한계'],
               ].map(([title, desc]) => (
                 <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '12px 14px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 70 }}>
                   <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
@@ -1613,9 +1500,9 @@ function M3ProblemThinkingSlide() {
                 {
                   title: '인증 컨텍스트 전달',
                   rows: [
-                    ['매 요청 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
+                    ['요청별 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
                     ['Gateway 로컬 캐시', 'User 호출 감소', '캐시 불일치·무효화', '제외'],
-                    ['JWT userId·role', '재조회 없이 권한 판단', '토큰 만료 전 role 변경 지연', '선택'],
+                    ['JWT userId·role', '일반 경로에서 Gateway 권한 판단', '토큰 만료 전 role 변경 지연', '선택'],
                   ],
                 },
               ].map((group) => (
@@ -1639,7 +1526,7 @@ function M3ProblemThinkingSlide() {
               ))}
             </div>
             <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 12.6, lineHeight: 1.38, fontWeight: 900 }}>
-              변경 이유가 다른 Auth·User를 분리하고, JWT 컨텍스트로 재조회를 제거해 장애 전파 범위를 줄였습니다.
+              변경 이유가 다른 Auth·User를 분리하고, 일반 권한 판단은 JWT 컨텍스트로 Gateway에서 처리하는 안을 적용했습니다.
             </div>
           </div>
         </Panel>
@@ -1700,7 +1587,7 @@ function M3SolutionSlide() {
             <div style={{ display: 'grid', gap: 7 }}>
               {[
                 ['Gateway', 'JWT 검증 후 사용자 컨텍스트 전달'],
-                ['User 재조회 감소', '추가 정보가 필요한 경우에만 선택 호출'],
+                ['일반 권한 판단', '상세 정보가 필요한 경우에만 User 호출'],
                 ['AOP 권한 제어', '@RequiresMasterRole로 역할 체크 로직 통합'],
               ].map(([label, text]) => (
                 <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 10, padding: '9px 11px', display: 'grid', gridTemplateColumns: '104px 1fr', gap: 10, alignItems: 'center' }}>
@@ -1743,10 +1630,10 @@ function M3SolutionSlide() {
             </div>
             <div style={{ display: 'grid', gap: 6 }}>
               <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 10, padding: '9px 12px', color: navy, fontSize: 12.4, lineHeight: 1.35, fontWeight: 880 }}>
-                이후 요청은 User 서비스 재호출 없이 Gateway에서 권한을 판단하고, 인증 의존성을 Gateway로 수렴시켰습니다.
+                일반 요청의 권한은 Gateway에서 판단하고, 사용자 상세 정보가 필요한 경우에만 User를 호출합니다.
               </div>
               <div style={{ border: '1px solid #e2e8f0', background: '#f8fafc', borderRadius: 9, padding: '7px 11px', color: muted, fontSize: 10.4, lineHeight: 1.35, fontWeight: 740 }}>
-                <strong style={{ color: slate, fontWeight: 900 }}>한계:</strong> blacklist 미구현으로 로그아웃 후 access token 만료 전(1시간)까지 유효. 즉시 무효화 필요 시 Redis blacklist 전략 필요.
+                <strong style={{ color: slate, fontWeight: 900 }}>한계:</strong> 기존 JWT는 만료 전 role 변경·탈퇴를 즉시 반영하지 않고, blacklist도 구현되어 있지 않습니다.
               </div>
             </div>
           </div>
@@ -1766,7 +1653,7 @@ function M3ResultSlide() {
             {[
               ['결합도(CBO) 0건', 'UserService → Auth', '인증 정책 변경 시 User 모듈 배포 영향 제거', green],
               ['단방향', 'Auth → User', 'Feign 호출용 DTO 중심 참조 · 순환 의존 없음', blue],
-              ['Gateway', '권한 판단', 'JWT payload 기반 User 재조회 감소', violet],
+              ['Gateway', '권한 판단', 'JWT payload 기반 일반 인증 경로 처리', violet],
             ].map(([value, label, caption, color]) => (
               <div key={label} style={{ border: `1px solid ${color}33`, borderRadius: 13, background: white, padding: '16px 15px', minHeight: 98, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
                 <div style={{ color, fontSize: 21, fontWeight: 950, lineHeight: 1.05, marginBottom: 6 }}>{value}</div>
@@ -2107,7 +1994,7 @@ export default function PdfPortfolio() {
         metrics={[
           { label: '응답시간 단축', value: '-91%', caption: '동시 1,000명 기준 6,818ms → 638ms', color: green },
           { label: 'SQL Count', value: '42 → 0', caption: 'fetchJoin + Redis Cache Hit', color: blue },
-          { label: '중복 투표', value: '0건', caption: '동시 3,000명 검증 · DB = Redis', color: violet },
+          { label: '중복 투표', value: '0건', caption: '동시 3,000명 부하 테스트 구간', color: violet },
         ]}
       />
       <ProjectIntroSlide project={feedshop} title="FeedShop" />
@@ -2131,7 +2018,7 @@ export default function PdfPortfolio() {
         metrics={[
           { label: 'UserService → Auth', value: 'CBO 0건', caption: '인증 정책 변경 시 User 배포 영향 제거', color: green },
           { label: 'Auth → User', value: '단방향', caption: 'Feign DTO 중심 참조 · 순환 의존 없음', color: blue },
-          { label: '인증 판단', value: 'Gateway', caption: 'JWT payload 기반 User 재조회 감소', color: violet },
+          { label: '인증 판단', value: 'Gateway', caption: 'JWT payload 기반 일반 권한 판단', color: violet },
         ]}
       />
       <ProjectIntroSlide project={m3} title="3M" />
