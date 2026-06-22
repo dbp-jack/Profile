@@ -39,4 +39,17 @@ export const PROJECT_OVERVIEWS: ProjectOverviewItem[] = [
     challenge: '인증 책임 분리와 Gateway 중심 인증 흐름 설계',
     challengeIcon: 'ri-shield-check-line',
   },
+  {
+    id: 'fix-ticketing',
+    name: 'FIX',
+    badge: 'B2C TICKETING',
+    badgeColor: 'bg-[#0F766E]',
+    icon: 'ri-ticket-2-line',
+    iconColor: 'text-[#0F766E]',
+    description: 'MSA 기반 야구 티켓팅 플랫폼',
+    tech: ['Spring Boot', 'Kafka', 'PostgreSQL', 'Redis', 'AWS'],
+    role: '주문 도메인, 결제 모듈, Kafka 이벤트 흐름',
+    challenge: '주문·결제 장애 전파와 상태 불일치 문제 해결',
+    challengeIcon: 'ri-route-line',
+  },
 ]

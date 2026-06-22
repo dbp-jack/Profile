@@ -4,7 +4,7 @@ import {
   type PortfolioBlockId,
   type PortfolioPreset,
 } from './types'
-import { DEFAULT_PROJECT_IDS, PROJECTS } from '@/content/projects'
+import { DEFAULT_PROJECT_IDS, normalizeProjectIds } from '@/content/projects'
 import { DEFAULT_COPY_PROFILE, getCopyProfile } from './copy-profiles'
 
 export const DEFAULT_PUBLIC_PRESET: PortfolioPreset = {
@@ -26,6 +26,22 @@ export const PUBLIC_PRESETS: readonly PortfolioPreset[] = [
     projectIds: ['feedshop'],
     copyProfileId: 'backend-impact',
   },
+  {
+    id: 'commerce-event',
+    name: '커머스·이벤트형',
+    description: 'FeedShop 성능·동시성과 FIX 주문·결제 이벤트 경험을 묶습니다.',
+    blocks: ['hero', 'about', 'projects', 'experience', 'resources', 'contact', 'footer'],
+    projectIds: ['feedshop', 'fix-ticketing'],
+    copyProfileId: 'event-driven',
+  },
+  {
+    id: 'msa-platform',
+    name: 'MSA·플랫폼형',
+    description: '3M 인증 경계와 FIX Kafka 서비스 분리 경험을 묶습니다.',
+    blocks: ['hero', 'about', 'projects', 'experience', 'resources', 'contact', 'footer'],
+    projectIds: ['three-m', 'fix-ticketing'],
+    copyProfileId: 'event-driven',
+  },
 ] as const
 
 export function getPublicPreset(presetId: string | null): PortfolioPreset {
@@ -46,13 +62,13 @@ export function parsePublicBlockSelection(value: string | null): readonly Portfo
 
 export function parsePublicProjectSelection(value: string | null): readonly string[] | null {
   if (!value) return null
-  const allowedIds = new Set(PROJECTS.map((project) => project.id))
-  const selected = value
+  const requested = value
     .split(',')
     .map((item) => item.trim())
-    .filter((projectId) => allowedIds.has(projectId))
+    .filter(Boolean)
+  const selected = normalizeProjectIds(requested)
 
-  return selected.length > 0 ? [...new Set(selected)] : null
+  return requested.length > 0 ? selected : null
 }
 
 export function parsePublicCopyProfile(value: string | null): string {
@@ -65,9 +81,10 @@ export function createPublicPortfolioPath(
   copyProfileId: string,
   companyKey?: string,
 ) {
+  const normalizedProjectIds = normalizeProjectIds(projectIds)
   const params = new URLSearchParams({
     blocks: blocks.join(','),
-    projects: projectIds.join(','),
+    projects: normalizedProjectIds.join(','),
     copy: getCopyProfile(copyProfileId).id,
   })
   if (companyKey) params.set('company', companyKey)

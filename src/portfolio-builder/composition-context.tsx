@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { DEFAULT_PROJECT_IDS } from '@/content/projects'
+import { DEFAULT_PROJECT_IDS, normalizeProjectIds } from '@/content/projects'
 import { DEFAULT_COPY_PROFILE, getCopyProfile } from './copy-profiles'
 import { PortfolioCompositionContext } from './composition-state'
 
@@ -14,7 +14,7 @@ export function PortfolioCompositionProvider({
 }) {
   return (
     <PortfolioCompositionContext.Provider
-      value={{ projectIds, copyProfile: getCopyProfile(copyProfileId) }}
+      value={{ projectIds: normalizeProjectIds(projectIds), copyProfile: getCopyProfile(copyProfileId) }}
     >
       {children}
     </PortfolioCompositionContext.Provider>

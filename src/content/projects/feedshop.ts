@@ -26,7 +26,7 @@ export const feedShopProject: ProjectData = {
           {
             bullets: [
               'CI - 테스트·Jacoco 커버리지·SonarCloud 정적 분석 자동 실행',
-              '최신 전체 테스트 1,351건 실패 0건 · 라인 커버리지 Feed 55.3% / Event 58.4%',
+              '프로젝트 마감 당시 CI 기록: 전체 테스트 1,351건 실패 0건 · 라인 커버리지 Feed 55.3% / Event 58.4%',
               'CD - main 브랜치 push 기준 배포 자동화',
               'SonarCloud - Reliability·Coverage·인지 복잡도 결과를 실제 개선에 반영',
             ],
@@ -35,7 +35,7 @@ export const feedShopProject: ProjectData = {
       },
     ],
     serviceOverview:
-      '<span class="font-bold">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매 이후에도 사용자가 <span class="font-semibold">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계한 커뮤니티형 패션 커머스입니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해<br><span class="font-bold">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 선순환 구조를 만들었습니다.<div class="mt-3"><a href="https://www.feedshop.store" target="_blank" rel="noopener noreferrer" class="inline-flex font-semibold text-[#2563EB] underline underline-offset-2">운영 서비스 바로가기</a></div>',
+      '<span class="font-bold">\'나라면 이 쇼핑몰 쓸까?\'</span>라는 생각으로 프로젝트를 시작했습니다.\n단순 구매 이후에도 사용자가 <span class="font-semibold">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계한 커뮤니티형 패션 커머스입니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해<br><span class="font-bold">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 선순환 구조를 만들었습니다.<div class="mt-3"><a href="https://www.feedshop.store" target="_blank" rel="noopener noreferrer" class="inline-flex font-semibold text-[#2563EB] underline underline-offset-2">배포 프론트 화면 보기</a><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">백엔드 운영 상태에 따라 API 기반 기능은 제한될 수 있습니다.</p></div>',
     developerPerspective:
       '유저 재방문을 만드는 선순환 구조의 핵심은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 참여</span>였습니다.\n이벤트 기간에는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">요청이 특정 시간에 몰리고</span>, 랭킹 상위 피드에 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표가 집중</span>되는 구조적 특성이 있었습니다.\n이때 이벤트 목록 조회가 느려지거나 <span class="font-semibold text-red-500 dark:text-red-400">투표 데이터 정합성</span>이 흔들리면 서비스 신뢰도를 떨어트리는 치명적 요인이라 판단했습니다.\n그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 문제</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성 보장</span>을 핵심 과제로 설정했습니다.',
     techStack: ['SpringBoot', 'QueryDSL', 'MySQL', 'Redis', 'Docker', 'GCP', 'GitHub', 'JIRA', 'nGrinder', 'Scouter'],

@@ -1664,7 +1664,7 @@ function M3ResultSlide() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 10 }}>
             {[
               ['정책 변경', 'Auth·Gateway 중심으로 반영', blue],
-              ['영향 차단', 'User 모듈 배포 영향 제거', green],
+              ['변경 영향 분리', 'User 모듈 배포 영향 제거', green],
               ['인증 처리', 'Gateway에서 권한 판단', violet],
             ].map(([title, desc, color], idx) => (
               <React.Fragment key={title}>

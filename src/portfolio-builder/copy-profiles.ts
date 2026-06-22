@@ -28,6 +28,16 @@ export const COPY_PROFILES: readonly PortfolioCopyProfile[] = [
     projectsSubtitle:
       '성능 병목과 인증 구조 문제를 어떤 근거와 선택으로 해결했는지 보여드립니다.',
   },
+  {
+    id: 'event-driven',
+    name: '이벤트 기반·결제 중심',
+    description: 'Kafka 이벤트 흐름과 주문·결제 실패 처리 경험을 앞에 배치합니다.',
+    heroRoleTitle: '서비스 경계를 나누고, 실패 흐름까지 설계하는 백엔드 개발자',
+    aboutIntro:
+      '동기 호출의 장애 전파와 데이터 불일치 문제를 분석하고, 이벤트 계약과 보상 흐름으로 서비스 경계를 설계합니다.',
+    projectsSubtitle:
+      '주문·결제 이벤트 흐름과 동시성 문제를 어떤 책임 분리와 검증으로 해결했는지 보여드립니다.',
+  },
 ] as const
 
 export const DEFAULT_COPY_PROFILE = COPY_PROFILES[0]

@@ -287,6 +287,18 @@ export const RESOURCE_LINKS: readonly ResourceLink[] = [
     url: 'https://github.com/sparta-i4u/sparta-msa/wiki',
   },
   {
+    icon: 'ri-github-fill',
+    label: 'FIX GitHub',
+    description: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT',
+    url: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT',
+  },
+  {
+    icon: 'ri-book-open-line',
+    label: 'FIX Wiki',
+    description: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT/wiki',
+    url: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT/wiki',
+  },
+  {
     icon: 'ri-notion-fill',
     label: '16 I 4 U',
     description: 'https://app.notion.com/p/16-I-4-U-1f0eeaa2f0af80bd9f00d0a062903703',

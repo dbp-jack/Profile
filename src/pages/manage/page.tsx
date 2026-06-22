@@ -1,5 +1,10 @@
 import { useMemo, useState } from 'react'
-import { DEFAULT_PROJECT_IDS, PROJECTS } from '@/content/projects'
+import {
+  DEFAULT_PROJECT_IDS,
+  MAX_VISIBLE_PROJECTS,
+  PROJECTS,
+  normalizeProjectIds,
+} from '@/content/projects'
 import NotFound from '@/pages/NotFound'
 import PortfolioBody from '@/pages/home/PortfolioBody'
 import {
@@ -69,9 +74,7 @@ function loadSavedProjects(): readonly string[] {
 
   try {
     const parsed = JSON.parse(saved) as string[]
-    const allowed = new Set(PROJECTS.map((project) => project.id))
-    const valid = parsed.filter((projectId) => allowed.has(projectId))
-    return valid.length > 0 ? valid : DEFAULT_PROJECT_IDS
+    return normalizeProjectIds(parsed)
   } catch {
     return DEFAULT_PROJECT_IDS
   }
@@ -93,7 +96,9 @@ function loadCustomPresets(): readonly PortfolioPreset[] {
       .map((preset) => ({
         ...preset,
         blocks: preset.blocks.filter((blockId) => allowedBlocks.has(blockId)),
-        projectIds: preset.projectIds.filter((projectId) => allowedProjects.has(projectId)),
+        projectIds: normalizeProjectIds(
+          preset.projectIds.filter((projectId) => allowedProjects.has(projectId)),
+        ),
         copyProfileId: getCopyProfile(preset.copyProfileId).id,
         companyKey: normalizeCompanyKey(preset.companyKey ?? ''),
       }))
@@ -146,8 +151,9 @@ export default function PortfolioManagerPage() {
   }
 
   const updateProjects = (nextProjectIds: readonly string[]) => {
-    setProjectIds(nextProjectIds)
-    window.localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(nextProjectIds))
+    const normalized = normalizeProjectIds(nextProjectIds)
+    setProjectIds(normalized)
+    window.localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(normalized))
   }
 
   const updateCopyProfile = (nextCopyProfileId: string) => {
@@ -224,6 +230,7 @@ export default function PortfolioManagerPage() {
       updateProjects(projectIds.filter((item) => item !== projectId))
       return
     }
+    if (projectIds.length >= MAX_VISIBLE_PROJECTS) return
     updateProjects([...projectIds, projectId])
   }
 
@@ -464,10 +471,12 @@ export default function PortfolioManagerPage() {
           <section className="border-t border-slate-200 pt-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-extrabold">프로젝트 블록</h2>
-              <span className="text-xs font-semibold text-slate-400">{projectIds.length}개 선택</span>
+              <span className="text-xs font-semibold text-slate-400">
+                {projectIds.length}/{MAX_VISIBLE_PROJECTS}개 선택
+              </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-slate-500">
-              프로젝트를 고르고 순서를 바꾸면 개요와 상세 내용이 함께 이동합니다.
+              최대 {MAX_VISIBLE_PROJECTS}개까지 고르고 순서를 바꾸면 개요와 상세 내용이 함께 이동합니다.
             </p>
             <div className="mt-3 space-y-2">
               {PROJECTS.map((project) => {
@@ -485,8 +494,9 @@ export default function PortfolioManagerPage() {
                         id={`project-${project.id}`}
                         type="checkbox"
                         checked={selected}
+                        disabled={!selected && projectIds.length >= MAX_VISIBLE_PROJECTS}
                         onChange={() => toggleProject(project.id)}
-                        className="mt-1 h-4 w-4 accent-emerald-600"
+                        className="mt-1 h-4 w-4 accent-emerald-600 disabled:cursor-not-allowed disabled:opacity-40"
                       />
                       <label
                         htmlFor={`project-${project.id}`}
