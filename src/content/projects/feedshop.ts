@@ -43,7 +43,7 @@ export const feedShopProject: ProjectData = {
       {
         icon: '🔧',
         title: '이벤트·피드 도메인 전담',
-        detail: '사용자 참여(이벤트·투표)와 콘텐츠(피드·댓글·좋아요·검색) 기능 전체 구현',
+        detail: '사용자 참여(이벤트·투표)와 콘텐츠(피드·댓글·좋아요·검색) 기능 구현',
       },
       {
         icon: '🚀',
