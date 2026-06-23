@@ -32,6 +32,7 @@ const green = '#059669'
 const amber = '#d97706'
 const red = '#dc2626'
 const violet = '#7c3aed'
+const teal = '#0f766e'
 
 const feedshop = PROJECTS[0]
 const m3 = PROJECTS[1]
@@ -472,18 +473,28 @@ function ProjectsOverviewSlide() {
       ],
       color: violet,
     },
+    {
+      title: '핵심 성과',
+      items: [
+        ['비동기 경계', '주문 요청이 결제 완료를 직접 기다리지 않음'],
+        ['이벤트 타입 분리', '성공·실패·취소 상태 전이를 코드로 분리'],
+        ['보상 흐름 구현', '결제 실패·취소 시 주문 취소 이벤트 연계'],
+      ],
+      color: teal,
+    },
   ]
+  const accentColors = [blue, violet, teal]
 
   return (
     <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle="핵심 프로젝트를 목적·역할·문제 해결 중심으로 요약했습니다.">
       <div style={{ display: 'grid', gridTemplateRows: '1fr auto auto', gap: 9, height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 13, minHeight: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${PROJECT_OVERVIEWS.length}, 1fr)`, gap: 13, minHeight: 0 }}>
           {PROJECT_OVERVIEWS.map((project, idx) => (
-            <Panel key={project.name} pad={14} background={white} accent={idx === 0 ? blue : violet}>
+            <Panel key={project.name} pad={14} background={white} accent={accentColors[idx]}>
               <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto auto auto auto', alignContent: 'space-between', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ color: blue, fontWeight: 900, fontSize: 12 }}>프로젝트 {idx + 1}</span>
-                  <span style={{ background: idx === 0 ? blue : violet, color: white, borderRadius: 999, padding: '5px 10px', fontSize: 10.5, fontWeight: 900 }}>{project.badge}</span>
+                  <span style={{ background: accentColors[idx], color: white, borderRadius: 999, padding: '5px 10px', fontSize: 10.5, fontWeight: 900 }}>{project.badge}</span>
                 </div>
                 <h2 style={{ margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: '-0.03em' }}>{project.name}</h2>
                 <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.52, fontWeight: 750 }}>{project.description}</p>
@@ -491,7 +502,7 @@ function ProjectsOverviewSlide() {
                   style={{
                     borderRadius: 14,
                     border: `1px solid ${highlights[idx].color}24`,
-                    background: idx === 0 ? '#f8fbff' : '#fbf9ff',
+                    background: '#f8fafc',
                     padding: '10px 12px',
                   }}
                 >
@@ -539,8 +550,8 @@ function ProjectsOverviewSlide() {
                   </div>
                 </div>
                 <Tags items={project.tech} />
-                <Panel pad={9} background={idx === 0 ? '#eff6ff' : '#f5f3ff'} borderColor={idx === 0 ? '#bfdbfe' : '#ddd6fe'}>
-                  <SectionLabel color={idx === 0 ? blue : violet}>핵심 과제</SectionLabel>
+                <Panel pad={9} background="#f8fafc" borderColor={`${accentColors[idx]}40`}>
+                  <SectionLabel color={accentColors[idx]}>핵심 과제</SectionLabel>
                   <p style={{ margin: 0, color: slate, fontSize: 12.5, lineHeight: 1.48, fontWeight: 760 }}>{project.challenge}</p>
                 </Panel>
               </div>
