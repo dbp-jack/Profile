@@ -104,21 +104,36 @@ export default function PhilosophyClosingSection() {
                     : isLast
                       ? 'border-slate-200/90 bg-white shadow-sm'
                       : 'border-slate-200/70 bg-white/90 shadow-sm'
+                const accent = colIdx === 0 ? 'border-l-[#6366f1]' : 'border-l-[#10b981]'
+                const badgeColor =
+                  colIdx === 0
+                    ? dark
+                      ? 'bg-[#2a3148] text-[#b4c2f0]'
+                      : 'bg-[#EEF2FF] text-[#3730a3]'
+                    : dark
+                      ? 'bg-[#1f3a30] text-[#7ee0bb]'
+                      : 'bg-[#ECFDF5] text-[#047857]'
                 return (
                   <div
                     key={`${block.titleKo}-${rowIdx}`}
-                    className={`flex flex-col justify-center rounded-xl border px-5 py-2.5 md:px-6 md:py-3 ${blockShell}`}
+                    className={`flex items-start gap-3.5 rounded-xl border border-l-[3px] px-5 py-3 md:px-6 md:py-3.5 ${blockShell} ${accent}`}
                   >
+                    <span
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-extrabold tabular-nums md:h-11 md:w-11 md:text-lg ${badgeColor}`}
+                      aria-hidden
+                    >
+                      {String(rowIdx + 1).padStart(2, '0')}
+                    </span>
                     {para.includes('<') ? (
                       <div
-                        className={`closing-card-body-html text-base leading-[1.58] break-keep ${
+                        className={`closing-card-body-html min-w-0 flex-1 text-base leading-[1.58] break-keep ${
                           dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                         } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                         dangerouslySetInnerHTML={{ __html: para }}
                       />
                     ) : (
                       <p
-                        className={`whitespace-pre-line text-base leading-[1.58] break-keep ${
+                        className={`min-w-0 flex-1 whitespace-pre-line text-base leading-[1.58] break-keep ${
                           dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                         } ${isFirst && !dark ? 'text-slate-800' : ''} ${isLast ? 'font-medium' : ''}`}
                       >
