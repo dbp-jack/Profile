@@ -96,6 +96,26 @@ export const PROJECT_WORKFLOW = {
       tone: 'direct',
     },
   ],
+  tools: [
+    {
+      name: 'NotebookLM',
+      icon: 'ri-shield-check-line',
+      purpose: '할루시네이션 최소화\n공식 출처 검증 후 자료 추출',
+    },
+    {
+      name: '제미나이 · 클로드',
+      icon: 'ri-file-text-line',
+      purpose: '노트북LM에서 추출한 자료로\n문서화 · 학습 가이드 작성',
+    },
+    { name: 'Claude Code', icon: 'ri-code-s-slash-line', purpose: '단일 기능 단위 구현' },
+    {
+      name: 'Codex',
+      icon: 'ri-search-eye-line',
+      purpose: '놓친 엣지케이스·로직 오류 캐치\n이후 코드는 직접 검토',
+    },
+  ],
+  toolsNote:
+    '프롬프트는 제한을 둔 버전과 제한을 두지 않은 버전을 비교하면서 작성합니다.\n현재 Claude Code는 플러그인으로 토큰 사용을 절약하고, OpenRouter API를 MCP 에이전트로 연결해 활용하고 있습니다.',
 } as const
 
 export const COLLABORATION_SECTION = {

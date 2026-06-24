@@ -11,7 +11,7 @@ export const fixTicketingProject: ProjectData = {
     '경기와 좌석을 조회하고 티켓을 예약한 뒤 주문·결제까지 이어지는 <span class="font-bold">야구 티켓팅 플랫폼</span>입니다.\n주문과 결제를 서로 다른 서비스로 분리한 환경에서, 한 서비스의 실패가 동기 호출 체인을 따라 확산되지 않도록 Kafka 이벤트 기반 처리 흐름을 구현했습니다.',
   developerPerspective:
     '주문 생성 이후 결제 성공·실패·취소가 모두 주문 상태에 반영돼야 했습니다. 동기 호출로 연결하면 결제 지연이나 장애가 주문 요청까지 전파되고, 중간 실패 시 어느 서비스가 상태를 되돌릴지 모호해집니다.\n그래서 주문·결제 간 계약을 이벤트로 분리하고, <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">결제 결과에 따라 주문 완료 또는 취소 이벤트가 이어지는 Choreography 흐름</span>을 설계했습니다.',
-  techStack: ['Spring Boot', 'Kafka', 'PostgreSQL', 'Redis', 'Docker', 'AWS', 'Toss Payments'],
+  techStack: ['Spring Boot 3.4.3', 'Kafka', 'PostgreSQL', 'Redis', 'Docker', 'AWS', 'Toss Payments'],
   roles: [
     {
       icon: '🧾',

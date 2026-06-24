@@ -140,6 +140,28 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                 )
               })}
             </div>
+
+            <div className={`mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3`}>
+              {PROJECT_WORKFLOW.tools.map((tool) => (
+                <div
+                  key={tool.name}
+                  className={`rounded-lg border px-3 py-2 ${
+                    dark ? 'border-[#3d3d3d] bg-[#262626]' : 'border-slate-200 bg-white'
+                  }`}
+                >
+                  <p className={`flex items-center gap-1.5 text-xs font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+                    <i className={`${tool.icon} text-sm`} aria-hidden="true" />
+                    {tool.name}
+                  </p>
+                  <p className={`mt-0.5 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+                    {tool.purpose}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className={`mt-3 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#8a8a8a]' : 'text-slate-500'}`}>
+              {PROJECT_WORKFLOW.toolsNote}
+            </p>
           </div>
         </section>
 

@@ -49,7 +49,7 @@ export const threeMProject: ProjectData = {
       '업체 → 허브 → 배송 담당자로 이어지는 <span class="font-bold">B2B 물류 흐름을 통합 관리하는 플랫폼</span>입니다.\n다수의 기업·허브·배송 담당자가 함께 사용하는 구조 특성상 인증과 권한 관리가 핵심이었으며,\nAuth·User·Gateway 도메인을 전담하며, 서비스 간 의존성을 최소화하는 인증 구조를 설계했습니다.',
     developerPerspective:
       'B2B 물류 시스템은 여러 서비스가 인증 흐름을 공유하므로, 책임 경계와 인증 컨텍스트 전달 방식이 전체 안정성을 좌우합니다.<ul class="mt-3 space-y-2 list-none pl-0"><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span><span class="font-semibold text-red-500 dark:text-red-400">인증·사용자 책임 혼재</span> - 정책 변경이 User 배포까지 확산될 수 있는 경계</span></li><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span><span class="font-semibold text-red-500 dark:text-red-400">요청별 User 재조회 대안</span> - 최신 role은 반영하지만 호출 증가·장애 전파 위험</span></li></ul><div class="mt-3 font-semibold text-amber-600 dark:text-amber-300">👉 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Auth·User 책임을 분리</span>하고, JWT의 <span class="font-mono font-semibold text-[#2563EB] dark:text-[#8aa8e8]">userId·role</span>을 검증한 Gateway가 일반 권한 판단을 담당하도록 적용했습니다.</div>',
-    techStack: ['SpringBoot', 'JWT', 'Spring Cloud Gateway', 'PostgreSQL', 'Docker', 'JIRA'],
+    techStack: ['SpringBoot 3.4.3', 'JWT', 'Spring Cloud Gateway', 'PostgreSQL', 'Docker', 'JIRA'],
     roles: [
       {
         icon: '🧱',
