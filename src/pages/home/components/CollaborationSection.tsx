@@ -13,13 +13,13 @@ export default function CollaborationSection() {
       aria-labelledby="work-style-title"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="border-b pb-6">
-          <p className={`text-xs font-bold uppercase tracking-[0.18em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+        <div className="mb-10 text-center md:mb-16">
+          <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}>
             {WORK_STYLE_SECTION.kicker}
           </p>
           <h3
             id="work-style-title"
-            className={`mt-2 text-2xl font-extrabold leading-snug md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}
+            className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
           >
             {WORK_STYLE_SECTION.title}
           </h3>
@@ -27,7 +27,7 @@ export default function CollaborationSection() {
 
         {/* 팀 협업 프로세스 */}
         <div className="border-b pt-6 pb-6">
-          <p className={`text-xs font-bold uppercase tracking-[0.18em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+          <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
             {COLLABORATION_SECTION.kicker}
           </p>
           <h4 className={`mt-2 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
@@ -83,7 +83,7 @@ export default function CollaborationSection() {
           <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
             {PROJECT_WORKFLOW.label}
           </p>
-          <h4 className={`mt-1 text-lg font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
+          <h4 className={`mt-2 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
             {PROJECT_WORKFLOW.title}
           </h4>
           <p className={`mt-3 max-w-4xl text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>

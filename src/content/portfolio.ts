@@ -80,7 +80,7 @@ export const WORK_STYLE_SECTION = {
 } as const
 
 export const PROJECT_WORKFLOW = {
-  label: 'AI 활용 방식',
+  label: 'AI Workflow',
   title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다',
   description:
     '요구사항과 설계 판단은 직접 수행하고, AI는 문서로 정의한 범위의 코드 작성에 활용합니다. 완성된 결과는 다시 직접 검증하고 수정합니다.',

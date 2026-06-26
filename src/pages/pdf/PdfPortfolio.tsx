@@ -617,7 +617,7 @@ function CollaborationSlide() {
 
         <div style={{ borderTop: `1px solid ${line}`, paddingTop: 8 }}>
           <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
-          <div style={{ color: navy, fontSize: 12.5, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
+          <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>{PROJECT_WORKFLOW.title}</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 5 }}>
             {PROJECT_WORKFLOW.phases.map((phase, index) => (
               <div key={phase.owner} style={{ paddingLeft: index === 0 ? 0 : 8, paddingRight: 8, borderLeft: index === 0 ? 'none' : `1px solid ${line}` }}>
