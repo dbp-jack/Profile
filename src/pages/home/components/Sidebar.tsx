@@ -19,7 +19,7 @@ const BASE_NAV_LINKS: readonly NavLink[] = [
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line', offset: 0 },
-  { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
+  { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line', offset: 0 },
   { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
   { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
   { blockId: 'contact', label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
@@ -48,6 +48,7 @@ export default function Sidebar({
           label: project.name,
           href: `#project-${project.id}`,
           icon: 'ri-folder-2-line',
+          offset: 0,
         })),
     [projectIds],
   )
