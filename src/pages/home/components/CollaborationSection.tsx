@@ -13,7 +13,7 @@ export default function CollaborationSection() {
       aria-labelledby="work-style-title"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-10 text-center md:mb-16">
+        <div className="mb-8 text-center md:mb-12">
           <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}>
             {WORK_STYLE_SECTION.kicker}
           </p>
