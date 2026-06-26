@@ -16,6 +16,7 @@ import {
   PROJECT_WORKFLOW,
   RESOURCE_LINKS,
   RESOURCES_SECTION,
+  WORK_STYLE_SECTION,
 } from '@/content/portfolio'
 import { PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
 
@@ -564,19 +565,6 @@ function ProjectsOverviewSlide() {
             <div style={{ fontSize: 11, color: slate, whiteSpace: 'pre-line' }}>{feedshop.problemEnvironment}</div>
           </Panel>
         )}
-        <div style={{ borderTop: '1px solid #bfdbfe', borderBottom: '1px solid #bfdbfe', padding: '8px 2px' }}>
-            <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
-            <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
-            <div style={{ color: slate, fontSize: 9.2, lineHeight: 1.38, fontWeight: 720, marginTop: 4 }}>{PROJECT_WORKFLOW.description}</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 5 }}>
-              {PROJECT_WORKFLOW.phases.map((phase, index) => (
-                <div key={phase.owner} style={{ paddingLeft: index === 0 ? 0 : 8, paddingRight: 8, borderLeft: index === 0 ? 'none' : `1px solid ${line}` }}>
-                  <div style={{ color: phase.tone === 'ai' ? violet : blue, fontSize: 8.2, fontWeight: 950 }}>{phase.owner}</div>
-                  <div style={{ color: slate, fontSize: 7.7, lineHeight: 1.3, fontWeight: 720, marginTop: 1 }}>{phase.detail}</div>
-                </div>
-              ))}
-            </div>
-        </div>
       </div>
     </Slide>
   )
@@ -609,19 +597,36 @@ function CollaborationSlide() {
   const [sprint, slack, guide] = COLLABORATION_SECTION.evidence
 
   return (
-    <Slide eyebrow={COLLABORATION_SECTION.kicker} title={COLLABORATION_SECTION.title} subtitle={COLLABORATION_SECTION.intro} dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr 0.82fr auto', gap: 9, height: '100%', minHeight: 0 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, minHeight: 0 }}>
-          <CollaborationEvidence item={sprint} imageHeight="42mm" />
-          <CollaborationEvidence item={slack} imageHeight="42mm" />
+    <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr 0.82fr auto auto', gap: 9, height: '100%', minHeight: 0 }}>
+        <div>
+          <SectionLabel>{COLLABORATION_SECTION.kicker}</SectionLabel>
+          <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>{COLLABORATION_SECTION.title}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, minHeight: 0 }}>
+            <CollaborationEvidence item={sprint} imageHeight="36mm" />
+            <CollaborationEvidence item={slack} imageHeight="36mm" />
+          </div>
         </div>
-        <CollaborationEvidence item={guide} imageHeight="30mm" />
+        <CollaborationEvidence item={guide} imageHeight="26mm" />
         <a
           href={COLLABORATION_SECTION.guideUrl}
           style={{ color: blue, fontSize: 9.5, fontWeight: 900, textDecoration: 'none' }}
         >
           JIRA 가이드라인 보기 · {COLLABORATION_SECTION.guideUrl}
         </a>
+
+        <div style={{ borderTop: `1px solid ${line}`, paddingTop: 8 }}>
+          <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
+          <div style={{ color: navy, fontSize: 12.5, fontWeight: 950, lineHeight: 1.2 }}>{PROJECT_WORKFLOW.title}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 5 }}>
+            {PROJECT_WORKFLOW.phases.map((phase, index) => (
+              <div key={phase.owner} style={{ paddingLeft: index === 0 ? 0 : 8, paddingRight: 8, borderLeft: index === 0 ? 'none' : `1px solid ${line}` }}>
+                <div style={{ color: phase.tone === 'ai' ? violet : blue, fontSize: 8.2, fontWeight: 950 }}>{phase.owner}</div>
+                <div style={{ color: slate, fontSize: 7.7, lineHeight: 1.3, fontWeight: 720, marginTop: 1 }}>{phase.detail}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Slide>
   )

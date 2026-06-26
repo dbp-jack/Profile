@@ -1,6 +1,5 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
-import { PROJECT_WORKFLOW } from '@/content/portfolio'
 
 export default function ProjectsOverview({ projectIds }: { projectIds: readonly string[] }) {
   const { dark } = useDarkMode()
@@ -15,15 +14,10 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
     <div className={`projects-overview ${dark ? 'bg-[#242424]' : 'bg-white'} pb-10 md:pb-12`}>
       <div className="mx-auto max-w-5xl px-6">
         {/* 헤더 */}
-        <div className={`projects-overview-header mb-5 border-b pb-5 ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
-          <div className="flex items-center gap-3">
-            <h2 className={`text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
-              프로젝트 <span className="text-[#2563EB]">개요</span>
-            </h2>
-          </div>
-          <p className={`mt-2 ml-4 text-sm ${dark ? 'text-[#888]' : 'text-gray-500'}`}>
-            기술 선택의 이유와 목적에 집중하는 개발 태도를 담은 핵심 프로젝트 요약
-          </p>
+        <div className={`projects-overview-header mb-5 border-b pb-5 text-center ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
+          <h2 className={`text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
+            프로젝트 <span className="text-[#2563EB]">개요</span>
+          </h2>
         </div>
 
         {/* 프로젝트 카드 2개 */}
@@ -110,61 +104,6 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
             <span className="whitespace-pre-line">{testEnvironment}</span>
           </div>
         ) : null}
-
-        <section
-          className={`projects-workflow mt-5 border-y py-4 ${dark ? 'border-[#3d3d3d]' : 'border-blue-100'}`}
-          aria-labelledby="projects-workflow-title"
-        >
-          <div>
-            <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-              {PROJECT_WORKFLOW.label}
-            </p>
-            <h3 id="projects-workflow-title" className={`mt-1 text-lg font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
-              {PROJECT_WORKFLOW.title}
-            </h3>
-            <p className={`mt-3 max-w-4xl text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
-              {PROJECT_WORKFLOW.description}
-            </p>
-            <div className={`mt-3 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${dark ? 'divide-[#444]' : 'divide-slate-200'}`}>
-              {PROJECT_WORKFLOW.phases.map((phase) => {
-                const isAi = phase.tone === 'ai'
-                return (
-                  <div key={phase.owner} className="py-2 md:px-4 md:py-0 first:pl-0 last:pr-0">
-                    <p className={`text-xs font-extrabold ${isAi ? 'text-[#7C3AED]' : dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-                      {phase.owner}
-                    </p>
-                    <p className={`mt-1 text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
-                      {phase.detail}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-
-            <div className={`mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3`}>
-              {PROJECT_WORKFLOW.tools.map((tool) => (
-                <div
-                  key={tool.name}
-                  className={`rounded-lg border px-3 py-2 ${
-                    dark ? 'border-[#3d3d3d] bg-[#262626]' : 'border-slate-200 bg-white'
-                  }`}
-                >
-                  <p className={`flex items-center gap-1.5 text-xs font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-                    <i className={`${tool.icon} text-sm`} aria-hidden="true" />
-                    {tool.name}
-                  </p>
-                  <p className={`mt-0.5 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
-                    {tool.purpose}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className={`mt-3 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#8a8a8a]' : 'text-slate-500'}`}>
-              {PROJECT_WORKFLOW.toolsNote}
-            </p>
-          </div>
-        </section>
-
       </div>
     </div>
   )

@@ -74,6 +74,11 @@ export const PROJECTS_SECTION = {
     '각 프로젝트는 무엇을 만들었는지보다, 왜 그렇게 만들었는지에 집중합니다.',
 } as const
 
+export const WORK_STYLE_SECTION = {
+  kicker: 'How I Work',
+  title: 'AI 활용과 팀 협업, 두 가지 흐름으로 일합니다',
+} as const
+
 export const PROJECT_WORKFLOW = {
   label: 'AI 활용 방식',
   title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다',
