@@ -103,7 +103,7 @@ export default function Sidebar({
   const scrollTo = (href: string) => {
     const el = document.getElementById(href.replace('#', ''))
     if (!el) return
-    const top = el.getBoundingClientRect().top + window.scrollY - 24
+    const top = el.getBoundingClientRect().top + window.scrollY - 80
     window.scrollTo({ top, behavior: 'smooth' })
   }
 
