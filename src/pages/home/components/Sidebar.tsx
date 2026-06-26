@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
+  { blockId: 'projects', label: '프로젝트 개요', href: '#projects-overview', icon: 'ri-folder-chart-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
   { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
   { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },

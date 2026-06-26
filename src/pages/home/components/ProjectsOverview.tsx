@@ -11,15 +11,8 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
     .find((project) => project?.problemEnvironment)?.problemEnvironment
 
   return (
-    <div className={`projects-overview ${dark ? 'bg-[#242424]' : 'bg-white'} pb-10 md:pb-12`}>
+    <div id="projects-overview" className={`projects-overview ${dark ? 'bg-[#242424]' : 'bg-white'} pb-10 md:pb-12`}>
       <div className="mx-auto max-w-5xl px-6">
-        {/* 헤더 */}
-        <div className={`projects-overview-header mb-5 border-b pb-5 text-center ${dark ? 'border-dashed border-[#3a3a3a]' : 'border-dashed border-blue-200'}`}>
-          <h2 className={`text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
-            프로젝트 <span className="text-[#2563EB]">개요</span>
-          </h2>
-        </div>
-
         {/* 프로젝트 카드 2개 */}
         <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
           {selectedOverviews.map((project) => (
