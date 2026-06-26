@@ -53,7 +53,7 @@ export const ABOUT_CARDS = [
     title: '문제 해결 능력',
     subtitle: '성능 병목을 찾아 수치로 증명',
     description:
-      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6.8s → 0.6s)\nScouter로 SQL 42회 발생 확인 → QueryDSL fetchJoin으로 <span class="font-bold text-[#2563EB]">2회 축소</span>\n읽기 빈번·변경 적은 특성 분석 후 Redis@Cacheable 추가 적용\nnGrinder 동시 1,000명 기준 수치 검증',
+      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6.8s → 0.6s)\nScouter로 SQL 42회 발생 확인 → QueryDSL fetchJoin으로 <span class="font-bold text-[#2563EB]">2회 축소</span>\n읽기 빈번·변경 적은 특성 분석 후 Redis @Cacheable 추가 적용\nnGrinder 동시 1,000명 기준 수치 검증',
   },
   {
     icon: 'ri-node-tree',
