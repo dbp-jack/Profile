@@ -2,16 +2,20 @@
 
 export const HERO_SKILL_GROUPS = [
   {
-    label: 'Core Backend',
-    tags: ['Java', 'Spring', 'JPA', 'QueryDSL'],
+    label: 'Backend',
+    tags: ['Java', 'Spring Boot', 'JPA', 'QueryDSL'],
   },
   {
-    label: 'Data / Infra',
-    tags: ['PostgreSQL', 'Redis', 'GCP'],
+    label: 'Data',
+    tags: ['PostgreSQL', 'Redis'],
   },
   {
-    label: 'Collaboration',
-    tags: ['JIRA'],
+    label: 'Infra',
+    tags: ['GCP', 'Docker', 'GitHub Actions', 'Jenkins'],
+  },
+  {
+    label: 'Testing / Tools',
+    tags: ['nGrinder', 'Scouter', 'JIRA', 'Swagger'],
   },
 ] as const
 
