@@ -99,9 +99,12 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to section id. */
+  /** Smooth-scroll to section id, scrolling a bit further down than flush so more content fits in view. */
   const scrollTo = (href: string) => {
-    document.getElementById(href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' })
+    const el = document.getElementById(href.replace('#', ''))
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY + 60
+    window.scrollTo({ top, behavior: 'smooth' })
   }
 
   return (
