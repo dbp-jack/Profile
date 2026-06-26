@@ -10,13 +10,15 @@ type NavLink = {
   label: string
   href: string
   icon: string
+  /** Extra px to scroll past the section's natural top. `collaboration` aligns to its top border instead. */
+  offset?: number
 }
 
 const BASE_NAV_LINKS: readonly NavLink[] = [
   { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
-  { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
+  { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line', offset: 0 },
   { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
   { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
   { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
@@ -99,11 +101,11 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to section id, scrolling a bit further down than flush so more content fits in view. */
-  const scrollTo = (href: string) => {
+  /** Smooth-scroll to section id, scrolling a bit further down than flush so more content fits in view (unless the link overrides the offset). */
+  const scrollTo = (href: string, offset = 60) => {
     const el = document.getElementById(href.replace('#', ''))
     if (!el) return
-    const top = el.getBoundingClientRect().top + window.scrollY + 60
+    const top = el.getBoundingClientRect().top + window.scrollY + offset
     window.scrollTo({ top, behavior: 'smooth' })
   }
 
@@ -135,7 +137,7 @@ export default function Sidebar({
             return (
               <button
                 key={link.href}
-                onClick={() => scrollTo(link.href)}
+                onClick={() => scrollTo(link.href, link.offset)}
                 aria-label={`${link.label} 섹션으로 이동`}
                 className={`relative flex w-full cursor-pointer items-center gap-3 overflow-hidden whitespace-nowrap rounded-lg px-2 py-2.5 text-left transition-all duration-200 ${
                   isActive
