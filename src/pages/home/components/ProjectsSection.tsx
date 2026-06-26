@@ -44,7 +44,7 @@ export default function ProjectsSection() {
       <CollaborationSection />
 
       {/* 개별 프로젝트 카드 */}
-      <div className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#242424]' : 'bg-white'}`}>
+      <div id="project-details" className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#242424]' : 'bg-white'}`}>
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col gap-6 md:gap-8">
             {selectedProjects.map((project, i) => (

@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
+  { blockId: 'projects', label: 'Case Studies', href: '#project-details', icon: 'ri-folder-2-line' },
   { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
   { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
   { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
