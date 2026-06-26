@@ -54,7 +54,7 @@ export default function Home() {
       <div className="md:hidden">
         <Navbar blockIds={composition.blockIds} />
       </div>
-      <Sidebar blockIds={composition.blockIds} />
+      <Sidebar blockIds={composition.blockIds} projectIds={composition.projectIds} />
       <div className="pt-16 md:pt-0 md:pl-14">
         <PortfolioBody {...composition} />
       </div>

@@ -48,7 +48,9 @@ export default function ProjectsSection() {
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col gap-6 md:gap-8">
             {selectedProjects.map((project, i) => (
-              <ProjectCard key={project.id} project={project} index={i} />
+              <div key={project.id} id={`project-${project.id}`}>
+                <ProjectCard project={project} index={i} />
+              </div>
             ))}
           </div>
         </div>

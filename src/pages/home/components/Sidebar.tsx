@@ -1,38 +1,65 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { HERO_NAME } from '@/content/portfolio'
+import { PROJECT_OVERVIEWS } from '@/content/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId } from '@/portfolio-builder/types'
 
-const NAV_LINKS = [
-  { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
-  { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
-  { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
-  { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
-  { blockId: 'projects', label: 'Deep Dive', href: '#project-details', icon: 'ri-folder-2-line' },
-  { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
-  { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
-  { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
-  { blockId: 'contact', label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
-] as const satisfies readonly {
+type NavLink = {
   blockId: PortfolioBlockId
   label: string
   href: string
   icon: string
-}[]
+}
+
+const BASE_NAV_LINKS: readonly NavLink[] = [
+  { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
+  { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
+  { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
+  { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
+  { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
+  { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
+  { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
+  { blockId: 'contact', label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
+]
 
 type SidebarProps = {
   blockIds?: readonly PortfolioBlockId[]
+  projectIds?: readonly string[]
 }
 
-export default function Sidebar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: SidebarProps) {
+export default function Sidebar({
+  blockIds = DEFAULT_PUBLIC_PRESET.blocks,
+  projectIds = DEFAULT_PUBLIC_PRESET.projectIds,
+}: SidebarProps) {
   const { dark, toggle } = useDarkMode()
   const [hovered, setHovered] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const projectNavLinks = useMemo<NavLink[]>(
+    () =>
+      projectIds
+        .map((projectId) => PROJECT_OVERVIEWS.find((project) => project.id === projectId))
+        .filter((project): project is (typeof PROJECT_OVERVIEWS)[number] => Boolean(project))
+        .map((project) => ({
+          blockId: 'projects',
+          label: project.name,
+          href: `#project-${project.id}`,
+          icon: 'ri-folder-2-line',
+        })),
+    [projectIds],
+  )
+  const navLinks = useMemo<NavLink[]>(() => {
+    const howIWorkIndex = BASE_NAV_LINKS.findIndex((link) => link.href === '#collaboration')
+    return [
+      ...BASE_NAV_LINKS.slice(0, howIWorkIndex + 1),
+      ...projectNavLinks,
+      ...BASE_NAV_LINKS.slice(howIWorkIndex + 1),
+    ]
+  }, [projectNavLinks])
   const visibleNavLinks = useMemo(
-    () => NAV_LINKS.filter((link) => blockIds.includes(link.blockId)),
-    [blockIds],
+    () => navLinks.filter((link) => blockIds.includes(link.blockId)),
+    [navLinks, blockIds],
   )
   const firstVisibleHref = visibleNavLinks[0]?.href ?? '#hero'
 
