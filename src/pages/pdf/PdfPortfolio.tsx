@@ -597,7 +597,7 @@ function CollaborationSlide() {
   const [sprint, slack, guide] = COLLABORATION_SECTION.evidence
 
   return (
-    <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} dense>
+    <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} subtitle={WORK_STYLE_SECTION.subtitle} dense>
       <div style={{ display: 'grid', gridTemplateRows: '1fr 0.82fr auto auto', gap: 9, height: '100%', minHeight: 0 }}>
         <div>
           <SectionLabel>{COLLABORATION_SECTION.kicker}</SectionLabel>

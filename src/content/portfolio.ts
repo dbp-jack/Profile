@@ -81,6 +81,7 @@ export const PROJECTS_SECTION = {
 export const WORK_STYLE_SECTION = {
   kicker: 'How I Work',
   title: '팀 협업과 AI 활용을 더해 일합니다',
+  subtitle: '결과를 만드는 과정에서 팀과 어떻게 맞추고, AI를 어디까지 활용하는지를 담았습니다.',
 } as const
 
 export const PROJECT_WORKFLOW = {

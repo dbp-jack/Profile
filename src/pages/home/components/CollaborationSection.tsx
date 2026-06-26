@@ -23,6 +23,9 @@ export default function CollaborationSection() {
           >
             {WORK_STYLE_SECTION.title}
           </h3>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+            {WORK_STYLE_SECTION.subtitle}
+          </p>
         </div>
 
         {/* 팀 협업 프로세스 */}
