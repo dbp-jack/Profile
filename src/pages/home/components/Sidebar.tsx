@@ -99,9 +99,12 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to section id; not wrapped in `useCallback` (unlike `handleScroll`). */
+  /** Smooth-scroll to section id, leaving a small gap above so the heading isn't flush against the viewport edge. */
   const scrollTo = (href: string) => {
-    document.getElementById(href.replace('#', ''))?.scrollIntoView({ behavior: 'smooth' })
+    const el = document.getElementById(href.replace('#', ''))
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - 24
+    window.scrollTo({ top, behavior: 'smooth' })
   }
 
   return (
