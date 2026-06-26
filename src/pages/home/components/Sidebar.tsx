@@ -20,7 +20,7 @@ const BASE_NAV_LINKS: readonly NavLink[] = [
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line', offset: 0 },
   { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line', offset: 0 },
-  { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
+  { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line', offset: 0 },
   { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
   { blockId: 'contact', label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
 ]
