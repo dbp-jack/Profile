@@ -41,6 +41,8 @@ export default function ProjectsSection() {
       {/* 프로젝트 개요 */}
       <ProjectsOverview projectIds={projectIds} />
 
+      <CollaborationSection />
+
       {/* 개별 프로젝트 카드 */}
       <div id="project-details" className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#242424]' : 'bg-white'}`}>
         <div className="mx-auto max-w-5xl px-6">
@@ -51,8 +53,6 @@ export default function ProjectsSection() {
           </div>
         </div>
       </div>
-
-      <CollaborationSection />
     </section>
   )
 }
