@@ -26,11 +26,11 @@ export default function CollaborationSection() {
         </div>
 
         {/* 팀 협업 프로세스 */}
-        <div className="border-b pt-6 pb-6">
-          <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+        <div className="border-b pb-6">
+          <p className={`text-base font-extrabold uppercase tracking-wide ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
             {COLLABORATION_SECTION.kicker}
           </p>
-          <h4 className={`mt-2 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
+          <h4 className={`mt-1.5 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
             {COLLABORATION_SECTION.title}
           </h4>
           <p className={`mt-3 max-w-4xl text-sm leading-7 ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
@@ -80,10 +80,10 @@ export default function CollaborationSection() {
 
         {/* AI 활용 방식 */}
         <div className="pt-6">
-          <p className={`text-xs font-bold uppercase tracking-[0.14em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+          <p className={`text-base font-extrabold uppercase tracking-wide ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
             {PROJECT_WORKFLOW.label}
           </p>
-          <h4 className={`mt-2 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
+          <h4 className={`mt-1.5 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
             {PROJECT_WORKFLOW.title}
           </h4>
           <p className={`mt-3 max-w-4xl text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
