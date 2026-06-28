@@ -125,7 +125,7 @@ export const PROJECT_WORKFLOW = {
     },
   ],
   toolsNote:
-    '프롬프트는 제한을 둔 버전과 제한을 두지 않은 버전을 비교하면서 작성합니다.\n현재 Claude Code는 플러그인으로 토큰 사용을 절약하고, OpenRouter API를 MCP 에이전트로 연결해 활용하고 있습니다.',
+    '프롬프트는 제한을 둔 버전과 제한을 두지 않은 버전을 상황에 맞게 활용합니다.\n현재 Claude Code는 플러그인으로 토큰 사용을 절약하고, OpenRouter API를 MCP 에이전트로 연결해 활용하고 있습니다.',
 } as const
 
 export const COLLABORATION_SECTION = {
