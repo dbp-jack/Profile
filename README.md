@@ -1,73 +1,30 @@
-# React + TypeScript + Vite
+# Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React, TypeScript, Vite 기반의 웹 포트폴리오입니다.
 
-Currently, two official plugins are available:
+## 구조
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `src/pages/home/page.tsx` — 공개 웹 포트폴리오 진입점
+- `src/content/projects/` — 프로젝트별 공개 콘텐츠
+- `src/content/portfolio.ts` — 공통 소개, 경험, 연락처 문구
+- `src/pages/pdf/` — PDF 미리보기 전용 화면
+- `src/portfolio-builder/` — 공개 URL 조합, 블록/프리셋, 문구 프로필
 
-## React Compiler
+## 로컬 관리 페이지
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`/manage`는 로컬에서만 쓰는 내부 도구입니다.
 
-## Expanding the ESLint configuration
+- `src/pages/manage/`는 `.gitignore`에 등록되어 공개 저장소에 올리지 않습니다.
+- 개발 서버가 `localhost`, `127.0.0.1`, `::1`에서 실행될 때만 라우트가 생성됩니다.
+- production build는 관리 페이지 소스가 번들에 섞이면 실패합니다.
+- 생성되는 링크는 공개 블록/프로젝트/문구 조합만 담습니다.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 명령어
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev -- --host 127.0.0.1 --port 5173
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+GitHub Pages 배포는 `.github/workflows/deploy.yml`에서 `main` 브랜치 push 기준으로 실행됩니다.
