@@ -18,6 +18,16 @@ const DEFAULT_SCROLL_OFFSET = 0
 const ACTIVE_SECTION_THRESHOLD = 1
 const SIDEBAR_PEEK_MS = 2600
 
+const getAnchorPageTop = (el: HTMLElement) => {
+  let top = 0
+  let node: HTMLElement | null = el
+  while (node) {
+    top += node.offsetTop
+    node = node.offsetParent as HTMLElement | null
+  }
+  return top
+}
+
 const BASE_NAV_LINKS: readonly NavLink[] = [
   { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
@@ -77,7 +87,7 @@ export default function Sidebar({
     let current = sectionIds[0] ?? 'hero'
     for (const sectionId of sectionIds) {
       const el = document.getElementById(sectionId)
-      if (el && el.getBoundingClientRect().top <= ACTIVE_SECTION_THRESHOLD) {
+      if (el && getAnchorPageTop(el) - window.scrollY <= ACTIVE_SECTION_THRESHOLD) {
         current = sectionId
       }
     }
@@ -140,7 +150,7 @@ export default function Sidebar({
     const sectionId = href.replace('#', '')
     const el = document.getElementById(sectionId)
     if (!el) return
-    const top = el.getBoundingClientRect().top + window.scrollY - offset
+    const top = getAnchorPageTop(el) - offset
     setActiveSection(sectionId)
     window.scrollTo({ top, behavior: 'smooth' })
   }
@@ -155,18 +165,17 @@ export default function Sidebar({
       <button
         type="button"
         onClick={handleMouseEnter}
-        aria-label="사이드바 탐색 메뉴 열기"
-        className={`fixed left-3 top-24 z-50 hidden items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-extrabold shadow-lg transition-all duration-300 md:inline-flex ${
+        aria-label="포트폴리오 목차 열기"
+        className={`fixed left-[4.75rem] top-4 z-50 hidden items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-extrabold shadow-lg transition-all duration-300 md:inline-flex ${
           expanded
-            ? 'pointer-events-none -translate-x-3 opacity-0'
+            ? 'pointer-events-none -translate-x-2 opacity-0'
             : dark
               ? 'border-[#475569] bg-[#1e293b] text-[#dbeafe] shadow-black/25 hover:border-[#8fb5ff] hover:text-white'
               : 'border-[#bfdbfe] bg-white text-[#1E3A5F] shadow-blue-900/10 hover:border-[#2563EB] hover:text-[#2563EB]'
         }`}
       >
-        <i className="ri-menu-2-line text-base" aria-hidden />
-        탐색
-        <i className="ri-arrow-right-s-line text-base" aria-hidden />
+        포트폴리오 목차
+        <i className="ri-arrow-left-s-line text-base" aria-hidden />
       </button>
       <aside
         className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out md:flex ${expanded ? 'w-56 shadow-2xl' : 'w-16 shadow-[8px_0_24px_rgba(30,58,95,0.08)]'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-blue-100 bg-white'}`}
