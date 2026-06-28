@@ -174,8 +174,8 @@ export default function Sidebar({
               : 'border-[#bfdbfe] bg-white text-[#1E3A5F] shadow-blue-900/10 hover:border-[#2563EB] hover:text-[#2563EB]'
         }`}
       >
-        포트폴리오 목차
         <i className="ri-arrow-left-s-line text-base" aria-hidden />
+        포트폴리오 목차
       </button>
       <aside
         className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out md:flex ${expanded ? 'w-56 shadow-2xl' : 'w-16 shadow-[8px_0_24px_rgba(30,58,95,0.08)]'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-blue-100 bg-white'}`}
