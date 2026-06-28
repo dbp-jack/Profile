@@ -10,11 +10,12 @@ type NavLink = {
   label: string
   href: string
   icon: string
-  /** Fixed-header clearance when scrolling to this section. */
+  /** Optional scroll adjustment for anchors that should not land on their exact section boundary. */
   offset?: number
 }
 
-const DEFAULT_SCROLL_CLEARANCE = 88
+const DEFAULT_SCROLL_OFFSET = 0
+const ACTIVE_SECTION_THRESHOLD = 1
 const SIDEBAR_PEEK_MS = 2600
 
 const BASE_NAV_LINKS: readonly NavLink[] = [
@@ -76,7 +77,7 @@ export default function Sidebar({
     let current = sectionIds[0] ?? 'hero'
     for (const sectionId of sectionIds) {
       const el = document.getElementById(sectionId)
-      if (el && el.getBoundingClientRect().top <= DEFAULT_SCROLL_CLEARANCE + 16) {
+      if (el && el.getBoundingClientRect().top <= ACTIVE_SECTION_THRESHOLD) {
         current = sectionId
       }
     }
@@ -85,8 +86,9 @@ export default function Sidebar({
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    const initialScrollFrame = window.requestAnimationFrame(handleScroll)
     return () => {
+      window.cancelAnimationFrame(initialScrollFrame)
       window.removeEventListener('scroll', handleScroll)
       if (leaveTimer.current) {
         clearTimeout(leaveTimer.current)
@@ -133,8 +135,8 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to section id with enough clearance for the fixed top nav. */
-  const scrollTo = (href: string, offset = DEFAULT_SCROLL_CLEARANCE) => {
+  /** Smooth-scroll to the section boundary so the color/section break lands exactly at the viewport top. */
+  const scrollTo = (href: string, offset = DEFAULT_SCROLL_OFFSET) => {
     const sectionId = href.replace('#', '')
     const el = document.getElementById(sectionId)
     if (!el) return
@@ -165,27 +167,6 @@ export default function Sidebar({
         <i className="ri-menu-2-line text-base" aria-hidden />
         탐색
         <i className="ri-arrow-right-s-line text-base" aria-hidden />
-      </button>
-      <button
-        type="button"
-        onClick={handleMouseEnter}
-        aria-label="목차 바로 보기"
-        className={`fixed left-[4.75rem] top-[8.5rem] z-50 hidden items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-extrabold shadow-xl transition-all duration-300 md:inline-flex ${
-          expanded
-            ? 'pointer-events-none -translate-x-2 opacity-0'
-            : dark
-              ? 'border-[#475569] bg-[#111827]/95 text-[#dbeafe] shadow-black/25 hover:border-[#8fb5ff] hover:text-white'
-              : 'border-[#bfdbfe] bg-white/95 text-[#1E3A5F] shadow-blue-900/10 hover:border-[#2563EB] hover:text-[#2563EB]'
-        }`}
-      >
-        <span
-          className={`absolute -left-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-b border-l ${
-            dark ? 'border-[#475569] bg-[#111827]' : 'border-[#bfdbfe] bg-white'
-          }`}
-          aria-hidden
-        />
-        <i className="ri-list-check-2 text-base" aria-hidden />
-        목차 바로 보기
       </button>
       <aside
         className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out md:flex ${expanded ? 'w-56 shadow-2xl' : 'w-16 shadow-[8px_0_24px_rgba(30,58,95,0.08)]'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-blue-100 bg-white'}`}
