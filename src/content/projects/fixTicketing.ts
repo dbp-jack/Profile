@@ -7,6 +7,11 @@ export const fixTicketingProject: ProjectData = {
   teamSize: '4명 / 팀 프로젝트',
   description:
     '경기 조회부터 좌석 예약·주문·결제·알림까지 연결한 MSA 기반 야구 티켓팅 플랫폼',
+  summary: {
+    problem: '주문과 결제를 동기 호출로 묶으면 결제 지연·실패가 주문 요청과 상태 정합성에 직접 전파됩니다.',
+    action: 'Kafka 이벤트로 주문·결제 계약을 분리하고 성공·실패·취소 이벤트와 보상 흐름을 구현했습니다.',
+    result: '주문 상태 전이 책임을 이벤트 타입으로 명확히 하고, 결제 실패·취소 시 주문 취소 흐름까지 연결했습니다.',
+  },
   serviceOverview:
     '경기와 좌석을 조회하고 티켓을 예약한 뒤 주문·결제까지 이어지는 <span class="font-bold">야구 티켓팅 플랫폼</span>입니다.\n주문과 결제를 서로 다른 서비스로 분리한 환경에서, 한 서비스의 실패가 동기 호출 체인을 따라 확산되지 않도록 Kafka 이벤트 기반 처리 흐름을 구현했습니다.',
   developerPerspective:

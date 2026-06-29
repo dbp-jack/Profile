@@ -13,6 +13,12 @@ export interface ProjectData {
   contribution?: string
   /** 마지막 `\n\n` 블록에 `→`가 있으면 사용자 여정으로 파싱합니다. */
   description: string
+  /** 채용자가 프로젝트 상세를 빠르게 훑을 수 있는 3줄 요약. */
+  summary?: {
+    problem: string
+    action: string
+    result: string
+  }
   /** 기획·배경 카드 본문 (선택). */
   planningBackground?: string
   /** 구현 목표 카드 본문 (선택). */

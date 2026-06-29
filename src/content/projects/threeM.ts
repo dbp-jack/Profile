@@ -8,6 +8,11 @@ export const threeMProject: ProjectData = {
     contribution: '기여도 약 35%',
     description:
       '지역 허브 기반 주문·배송과 인증 경로를 안정적으로 연결하는 B2B 물류 관리 시스템',
+    summary: {
+      problem: 'Auth/User 책임 혼재와 요청별 User 조회 대안은 배포 영향과 장애 전파 비용을 키울 수 있었습니다.',
+      action: 'Auth·User를 분리하고 Gateway JWT 검증·X-User-* 헤더·AOP 권한 체크로 인증 흐름을 정리했습니다.',
+      result: 'UserService→Auth 결합도 0건, 순환 의존 없음, MASTER/HUB_MANAGER/미인증 권한 응답을 통합 테스트로 검증했습니다.',
+    },
     architectureImage: '/m3_infra.png',
     architectureOwnershipLabel: '전체 아키텍처 직접 구성',
     architectureDetails: [
