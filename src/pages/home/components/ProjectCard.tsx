@@ -544,46 +544,6 @@ export default function ProjectCard({ project, index }: Props) {
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
 
-      {project.summary ? (
-        <div
-          className={`mb-4 rounded-xl border p-3.5 md:mb-5 md:p-4 ${
-            dark ? 'border-[#3d3d45] bg-[#282c34]' : 'border-blue-100 bg-[#F8FAFF]'
-          }`}
-        >
-          <p
-            className={`mb-3 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
-          >
-            핵심 요약
-          </p>
-          <div className="grid gap-3 md:grid-cols-3">
-            {[
-              ['문제', project.summary.problem],
-              ['내가 한 일', project.summary.action],
-              ['결과', project.summary.result],
-            ].map(([label, text]) => (
-              <div
-                key={label}
-                className={`rounded-lg border px-3 py-3 ${
-                  dark ? 'border-[#3b414d] bg-[#2e333d]' : 'border-slate-200 bg-white'
-                }`}
-              >
-                <p className={`text-xs font-extrabold ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
-                  {label}
-                </p>
-                <p
-                  lang="ko"
-                  className={`mt-1.5 break-keep text-sm font-medium leading-relaxed md:text-[0.95rem] ${
-                    dark ? 'text-slate-200' : 'text-slate-700'
-                  }`}
-                >
-                  {text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <div
         className={`pdf-project-tech mb-4 rounded-xl border p-3.5 sm:p-4 md:mb-5 ${
           dark

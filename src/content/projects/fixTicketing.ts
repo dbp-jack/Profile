@@ -46,7 +46,7 @@ export const fixTicketingProject: ProjectData = {
   projectReflection: {
     title: '이벤트 기반 전환은 실패 경로를 먼저 설계해야 했습니다',
     body:
-      '정상 결제 이벤트만 비동기로 바꾸는 것으로는 주문과 결제의 상태를 맞출 수 없었습니다. 결제 실패·취소를 별도 이벤트로 구분하고 주문이 이를 소비해 취소 상태로 전환하도록 만들면서, 이벤트 설계의 핵심은 성공 흐름보다 실패 이후의 책임과 상태 전이를 명확히 하는 데 있다는 점을 배웠습니다.',
+      'Kafka 이벤트로 주문·결제 계약을 분리하면서 주문 요청이 결제 처리 지연을 직접 기다리지 않는 경계를 만들었습니다. 하지만 정상 결제 이벤트만 비동기로 바꾸는 것으로는 주문과 결제의 상태를 맞출 수 없었습니다.<br/>결제 실패·취소를 별도 이벤트로 구분하고 주문이 이를 소비해 취소 상태로 전환하도록 만들면서, 이벤트 설계의 핵심은 성공 흐름보다 실패 이후의 책임과 상태 전이를 명확히 하는 데 있다는 점을 배웠습니다.',
   },
   githubUrl: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT',
   wikiUrl: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT/wiki',
