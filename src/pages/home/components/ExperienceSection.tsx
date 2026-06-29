@@ -64,10 +64,10 @@ export default function ExperienceSection() {
                     dark ? 'border-[#3c3c46] bg-[#2d2d35]' : 'border-slate-200 bg-slate-50'
                   }`}
                 >
-                  <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <p className={`text-sm font-semibold tracking-wide md:text-base ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.period}</p>
                     <span
-                      className={`inline-flex w-fit rounded-md px-2 py-0.5 text-[0.6875rem] font-bold ${dark ? style.dark : style.light}`}
+                      className={`inline-flex w-fit items-center rounded-lg px-3 py-1 text-sm font-extrabold tracking-wide shadow-sm ring-1 ring-inset md:px-3.5 md:py-1.5 md:text-base ${dark ? `${style.dark} ring-white/10` : `${style.light} ring-black/5`}`}
                     >
                       {item.category}
                     </span>

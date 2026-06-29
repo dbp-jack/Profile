@@ -59,9 +59,9 @@ export default function Sidebar({
       projectIds
         .map((projectId) => PROJECT_OVERVIEWS.find((project) => project.id === projectId))
         .filter((project): project is (typeof PROJECT_OVERVIEWS)[number] => Boolean(project))
-        .map((project) => ({
+        .map((project, index) => ({
           blockId: 'projects',
-          label: project.name,
+          label: `Project${index + 1}`,
           href: `#project-${project.id}`,
           icon: 'ri-folder-2-line',
         })),
