@@ -26,7 +26,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
         {/* 프로젝트 개요 카드 */}
         <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
           {selectedProjects.map(({ overview: project, detail }) => {
-            const summary = detail?.summary
+            const overviewSummary = detail?.overviewSummary
 
             return (
               <div
@@ -71,7 +71,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                   ))}
                 </div>
 
-                {summary ? (
+                {overviewSummary ? (
                   <div className={`mb-3 border-t pt-3 ${dark ? 'border-[#3a3a3a]' : 'border-slate-200'}`}>
                     <div className="mb-2 flex items-center gap-2">
                       <i className={`ri-file-text-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
@@ -79,9 +79,9 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                     </div>
                     <div className="space-y-1.5">
                       {[
-                        ['문제', summary.problem],
-                        ['해결', summary.action],
-                        ['결과', summary.result],
+                        ['소개', overviewSummary.intro],
+                        ['성과', overviewSummary.achievement],
+                        ['회고', overviewSummary.reflection],
                       ].map(([label, text]) => (
                         <p
                           key={label}

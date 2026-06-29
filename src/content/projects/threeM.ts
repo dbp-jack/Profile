@@ -13,6 +13,11 @@ export const threeMProject: ProjectData = {
       action: 'Auth·User를 분리하고 Gateway JWT 검증·X-User-* 헤더·AOP 권한 체크로 인증 흐름을 정리했습니다.',
       result: 'UserService→Auth 결합도 0건, 순환 의존 없음, MASTER/HUB_MANAGER/미인증 권한 응답을 통합 테스트로 검증했습니다.',
     },
+    overviewSummary: {
+      intro: '업체·허브·배송 담당자가 함께 쓰는 B2B 물류 시스템에서 Auth·User·Gateway 인증 경계를 맡았습니다.',
+      achievement: 'UserService→Auth 결합도 0건, 순환 의존 없음, MASTER/HUB_MANAGER/미인증 권한 응답을 통합 테스트로 확인했습니다.',
+      reflection: '결합도를 낮춘 뒤에도 Gateway부터 서비스 응답까지 권한 경로 전체를 검증해야 한다는 회고로 이어졌습니다.',
+    },
     architectureImage: '/m3_infra.png',
     architectureOwnershipLabel: '전체 아키텍처 직접 구성',
     architectureDetails: [

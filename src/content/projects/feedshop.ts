@@ -13,6 +13,11 @@ export const feedShopProject: ProjectData = {
       action: 'QueryDSL fetchJoin·Redis 캐시·DB 유니크 제약·Redis INCR로 조회와 정합성 레이어를 분리했습니다.',
       result: '동시 1,000명 응답시간 6,818ms → 638ms(-91%), SQL 42회 → 0회, 동시 3,000명 중복 투표 0건을 확인했습니다.',
     },
+    overviewSummary: {
+      intro: '피드 공유·투표·이벤트 참여로 구매 이후 재방문까지 설계한 커뮤니티형 패션 커머스입니다.',
+      achievement: '이벤트 목록 조회를 6,818ms → 638ms로 줄이고, 동시 3,000명 투표에서도 중복 저장 0건을 확인했습니다.',
+      reflection: '기술 선택보다 먼저 병목 레이어와 검증 지표를 정해야 한다는 기준으로 이어졌습니다.',
+    },
     architectureImage: '/image-1780417036070.png',
     architectureDetails: [
       {
