@@ -38,10 +38,10 @@ export default function ProjectsSection() {
         </div>
       </div>
 
+      <CollaborationSection />
+
       {/* 프로젝트 개요 */}
       <ProjectsOverview projectIds={projectIds} />
-
-      <CollaborationSection />
 
       {/* 개별 프로젝트 카드 */}
       <div id="project-details" className={`project-detail-list py-12 md:py-16 ${dark ? 'bg-[#242424]' : 'bg-white'}`}>
