@@ -89,7 +89,7 @@ export const threeMProject: ProjectData = {
     projectReflection: {
       title: '결합도를 낮춘 뒤에도 권한 경로는 끝까지 검증해야 했습니다',
       body:
-        'Auth·User를 분리하고 Gateway에서 JWT를 검증하도록 정리해 UserService → Auth 결합도 0건과 순환 의존 없음까지 확인했습니다.<br/>다만 허브 관리자 권한을 Gateway에서 일관되게 판단하도록 설계했음에도, 인증 제외 경로가 <span class="font-mono font-semibold">/api/v1/users</span> 전체를 포함하고 User 서비스에는 <span class="font-mono font-semibold">@RequiresMasterRole</span>을 처리하는 AOP가 없어 권한 검증이 우회될 수 있었습니다.<br/>통합 테스트로 이를 확인해 제외 경로를 축소하고 <span class="font-mono font-semibold">X-User-*</span> 전달과 AOP·예외 처리를 보강해<br/><strong>MASTER 200·HUB_MANAGER 403·미인증 401</strong>을 검증했습니다.<br/>그 결과 권한 설계는 JWT 발급만으로 끝나지 않고, Gateway 필터부터 서비스 권한 판단과 HTTP 응답까지 전체 경로로 검증해야 한다는 기준을 얻었습니다.',
+        'Auth·User·Gateway를 분리해 결합도는 낮췄지만, 권한은 설계가 아니라 실제 요청 경로에서 검증돼야 한다는 점을 확인했습니다.<br/>이후에는 Gateway 필터, 서비스 AOP, HTTP 응답까지 하나의 인증 흐름으로 보고 테스트하게 됐습니다.',
       sourceUrl:
         'https://github.com/sparta-i4u/sparta-msa/wiki/%5BTest-Report%5D%5B%EB%AF%BC%EC%88%98%E2%80%90User,-Auth,-Gateway-%EB%8F%84%EB%A9%94%EC%9D%B8%5D-%ED%86%B5%ED%95%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC-%EB%B3%B4%EA%B3%A0%EC%84%9C',
     },

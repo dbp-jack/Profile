@@ -94,7 +94,7 @@ export const feedShopProject: ProjectData = {
     projectReflection: {
       title: '문제 레이어와 검증 지표를 먼저 정하게 됐습니다',
       body:
-        '재방문 진입점인 이벤트 목록은 처음엔 전체 조회·메모리 필터링으로 처리했지만, N+1 확인 후 fetchJoin과 Redis를 적용해 동시 1,000명 응답시간을 <strong>6,818ms → 638ms(-91%)</strong>로 줄였습니다.<br/>투표가 집중되는 상황에서는 코드 중복 검사만 뒀다가 TOCTOU를 확인해 DB 유니크 제약과 Redis INCR로 변경했고, 동시 3,000명까지 <strong>중복 투표 0건·DB count = Redis count</strong>를 확인했습니다.<br/>이후에는 기술부터 고르지 않고, 문제가 발생한 레이어와 검증할 지표를 먼저 정한 뒤 개선하게 됐습니다.',
+        '성능 병목과 동시성 문제를 각각 쿼리·캐시·정합성 레이어로 나누고, 개선 전후를 수치로 확인했습니다.<br/>이후에는 기술부터 고르기보다 문제가 생긴 레이어와 검증 지표를 먼저 정한 뒤 개선하게 됐습니다.',
       sourceUrl:
         'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0-%EC%9E%91%EC%97%85',
     },
