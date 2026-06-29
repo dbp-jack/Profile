@@ -1,8 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
   <title>Backend Developer Portfolio</title>
-  <rect width="48" height="48" rx="12" fill="#0F172A"/>
-  <path d="M0 36C12 30 24 38 48 28V48H0V36Z" fill="#2563EB"/>
-  <path d="M20 15L11 24L20 33" stroke="#F8FAFC" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M28 15L37 24L28 33" stroke="#F8FAFC" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M27 13L21 35" stroke="#93C5FD" stroke-width="4.8" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="backend-chip-gradient" x1="8" y1="6" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="12" fill="#0B1220"/>
+  <rect x="7" y="7" width="34" height="34" rx="10" fill="url(#backend-chip-gradient)"/>
+  <rect x="16" y="14" width="17" height="20" rx="3" fill="none" stroke="#F8FAFC" stroke-width="3.6" stroke-linejoin="round"/>
+  <path d="M20 20H29M20 27H29" stroke="#DBEAFE" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M15.5 18H12.5M15.5 30H12.5M33.5 18H36.5M33.5 30H36.5" stroke="#F8FAFC" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="15.5" cy="18" r="2.4" fill="#F8FAFC"/>
+  <circle cx="15.5" cy="30" r="2.4" fill="#F8FAFC"/>
+  <circle cx="33.5" cy="18" r="2.4" fill="#F8FAFC"/>
+  <circle cx="33.5" cy="30" r="2.4" fill="#F8FAFC"/>
 </svg>
