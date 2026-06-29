@@ -92,9 +92,9 @@ export const feedShopProject: ProjectData = {
       },
     ],
     projectReflection: {
-      title: '응답 속도와 정합성을 함께 보장해야 했습니다',
+      title: '재방문 흐름은 속도와 정합성이 함께 살아야 했습니다',
       body:
-        '이벤트 목록 조회는 QueryDSL fetchJoin과 Redis 캐시로 쿼리 병목과 반복 조회 비용을 분리해, 동시 1,000명 기준 응답시간을 <strong>6,818ms → 638ms</strong>로 줄였습니다.<br/>피드 투표는 DB 유니크 제약과 Redis INCR로 중복 저장과 카운터 갱신을 나눠, 동시 3,000명에서도 중복 투표 없이 정합성을 유지했습니다.<br/>이 과정에서 성능 개선은 빠른 응답만 만드는 일이 아니라, 데이터 증가와 동시 요청에도 같은 결과를 보장하는 구조를 만드는 일이라고 느꼈습니다.',
+        '구매 → 참여 → 보상 → 재방문 흐름에서 이벤트 목록은 다시 들어오는 유입 지점이고, 인기 피드 투표는 요청이 한꺼번에 몰리는 구간이라 느린 조회와 중복 투표가 곧 신뢰 문제로 이어진다고 봤습니다.<br/>이벤트 조회는 QueryDSL fetchJoin과 Redis 캐시로 반복 조회 비용을 줄여 동시 1,000명 응답시간을 <strong>6,818ms → 638ms</strong>로 낮췄고, 투표는 DB 유니크 제약과 Redis INCR로 동시 3,000명에서도 중복 없이 처리했습니다.<br/>이 경험으로 성능 개선은 단순히 빠르게 만드는 일이 아니라, 사용자가 몰리는 순간에도 서비스 흐름과 데이터 정합성이 같이 유지되게 만드는 일이라고 느꼈습니다.',
       sourceUrl:
         'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0-%EC%9E%91%EC%97%85',
     },
