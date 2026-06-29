@@ -92,9 +92,9 @@ export const feedShopProject: ProjectData = {
       },
     ],
     projectReflection: {
-      title: '문제 레이어와 검증 지표를 먼저 정하게 됐습니다',
+      title: '응답 속도와 정합성을 함께 보장해야 했습니다',
       body:
-        '성능 병목과 동시성 문제를 각각 쿼리·캐시·정합성 레이어로 나누고, 개선 전후를 수치로 확인했습니다.<br/>이후에는 기술부터 고르기보다 문제가 생긴 레이어와 검증 지표를 먼저 정한 뒤 개선하게 됐습니다.',
+        '이벤트 목록 조회는 QueryDSL fetchJoin과 Redis 캐시로 쿼리 병목과 반복 조회 비용을 분리해, 동시 1,000명 기준 응답시간을 <strong>6,818ms → 638ms</strong>로 줄였습니다.<br/>피드 투표는 DB 유니크 제약과 Redis INCR로 중복 저장과 카운터 갱신을 나눠, 동시 3,000명에서도 중복 투표 없이 정합성을 유지했습니다.<br/>이 과정에서 성능 개선은 빠른 응답만 만드는 일이 아니라, 데이터 증가와 동시 요청에도 같은 결과를 보장하는 구조를 만드는 일이라고 느꼈습니다.',
       sourceUrl:
         'https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0-%EC%9E%91%EC%97%85',
     },

@@ -51,7 +51,7 @@ export const fixTicketingProject: ProjectData = {
   projectReflection: {
     title: '이벤트 기반 전환은 실패 경로를 먼저 설계해야 했습니다',
     body:
-      '주문·결제를 이벤트로 분리하면서 동기 장애 전파는 줄였지만, 상태 정합성은 실패·취소 흐름을 함께 설계해야 맞출 수 있었습니다.<br/>이후 이벤트를 설계할 때 성공 이벤트보다 실패 이후의 책임과 상태 전이를 먼저 정의하게 됐습니다.',
+      '주문·결제를 Kafka 이벤트로 분리해 주문 요청이 결제 처리 지연을 직접 기다리지 않게 하고, 결제 성공·실패·취소를 명시적인 이벤트 타입으로 나눴습니다.<br/>그 결과 서비스 간 동기 장애 전파를 줄이면서도, 결제 실패·취소 시 주문 취소로 이어지는 보상 흐름까지 연결할 수 있었습니다.<br/>이 과정에서 이벤트 설계는 비동기 전환 자체보다 실패 이후의 책임과 상태 전이를 먼저 정하는 일이 중요하다고 느꼈습니다.',
   },
   githubUrl: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT',
   wikiUrl: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT/wiki',

@@ -89,7 +89,7 @@ export const threeMProject: ProjectData = {
     projectReflection: {
       title: '결합도를 낮춘 뒤에도 권한 경로는 끝까지 검증해야 했습니다',
       body:
-        'Auth·User·Gateway를 분리해 결합도는 낮췄지만, 권한은 설계가 아니라 실제 요청 경로에서 검증돼야 한다는 점을 확인했습니다.<br/>이후에는 Gateway 필터, 서비스 AOP, HTTP 응답까지 하나의 인증 흐름으로 보고 테스트하게 됐습니다.',
+        'Auth·User를 분리하고 Gateway에서 JWT를 검증하도록 정리해, UserService→Auth 결합도 0건과 순환 의존 없음까지 확인했습니다.<br/>권한 정보는 X-User-* 헤더와 AOP로 전달·검증해, MASTER 200·HUB_MANAGER 403·미인증 401 응답을 통합 테스트로 보장했습니다.<br/>이 과정에서 권한 설계는 선언보다 요청 경로의 일관성이 중요하다고 느꼈고, 이후 Gateway 필터부터 서비스 AOP와 응답 코드까지 함께 검증하게 됐습니다.',
       sourceUrl:
         'https://github.com/sparta-i4u/sparta-msa/wiki/%5BTest-Report%5D%5B%EB%AF%BC%EC%88%98%E2%80%90User,-Auth,-Gateway-%EB%8F%84%EB%A9%94%EC%9D%B8%5D-%ED%86%B5%ED%95%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC-%EB%B3%B4%EA%B3%A0%EC%84%9C',
     },
