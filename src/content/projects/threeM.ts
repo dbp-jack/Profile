@@ -87,9 +87,9 @@ export const threeMProject: ProjectData = {
     result:
           '<ul class="space-y-2 list-none pl-0"><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span>UserService → Auth 도메인 <span class="font-semibold text-emerald-600 dark:text-emerald-400">결합도(CBO) 0건</span> — 인증 정책 변경 시 User 모듈 배포 영향 제거</span></li><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span>Auth → User 의존은 Feign 호출용 DTO 중심의 단방향 참조로 제한 — <span class="font-semibold text-emerald-600 dark:text-emerald-400">순환 의존 없음</span></span></li><li class="flex gap-2"><span class="mt-1 text-slate-400">•</span><span>인증 정책·사용자 정책 변경 범위를 각 모듈로 수렴, 한 도메인 수정이 다른 도메인 배포로 이어지지 않는 구조 확보</span></li></ul><p class="mt-3 text-xs text-slate-500 dark:text-slate-400">※ CBO: 소스 코드 import 정적 분석으로 측정 — 실제 코드에서 참조된 외부 클래스 수 기준</p>',
     projectReflection: {
-      title: '인증은 토큰보다 요청 흐름 전체의 문제',
+      title: '요청 흐름 전체로 바라본 인증',
       body:
-        '업체·허브·배송 담당자가 함께 쓰는 물류 시스템에서는 권한이 한 곳만 새어도 주문·배송 흐름 전체가 흔들릴 수 있었다.<br/>그래서 Auth·User 책임을 나누고 Gateway에서 JWT 검증, X-User-* 헤더 전달, AOP 권한 체크를 이어 붙여 UserService→Auth 결합도 0건과 MASTER/HUB_MANAGER/미인증 응답 검증까지 확인했다.<br/>이 경험 이후 인증을 로그인 기능 하나로 보지 않고, 어떤 서비스로 요청이 흘러가도 같은 권한 판단과 응답이 유지되는 흐름으로 보게 됐다.',
+        '업체·허브·배송 담당자가 함께 사용하는 물류 시스템에서는 권한 판단이 한 지점에서만 흔들려도 주문·배송 흐름 전체의 안정성이 떨어질 수 있었습니다.<br/>따라서 Auth와 User의 책임을 분리하고, Gateway의 JWT 검증, X-User-* 헤더 전달, AOP 권한 체크를 연결해 UserService→Auth 결합도 0건과 MASTER/HUB_MANAGER/미인증 응답 검증까지 확인했습니다.<br/>이 경험을 통해 인증은 로그인 기능 하나가 아니라, 어떤 서비스로 요청이 흘러가더라도 동일한 권한 판단과 응답이 유지되도록 설계해야 하는 흐름이라는 관점을 갖게 되었습니다.',
       sourceUrl:
         'https://github.com/sparta-i4u/sparta-msa/wiki/%5BTest-Report%5D%5B%EB%AF%BC%EC%88%98%E2%80%90User,-Auth,-Gateway-%EB%8F%84%EB%A9%94%EC%9D%B8%5D-%ED%86%B5%ED%95%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC-%EB%B3%B4%EA%B3%A0%EC%84%9C',
     },
