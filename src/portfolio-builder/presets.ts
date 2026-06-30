@@ -7,6 +7,10 @@ import {
 import { DEFAULT_PROJECT_IDS, normalizeProjectIds } from '@/content/projects'
 import { DEFAULT_COPY_PROFILE, getCopyProfile } from './copy-profiles'
 
+type CompanyPortfolioPreset = PortfolioPreset & {
+  companyKeys: readonly string[]
+}
+
 export const DEFAULT_PUBLIC_PRESET: PortfolioPreset = {
   id: 'complete',
   name: '전체 포트폴리오',
@@ -44,8 +48,61 @@ export const PUBLIC_PRESETS: readonly PortfolioPreset[] = [
   },
 ] as const
 
+export const COMPANY_PUBLIC_PRESETS: readonly CompanyPortfolioPreset[] = [
+  {
+    id: 'company-commerce',
+    name: '커머스·서비스 기업용',
+    description: '커머스 재방문 흐름, 성능 개선, 이벤트 기반 주문 흐름을 앞에 둡니다.',
+    blocks: ['hero', 'about', 'projects', 'experience', 'resources', 'contact', 'footer'],
+    projectIds: ['feedshop', 'fix-ticketing'],
+    copyProfileId: 'backend-impact',
+    companyKey: 'commerce',
+    companyKeys: ['commerce', 'ably', 'musinsa', 'zigzag', '29cm'],
+  },
+  {
+    id: 'company-platform',
+    name: '플랫폼·MSA 기업용',
+    description: '인증 경계, 서비스 분리, 이벤트 흐름 설계 경험을 앞에 둡니다.',
+    blocks: ['hero', 'about', 'projects', 'experience', 'resources', 'contact', 'footer'],
+    projectIds: ['three-m', 'fix-ticketing'],
+    copyProfileId: 'event-driven',
+    companyKey: 'platform',
+    companyKeys: ['platform', 'msa', 'cloud', 'kakao', 'naver-cloud', 'line'],
+  },
+  {
+    id: 'company-performance',
+    name: '성능 개선 강조 기업용',
+    description: '성능 병목과 동시성 문제를 수치로 검증한 경험에 집중합니다.',
+    blocks: ['hero', 'about', 'projects', 'resources', 'contact', 'footer'],
+    projectIds: ['feedshop'],
+    copyProfileId: 'backend-impact',
+    companyKey: 'performance',
+    companyKeys: ['performance', 'backend', 'infra'],
+  },
+] as const
+
+export function normalizeCompanyKey(value: string | null | undefined): string {
+  return (value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
 export function getPublicPreset(presetId: string | null): PortfolioPreset {
   return PUBLIC_PRESETS.find((preset) => preset.id === presetId) ?? DEFAULT_PUBLIC_PRESET
+}
+
+export function getCompanyPreset(companyKey: string | null): PortfolioPreset | null {
+  const normalizedCompanyKey = normalizeCompanyKey(companyKey)
+  if (!normalizedCompanyKey) return null
+
+  return (
+    COMPANY_PUBLIC_PRESETS.find((preset) =>
+      [preset.companyKey, ...preset.companyKeys].some((key) => key === normalizedCompanyKey),
+    ) ?? null
+  )
 }
 
 export function parsePublicBlockSelection(value: string | null): readonly PortfolioBlockId[] | null {
@@ -82,11 +139,17 @@ export function createPublicPortfolioPath(
   companyKey?: string,
 ) {
   const normalizedProjectIds = normalizeProjectIds(projectIds)
+  const normalizedCompanyKey = normalizeCompanyKey(companyKey)
   const params = new URLSearchParams({
     blocks: blocks.join(','),
     projects: normalizedProjectIds.join(','),
     copy: getCopyProfile(copyProfileId).id,
   })
-  if (companyKey) params.set('company', companyKey)
+  if (normalizedCompanyKey) params.set('company', normalizedCompanyKey)
   return `/?${params.toString()}`
+}
+
+export function createCompanyPortfolioPath(companyKey: string) {
+  const normalizedCompanyKey = normalizeCompanyKey(companyKey)
+  return normalizedCompanyKey ? `/?company=${encodeURIComponent(normalizedCompanyKey)}` : null
 }

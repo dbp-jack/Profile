@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { PORTFOLIO_MANAGER_ENABLED } from '@/portfolio-builder/access'
 import {
+  getCompanyPreset,
   getPublicPreset,
   parsePublicBlockSelection,
   parsePublicCopyProfile,
@@ -16,7 +17,8 @@ export default function Home() {
   const { dark } = useDarkMode()
   const [searchParams] = useSearchParams()
   const composition = useMemo(() => {
-    const preset = getPublicPreset(searchParams.get('preset'))
+    const preset =
+      getCompanyPreset(searchParams.get('company')) ?? getPublicPreset(searchParams.get('preset'))
     return {
       blockIds: parsePublicBlockSelection(searchParams.get('blocks')) ?? preset.blocks,
       projectIds: parsePublicProjectSelection(searchParams.get('projects')) ?? preset.projectIds,
