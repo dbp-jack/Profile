@@ -12,8 +12,8 @@ export default function Footer() {
       }`}
     >
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 sm:flex-row">
-        <p className={`text-base font-medium ${dark ? 'text-[#909090]' : 'text-blue-200'}`}>{HERO_NAME}</p>
-        <p className={`text-sm ${dark ? 'text-[#5a5a5a]' : 'text-blue-300'}`}>
+        <p className={`text-base font-medium ${dark ? 'text-[#d1d5db]' : 'text-blue-50'}`}>{HERO_NAME}</p>
+        <p className={`text-sm ${dark ? 'text-[#cbd5e1]' : 'text-blue-100'}`}>
           &copy; {year} {HERO_NAME}. All rights reserved.
         </p>
       </div>

@@ -5,7 +5,7 @@ import { useFadeIn } from '@/hooks/useFadeIn'
 const CATEGORY_STYLES: Record<ExperienceCategory, { light: string; dark: string }> = {
   경력: {
     light: 'bg-blue-100 text-blue-700',
-    dark: 'bg-blue-900/40 text-blue-300',
+    dark: 'bg-blue-900/40 text-blue-100',
   },
   교육: {
     light: 'bg-emerald-100 text-emerald-700',
@@ -35,7 +35,7 @@ export default function ExperienceSection() {
       <div className="mx-auto max-w-5xl px-6">
         <div data-sidebar-anchor="experience" className="mb-10 text-center md:mb-16">
           <span
-            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
           >
             {EXPERIENCE_SECTION.kicker}
           </span>
@@ -43,7 +43,7 @@ export default function ExperienceSection() {
             {EXPERIENCE_SECTION.title}
           </h2>
           <p
-            className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
+            className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
           >
             {EXPERIENCE_SECTION.subtitle}
           </p>
@@ -65,7 +65,7 @@ export default function ExperienceSection() {
                   }`}
                 >
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <p className={`text-sm font-semibold tracking-wide md:text-base ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.period}</p>
+                    <p className={`text-sm font-semibold tracking-wide md:text-base ${dark ? 'text-slate-300' : 'text-slate-800'}`}>{item.period}</p>
                     <span
                       className={`inline-flex w-fit items-center rounded-lg px-3 py-1 text-sm font-extrabold tracking-wide shadow-sm ring-1 ring-inset md:px-3.5 md:py-1.5 md:text-base ${dark ? `${style.dark} ring-white/10` : `${style.light} ring-black/5`}`}
                     >
@@ -73,7 +73,7 @@ export default function ExperienceSection() {
                     </span>
                   </div>
                   <h3 className={`mt-1.5 text-base font-bold md:text-lg ${dark ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
-                  <p className={`mt-1.5 text-sm leading-relaxed md:text-base ${dark ? 'text-slate-300' : 'text-slate-600'}`}>{item.detail}</p>
+                  <p className={`mt-1.5 text-sm leading-relaxed md:text-base ${dark ? 'text-slate-300' : 'text-slate-800'}`}>{item.detail}</p>
                 </div>
               </li>
             )

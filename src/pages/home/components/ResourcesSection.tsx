@@ -19,7 +19,7 @@ export default function ResourcesSection() {
       <div className="mx-auto max-w-5xl px-6">
         <div data-sidebar-anchor="resources" className="mb-10 text-center md:mb-16">
           <span
-            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
           >
             {RESOURCES_SECTION.kicker}
           </span>
@@ -47,7 +47,7 @@ export default function ResourcesSection() {
               <div
                 className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
                   dark
-                    ? 'bg-[#3d3d3d] text-[#a0a0a0] group-hover:bg-[#505050] group-hover:text-[#d0d0d0]'
+                    ? 'bg-[#3d3d3d] text-[#d1d5db] group-hover:bg-[#505050] group-hover:text-[#d0d0d0]'
                     : 'bg-[#f0f4fa] text-[#1E3A5F] group-hover:bg-[#1E3A5F] group-hover:text-white'
                 }`}
               >
@@ -71,7 +71,7 @@ export default function ResourcesSection() {
 
               <div
                 className={`ml-auto flex h-5 w-5 flex-shrink-0 items-center justify-center transition-colors duration-200 ${
-                  dark ? 'text-[#4a4a4a] group-hover:text-[#8a8a8a]' : 'text-gray-300 group-hover:text-[#1E3A5F]'
+                  dark ? 'text-[#cbd5e1] group-hover:text-[#8fb5ff]' : 'text-slate-700 group-hover:text-[#1E3A5F]'
                 }`}
               >
                 <i className="ri-arrow-right-up-line text-lg" />

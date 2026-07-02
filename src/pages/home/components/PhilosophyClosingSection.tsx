@@ -29,7 +29,7 @@ export default function PhilosophyClosingSection() {
         <div className="pdf-closing-bunch">
           <div data-sidebar-anchor="closing" className="mb-8 text-center md:mb-12">
             <span
-              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
             >
               {CLOSING_SECTION.kicker}
             </span>
@@ -39,7 +39,7 @@ export default function PhilosophyClosingSection() {
               {CLOSING_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed break-keep md:text-base ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed break-keep md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}
             >
               {CLOSING_SECTION.subtitle}
             </p>

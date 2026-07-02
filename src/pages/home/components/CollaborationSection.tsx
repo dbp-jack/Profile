@@ -14,7 +14,7 @@ export default function CollaborationSection() {
     >
       <div className="mx-auto max-w-5xl px-6">
         <div data-sidebar-anchor="collaboration" className="mb-8 text-center md:mb-12">
-          <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}>
+          <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
             {WORK_STYLE_SECTION.kicker}
           </p>
           <h3
@@ -23,7 +23,7 @@ export default function CollaborationSection() {
           >
             {WORK_STYLE_SECTION.title}
           </h3>
-          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}>
             {WORK_STYLE_SECTION.subtitle}
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function CollaborationSection() {
           <h4 className={`mt-1.5 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
             {COLLABORATION_SECTION.title}
           </h4>
-          <p className={`mt-3 max-w-4xl text-sm leading-7 ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
+          <p className={`mt-3 max-w-4xl text-sm leading-7 ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
             {COLLABORATION_SECTION.intro}
           </p>
           <a
@@ -72,7 +72,7 @@ export default function CollaborationSection() {
                   <h4 className={`mt-1 text-base font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
                     {item.title}
                   </h4>
-                  <p className={`mt-1.5 text-sm leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+                  <p className={`mt-1.5 text-sm leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
                     {item.description}
                   </p>
                 </figcaption>
@@ -89,7 +89,7 @@ export default function CollaborationSection() {
           <h4 className={`mt-1.5 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
             {PROJECT_WORKFLOW.title}
           </h4>
-          <p className={`mt-3 max-w-4xl text-sm leading-relaxed ${dark ? 'text-[#b0b0b0]' : 'text-slate-600'}`}>
+          <p className={`mt-3 max-w-4xl text-sm leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
             {PROJECT_WORKFLOW.description}
           </p>
           <div className={`mt-3 grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0 ${dark ? 'divide-[#444]' : 'divide-slate-200'}`}>
@@ -100,7 +100,7 @@ export default function CollaborationSection() {
                   <p className={`text-xs font-extrabold ${isAi ? 'text-[#7C3AED]' : dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                     {phase.owner}
                   </p>
-                  <p className={`mt-1 text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+                  <p className={`mt-1 text-xs leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
                     {phase.detail}
                   </p>
                 </div>
@@ -120,13 +120,13 @@ export default function CollaborationSection() {
                   <i className={`${tool.icon} text-sm`} aria-hidden="true" />
                   {tool.name}
                 </p>
-                <p className={`mt-0.5 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-slate-600'}`}>
+                <p className={`mt-0.5 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
                   {tool.purpose}
                 </p>
               </div>
             ))}
           </div>
-          <p className={`mt-3 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#8a8a8a]' : 'text-slate-500'}`}>
+          <p className={`mt-3 whitespace-pre-line text-xs leading-relaxed ${dark ? 'text-[#8fb5ff]' : 'text-slate-700'}`}>
             {PROJECT_WORKFLOW.toolsNote}
           </p>
         </div>

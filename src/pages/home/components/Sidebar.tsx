@@ -62,6 +62,12 @@ const getLinkScrollTop = (link: SidebarNavLink) => {
   return getAnchorPageTop(anchorEl) - SIDEBAR_ANCHOR_VIEWPORT_TOP[link.anchorKind]
 }
 
+const getMaxScrollTop = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+
+const getReachableScrollTop = (top: number) => {
+  return Math.min(Math.max(0, top), getMaxScrollTop())
+}
+
 type SidebarProps = {
   blockIds?: readonly PortfolioBlockId[]
   projectIds?: readonly string[]
@@ -109,8 +115,9 @@ export default function Sidebar({
   const handleScroll = useCallback(() => {
     let current = getSidebarAnchorId(visibleNavLinks[0]?.href ?? '#hero')
     for (const link of visibleNavLinks) {
-      const targetTop = getLinkScrollTop(link)
-      if (targetTop === null) continue
+      const top = getLinkScrollTop(link)
+      if (top === null) continue
+      const targetTop = getReachableScrollTop(top)
       if (targetTop - window.scrollY <= ACTIVE_SECTION_THRESHOLD) {
         current = getSidebarAnchorId(link.href)
       }
@@ -174,7 +181,7 @@ export default function Sidebar({
     const top = getLinkScrollTop(link)
     if (top === null) return
     setActiveSection(sectionId)
-    window.scrollTo({ top, behavior: 'smooth' })
+    window.scrollTo({ top: getReachableScrollTop(top), behavior: 'smooth' })
   }
 
   return (
@@ -228,8 +235,8 @@ export default function Sidebar({
                       ? 'bg-[#333333] text-[#e0e0e0] shadow-sm'
                       : 'bg-[#EFF6FF] text-[#1E3A5F] shadow-sm ring-1 ring-blue-100'
                     : dark
-                      ? 'text-[#707070] hover:bg-[#2a2a2a] hover:text-[#b0b0b0]'
-                      : 'text-gray-500 hover:bg-gray-50 hover:text-[#1E3A5F]'
+                      ? 'text-[#cbd5e1] hover:bg-[#2a2a2a] hover:text-[#d1d5db]'
+                      : 'text-slate-700 hover:bg-gray-50 hover:text-[#1E3A5F]'
                 }`}
               >
                 {isActive && <span className={`absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full ${dark ? 'bg-[#8a8a8a]' : 'bg-[#2563EB]'}`} />}
@@ -243,7 +250,7 @@ export default function Sidebar({
           <button
             onClick={toggle}
             aria-label="Toggle dark mode"
-            className={`flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-2 py-2.5 transition-all duration-200 ${dark ? 'text-[#909090] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]' : 'text-gray-500 hover:bg-gray-50 hover:text-[#1E3A5F]'}`}
+            className={`flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-2 py-2.5 transition-all duration-200 ${dark ? 'text-[#d1d5db] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]' : 'text-slate-700 hover:bg-gray-50 hover:text-[#1E3A5F]'}`}
           >
             <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center text-lg"><i className={dark ? 'ri-sun-line' : 'ri-moon-line'} /></span>
             <span className={`whitespace-nowrap text-base font-medium transition-all duration-300 ${expanded ? 'max-w-[150px] opacity-100' : 'max-w-0 opacity-0'}`}>{dark ? 'Light Mode' : 'Dark Mode'}</span>

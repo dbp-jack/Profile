@@ -24,7 +24,7 @@ export default function ProjectsSection() {
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
           <div data-sidebar-anchor="projects" className="text-center">
             <span
-              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
             >
               {PROJECTS_SECTION.kicker}
             </span>
@@ -34,7 +34,7 @@ export default function ProjectsSection() {
               {PROJECTS_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}
+              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
             >
               {copyProfile.projectsSubtitle}
             </p>

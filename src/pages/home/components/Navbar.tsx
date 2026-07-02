@@ -89,7 +89,7 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
                 <button
                   onClick={() => scrollTo(link.href)}
                   className={`relative cursor-pointer whitespace-nowrap pb-1 text-base font-medium transition-colors duration-200 ${
-                    isActive ? 'text-[#1E3A5F]' : 'text-gray-500 hover:text-[#1E3A5F]'
+                    isActive ? 'text-[#1E3A5F]' : 'text-slate-700 hover:text-[#1E3A5F]'
                   }`}
                 >
                   {link.label}
@@ -109,7 +109,7 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
             className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors duration-200 ${
               dark
                 ? 'text-[#c0c0c0] hover:bg-[#2a2a2a]'
-                : 'text-gray-500 hover:bg-gray-100'
+                : 'text-slate-700 hover:bg-gray-100'
             }`}
           >
             <i className={`text-xl ${dark ? 'ri-sun-line' : 'ri-moon-line'}`} />
@@ -135,8 +135,8 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
               onClick={() => scrollTo(link.href)}
               className={`block w-full cursor-pointer whitespace-nowrap px-6 py-3 text-left text-base font-medium transition-colors duration-200 ${
                 dark
-                  ? 'text-[#909090] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#1E3A5F]'
+                  ? 'text-[#d1d5db] hover:bg-[#2a2a2a] hover:text-[#c0c0c0]'
+                  : 'text-slate-800 hover:bg-gray-50 hover:text-[#1E3A5F]'
               }`}
             >
               {link.label}

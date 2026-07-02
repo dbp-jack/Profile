@@ -84,7 +84,7 @@ function ProjectBackgroundCard({
       </p>
       <p
         lang="ko"
-        className={`whitespace-pre-line break-keep text-[0.95rem] leading-[1.68] md:text-base ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+        className={`whitespace-pre-line break-keep text-[0.95rem] leading-[1.68] md:text-base ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}
         dangerouslySetInnerHTML={{ __html: body ?? '' }}
       />
     </div>
@@ -250,7 +250,7 @@ function ProjectPerspectivePlanningSection({
         {data.subtitle.trim() ? (
           <p
             lang="ko"
-            className={`mt-2.5 break-keep text-base leading-relaxed ${dark ? 'text-[#a8a8a8]' : 'text-gray-600'}`}
+            className={`mt-2.5 break-keep text-base leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
           >
             {data.subtitle}
           </p>
@@ -282,11 +282,11 @@ function ProjectPerspectivePlanningSection({
                 <div>
                   <ul
                     lang="ko"
-                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}
                   >
                     {card.problemBullets.map((line, i) => (
                       <li key={`perspective-${idx}-pb-${i}`} className="flex gap-2.5 break-keep [line-break:strict]">
-                        <span className={`shrink-0 select-none ${dark ? 'text-slate-500' : 'text-slate-400'}`}>·</span>
+                        <span className={`shrink-0 select-none ${dark ? 'text-slate-700' : 'text-slate-400'}`}>·</span>
                         <span>
                           {i === 0 ? (
                             <>
@@ -308,11 +308,11 @@ function ProjectPerspectivePlanningSection({
                 <div>
                   <ul
                     lang="ko"
-                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 list-none space-y-2 pl-0 text-base leading-[1.72] ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}
                   >
                     {card.directionBullets.map((line, i) => (
                       <li key={`perspective-${idx}-db-${i}`} className="flex gap-2.5 break-keep [line-break:strict]">
-                        <span className={`shrink-0 select-none ${dark ? 'text-slate-500' : 'text-slate-400'}`}>·</span>
+                        <span className={`shrink-0 select-none ${dark ? 'text-slate-700' : 'text-slate-400'}`}>·</span>
                         <span>
                           {i === 0 ? (
                             <>
@@ -346,7 +346,7 @@ function ProjectPerspectivePlanningSection({
                   </span>
                   <p
                     lang="ko"
-                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}
                   >
                     {card.problem}
                   </p>
@@ -359,7 +359,7 @@ function ProjectPerspectivePlanningSection({
                   </span>
                   <p
                     lang="ko"
-                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#c8c8c8]' : 'text-slate-700'}`}
+                    className={`mt-3 whitespace-pre-line break-keep text-base leading-[1.72] [line-break:strict] ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}
                   >
                     {card.direction}
                   </p>
@@ -427,7 +427,7 @@ function ProjectUserJourneySection({
                   {en ? (
                     <span
                       className={`mt-1 text-[0.625rem] font-medium leading-tight tracking-normal ${
-                        dark ? 'text-[#9a9a9a]' : 'text-gray-500'
+                        dark ? 'text-[#d1d5db]' : 'text-slate-700'
                       }`}
                     >
                       {en}
@@ -491,12 +491,12 @@ function ProblemRow({
       </span>
       {content.includes('<') ? (
         <div
-          className={`project-rich-content w-full overflow-x-auto pt-0.5 text-base leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`project-rich-content w-full overflow-x-auto pt-0.5 text-base leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : (
         <p
-          className={`w-full whitespace-pre-line pt-0.5 text-base leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}
+          className={`w-full whitespace-pre-line pt-0.5 text-base leading-relaxed ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
         >
           {content}
         </p>
@@ -533,14 +533,14 @@ export default function ProjectCard({ project, index }: Props) {
       }`}
     >
       <p
-        className={`mb-3 text-sm font-semibold tracking-wide ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+        className={`mb-3 text-sm font-semibold tracking-wide ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
       >
         프로젝트{index + 1}
       </p>
       <h3 className={`mb-2 text-xl font-bold sm:text-2xl md:text-3xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
         {project.name}
       </h3>
-      <p className={`mb-4 text-base md:mb-5 ${dark ? 'text-[#8a8a8a]' : 'text-gray-500'}`}>
+      <p className={`mb-4 text-base md:mb-5 ${dark ? 'text-[#cbd5e1]' : 'text-slate-800'}`}>
         {project.period} | {project.teamSize}
         {project.contribution ? ` | ${project.contribution}` : ''}
       </p>
@@ -563,7 +563,7 @@ export default function ProjectCard({ project, index }: Props) {
               key={tech}
               className={`rounded-full border px-2.5 py-0.5 text-sm font-medium ${
                 dark
-                  ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
+                  ? 'border-[#444444] bg-[#333333] text-[#d1d5db]'
                   : 'border-[#1E3A5F]/15 bg-[#f0f4fa] text-[#1E3A5F]'
               }`}
             >
@@ -574,7 +574,7 @@ export default function ProjectCard({ project, index }: Props) {
       </div>
 
       {showContextBlock ? (
-        <div className={`pdf-project-flow mb-5 space-y-3.5 ${dark ? 'text-[#a0a0a0]' : 'text-gray-700'}`}>
+        <div className={`pdf-project-flow mb-5 space-y-3.5 ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
           {usePlanningVariantTop ? (
             <>
               <div className="pdf-project-summary-grid space-y-4">
@@ -610,7 +610,7 @@ export default function ProjectCard({ project, index }: Props) {
                         <div className="min-w-0 flex-1">
                           <p className={`text-[0.95rem] font-bold md:text-base ${dark ? 'text-[#e4e4e4]' : 'text-gray-900'}`}>{role.title}</p>
                           <p
-                            className={`mt-0.5 whitespace-pre-line text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#9a9a9a]' : 'text-gray-600'}`}
+                            className={`mt-0.5 whitespace-pre-line text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}
                             dangerouslySetInnerHTML={{ __html: role.detail }}
                           />
                         </div>
@@ -653,7 +653,7 @@ export default function ProjectCard({ project, index }: Props) {
                             {section.title}
                           </p>
                           {section.description ? (
-                            <p className={`mb-1.5 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                            <p className={`mb-1.5 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
                               {section.description}
                             </p>
                           ) : null}
@@ -668,7 +668,7 @@ export default function ProjectCard({ project, index }: Props) {
                                 {item.bullets.length ? (
                                 <ul className="space-y-0.5">
                                   {item.bullets.map((b, bi) => (
-                                    <li key={bi} className={`flex gap-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#b0b0b0]' : 'text-slate-700'}`}>
+                                    <li key={bi} className={`flex gap-2 text-[0.95rem] leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
                                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
                                       {b}
                                     </li>
@@ -767,7 +767,7 @@ export default function ProjectCard({ project, index }: Props) {
                 href={project.projectReflection.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2 ${dark ? 'text-blue-300' : 'text-[#2563EB]'}`}
+                className={`mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2 ${dark ? 'text-blue-100' : 'text-[#2563EB]'}`}
               >
                 Wiki 트러블슈팅 기록 보기
                 <i className="ri-external-link-line" aria-hidden />
@@ -784,7 +784,7 @@ export default function ProjectCard({ project, index }: Props) {
           rel="noopener noreferrer"
           className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-base font-medium transition-colors duration-300 ${
             dark
-              ? 'border-[#5a5a5a] text-[#b0b0b0] hover:bg-[#3a3a3a] hover:text-[#e0e0e0]'
+              ? 'border-[#5a5a5a] text-[#d1d5db] hover:bg-[#3a3a3a] hover:text-[#e0e0e0]'
               : 'border-[#1E3A5F] text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white'
           }`}
         >

@@ -14,19 +14,19 @@ export default function ContactSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`min-h-[calc(100svh+4rem)] py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
+      className={`py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
         <div data-sidebar-anchor="contact" className="mb-8 text-center md:mb-12">
           <span
-            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
           >
             {CONTACT_SECTION.kicker}
           </span>
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {CONTACT_SECTION.title}
           </h2>
-          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}>
             {CONTACT_SECTION.subtitle}
           </p>
         </div>
@@ -47,12 +47,12 @@ export default function ContactSection() {
                 }`}
               >
                 <i
-                  className={`${item.icon} text-xl transition-colors duration-200 ${dark ? 'text-[#909090] group-hover:text-[#c0c0c0]' : 'text-gray-500 group-hover:text-[#1E3A5F]'}`}
+                  className={`${item.icon} text-xl transition-colors duration-200 ${dark ? 'text-[#d1d5db] group-hover:text-[#c0c0c0]' : 'text-slate-700 group-hover:text-[#1E3A5F]'}`}
                 />
               </div>
               <span
                 className={`text-base font-medium underline-offset-2 transition-colors duration-200 group-hover:underline ${
-                  dark ? 'text-[#909090] group-hover:text-[#d0d0d0]' : 'text-gray-600 group-hover:text-[#1E3A5F]'
+                  dark ? 'text-[#d1d5db] group-hover:text-[#d0d0d0]' : 'text-slate-800 group-hover:text-[#1E3A5F]'
                 }`}
               >
                 {item.label}

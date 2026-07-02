@@ -62,7 +62,7 @@ export default function HeroSection() {
             <div className="min-w-0 flex-1 md:pt-2">
               <span
                 className={`mb-4 inline-block rounded-full border px-4 py-1.5 text-sm font-semibold uppercase tracking-widest md:mb-5 ${
-                  dark ? 'border-[#4a4a4a] text-[#a0a0a0]' : 'border-[#1E3A5F] text-[#1E3A5F]'
+                  dark ? 'border-[#4a4a4a] text-[#d1d5db]' : 'border-[#1E3A5F] text-[#1E3A5F]'
                 }`}
               >
                 {HERO_ROLE_BADGE}
@@ -74,7 +74,7 @@ export default function HeroSection() {
               </h1>
               <p
                 className={`hero-tagline mb-4 mt-2 max-w-xl text-pretty text-lg font-semibold leading-relaxed text-balance md:mb-5 md:mt-3 md:max-w-2xl md:text-xl ${
-                  dark ? 'text-[#9ca3af]' : 'text-gray-500'
+                  dark ? 'text-[#d1d5db]' : 'text-slate-700'
                 }`}
               >
                 {copyProfile.heroRoleTitle}
@@ -84,7 +84,7 @@ export default function HeroSection() {
                 {infoRows.map((item) => (
                   <li
                     key={item.icon + item.text}
-                    className={`flex min-w-0 items-center gap-3 text-base ${dark ? 'text-[#a0a0a0]' : 'text-gray-600'}`}
+                    className={`flex min-w-0 items-center gap-3 text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}
                   >
                     <span
                       className={`flex h-5 w-5 shrink-0 items-center justify-center ${dark ? 'text-[#7a7a7a]' : 'text-[#1E3A5F]'}`}
@@ -145,7 +145,7 @@ export default function HeroSection() {
                 <div key={group.label} className="flex flex-col gap-2 sm:flex-row sm:items-center">
                   <span
                     className={`w-32 shrink-0 text-xs font-bold uppercase tracking-wider ${
-                      dark ? 'text-[#8f95a3]' : 'text-slate-500'
+                      dark ? 'text-[#cbd5e1]' : 'text-slate-700'
                     }`}
                   >
                     {group.label}
@@ -156,7 +156,7 @@ export default function HeroSection() {
                         key={tag}
                         className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium ${
                           dark
-                            ? 'border-[#444444] bg-[#333333] text-[#b0b0b0]'
+                            ? 'border-[#444444] bg-[#333333] text-[#d1d5db]'
                             : 'border-[#1E3A5F]/15 bg-white text-[#1E3A5F] shadow-[0_1px_0_rgba(15,23,42,0.04)]'
                         }`}
                       >

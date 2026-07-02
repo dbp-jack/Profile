@@ -42,14 +42,14 @@ export default function AboutSection() {
         {/* 헤더 */}
         <div data-sidebar-anchor="about" className="mb-7 text-center md:mb-8">
           <span
-            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
+            className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
           >
             {ABOUT_SECTION.kicker}
           </span>
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
             {ABOUT_SECTION.title}
           </h2>
-          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#909090]' : 'text-gray-500'}`}>
+          <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}>
             {copyProfile.aboutIntro}
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function AboutSection() {
                       <li key={j} className="flex min-w-0 items-start gap-3">
                         {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
                         <span
-                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}
+                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-slate-800'}`}
                           dangerouslySetInnerHTML={{ __html: line }}
                         />
                       </li>
