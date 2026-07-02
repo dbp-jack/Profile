@@ -18,7 +18,7 @@ import {
   RESOURCES_SECTION,
   WORK_STYLE_SECTION,
 } from '@/content/portfolio'
-import { PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
+import { DEFAULT_PROJECT_IDS, PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
 
 declare const __BASE_PATH__: string
 
@@ -37,6 +37,9 @@ const teal = '#0f766e'
 
 const feedshop = PROJECTS[0]
 const m3 = PROJECTS[1]
+const pdfProjectOverviews = DEFAULT_PROJECT_IDS.map((projectId) =>
+  PROJECT_OVERVIEWS.find((project) => project.id === projectId),
+).filter((project): project is (typeof PROJECT_OVERVIEWS)[number] => Boolean(project))
 const heroSkillTags = HERO_SKILL_GROUPS.flatMap((group) => group.tags)
 
 function asset(path?: string): string {
@@ -460,8 +463,8 @@ function ProjectsOverviewSlide() {
       title: '핵심 성과',
       items: [
         ['91% 단축', '동시 1,000명 기준 응답시간 6,818ms → 638ms'],
-        ['SQL Count 42 → 0', 'fetchJoin + Redis Cache Hit 기준'],
-        ['중복 투표 0건', '동시 3,000명 부하 테스트 기준'],
+        ['조회 쿼리 42 → 2', 'QueryDSL fetchJoin 후 Redis 캐시 적용'],
+        ['오류·중복 0건', '동시 3,000명 투표 테스트 기준'],
       ],
       color: blue,
     },
@@ -489,8 +492,8 @@ function ProjectsOverviewSlide() {
   return (
     <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle="핵심 프로젝트를 목적·역할·문제 해결 중심으로 요약했습니다.">
       <div style={{ display: 'grid', gridTemplateRows: '1fr auto auto', gap: 9, height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${PROJECT_OVERVIEWS.length}, 1fr)`, gap: 13, minHeight: 0 }}>
-          {PROJECT_OVERVIEWS.map((project, idx) => (
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${pdfProjectOverviews.length}, 1fr)`, gap: 13, minHeight: 0 }}>
+          {pdfProjectOverviews.map((project, idx) => (
             <Panel key={project.name} pad={14} background={white} accent={accentColors[idx]}>
               <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto auto auto auto', alignContent: 'space-between', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -855,7 +858,7 @@ function FeedShopDeveloperPerspectiveSlide() {
 
 function FeedShopP1ProblemSlide() {
   const metrics = [
-    { label: 'SQL Count', value: '42회', caption: '요청 1회 기준', tone: red },
+    { label: '조회 쿼리', value: '42회', caption: '요청 1회 기준', tone: red },
     { label: '동시 1,000명', value: '6,818ms', caption: 'TPS 138.7', tone: red },
     { label: '동시 100명', value: '645ms', caption: 'TPS 154.6', tone: red },
   ]
@@ -916,7 +919,7 @@ function FeedShopP1ProblemSlide() {
               >
                 <SectionLabel color={red}>Scouter Evidence</SectionLabel>
                 <div style={{ color: navy, fontSize: 18, fontWeight: 950, lineHeight: 1.22 }}>
-                  요청 1회당 SQL 42회 반복 실행 확인
+                  이벤트 목록 요청 1회당 조회 쿼리 42회 확인
                 </div>
                 <div style={{ color: '#9a3412', fontSize: 12.6, lineHeight: 1.45, fontWeight: 780 }}>
                   `/api/events/all` 요청마다 동일한 연관 데이터 조회가 반복되어 목록 조회 성능 병목으로 이어졌습니다.
@@ -926,7 +929,7 @@ function FeedShopP1ProblemSlide() {
             <div style={{ minHeight: 0, display: 'grid' }}>
               <img
                 src={asset('before-scouter-sql42.png')}
-                alt="Scouter XLog SQL Count 42"
+                alt="Scouter XLog 이벤트 목록 조회 쿼리 42회"
                 style={{ width: '100%', height: '100%', maxHeight: '88mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block', background: white }}
               />
             </div>
@@ -941,7 +944,7 @@ function FeedShopP1ThinkingSolutionSlide() {
   const alternatives = [
     ['findAll() + 메모리 필터링', '구현 단순', '데이터 증가 시 조회량·N+1 확대', '제외'],
     ['Redis 캐시만 적용', '반복 조회 감소', 'Cache Miss 시 N+1 유지', '제외'],
-    ['QueryDSL fetchJoin', 'SQL 42회 → 2회', '반복 조회마다 DB 접근', '부분 적용'],
+    ['QueryDSL fetchJoin', '조회 쿼리 42회 → 2회', '반복 조회마다 DB 접근', '부분 적용'],
     ['fetchJoin + Redis', '쿼리 개선 후 반복 조회 제거', '캐시 정합성 관리 필요', '최종 선택'],
   ]
 
@@ -1014,7 +1017,7 @@ function FeedShopP1ThinkingSolutionSlide() {
               }}
             >
                 <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter 측정</div>
-              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950 }}>SQL Count 42회 → 2회</div>
+              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950 }}>조회 쿼리 42회 → 2회</div>
             </div>
             <div style={{ minHeight: 0 }}>
               <img
@@ -1070,11 +1073,11 @@ function FeedShopP1SolutionResultSlide() {
             </div>
             <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, minHeight: 0 }}>
               <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', color: blue, fontSize: 16.2, fontWeight: 950, padding: '9px 12px' }}>
-                Cache Hit 시 SQL Count 0회
+                Redis 캐시 적용 후 재요청 확인
               </div>
               <img
                 src={asset('phase2a-scouter-cache-hit2.png')}
-                alt="Cache Hit SQL 0회"
+                alt="Redis 캐시 적용 후 재요청 확인"
                 style={{ width: '100%', height: '100%', maxHeight: '56mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
@@ -1093,7 +1096,7 @@ function FeedShopP1ResultTableSlide() {
   const kpis = [
     ['응답시간', '91% 단축'],
     ['TPS', '216% 향상'],
-    ['SQL Count', '42회 → 0회'],
+    ['조회 쿼리', '42회 → 2회'],
     ['전략', 'fetchJoin + Redis'],
   ]
 
@@ -2008,8 +2011,8 @@ export default function PdfPortfolio() {
         description="커뮤니티 재방문 구조의 핵심인 이벤트 참여 흐름을 지키기 위해, 조회 성능과 투표 정합성을 각각 다른 부하 축으로 분리해 접근했습니다."
         metrics={[
           { label: '응답시간 단축', value: '-91%', caption: '동시 1,000명 기준 6,818ms → 638ms', color: green },
-          { label: 'SQL Count', value: '42 → 0', caption: 'fetchJoin + Redis Cache Hit', color: blue },
-          { label: '중복 투표', value: '0건', caption: '동시 3,000명 부하 테스트 구간', color: violet },
+          { label: '조회 쿼리', value: '42 → 2', caption: 'QueryDSL fetchJoin 후 Redis 캐시 적용', color: blue },
+          { label: '오류·중복', value: '0건', caption: '동시 3,000명 투표 테스트 구간', color: violet },
         ]}
       />
       <ProjectIntroSlide project={feedshop} title="FeedShop" />

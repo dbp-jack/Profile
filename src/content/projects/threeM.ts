@@ -14,9 +14,9 @@ export const threeMProject: ProjectData = {
       result: 'UserService→Auth 결합도 0건, 순환 의존 없음, MASTER/HUB_MANAGER/미인증 권한 응답을 통합 테스트로 검증했습니다.',
     },
     overviewSummary: {
-      intro: '업체·허브·배송 담당자가 함께 쓰는 B2B 물류 시스템에서 Auth·User·Gateway 인증 경계를 맡았습니다.',
-      achievement: 'UserService→Auth 결합도 0건, 순환 의존 없음, 권한 응답을 통합 테스트로 확인했습니다. 인증 변경 영향 범위와 권한 흐름 검증 부담을 낮췄습니다.',
-      reflection: '결합도를 낮춘 뒤에도 Gateway부터 서비스 응답까지 권한 경로 전체를 검증해야 한다는 회고로 이어졌습니다.',
+      intro: 'B2B 물류 시스템에서 Auth·User·Gateway 인증 경계와 인프라 통합을 맡았습니다.',
+      achievement: 'Auth·User 책임 혼재를 분리해, UserService→Auth 결합도 0건·순환 의존 없음으로 배포 영향 범위 축소',
+      reflection: '인증 구조는 결합도뿐 아니라 전체 권한 경로까지 검증해야 안정적입니다.',
     },
     architectureImage: '/m3_infra.png',
     architectureOwnershipLabel: '전체 아키텍처 직접 구성',

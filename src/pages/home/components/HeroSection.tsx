@@ -42,9 +42,9 @@ export default function HeroSection() {
             : 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
         }}
       />
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-14 pt-20 sm:px-6 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-20 md:pb-20 md:pt-24">
         <div className="flex flex-col gap-8 md:gap-9">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-14">
+          <div data-sidebar-anchor="hero" className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-14">
             <div className="flex flex-shrink-0 flex-col items-center gap-3">
               <div
                 className={`profile-photo-frame h-64 w-48 overflow-hidden rounded-2xl border md:h-[19rem] md:w-[14.25rem] ${

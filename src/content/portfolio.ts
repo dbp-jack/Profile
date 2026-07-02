@@ -58,7 +58,7 @@ export const ABOUT_CARDS = [
     title: '문제 해결 능력',
     subtitle: '성능 병목을 찾아 수치로 증명',
     description:
-      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6.8s → 0.6s)\nScouter로 이벤트 목록 요청 1회당 DB 조회 쿼리 42회 확인 → QueryDSL fetchJoin으로 <span class="font-bold text-[#2563EB]">2회 축소</span>\n읽기 빈번·변경 적은 특성 분석 후 Redis @Cacheable 적용, Cache Hit 기준 반복 DB 조회 0회 확인\nnGrinder 동시 1,000명 기준 수치 검증',
+      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6,818ms → 638ms)\n이벤트 목록 조회 쿼리 수 42회 → <span class="font-bold text-[#2563EB]">2회 축소</span> 후 Redis 캐시 적용\nnGrinder 동시 1,000명 기준 TPS 216% 향상 검증',
   },
   {
     icon: 'ri-node-tree',
@@ -85,15 +85,15 @@ export const PROJECTS_SECTION = {
 
 export const WORK_STYLE_SECTION = {
   kicker: 'How I Work',
-  title: '팀 협업과 AI 활용을 더해 일합니다',
+  title: '팀 협업과 AI 활용을 더해 일합니다.',
   subtitle: '결과를 만드는 과정에서 팀과 어떻게 맞추고, AI를 어디까지 활용하는지를 담았습니다.',
 } as const
 
 export const PROJECT_WORKFLOW = {
   label: 'AI Workflow',
-  title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다',
+  title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다.',
   description:
-    '요구사항과 설계 판단은 직접 수행하고, AI는 문서로 정의한 범위의 코드 작성에 활용합니다. 완성된 결과는 다시 직접 검증하고 수정합니다.',
+    '요구사항과 설계 판단은 직접 수행하고, AI는 문서로 정의한 범위의 코드 작성에 활용하며 완성된 결과는 다시 직접 검증하고 수정합니다.',
   phases: [
     {
       owner: '직접 수행',
@@ -137,27 +137,27 @@ export const COLLABORATION_SECTION = {
   kicker: 'Collaboration',
   title: '협업 체계가 없던 팀에 만든 주간 스프린트 흐름',
   intro:
-    '스프린트가 없던 팀에 주간 스프린트 방식을 도입하고, 스크럼으로 작업 범위와 진행 상황을 정리. JIRA 이슈·커밋은 Slack에 자동 공유하고, 일정·기술 자료는 Confluence에서 통합 관리.',
+    '스프린트가 없던 팀에 주간 스프린트 방식을 도입하고, 스크럼으로 작업 범위와 진행 상황을 정리했으며 JIRA 이슈·커밋은 Slack에 자동 공유하고, 일정·기술 자료는 Confluence에서 통합 관리했습니다.',
   guideUrl: 'https://dev99-tale.tistory.com/69',
   evidence: [
     {
       label: 'Plan',
       title: '주간 스프린트 운영',
-      description: '백로그를 스프린트 단위로 나누고 담당·상태·완료 범위를 관리.',
+      description: '백로그를 스프린트 단위로 나누고 담당·상태·완료 범위를 관리',
       image: '/collaboration-jira-sprint.png',
       alt: 'JIRA 백로그에서 주간 스프린트와 업무 상태를 관리한 화면',
     },
     {
       label: 'Automate',
       title: 'JIRA-Slack 자동 공유',
-      description: '이슈 생성과 연결된 커밋 정보를 팀 채널에 자동 공유.',
+      description: '이슈 생성과 연결된 커밋 정보를 팀 채널에 자동 공유',
       image: '/collaboration-slack-automation.png',
       alt: 'JIRA 이슈와 Git 커밋 변경 사항이 Slack에 자동 공유된 화면',
     },
     {
       label: 'Organize',
       title: '일정·자료 통합 관리',
-      description: '스프린트 일정과 기술·테스트 자료를 Confluence에 체계화.',
+      description: '스프린트 일정과 기술·테스트 자료를 Confluence에 체계화',
       image: '/collaboration-confluence-materials.png',
       alt: 'Confluence에 스프린트 일정과 프로젝트 자료를 체계적으로 정리한 화면',
     },
@@ -237,7 +237,7 @@ export const CONTACT_LINKS = [
 ] as const
 
 export const RESOURCES_SECTION = {
-  kicker: 'Links',
+  kicker: 'Resources',
   title: '자료 모음',
 } as const
 

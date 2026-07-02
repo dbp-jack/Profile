@@ -17,7 +17,7 @@ export default function ContactSection() {
       className={`py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-8 text-center md:mb-12">
+        <div data-sidebar-anchor="contact" className="mb-8 text-center md:mb-12">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >

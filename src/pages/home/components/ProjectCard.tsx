@@ -525,6 +525,7 @@ export default function ProjectCard({ project, index }: Props) {
   return (
     <article
       id={`project-${index}`}
+      data-sidebar-anchor={`project-${project.id}`}
       className={`pdf-project-card pdf-project-card-${index} rounded-xl border p-4 transition-colors duration-300 sm:p-5 md:p-8 ${
         dark
           ? 'border-[#3a3a3a] bg-[#2e2e2e] shadow-[0_2px_16px_rgba(0,0,0,0.25)]'

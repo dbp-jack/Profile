@@ -6,7 +6,7 @@ import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 const NUMS = ['01', '02', '03']
 
 const ABOUT_HIGHLIGHTS = [
-  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · 반복 DB 조회 <span class="font-black text-[#2563EB]">42회 → 0회</span>',
+  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · 조회 쿼리 <span class="font-black text-[#2563EB]">42회 → 2회</span>',
   '팀 스프린트 <span class="font-black text-[#2563EB]">가시성 확보</span>',
   '<span class="font-black text-[#2563EB]">기획·설계·개발 단독 주도</span>',
 ] as const
@@ -25,7 +25,7 @@ export default function AboutSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`relative overflow-hidden py-20 md:py-28 transition-colors duration-300 ${
+      className={`relative overflow-hidden py-16 md:py-24 transition-colors duration-300 ${
         dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'
       }`}
     >
@@ -39,8 +39,8 @@ export default function AboutSection() {
       />
 
       <div className="relative mx-auto max-w-5xl px-6">
-        {/* 헤더 — 현재 위치 유지 */}
-        <div className="mb-10 text-center md:mb-16">
+        {/* 헤더 */}
+        <div data-sidebar-anchor="about" className="mb-7 text-center md:mb-8">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >

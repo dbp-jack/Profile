@@ -27,7 +27,7 @@ export default function PhilosophyClosingSection() {
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="pdf-closing-bunch">
-          <div className="mb-8 text-center md:mb-12">
+          <div data-sidebar-anchor="closing" className="mb-8 text-center md:mb-12">
             <span
               className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
             >

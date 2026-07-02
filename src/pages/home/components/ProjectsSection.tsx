@@ -22,7 +22,7 @@ export default function ProjectsSection() {
       >
         {/* 기존 헤더 — 건들지 않음 */}
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
-          <div className="text-center">
+          <div data-sidebar-anchor="projects" className="text-center">
             <span
               className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
             >
@@ -49,7 +49,10 @@ export default function ProjectsSection() {
           <div className="mx-auto max-w-5xl px-6">
             <div className="flex flex-col gap-6 md:gap-8">
               {selectedProjects.map((project, i) => (
-                <div key={project.id} id={`project-${project.id}`}>
+                <div
+                  key={project.id}
+                  id={`project-${project.id}`}
+                >
                   <ProjectCard project={project} index={i} />
                 </div>
               ))}

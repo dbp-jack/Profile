@@ -17,7 +17,7 @@ export default function ResourcesSection() {
       className={`py-16 md:py-24 transition-colors duration-300 ${dark ? 'bg-[#2a2a2a]' : 'bg-[#F8F9FA]'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-10 text-center md:mb-16">
+        <div data-sidebar-anchor="resources" className="mb-10 text-center md:mb-16">
           <span
             className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8a8a8a]' : 'text-[#2563EB]'}`}
           >

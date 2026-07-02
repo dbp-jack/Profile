@@ -4,42 +4,63 @@ import { PROJECT_OVERVIEWS } from '@/content/projects'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId } from '@/portfolio-builder/types'
+import {
+  BASE_NAV_LINKS,
+  SIDEBAR_ANCHOR_VIEWPORT_TOP,
+  getSidebarAnchorId,
+  getSidebarAnchorSelector,
+  type SidebarNavLink,
+} from './sidebarNavigation'
 
-type NavLink = {
-  blockId: PortfolioBlockId
-  label: string
-  href: string
-  icon: string
-  /** Optional scroll adjustment for anchors that should not land on their exact section boundary. */
-  offset?: number
-}
-
-const SECTION_BOUNDARY_OFFSET = 0
-const PROJECT_CARD_SCROLL_OFFSET = 24
-const DEFAULT_SCROLL_OFFSET = SECTION_BOUNDARY_OFFSET
 const ACTIVE_SECTION_THRESHOLD = 1
 const SIDEBAR_PEEK_MS = 2600
 
-const getAnchorPageTop = (el: HTMLElement) => {
-  let top = 0
-  let node: HTMLElement | null = el
-  while (node) {
-    top += node.offsetTop
-    node = node.offsetParent as HTMLElement | null
+const getTranslateY = (el: HTMLElement) => {
+  const transform = window.getComputedStyle(el).transform
+  if (!transform || transform === 'none') return 0
+
+  const matrix = transform.match(/^matrix\((.+)\)$/)
+  if (matrix) {
+    const values = matrix[1].split(',').map((value) => Number.parseFloat(value.trim()))
+    return Number.isFinite(values[5]) ? values[5] : 0
   }
-  return top
+
+  const matrix3d = transform.match(/^matrix3d\((.+)\)$/)
+  if (matrix3d) {
+    const values = matrix3d[1].split(',').map((value) => Number.parseFloat(value.trim()))
+    return Number.isFinite(values[13]) ? values[13] : 0
+  }
+
+  return 0
 }
 
-const BASE_NAV_LINKS: readonly NavLink[] = [
-  { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line', offset: 0 },
-  { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
-  { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
-  { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
-  { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
-  { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
-  { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
-  { blockId: 'contact', label: 'Contact', href: '#contact', icon: 'ri-mail-line' },
-]
+const getCumulativeTranslateY = (el: HTMLElement) => {
+  let translateY = 0
+  let node: HTMLElement | null = el
+  while (node && node !== document.body) {
+    translateY += getTranslateY(node)
+    node = node.parentElement
+  }
+  return translateY
+}
+
+const getAnchorPageTop = (el: HTMLElement) => {
+  return el.getBoundingClientRect().top + window.scrollY - getCumulativeTranslateY(el)
+}
+
+const getSidebarAnchorElement = (link: SidebarNavLink) => {
+  const anchorId = getSidebarAnchorId(link.href)
+  return (
+    document.querySelector<HTMLElement>(getSidebarAnchorSelector(anchorId)) ??
+    document.getElementById(anchorId)
+  )
+}
+
+const getLinkScrollTop = (link: SidebarNavLink) => {
+  const anchorEl = getSidebarAnchorElement(link)
+  if (!anchorEl) return null
+  return getAnchorPageTop(anchorEl) - SIDEBAR_ANCHOR_VIEWPORT_TOP[link.anchorKind]
+}
 
 type SidebarProps = {
   blockIds?: readonly PortfolioBlockId[]
@@ -56,7 +77,7 @@ export default function Sidebar({
   const [activeSection, setActiveSection] = useState('hero')
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const peekTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const projectNavLinks = useMemo<NavLink[]>(
+  const projectNavLinks = useMemo<SidebarNavLink[]>(
     () =>
       projectIds
         .map((projectId) => PROJECT_OVERVIEWS.find((project) => project.id === projectId))
@@ -66,11 +87,11 @@ export default function Sidebar({
           label: `P${index + 1} ${project.name}`,
           href: `#project-${project.id}`,
           icon: 'ri-folder-2-line',
-          offset: PROJECT_CARD_SCROLL_OFFSET,
+          anchorKind: 'project-card',
         })),
     [projectIds],
   )
-  const navLinks = useMemo<NavLink[]>(() => {
+  const navLinks = useMemo<SidebarNavLink[]>(() => {
     const projectsIndex = BASE_NAV_LINKS.findIndex((link) => link.href === '#projects')
     return [
       ...BASE_NAV_LINKS.slice(0, projectsIndex + 1),
@@ -82,21 +103,16 @@ export default function Sidebar({
     () => navLinks.filter((link) => blockIds.includes(link.blockId)),
     [navLinks, blockIds],
   )
-  const firstVisibleHref = visibleNavLinks[0]?.href ?? '#hero'
+  const firstVisibleLink = visibleNavLinks[0] ?? BASE_NAV_LINKS[0]
   const expanded = hovered || autoPeek
 
   const handleScroll = useCallback(() => {
-    const sectionIds = visibleNavLinks.map((link) => link.href.replace('#', ''))
-    let current = sectionIds[0] ?? 'hero'
-    for (const sectionId of sectionIds) {
-      const el = document.getElementById(sectionId)
-      if (!el) continue
-      const linkOffset =
-        visibleNavLinks.find((link) => link.href === `#${sectionId}`)?.offset ??
-        DEFAULT_SCROLL_OFFSET
-      const targetTop = getAnchorPageTop(el) - linkOffset
+    let current = getSidebarAnchorId(visibleNavLinks[0]?.href ?? '#hero')
+    for (const link of visibleNavLinks) {
+      const targetTop = getLinkScrollTop(link)
+      if (targetTop === null) continue
       if (targetTop - window.scrollY <= ACTIVE_SECTION_THRESHOLD) {
-        current = sectionId
+        current = getSidebarAnchorId(link.href)
       }
     }
     setActiveSection(current)
@@ -153,12 +169,10 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to each link's visual anchor: section boundary for pages, card top for projects. */
-  const scrollTo = (href: string, offset = DEFAULT_SCROLL_OFFSET) => {
-    const sectionId = href.replace('#', '')
-    const el = document.getElementById(sectionId)
-    if (!el) return
-    const top = getAnchorPageTop(el) - offset
+  const scrollTo = (link: SidebarNavLink) => {
+    const sectionId = getSidebarAnchorId(link.href)
+    const top = getLinkScrollTop(link)
+    if (top === null) return
     setActiveSection(sectionId)
     window.scrollTo({ top, behavior: 'smooth' })
   }
@@ -192,7 +206,7 @@ export default function Sidebar({
       >
         {/* Logo row: scrolls to the first block included in the current preset. */}
         <button
-          onClick={() => scrollTo(firstVisibleHref)}
+          onClick={() => scrollTo(firstVisibleLink)}
           aria-label="첫 섹션으로 이동"
           className={`flex h-16 flex-shrink-0 cursor-pointer items-center gap-3 overflow-hidden border-b px-4 text-left transition-colors duration-300 ${dark ? 'border-[#333333]' : 'border-blue-100'}`}
         >
@@ -201,12 +215,12 @@ export default function Sidebar({
         </button>
         <nav className="flex flex-1 flex-col gap-1 overflow-hidden px-2 py-4">
           {visibleNavLinks.map((link) => {
-            const sectionId = link.href.replace('#', '')
+            const sectionId = getSidebarAnchorId(link.href)
             const isActive = activeSection === sectionId
             return (
               <button
                 key={link.href}
-                onClick={() => scrollTo(link.href, link.offset)}
+                onClick={() => scrollTo(link)}
                 aria-label={`${link.label} 섹션으로 이동`}
                 className={`relative flex w-full cursor-pointer items-center gap-3 overflow-hidden whitespace-nowrap rounded-xl px-2 py-2.5 text-left transition-all duration-200 ${
                   isActive

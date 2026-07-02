@@ -22,7 +22,7 @@ export interface ProjectData {
   /** 프로젝트 개요 카드에서 소개 → 성과 → 회고 흐름으로 보여주는 짧은 문구. */
   overviewSummary?: {
     intro: string
-    achievement: string
+    achievement: string | string[]
     reflection: string
   }
   /** 기획·배경 카드 본문 (선택). */

@@ -64,6 +64,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
         <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
           {selectedProjects.map(({ overview: project, detail }) => {
             const overviewSummary = detail?.overviewSummary
+            const projectType = project.badge.split(/\s+/)[0] ?? project.badge
             const summaryRows = overviewSummary
               ? [
                   ['소개', overviewSummary.intro, 'md:min-h-[3rem]'],
@@ -76,40 +77,61 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                 key={project.name}
                 className={`projects-overview-card flex h-full flex-col rounded-xl border p-4 ${
                   dark
-                    ? 'border-[#3d3d3d] bg-[#2a2a2a]'
-                    : 'border-gray-200 bg-white'
+                  ? 'border-[#3d3d3d] bg-[#2a2a2a]'
+                  : 'border-gray-200 bg-white'
                 }`}
               >
-                {/* 아이콘 + 배지 */}
-                <div className="mb-3 flex items-center justify-between">
-                  <i className={`${project.icon} ${project.iconColor} text-2xl`} />
-                  <span className={`rounded-full px-3 py-1 text-xs font-bold text-white ${project.badgeColor}`}>
-                    {project.badge}
+                {/* 아이콘 + 프로젝트명 */}
+                <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                      dark ? 'bg-[#1f2a3d]' : 'bg-blue-50'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <i className={`${project.icon} ${project.iconColor} text-xl`} />
+                  </span>
+                  <h3
+                    className={`text-2xl font-extrabold leading-tight ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}
+                  >
+                    {project.name}
+                  </h3>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-extrabold leading-none text-white ${project.badgeColor}`}
+                  >
+                    {projectType}
                   </span>
                 </div>
-
-                {/* 프로젝트명 */}
-                <h3 className={`mb-2.5 text-2xl font-extrabold ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}>
-                  {project.name}
-                </h3>
 
                 {/* 한 줄 정의 */}
                 <p className={`mb-3 text-base font-semibold leading-relaxed ${dark ? 'text-[#d0d0d0]' : 'text-gray-700'}`}>
                   {project.description}
                 </p>
 
-                {/* 기술 스택 칩 */}
-                <div className="mb-3 flex flex-wrap gap-1.5 md:min-h-[2.125rem]">
-                  {project.tech.map((t) => (
+                {/* 기술 스택 */}
+                <div
+                  className={`mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed ${
+                    dark ? 'text-[#b6c3d8]' : 'text-slate-700'
+                  }`}
+                >
+                  <span
+                    className={`font-extrabold uppercase tracking-[0.14em] ${
+                      dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'
+                    }`}
+                  >
+                    Stack
+                  </span>
+                  {project.tech.map((t, index) => (
                     <span
                       key={t}
-                      className={`rounded border px-2 py-0.5 font-mono text-xs ${
-                        dark
-                          ? 'border-[#444] bg-[#333] text-[#b0b0b0]'
-                          : 'border-gray-200 bg-gray-50 text-gray-600'
-                      }`}
+                      className={`font-mono font-semibold ${dark ? 'text-[#d5dce8]' : 'text-slate-700'}`}
                     >
                       {t}
+                      {index < project.tech.length - 1 ? (
+                        <span className={dark ? 'ml-2 text-[#64748b]' : 'ml-2 text-slate-300'}>
+                          /
+                        </span>
+                      ) : null}
                     </span>
                   ))}
                 </div>
@@ -150,26 +172,28 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                   </div>
                 ) : null}
 
-                {/* 담당 역할 */}
-                <div className={`mb-2 rounded-lg border px-3 py-2 ${dark ? 'border-[#3a3a3a] bg-[#242424]' : 'border-blue-100 bg-blue-50/50'}`}>
-                  <div className="mb-1 flex items-center gap-2">
-                    <i className={`ri-user-settings-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
-                    <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>담당 역할</span>
+                <div className="mt-auto space-y-2">
+                  {/* 담당 역할 */}
+                  <div className={`rounded-lg border px-3 py-2 ${dark ? 'border-[#3a3a3a] bg-[#242424]' : 'border-blue-100 bg-blue-50/50'}`}>
+                    <div className="mb-1 flex items-center gap-2">
+                      <i className={`ri-user-settings-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
+                      <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>담당 역할</span>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}>
+                      {project.role}
+                    </p>
                   </div>
-                  <p className={`text-sm leading-relaxed ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}>
-                    {project.role}
-                  </p>
-                </div>
 
-                {/* 핵심 과제 */}
-                <div className={`rounded-lg p-3 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
-                  <div className="mb-1 flex items-center gap-2">
-                    <i className={`${project.challengeIcon} text-sm ${dark ? 'text-[#888]' : 'text-gray-500'}`} />
-                    <span className={`text-sm font-bold ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}>핵심 과제</span>
+                  {/* 핵심 과제 */}
+                  <div className={`rounded-lg p-3 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
+                    <div className="mb-1 flex items-center gap-2">
+                      <i className={`${project.challengeIcon} text-sm ${dark ? 'text-[#888]' : 'text-gray-500'}`} />
+                      <span className={`text-sm font-bold ${dark ? 'text-[#c8c8c8]' : 'text-gray-700'}`}>핵심 과제</span>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}>
+                      {project.challenge}
+                    </p>
                   </div>
-                  <p className={`text-sm leading-relaxed ${dark ? 'text-[#909090]' : 'text-gray-600'}`}>
-                    {project.challenge}
-                  </p>
                 </div>
               </div>
             )
@@ -178,13 +202,13 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
 
         {testEnvironment ? (
           <div
-            className={`projects-overview-environment mt-5 rounded-xl border px-4 py-3 text-sm ${
+            className={`projects-overview-environment mt-5 rounded-xl border px-4 py-3 text-sm font-medium leading-relaxed shadow-sm ${
               dark
-                ? 'border-[#333333] bg-[#1e1e1e] text-[#9a9a9a]'
-                : 'border-slate-200 bg-white text-slate-500'
+                ? 'border-[#3d5f9f] bg-[#1e2a3a] text-[#dbeafe]'
+                : 'border-blue-200 bg-blue-50/70 text-slate-700'
             }`}
           >
-            <span className={`mr-2 font-semibold ${dark ? 'text-[#d0d0d0]' : 'text-slate-700'}`}>
+            <span className={`mr-2 font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
               🖥️ 로컬 테스트 환경
             </span>
             <span className="whitespace-pre-line">{testEnvironment}</span>
