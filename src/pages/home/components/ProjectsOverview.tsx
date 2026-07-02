@@ -27,11 +27,18 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
         <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
           {selectedProjects.map(({ overview: project, detail }) => {
             const overviewSummary = detail?.overviewSummary
+            const summaryRows = overviewSummary
+              ? [
+                  ['소개', overviewSummary.intro, 'md:min-h-[4.25rem]'],
+                  ['성과', overviewSummary.achievement, 'md:min-h-[5.5rem]'],
+                  ['회고', overviewSummary.reflection, 'md:min-h-[5.5rem]'],
+                ] as const
+              : []
 
             return (
               <div
                 key={project.name}
-                className={`projects-overview-card rounded-xl border p-4 ${
+                className={`projects-overview-card flex h-full flex-col rounded-xl border p-4 ${
                   dark
                     ? 'border-[#3d3d3d] bg-[#2a2a2a]'
                     : 'border-gray-200 bg-white'
@@ -56,7 +63,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                 </p>
 
                 {/* 기술 스택 칩 */}
-                <div className="mb-3 flex flex-wrap gap-1.5">
+                <div className="mb-3 flex flex-wrap gap-1.5 md:min-h-[2.125rem]">
                   {project.tech.map((t) => (
                     <span
                       key={t}
@@ -77,16 +84,12 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                       <i className={`ri-file-text-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
                       <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>요약</span>
                     </div>
-                    <div className="space-y-1.5">
-                      {[
-                        ['소개', overviewSummary.intro],
-                        ['성과', overviewSummary.achievement],
-                        ['회고', overviewSummary.reflection],
-                      ].map(([label, text]) => (
+                    <div className="grid gap-1.5">
+                      {summaryRows.map(([label, text, minHeightClass]) => (
                         <p
                           key={label}
                           lang="ko"
-                          className={`break-keep text-sm leading-relaxed ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}
+                          className={`break-keep text-sm leading-relaxed ${minHeightClass} ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}
                         >
                           <span className={`mr-1.5 font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                             {label}
