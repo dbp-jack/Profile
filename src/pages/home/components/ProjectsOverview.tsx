@@ -6,6 +6,43 @@ type SelectedProjectOverview = {
   detail?: (typeof PROJECTS)[number]
 }
 
+const SUMMARY_HIGHLIGHT_TERMS = [
+  '최대 3,000명',
+  '3,000명',
+  '0건',
+  '6,818ms',
+  '638ms',
+  '91% 단축',
+  'TPS 216% 향상',
+  '216%',
+  '정확한 집계',
+  '사용자 이탈 방지',
+  'UserService→Auth',
+  '결합도 0건',
+  '순환 의존 없음',
+  '배포 영향 범위 축소',
+]
+
+const SUMMARY_HIGHLIGHT_PATTERN = new RegExp(
+  `(${SUMMARY_HIGHLIGHT_TERMS.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
+  'g',
+)
+
+function renderAchievementText(text: string, dark: boolean) {
+  return text.split(SUMMARY_HIGHLIGHT_PATTERN).map((part, index) =>
+    SUMMARY_HIGHLIGHT_TERMS.includes(part) ? (
+      <strong
+        key={`${part}-${index}`}
+        className={dark ? 'font-extrabold text-[#8fb5ff]' : 'font-extrabold text-[#2563EB]'}
+      >
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  )
+}
+
 export default function ProjectsOverview({ projectIds }: { projectIds: readonly string[] }) {
   const { dark } = useDarkMode()
   const selectedProjects = projectIds
@@ -29,9 +66,8 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
             const overviewSummary = detail?.overviewSummary
             const summaryRows = overviewSummary
               ? [
-                  ['소개', overviewSummary.intro, 'md:min-h-[4.25rem]'],
-                  ['성과', overviewSummary.achievement, 'md:min-h-[5.5rem]'],
-                  ['회고', overviewSummary.reflection, 'md:min-h-[5.5rem]'],
+                  ['소개', overviewSummary.intro, 'md:min-h-[3rem]'],
+                  ['성과', overviewSummary.achievement, 'md:min-h-[4.5rem]'],
                 ] as const
               : []
 
@@ -84,18 +120,31 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                       <i className={`ri-file-text-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
                       <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>요약</span>
                     </div>
-                    <div className="grid gap-1.5">
+                    <div className="grid content-start gap-3 md:min-h-[8.75rem]">
                       {summaryRows.map(([label, text, minHeightClass]) => (
-                        <p
+                        <div
                           key={label}
                           lang="ko"
                           className={`break-keep text-sm leading-relaxed ${minHeightClass} ${dark ? 'text-[#b8b8b8]' : 'text-gray-700'}`}
                         >
-                          <span className={`mr-1.5 font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
+                          <div className={`mb-1 font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                             {label}
-                          </span>
-                          {text}
-                        </p>
+                          </div>
+                          {Array.isArray(text) ? (
+                            <ul className="space-y-1">
+                              {text.map((item) => (
+                                <li key={item} className="flex gap-1.5">
+                                  <span className={dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}>-</span>
+                                  <span>{label === '성과' ? renderAchievementText(item, dark) : item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="m-0">
+                              {label === '성과' ? renderAchievementText(text, dark) : text}
+                            </p>
+                          )}
+                        </div>
                       ))}
                     </div>
                   </div>

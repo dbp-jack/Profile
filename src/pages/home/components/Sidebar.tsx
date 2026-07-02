@@ -14,7 +14,9 @@ type NavLink = {
   offset?: number
 }
 
-const DEFAULT_SCROLL_OFFSET = 0
+const SECTION_BOUNDARY_OFFSET = 0
+const PROJECT_CARD_SCROLL_OFFSET = 24
+const DEFAULT_SCROLL_OFFSET = SECTION_BOUNDARY_OFFSET
 const ACTIVE_SECTION_THRESHOLD = 1
 const SIDEBAR_PEEK_MS = 2600
 
@@ -29,7 +31,7 @@ const getAnchorPageTop = (el: HTMLElement) => {
 }
 
 const BASE_NAV_LINKS: readonly NavLink[] = [
-  { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
+  { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line', offset: 0 },
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
   { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
@@ -64,6 +66,7 @@ export default function Sidebar({
           label: `P${index + 1} ${project.name}`,
           href: `#project-${project.id}`,
           icon: 'ri-folder-2-line',
+          offset: PROJECT_CARD_SCROLL_OFFSET,
         })),
     [projectIds],
   )
@@ -87,7 +90,12 @@ export default function Sidebar({
     let current = sectionIds[0] ?? 'hero'
     for (const sectionId of sectionIds) {
       const el = document.getElementById(sectionId)
-      if (el && getAnchorPageTop(el) - window.scrollY <= ACTIVE_SECTION_THRESHOLD) {
+      if (!el) continue
+      const linkOffset =
+        visibleNavLinks.find((link) => link.href === `#${sectionId}`)?.offset ??
+        DEFAULT_SCROLL_OFFSET
+      const targetTop = getAnchorPageTop(el) - linkOffset
+      if (targetTop - window.scrollY <= ACTIVE_SECTION_THRESHOLD) {
         current = sectionId
       }
     }
@@ -145,7 +153,7 @@ export default function Sidebar({
     }, 200)
   }
 
-  /** Smooth-scroll to the section boundary so the color/section break lands exactly at the viewport top. */
+  /** Smooth-scroll to each link's visual anchor: section boundary for pages, card top for projects. */
   const scrollTo = (href: string, offset = DEFAULT_SCROLL_OFFSET) => {
     const sectionId = href.replace('#', '')
     const el = document.getElementById(sectionId)
