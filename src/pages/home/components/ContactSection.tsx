@@ -14,7 +14,7 @@ export default function ContactSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
+      className={`min-h-[calc(100svh+4rem)] py-16 md:py-20 transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
     >
       <div className="mx-auto max-w-5xl px-6">
         <div data-sidebar-anchor="contact" className="mb-8 text-center md:mb-12">
