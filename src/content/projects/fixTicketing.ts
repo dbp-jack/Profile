@@ -14,7 +14,7 @@ export const fixTicketingProject: ProjectData = {
   },
   overviewSummary: {
     intro: '좌석 예약부터 주문·결제까지 이어지는 MSA 티켓팅에서 주문·결제 이벤트 흐름을 담당했습니다.',
-    achievement: 'Kafka 이벤트로 주문 요청과 결제 처리를 분리하고, 결제 실패·취소 시 주문 취소로 이어지는 보상 흐름을 구현했습니다.',
+    achievement: 'Kafka 이벤트로 주문 요청과 결제 처리를 분리하고, 결제 실패·취소 시 주문 취소 보상 흐름을 구현했습니다. 결제 장애가 주문 요청에 직접 전파되는 위험을 낮췄습니다.',
     reflection: '이벤트 설계는 성공 흐름보다 실패 이후 책임과 상태 전이를 먼저 정해야 한다는 회고로 이어졌습니다.',
   },
   serviceOverview:

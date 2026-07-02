@@ -6,7 +6,7 @@ import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 const NUMS = ['01', '02', '03']
 
 const ABOUT_HIGHLIGHTS = [
-  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · SQL <span class="font-black text-[#2563EB]">42회 → 2회 축소</span>',
+  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · 반복 DB 조회 <span class="font-black text-[#2563EB]">42회 → 0회</span>',
   '팀 스프린트 <span class="font-black text-[#2563EB]">가시성 확보</span>',
   '<span class="font-black text-[#2563EB]">기획·설계·개발 단독 주도</span>',
 ] as const
