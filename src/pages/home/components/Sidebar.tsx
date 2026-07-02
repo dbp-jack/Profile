@@ -31,8 +31,8 @@ const getAnchorPageTop = (el: HTMLElement) => {
 const BASE_NAV_LINKS: readonly NavLink[] = [
   { blockId: 'hero', label: 'Hero', href: '#hero', icon: 'ri-home-4-line' },
   { blockId: 'about', label: 'About', href: '#about', icon: 'ri-user-heart-line' },
-  { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration', icon: 'ri-team-line' },
+  { blockId: 'projects', label: 'Projects', href: '#projects', icon: 'ri-code-box-line' },
   { blockId: 'experience', label: 'Experience', href: '#experience', icon: 'ri-time-line' },
   { blockId: 'closing', label: 'Closing', href: '#closing', icon: 'ri-book-open-line' },
   { blockId: 'resources', label: 'Resources', href: '#resources', icon: 'ri-links-line' },
@@ -68,11 +68,11 @@ export default function Sidebar({
     [projectIds],
   )
   const navLinks = useMemo<NavLink[]>(() => {
-    const howIWorkIndex = BASE_NAV_LINKS.findIndex((link) => link.href === '#collaboration')
+    const projectsIndex = BASE_NAV_LINKS.findIndex((link) => link.href === '#projects')
     return [
-      ...BASE_NAV_LINKS.slice(0, howIWorkIndex + 1),
+      ...BASE_NAV_LINKS.slice(0, projectsIndex + 1),
       ...projectNavLinks,
-      ...BASE_NAV_LINKS.slice(howIWorkIndex + 1),
+      ...BASE_NAV_LINKS.slice(projectsIndex + 1),
     ]
   }, [projectNavLinks])
   const visibleNavLinks = useMemo(

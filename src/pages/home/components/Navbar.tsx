@@ -7,6 +7,7 @@ import type { PortfolioBlockId } from '@/portfolio-builder/types'
 const NAV_LINKS = [
   { blockId: 'hero', label: 'Hero', href: '#hero' },
   { blockId: 'about', label: 'About', href: '#about' },
+  { blockId: 'projects', label: 'How I Work', href: '#collaboration' },
   { blockId: 'projects', label: 'Projects', href: '#projects' },
   { blockId: 'experience', label: 'Experience', href: '#experience' },
   { blockId: 'closing', label: '마무리', href: '#closing' },
