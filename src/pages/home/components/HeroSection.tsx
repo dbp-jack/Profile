@@ -12,7 +12,10 @@ export default function HeroSection() {
   const { dark } = useDarkMode()
   const { copyProfile } = usePortfolioComposition()
   const infoRows = HERO_PERSONAL_INFO.filter((item) => !item.href)
-  const githubLink = HERO_PERSONAL_INFO.find((item) => item.href?.includes('github.com'))
+  const externalLinks = HERO_PERSONAL_INFO.filter((item) => item.href).map((item) => ({
+    ...item,
+    label: item.href?.includes('linkedin.com') ? 'LinkedIn' : 'GitHub',
+  }))
 
   return (
     <section
@@ -93,21 +96,26 @@ export default function HeroSection() {
                 ))}
               </ul>
 
-              {githubLink?.href ? (
-                <a
-                  href={githubLink.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-semibold transition-colors ${
-                    dark
-                      ? 'bg-[#303030] text-[#e0e0e0] hover:bg-[#3a3a3a]'
-                      : 'bg-[#F1F5F9] text-[#1E3A5F] shadow-sm hover:bg-[#1E3A5F] hover:text-white'
-                  }`}
-                >
-                  <i className={`${githubLink.icon} text-base`} aria-hidden="true" />
-                  GitHub
-                  <i className="ri-external-link-line text-sm" aria-hidden="true" />
-                </a>
+              {externalLinks.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {externalLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href ?? undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-semibold transition-colors ${
+                        dark
+                          ? 'bg-[#303030] text-[#e0e0e0] hover:bg-[#3a3a3a]'
+                          : 'bg-[#F1F5F9] text-[#1E3A5F] shadow-sm hover:bg-[#1E3A5F] hover:text-white'
+                      }`}
+                    >
+                      <i className={`${link.icon} text-base`} aria-hidden="true" />
+                      {link.label}
+                      <i className="ri-external-link-line text-sm" aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
               ) : null}
             </div>
           </div>
