@@ -192,7 +192,7 @@ export default function PhilosophyClosingSection() {
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
                   <img
-                    src="/bankcow-logo.png"
+                    src={`${import.meta.env.BASE_URL}bankcow-logo.png`}
                     alt="뱅카우 로고"
                     className="h-11 w-11 shrink-0 rounded-xl object-cover"
                   />
