@@ -29,7 +29,7 @@ export default function PhilosophyClosingSection() {
     typeof window === 'undefined'
       ? ''
       : normalizeCompanyParam(new URLSearchParams(window.location.search).get('company'))
-  const showBankcowInsight = BANKCOW_COMPANY_KEYS.has(companyKey)
+  const showBankcowInsight = companyKey === '' || BANKCOW_COMPANY_KEYS.has(companyKey)
 
   const allParagraphs = CLOSING_BLOCKS.map((block) =>
     block.body.split(/\n\n+/).map((p) => p.trim()),
