@@ -514,6 +514,7 @@ export default function ProjectCard({ project, index }: Props) {
   const hasGoal = (project.implementationGoal?.trim() ?? '').length > 0
   const showLegacyContext = !usePlanningVariantTop && (hasPlanning || hasGoal)
   const showContextBlock = usePlanningVariantTop || showLegacyContext
+  const isFeedShopProject = project.id === 'feedshop'
   if (perspectiveSection?.cards?.length) {
     perspectiveSection.cards.forEach((card, cardIdx) => {
       const contextKey = `${project.name}#${card.title || cardIdx}`
@@ -630,12 +631,12 @@ export default function ProjectCard({ project, index }: Props) {
                   <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
-                  <div className="relative mx-auto max-w-5xl">
+                  <div className={`relative mx-auto ${isFeedShopProject ? 'max-w-6xl' : 'max-w-5xl'}`}>
                     <img
                       src={`${__BASE_PATH__}${project.architectureImage.replace(/^\//, '')}`}
                       alt="아키텍처 다이어그램"
                       loading="lazy"
-                      className="mx-auto w-full rounded-xl object-contain md:w-[80%]"
+                      className={`mx-auto w-full rounded-xl object-contain ${isFeedShopProject ? 'md:w-full' : 'md:w-[80%]'}`}
                     />
                   </div>
                   {project.architectureDetails?.length ? (
