@@ -11,9 +11,25 @@ const BANKCOW_INSIGHT_KEYWORDS = [
 
 const BANKCOW_FLOW = ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'] as const
 
+const BANKCOW_COMPANY_KEYS = new Set(['bankcow', 'bancow', 'stockkeeper', 'stock-keeper'])
+
+function normalizeCompanyParam(value: string | null) {
+  return (value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
 export default function PhilosophyClosingSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
+  const companyKey =
+    typeof window === 'undefined'
+      ? ''
+      : normalizeCompanyParam(new URLSearchParams(window.location.search).get('company'))
+  const showBankcowInsight = BANKCOW_COMPANY_KEYS.has(companyKey)
 
   const allParagraphs = CLOSING_BLOCKS.map((block) =>
     block.body.split(/\n\n+/).map((p) => p.trim()),
@@ -164,78 +180,80 @@ export default function PhilosophyClosingSection() {
           </div>
         </div>
 
-        <article
-          className={`mt-10 rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
-            dark
-              ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
-              : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
-          }`}
-        >
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div className="min-w-0">
-              <div className="flex items-center gap-3">
-                <img
-                  src="/bankcow-logo.png"
-                  alt="뱅카우 로고"
-                  className="h-11 w-11 shrink-0 rounded-xl object-cover"
-                />
-                <div>
-                  <p className="text-xl font-black leading-none tracking-normal">bankcow</p>
-                  <p className={`mt-2 text-xs font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
-                    한우 조각투자 플랫폼
-                  </p>
+        {showBankcowInsight && (
+          <article
+            className={`mt-10 rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
+              dark
+                ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
+                : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
+            }`}
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div className="min-w-0">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/bankcow-logo.png"
+                    alt="뱅카우 로고"
+                    className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                  />
+                  <div>
+                    <p className="text-xl font-black leading-none tracking-normal">bankcow</p>
+                    <p className={`mt-2 text-xs font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
+                      한우 조각투자 플랫폼
+                    </p>
+                  </div>
                 </div>
+
+                <p
+                  className={`mt-4 text-sm font-semibold leading-6 break-keep ${
+                    dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                  }`}
+                >
+                  데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한
+                  신뢰 흐름으로 바꾸는 일이라고 이해했습니다.
+                </p>
               </div>
 
-              <p
-                className={`mt-4 text-sm font-semibold leading-6 break-keep ${
-                  dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+              <div
+                className={`rounded-xl border px-4 py-3 text-xs font-semibold leading-5 break-keep md:max-w-[300px] ${
+                  dark ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100' : 'border-emerald-200 bg-emerald-50 text-emerald-900'
                 }`}
               >
-                데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한
-                신뢰 흐름으로 바꾸는 일이라고 이해했습니다.
-              </p>
+                <span className="block font-black">인상 깊었던 글</span>
+                일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.
+              </div>
             </div>
 
             <div
-              className={`rounded-xl border px-4 py-3 text-xs font-semibold leading-5 break-keep md:max-w-[300px] ${
-                dark ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100' : 'border-emerald-200 bg-emerald-50 text-emerald-900'
+              className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
+                dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
               }`}
             >
-              <span className="block font-black">인상 깊었던 글</span>
-              일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.
+              <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
+              {BANKCOW_FLOW.map((step, index) => (
+                <span className="flex items-center gap-2" key={step}>
+                  <span>{step}</span>
+                  {index < BANKCOW_FLOW.length - 1 && (
+                    <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
+                  )}
+                </span>
+              ))}
             </div>
-          </div>
 
-          <div
-            className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
-              dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
-            }`}
-          >
-            <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
-            {BANKCOW_FLOW.map((step, index) => (
-              <span className="flex items-center gap-2" key={step}>
-                <span>{step}</span>
-                {index < BANKCOW_FLOW.length - 1 && (
-                  <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
-                )}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {BANKCOW_INSIGHT_KEYWORDS.map((keyword) => (
-              <span
-                key={keyword}
-                className={`rounded-full px-3 py-1.5 text-xs font-bold ${
-                  dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
-                }`}
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </article>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {BANKCOW_INSIGHT_KEYWORDS.map((keyword) => (
+                <span
+                  key={keyword}
+                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+                    dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
+                  }`}
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          </article>
+        )}
       </div>
     </section>
   )
