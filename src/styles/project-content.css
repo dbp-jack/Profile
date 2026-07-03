@@ -24,6 +24,15 @@
   max-width: 100%;
 }
 
+.architecture-scroll-frame {
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.architecture-scroll-frame img {
+  display: block;
+}
+
 #project-0 .pdf-problem-section-0 {
   padding: 1rem;
 }
@@ -123,6 +132,15 @@
 }
 
 @media (max-width: 640px) {
+  .architecture-scroll-frame {
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+  }
+
+  .architecture-scroll-frame img {
+    scroll-snap-align: start;
+  }
+
   .project-rich-content table {
     min-width: 520px;
   }
@@ -212,4 +230,11 @@
   .project-rich-content table.decision-table td:nth-child(2)::before { content: '장점'; }
   .project-rich-content table.decision-table td:nth-child(3)::before { content: '한계'; }
   .project-rich-content table.decision-table td:nth-child(4)::before { content: '판단'; }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .architecture-scroll-frame img {
+    min-width: 0 !important;
+    width: 100%;
+  }
 }

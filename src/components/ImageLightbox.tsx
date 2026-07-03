@@ -33,26 +33,37 @@ export default function ImageLightbox() {
 
   if (!src) return null
 
+  const isArchitectureImage = /(?:image-1780417036070|m3_infra)/.test(src)
+
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm sm:p-4"
       onClick={() => setSrc(null)}
     >
-      <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+      <button
+        onClick={() => setSrc(null)}
+        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg hover:bg-gray-100 sm:right-4 sm:top-4"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+      <div
+        className={`relative max-h-[90vh] max-w-[94vw] rounded-xl ${
+          isArchitectureImage ? 'overflow-auto' : 'overflow-visible'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <img
           src={src}
           alt={alt}
-          className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+          className={`rounded-xl object-contain shadow-2xl ${
+            isArchitectureImage
+              ? 'block max-h-none w-[56rem] max-w-none sm:max-h-[90vh] sm:w-auto sm:max-w-[90vw]'
+              : 'max-h-[90vh] max-w-[90vw]'
+          }`}
         />
-        <button
-          onClick={() => setSrc(null)}
-          className="absolute -right-3 -top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg hover:bg-gray-100"
-          aria-label="닫기"
-        >
-          ✕
-        </button>
       </div>
-      <p className="absolute bottom-4 text-xs text-white/60">ESC 또는 배경 클릭으로 닫기</p>
+      <p className="pointer-events-none absolute bottom-4 text-xs text-white/60">ESC 또는 배경 클릭으로 닫기</p>
     </div>
   )
 }

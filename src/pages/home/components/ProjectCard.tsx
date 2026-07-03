@@ -515,6 +515,7 @@ export default function ProjectCard({ project, index }: Props) {
   const showLegacyContext = !usePlanningVariantTop && (hasPlanning || hasGoal)
   const showContextBlock = usePlanningVariantTop || showLegacyContext
   const isFeedShopProject = project.id === 'feedshop'
+  const isWideArchitectureProject = isFeedShopProject || project.id === 'three-m'
   if (perspectiveSection?.cards?.length) {
     perspectiveSection.cards.forEach((card, cardIdx) => {
       const contextKey = `${project.name}#${card.title || cardIdx}`
@@ -631,13 +632,19 @@ export default function ProjectCard({ project, index }: Props) {
                   <p className={`mb-2.5 text-lg font-semibold uppercase tracking-wide md:text-xl ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
                     아키텍처
                   </p>
-                  <div className={`relative mx-auto ${isFeedShopProject ? 'max-w-6xl' : 'max-w-5xl'}`}>
-                    <img
-                      src={`${__BASE_PATH__}${project.architectureImage.replace(/^\//, '')}`}
-                      alt="아키텍처 다이어그램"
-                      loading="lazy"
-                      className={`mx-auto w-full rounded-xl object-contain ${isFeedShopProject ? 'md:w-full' : 'md:w-[80%]'}`}
-                    />
+                  <div className={`relative mx-auto ${isWideArchitectureProject ? 'max-w-6xl' : 'max-w-5xl'}`}>
+                    <div className="architecture-scroll-frame -mx-1 overflow-x-auto rounded-xl px-1 pb-2 sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0">
+                      <img
+                        src={`${__BASE_PATH__}${project.architectureImage.replace(/^\//, '')}`}
+                        alt="아키텍처 다이어그램"
+                        loading="lazy"
+                        className={`mx-auto w-full rounded-xl object-contain ${
+                          isWideArchitectureProject
+                            ? 'max-w-none min-w-[42rem] sm:min-w-0 md:w-full'
+                            : 'md:w-[80%]'
+                        }`}
+                      />
+                    </div>
                   </div>
                   {project.architectureDetails?.length ? (
                     <div className="pdf-arch-details mt-2.5 grid grid-cols-1 gap-2">
