@@ -61,14 +61,14 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
     <div id="projects-overview" className={`projects-overview ${dark ? 'bg-[#242424]' : 'bg-white'} pb-10 md:pb-12`}>
       <div className="mx-auto max-w-5xl px-6">
         {/* 프로젝트 개요 카드 */}
-        <div className="projects-overview-grid grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="projects-overview-grid grid grid-cols-1 gap-4 lg:grid-cols-2">
           {selectedProjects.map(({ overview: project, detail }) => {
             const overviewSummary = detail?.overviewSummary
             const projectType = project.badge.split(/\s+/)[0] ?? project.badge
             const summaryRows = overviewSummary
               ? [
-                  ['소개', overviewSummary.intro, 'md:min-h-[3rem]'],
-                  ['성과', overviewSummary.achievement, 'md:min-h-[4.5rem]'],
+                  ['소개', overviewSummary.intro, 'lg:min-h-[3rem]'],
+                  ['성과', overviewSummary.achievement, 'lg:min-h-[4.5rem]'],
                 ] as const
               : []
 
@@ -142,7 +142,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                       <i className={`ri-file-text-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
                       <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>요약</span>
                     </div>
-                    <div className="grid content-start gap-3 md:min-h-[8.75rem]">
+                    <div className="grid content-start gap-3 lg:min-h-[8.75rem]">
                       {summaryRows.map(([label, text, minHeightClass]) => (
                         <div
                           key={label}

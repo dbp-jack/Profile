@@ -131,7 +131,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .architecture-scroll-frame {
     overscroll-behavior-x: contain;
     scroll-snap-type: x proximity;
@@ -139,18 +139,6 @@
 
   .architecture-scroll-frame img {
     scroll-snap-align: start;
-  }
-
-  .project-rich-content table {
-    min-width: 520px;
-  }
-
-  .project-rich-content th,
-  .project-rich-content td {
-    white-space: nowrap;
-    font-size: 0.75rem;
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
   }
 
   .project-rich-content img {
@@ -169,12 +157,16 @@
     line-height: 1.45;
   }
 
-  .project-rich-content table.decision-table {
+  .project-rich-content table {
     display: block;
-    min-width: 0;
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: auto !important;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
-  .project-rich-content table.decision-table thead {
+  .project-rich-content table thead {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -183,14 +175,14 @@
     white-space: nowrap;
   }
 
-  .project-rich-content table.decision-table tbody {
+  .project-rich-content table tbody {
     display: grid;
     gap: 0.55rem;
     padding: 0.65rem;
     background: transparent;
   }
 
-  .project-rich-content table.decision-table tr {
+  .project-rich-content table tr {
     display: block;
     overflow: hidden;
     border: 1px solid rgb(226 232 240);
@@ -201,35 +193,49 @@
     border-color: #45454d;
   }
 
-  .project-rich-content table.decision-table td {
+  .dark .project-rich-content table tr {
+    border-color: #45454d;
+  }
+
+  .project-rich-content table td {
     display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
+    grid-template-columns: minmax(4.75rem, 34%) minmax(0, 1fr);
     gap: 0.65rem;
     align-items: start;
     padding: 0.5rem 0.7rem !important;
     border-top: 1px solid rgb(226 232 240);
     white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
     line-height: 1.45;
+    font-size: 0.78rem;
   }
 
-  .project-rich-content table.decision-table td:first-child {
+  .project-rich-content table td:first-child {
     border-top: 0;
   }
 
-  .dark .project-rich-content table.decision-table td {
+  .dark .project-rich-content table td {
     border-color: #45454d;
   }
 
-  .project-rich-content table.decision-table td::before {
+  .project-rich-content table td::before {
+    content: '항목';
     color: rgb(100 116 139);
     font-size: 0.68rem;
     font-weight: 800;
+    line-height: 1.35;
   }
 
-  .project-rich-content table.decision-table td:nth-child(1)::before { content: '검토안'; }
-  .project-rich-content table.decision-table td:nth-child(2)::before { content: '장점'; }
-  .project-rich-content table.decision-table td:nth-child(3)::before { content: '한계'; }
-  .project-rich-content table.decision-table td:nth-child(4)::before { content: '판단'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(1)::before { content: '검토안'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(2)::before { content: '장점'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(3)::before { content: '검토 사항'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(4)::before { content: '판단'; }
+
+  .pdf-problem-row-result .project-rich-content table td:nth-child(1)::before { content: '항목'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(2)::before { content: 'Before'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(3)::before { content: 'After'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(4)::before { content: '개선 결과'; }
 }
 
 @media (min-width: 641px) and (max-width: 1023px) {
@@ -237,4 +243,80 @@
     min-width: 0 !important;
     width: 100%;
   }
+
+  .project-rich-content table {
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: auto !important;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .project-rich-content table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .project-rich-content table tbody {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.75rem;
+    background: transparent;
+  }
+
+  .project-rich-content table tr {
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 0.75rem;
+  }
+
+  .dark .project-rich-content table tr {
+    border-color: #45454d;
+  }
+
+  .project-rich-content table td {
+    display: grid;
+    grid-template-columns: minmax(6rem, 28%) minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: start;
+    padding: 0.6rem 0.8rem !important;
+    border-top: 1px solid rgb(226 232 240);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+    line-height: 1.5;
+    font-size: 0.9rem;
+  }
+
+  .project-rich-content table td:first-child {
+    border-top: 0;
+  }
+
+  .dark .project-rich-content table td {
+    border-color: #45454d;
+  }
+
+  .project-rich-content table td::before {
+    content: '항목';
+    color: rgb(100 116 139);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(1)::before { content: '검토안'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(2)::before { content: '장점'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(3)::before { content: '검토 사항'; }
+  .pdf-problem-row-thinking .project-rich-content table td:nth-child(4)::before { content: '판단'; }
+
+  .pdf-problem-row-result .project-rich-content table td:nth-child(1)::before { content: '항목'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(2)::before { content: 'Before'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(3)::before { content: 'After'; }
+  .pdf-problem-row-result .project-rich-content table td:nth-child(4)::before { content: '개선 결과'; }
 }

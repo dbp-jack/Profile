@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { HERO_NAME } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { PORTFOLIO_MANAGER_ENABLED } from '@/portfolio-builder/access'
 import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId } from '@/portfolio-builder/types'
 
@@ -81,7 +83,7 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
           {HERO_NAME}
         </span>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-8 lg:flex">
           {visibleNavLinks.map((link) => {
             const isActive = activeSection === link.href.replace('#', '')
             return (
@@ -118,7 +120,7 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
           <button
             aria-label="Toggle menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex cursor-pointer flex-col gap-1.5 p-1 md:hidden"
+            className="flex cursor-pointer flex-col gap-1.5 p-1 lg:hidden"
           >
             <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
             <span className={`block h-0.5 w-6 transition-all duration-300 ${hamburgerColor} ${menuOpen ? 'opacity-0' : ''}`} />
@@ -128,7 +130,7 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
       </div>
 
       {menuOpen && (
-        <div className={`border-t shadow-sm md:hidden ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}>
+        <div className={`border-t shadow-sm lg:hidden ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-gray-100 bg-white'}`}>
           {visibleNavLinks.map((link) => (
             <button
               key={link.href}
@@ -142,6 +144,32 @@ export default function Navbar({ blockIds = DEFAULT_PUBLIC_PRESET.blocks }: Navb
               {link.label}
             </button>
           ))}
+          <div className={`grid gap-2 border-t px-6 py-3 ${dark ? 'border-[#333333]' : 'border-gray-100'}`}>
+            <Link
+              to="/pdf"
+              onClick={() => setMenuOpen(false)}
+              className={`flex h-10 items-center justify-center rounded-lg text-sm font-bold transition-colors ${
+                dark
+                  ? 'bg-[#334155] text-gray-100 hover:bg-[#475569]'
+                  : 'bg-[#1E3A5F] text-white hover:bg-[#152a45]'
+              }`}
+            >
+              PDF 보기
+            </Link>
+            {PORTFOLIO_MANAGER_ENABLED ? (
+              <Link
+                to="/manage"
+                onClick={() => setMenuOpen(false)}
+                className={`flex h-10 items-center justify-center rounded-lg border text-sm font-bold transition-colors ${
+                  dark
+                    ? 'border-[#475569] text-[#dbeafe] hover:bg-[#2a2a2a]'
+                    : 'border-slate-200 text-[#1E3A5F] hover:bg-slate-50'
+                }`}
+              >
+                관리
+              </Link>
+            ) : null}
+          </div>
         </div>
       )}
     </nav>

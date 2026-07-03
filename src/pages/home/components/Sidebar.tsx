@@ -190,12 +190,12 @@ export default function Sidebar({
         Dual-zone hover: invisible strip (sibling) catches the left screen edge; <aside> is the real bar.
         Both sit as direct children of this Fragment (<>…</>).
       */}
-      <div className="fixed left-0 top-0 z-50 hidden h-full w-4 md:block" onMouseEnter={handleMouseEnter} />
+      <div className="fixed left-0 top-0 z-50 hidden h-full w-4 lg:block" onMouseEnter={handleMouseEnter} />
       <button
         type="button"
         onClick={handleMouseEnter}
         aria-label="포트폴리오 목차 열기"
-        className={`fixed left-[4.75rem] top-4 z-50 hidden items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-extrabold shadow-lg transition-all duration-300 md:inline-flex ${
+        className={`fixed left-[4.75rem] top-4 z-50 hidden items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-extrabold shadow-lg transition-all duration-300 lg:inline-flex ${
           expanded
             ? 'pointer-events-none -translate-x-2 opacity-0'
             : dark
@@ -207,7 +207,7 @@ export default function Sidebar({
         포트폴리오 목차
       </button>
       <aside
-        className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out md:flex ${expanded ? 'w-56 shadow-2xl' : 'w-16 shadow-[8px_0_24px_rgba(30,58,95,0.08)]'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-blue-100 bg-white'}`}
+        className={`fixed left-0 top-0 z-40 hidden h-full flex-col overflow-hidden border-r transition-all duration-300 ease-in-out lg:flex ${expanded ? 'w-56 shadow-2xl' : 'w-16 shadow-[8px_0_24px_rgba(30,58,95,0.08)]'} ${dark ? 'border-[#333333] bg-[#1e1e1e]' : 'border-blue-100 bg-white'}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
