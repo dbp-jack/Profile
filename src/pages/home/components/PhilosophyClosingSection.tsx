@@ -2,6 +2,15 @@ import { CLOSING_BLOCKS, CLOSING_SECTION } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
 
+const BANKCOW_INSIGHT_KEYWORDS = [
+  '데이터는 고객의 자산',
+  '깊은 도메인 이해',
+  '프로세스와 개발 로직',
+  '끝까지 마무리하는 태도',
+] as const
+
+const BANKCOW_FLOW = ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'] as const
+
 export default function PhilosophyClosingSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
@@ -21,7 +30,7 @@ export default function PhilosophyClosingSection() {
         transform: visible ? 'translateY(0)' : 'translateY(32px)',
         transition: 'opacity 0.7s ease, transform 0.7s ease',
       }}
-      className={`border-t py-20 md:py-24 transition-colors duration-300 ${
+      className={`border-t py-20 transition-colors duration-300 md:py-24 ${
         dark ? 'border-[#3d3d3d] bg-[#242424]' : 'border-gray-200 bg-white'
       }`}
     >
@@ -29,23 +38,28 @@ export default function PhilosophyClosingSection() {
         <div className="pdf-closing-bunch">
           <div data-sidebar-anchor="closing" className="mb-8 text-center md:mb-12">
             <span
-              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
+              className={`mb-3 inline-block text-sm font-semibold uppercase tracking-[0.2em] ${
+                dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'
+              }`}
             >
               {CLOSING_SECTION.kicker}
             </span>
             <h2
-              className={`break-keep text-3xl font-bold tracking-tight text-balance md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+              className={`break-keep text-3xl font-bold tracking-tight text-balance md:text-4xl ${
+                dark ? 'text-[#e8e8e8]' : 'text-gray-900'
+              }`}
             >
               {CLOSING_SECTION.title}
             </h2>
             <p
-              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed break-keep md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}
+              className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed break-keep md:text-base ${
+                dark ? 'text-[#d1d5db]' : 'text-slate-800'
+              }`}
             >
               {CLOSING_SECTION.subtitle}
             </p>
           </div>
 
-          {/* 헤더 행 */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {CLOSING_BLOCKS.map((block) => (
               <div
@@ -71,12 +85,16 @@ export default function PhilosophyClosingSection() {
                     </div>
                     <div className="min-w-0 pt-0.5">
                       <p
-                        className={`text-[0.6875rem] font-semibold uppercase tracking-[0.14em] ${dark ? 'text-[#8aa8e8]' : 'text-[#3730a3]'}`}
+                        className={`text-[0.6875rem] font-semibold uppercase tracking-[0.14em] ${
+                          dark ? 'text-[#8aa8e8]' : 'text-[#3730a3]'
+                        }`}
                       >
                         {block.titleEn}
                       </p>
                       <h3
-                        className={`mt-1 text-lg font-extrabold leading-snug tracking-tight break-keep md:text-xl ${dark ? 'text-[#f4f4f4]' : 'text-gray-900'}`}
+                        className={`mt-1 text-lg font-extrabold leading-snug tracking-tight break-keep md:text-xl ${
+                          dark ? 'text-[#f4f4f4]' : 'text-gray-900'
+                        }`}
                       >
                         {block.titleKo}
                       </h3>
@@ -86,7 +104,6 @@ export default function PhilosophyClosingSection() {
               </div>
             ))}
 
-            {/* 서브카드 행 — 열별로 높이 자동 정렬 */}
             {Array.from({ length: maxRows }).map((_, rowIdx) =>
               CLOSING_BLOCKS.map((block, colIdx) => {
                 const para = allParagraphs[colIdx][rowIdx]
@@ -146,6 +163,79 @@ export default function PhilosophyClosingSection() {
             )}
           </div>
         </div>
+
+        <article
+          className={`mt-10 rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
+            dark
+              ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
+              : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
+          }`}
+        >
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="min-w-0">
+              <div className="flex items-center gap-3">
+                <img
+                  src="/bankcow-logo.png"
+                  alt="뱅카우 로고"
+                  className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                />
+                <div>
+                  <p className="text-xl font-black leading-none tracking-normal">bankcow</p>
+                  <p className={`mt-2 text-xs font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
+                    한우 조각투자 플랫폼
+                  </p>
+                </div>
+              </div>
+
+              <p
+                className={`mt-4 text-sm font-semibold leading-6 break-keep ${
+                  dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+                }`}
+              >
+                데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한
+                신뢰 흐름으로 바꾸는 일이라고 이해했습니다.
+              </p>
+            </div>
+
+            <div
+              className={`rounded-xl border px-4 py-3 text-xs font-semibold leading-5 break-keep md:max-w-[300px] ${
+                dark ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100' : 'border-emerald-200 bg-emerald-50 text-emerald-900'
+              }`}
+            >
+              <span className="block font-black">인상 깊었던 글</span>
+              일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.
+            </div>
+          </div>
+
+          <div
+            className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
+              dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
+            }`}
+          >
+            <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
+            {BANKCOW_FLOW.map((step, index) => (
+              <span className="flex items-center gap-2" key={step}>
+                <span>{step}</span>
+                {index < BANKCOW_FLOW.length - 1 && (
+                  <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
+                )}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {BANKCOW_INSIGHT_KEYWORDS.map((keyword) => (
+              <span
+                key={keyword}
+                className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+                  dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
+                }`}
+              >
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </article>
       </div>
     </section>
   )

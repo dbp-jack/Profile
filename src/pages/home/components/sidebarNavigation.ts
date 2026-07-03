@@ -47,17 +47,17 @@ export const BASE_NAV_LINKS: readonly SidebarNavLink[] = [
     anchorKind: 'section-heading',
   },
   {
-    blockId: 'experience',
-    label: 'Experience',
-    href: '#experience',
-    icon: 'ri-time-line',
-    anchorKind: 'section-heading',
-  },
-  {
     blockId: 'closing',
     label: 'Closing',
     href: '#closing',
     icon: 'ri-book-open-line',
+    anchorKind: 'section-heading',
+  },
+  {
+    blockId: 'experience',
+    label: 'Experience',
+    href: '#experience',
+    icon: 'ri-time-line',
     anchorKind: 'section-heading',
   },
   {

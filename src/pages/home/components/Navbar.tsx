@@ -11,8 +11,8 @@ const NAV_LINKS = [
   { blockId: 'about', label: 'About', href: '#about' },
   { blockId: 'projects', label: 'How I Work', href: '#collaboration' },
   { blockId: 'projects', label: 'Projects', href: '#projects' },
-  { blockId: 'experience', label: 'Experience', href: '#experience' },
   { blockId: 'closing', label: '마무리', href: '#closing' },
+  { blockId: 'experience', label: 'Experience', href: '#experience' },
   { blockId: 'resources', label: 'Resources', href: '#resources' },
   { blockId: 'contact', label: 'Contact', href: '#contact' },
 ] as const satisfies readonly {
