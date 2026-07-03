@@ -110,6 +110,18 @@
   gap: 0.4rem;
 }
 
+@media (min-width: 1024px) {
+  #project-1 .pdf-problem-row-solution .project-rich-content img[alt='개선 전 검토 구조 - Auth/User 책임 혼재'],
+  #project-1 .pdf-problem-row-solution .project-rich-content img[alt='Auth/User 도메인 분리 클래스 구조'],
+  #project-1 .pdf-problem-row-solution .project-rich-content img[alt='개선 후 Auth/User 도메인 분리 클래스 구조'] {
+    width: 100%;
+    height: clamp(18rem, 23vw, 22rem);
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+  }
+}
+
 @media (max-width: 640px) {
   .project-rich-content table {
     min-width: 520px;

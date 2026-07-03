@@ -16,7 +16,7 @@ export const feedShopProject: ProjectData = {
     overviewSummary: {
       intro: '구매 이후 재방문을 만드는 패션 커머스에서 이벤트·피드 도메인과 배포/운영을 맡았습니다.',
       achievement: [
-        '동시 투표 TOCTOU 문제를 해결해, 최대 3,000명 구간 오류·중복 저장 0건으로 정확한 집계 확보',
+        '동시 투표 TOCTOU 문제를 해결해, 최대 3,000명 구간 HTTP 오류·DB 중복 저장 0건으로 투표 수 정합성 유지',
         '이벤트 목록 N+1 병목을 개선해, 6,818ms → 638ms(91% 단축)·TPS 216% 향상으로 사용자 이탈 방지',
       ],
       reflection: '병목 레이어와 검증 지표를 먼저 정해야 개선 결과를 설득할 수 있었습니다.',
