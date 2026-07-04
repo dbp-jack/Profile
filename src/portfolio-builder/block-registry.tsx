@@ -20,14 +20,14 @@ export type PortfolioBlockDefinition = {
 export const PORTFOLIO_BLOCK_REGISTRY: Record<PortfolioBlockId, PortfolioBlockDefinition> = {
   hero: {
     id: 'hero',
-    label: 'Hero',
+    label: 'Profile',
     description: '이름, 핵심 메시지, 연락처와 기술 스택',
     component: HeroSection,
     placement: 'main',
   },
   about: {
     id: 'about',
-    label: 'About',
+    label: 'Strengths',
     description: '문제 해결, 협업, 책임감',
     component: AboutSection,
     placement: 'main',
@@ -48,8 +48,8 @@ export const PORTFOLIO_BLOCK_REGISTRY: Record<PortfolioBlockId, PortfolioBlockDe
   },
   closing: {
     id: 'closing',
-    label: 'Closing',
-    description: '개발 철학과 성장 방향',
+    label: 'Direction',
+    description: '개발 철학, 성장 방향과 기업 이해',
     component: PhilosophyClosingSection,
     placement: 'main',
   },

@@ -2,16 +2,33 @@ import { CLOSING_BLOCKS, CLOSING_SECTION } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
 
-const BANKCOW_INSIGHT_KEYWORDS = [
-  '데이터는 고객의 자산',
-  '깊은 도메인 이해',
-  '프로세스와 개발 로직',
-  '끝까지 마무리하는 태도',
-] as const
-
-const BANKCOW_FLOW = ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'] as const
-
 const BANKCOW_COMPANY_KEYS = new Set(['bankcow', 'bancow', 'stockkeeper', 'stock-keeper'])
+
+type CompanyInsight = {
+  brand: string
+  label: string
+  summary: string
+  noteTitle: string
+  noteBody: string
+  keywords: readonly string[]
+  flow: readonly string[]
+  logoSrc?: string
+  logoAlt: string
+}
+
+const BANKCOW_INSIGHT: CompanyInsight = {
+  brand: 'bankcow',
+  label: '한우 조각투자 플랫폼',
+  summary:
+    '데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한 신뢰 흐름으로 바꾸는 일이라고 이해했습니다.',
+  noteTitle: '인상 깊었던 글',
+  noteBody:
+    '일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.',
+  keywords: ['데이터는 고객의 자산', '깊은 도메인 이해', '프로세스와 개발 로직', '끝까지 마무리하는 태도'],
+  flow: ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'],
+  logoSrc: `${import.meta.env.BASE_URL}bankcow-logo.png`,
+  logoAlt: '뱅카우 로고',
+}
 
 function normalizeCompanyParam(value: string | null) {
   return (value ?? '')
@@ -22,14 +39,55 @@ function normalizeCompanyParam(value: string | null) {
     .replace(/^-|-$/g, '')
 }
 
+function getListParam(params: URLSearchParams, key: string, fallback: readonly string[]) {
+  const value = params.get(key)
+  if (!value) return fallback
+  const items = value
+    .split('|')
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 6)
+  return items.length > 0 ? items : fallback
+}
+
+function getCompanyInsightFromSearch(search: string): CompanyInsight | null {
+  const params = new URLSearchParams(search)
+  const companyKey = normalizeCompanyParam(params.get('company'))
+  const hasCustomInsight = params.get('ci') === '1'
+
+  if (hasCustomInsight && companyKey) {
+    const brand = params.get('cname')?.trim() || companyKey
+    const label = params.get('clabel')?.trim() || '기업 맞춤 포트폴리오'
+    const summary = params.get('cbody')?.trim()
+    const noteBody = params.get('note')?.trim()
+
+    if (!summary && !noteBody) return null
+
+    return {
+      brand,
+      label,
+      summary: summary || `${brand}의 문제를 백엔드 관점으로 이해하고 연결하겠습니다.`,
+      noteTitle: params.get('noteTitle')?.trim() || '기업 이해 메모',
+      noteBody: noteBody || '도메인과 사용자 흐름을 함께 이해하는 개발자로 접근하겠습니다.',
+      keywords: getListParam(params, 'keywords', ['도메인 이해', '신뢰 설계', '데이터 일관성']),
+      flow: getListParam(params, 'flow', []),
+      logoSrc: params.get('logo')?.trim() || undefined,
+      logoAlt: `${brand} 로고`,
+    }
+  }
+
+  if (companyKey === '' || BANKCOW_COMPANY_KEYS.has(companyKey)) {
+    return BANKCOW_INSIGHT
+  }
+
+  return null
+}
+
 export default function PhilosophyClosingSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
-  const companyKey =
-    typeof window === 'undefined'
-      ? ''
-      : normalizeCompanyParam(new URLSearchParams(window.location.search).get('company'))
-  const showBankcowInsight = companyKey === '' || BANKCOW_COMPANY_KEYS.has(companyKey)
+  const companyInsight =
+    typeof window === 'undefined' ? null : getCompanyInsightFromSearch(window.location.search)
 
   const allParagraphs = CLOSING_BLOCKS.map((block) =>
     block.body.split(/\n\n+/).map((p) => p.trim()),
@@ -180,7 +238,7 @@ export default function PhilosophyClosingSection() {
           </div>
         </div>
 
-        {showBankcowInsight && (
+        {companyInsight && (
           <article
             className={`mt-10 rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
               dark
@@ -191,15 +249,21 @@ export default function PhilosophyClosingSection() {
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={`${import.meta.env.BASE_URL}bankcow-logo.png`}
-                    alt="뱅카우 로고"
-                    className="h-11 w-11 shrink-0 rounded-xl object-cover"
-                  />
+                  {companyInsight.logoSrc ? (
+                    <img
+                      src={companyInsight.logoSrc}
+                      alt={companyInsight.logoAlt}
+                      className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2563EB] text-lg font-black text-white">
+                      {companyInsight.brand.slice(0, 1).toUpperCase()}
+                    </div>
+                  )}
                   <div>
-                    <p className="text-xl font-black leading-none tracking-normal">bankcow</p>
+                    <p className="text-xl font-black leading-none tracking-normal">{companyInsight.brand}</p>
                     <p className={`mt-2 text-xs font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
-                      한우 조각투자 플랫폼
+                      {companyInsight.label}
                     </p>
                   </div>
                 </div>
@@ -209,8 +273,7 @@ export default function PhilosophyClosingSection() {
                     dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                   }`}
                 >
-                  데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한
-                  신뢰 흐름으로 바꾸는 일이라고 이해했습니다.
+                  {companyInsight.summary}
                 </p>
               </div>
 
@@ -219,29 +282,31 @@ export default function PhilosophyClosingSection() {
                   dark ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100' : 'border-emerald-200 bg-emerald-50 text-emerald-900'
                 }`}
               >
-                <span className="block font-black">인상 깊었던 글</span>
-                일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.
+                <span className="block font-black">{companyInsight.noteTitle}</span>
+                {companyInsight.noteBody}
               </div>
             </div>
 
-            <div
-              className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
-                dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
-              }`}
-            >
-              <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
-              {BANKCOW_FLOW.map((step, index) => (
-                <span className="flex items-center gap-2" key={step}>
-                  <span>{step}</span>
-                  {index < BANKCOW_FLOW.length - 1 && (
-                    <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
-                  )}
-                </span>
-              ))}
-            </div>
+            {companyInsight.flow.length > 0 && (
+              <div
+                className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
+                  dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
+                }`}
+              >
+                <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
+                {companyInsight.flow.map((step, index) => (
+                  <span className="flex items-center gap-2" key={step}>
+                    <span>{step}</span>
+                    {index < companyInsight.flow.length - 1 && (
+                      <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
+                    )}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {BANKCOW_INSIGHT_KEYWORDS.map((keyword) => (
+              {companyInsight.keywords.map((keyword) => (
                 <span
                   key={keyword}
                   className={`rounded-full px-3 py-1.5 text-xs font-bold ${

@@ -20,21 +20,21 @@ export const SIDEBAR_ANCHOR_VIEWPORT_TOP: Record<SidebarAnchorKind, number> = {
 export const BASE_NAV_LINKS: readonly SidebarNavLink[] = [
   {
     blockId: 'hero',
-    label: 'Hero',
+    label: 'Profile',
     href: '#hero',
     icon: 'ri-home-4-line',
     anchorKind: 'hero-content',
   },
   {
     blockId: 'about',
-    label: 'About',
+    label: 'Strengths',
     href: '#about',
     icon: 'ri-user-heart-line',
     anchorKind: 'section-heading',
   },
   {
     blockId: 'projects',
-    label: 'How I Work',
+    label: 'Work Style',
     href: '#collaboration',
     icon: 'ri-team-line',
     anchorKind: 'section-heading',
@@ -48,9 +48,9 @@ export const BASE_NAV_LINKS: readonly SidebarNavLink[] = [
   },
   {
     blockId: 'closing',
-    label: 'Closing',
+    label: 'Direction',
     href: '#closing',
-    icon: 'ri-book-open-line',
+    icon: 'ri-compass-3-line',
     anchorKind: 'section-heading',
   },
   {

@@ -7,11 +7,11 @@ import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId } from '@/portfolio-builder/types'
 
 const NAV_LINKS = [
-  { blockId: 'hero', label: 'Hero', href: '#hero' },
-  { blockId: 'about', label: 'About', href: '#about' },
-  { blockId: 'projects', label: 'How I Work', href: '#collaboration' },
+  { blockId: 'hero', label: 'Profile', href: '#hero' },
+  { blockId: 'about', label: 'Strengths', href: '#about' },
+  { blockId: 'projects', label: 'Work Style', href: '#collaboration' },
   { blockId: 'projects', label: 'Projects', href: '#projects' },
-  { blockId: 'closing', label: '마무리', href: '#closing' },
+  { blockId: 'closing', label: 'Direction', href: '#closing' },
   { blockId: 'experience', label: 'Experience', href: '#experience' },
   { blockId: 'resources', label: 'Resources', href: '#resources' },
   { blockId: 'contact', label: 'Contact', href: '#contact' },
