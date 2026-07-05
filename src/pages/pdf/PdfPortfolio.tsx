@@ -1799,99 +1799,116 @@ function M3ProblemThinkingSlide() {
 function M3SolutionSlide() {
   return (
     <Slide eyebrow="3M" title="Solution" subtitle="서비스 경계 분리와 인증 흐름 단순화" dense>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, height: '100%' }}>
-        <Panel pad={14} background={white} accent={blue}>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%', minHeight: 0 }}>
+        <Panel pad={13} background={white} accent={blue}>
           <SectionLabel>Solution 1</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10, height: '100%' }}>
-            <div>
-              <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
-                1단계 — 서비스 경계 분리
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 10, height: '100%', minHeight: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.7fr 1fr', gap: 12, alignItems: 'end' }}>
+              <div>
+                <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
+                  1단계 — Auth/User 서비스 경계 분리
+                </div>
+                <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 780 }}>
+                  책임이 섞인 구조와 분리 후 구조를 함께 비교해, 인증 변경 영향 범위를 줄이는 방향으로 정리했습니다.
+                </div>
               </div>
-              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.42, fontWeight: 780 }}>
-                인증은 <strong>Auth</strong> 모듈, 사용자 관리는 <strong>User</strong> 모듈로 분리해 서비스 경계를 명확히 했습니다.
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                {[
+                  ['Auth', '로그인·회원가입·JWT 발급'],
+                  ['User', '사용자 정보·권한 관리'],
+                ].map(([label, text]) => (
+                  <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '9px 11px' }}>
+                    <div style={{ color: blue, fontSize: 11.6, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                    <div style={{ color: navy, fontSize: 11.7, lineHeight: 1.32, fontWeight: 800 }}>{text}</div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 10, minHeight: 0 }}>
               {[
-                ['Auth', '로그인/회원가입 처리'],
-                ['JWT', 'access/refresh 발급 · userId · role 포함'],
-              ].map(([label, text]) => (
-                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '11px 12px' }}>
-                  <div style={{ color: blue, fontSize: 12, fontWeight: 950, marginBottom: 4 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 12.3, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
+                {
+                  label: '개선 전',
+                  title: 'Auth/User 책임 혼재',
+                  src: '3m-auth-user-before-class-diagram.png',
+                  caption: '인증 처리와 사용자 정보 조회가 같은 서비스 책임에 섞여 변경 영향이 커질 수 있음',
+                  tone: red,
+                  bg: '#fff7f7',
+                  border: '#fecaca',
+                },
+                {
+                  label: '개선 후',
+                  title: 'Auth/User 서비스 경계 분리',
+                  src: '3m-auth-user-after-class-diagram-final.png',
+                  caption: 'Auth는 인증 최소 정보만 보관하고, User와는 Feign 기반 단방향 통신으로 분리',
+                  tone: blue,
+                  bg: '#eff6ff',
+                  border: '#bfdbfe',
+                },
+              ].map((item) => (
+                <div key={item.label} style={{ minHeight: 0, border: `1px solid ${item.border}`, borderRadius: 12, background: item.bg, padding: '9px 10px 8px', display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 7 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10 }}>
+                    <div style={{ color: item.tone, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.label}</div>
+                    <div style={{ color: navy, fontSize: 12.4, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</div>
+                  </div>
+                  <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 9, background: white, padding: 5, display: 'grid', placeItems: 'center' }}>
+                    <img
+                      src={asset(item.src)}
+                      alt={item.title}
+                      style={{ width: '100%', height: '100%', maxHeight: '65mm', objectFit: 'contain', display: 'block' }}
+                    />
+                  </div>
+                  <div style={{ color: slate, fontSize: 10.2, lineHeight: 1.28, fontWeight: 780 }}>
+                    {item.caption}
+                  </div>
                 </div>
               ))}
-            </div>
-            <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 12, background: soft, padding: '7px 8px 8px', display: 'grid', gridTemplateRows: '1fr auto', gap: 6 }}>
-              <img
-                src={asset('3m-auth-user-class-diagram.png')}
-                alt="Auth/User 도메인 분리 클래스 구조"
-                style={{ width: '100%', height: '100%', maxHeight: '68mm', objectFit: 'contain', display: 'block' }}
-              />
-              <div style={{ color: muted, fontSize: 10.3, lineHeight: 1.22, fontWeight: 720, textAlign: 'right' }}>
-                Auth/User 도메인 분리 클래스 구조 — Auth는 인증에 필요한 최소 정보만 보관, Feign으로 단방향 통신
-              </div>
             </div>
           </div>
         </Panel>
-        <Panel pad={14} background={white} accent={blue}>
+        <Panel pad={12} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.78fr 1.22fr', gap: 12, alignItems: 'center' }}>
             <div>
-              <div style={{ color: navy, fontSize: 18, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
+              <div style={{ color: navy, fontSize: 17, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
                 2단계 — 인증 흐름 단순화
               </div>
-              <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.38, fontWeight: 780 }}>
-                Gateway 인증 필터에서 JWT를 검증하고 <strong>X-User-*</strong> 헤더로 사용자 컨텍스트를 전달했습니다.
+              <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.38, fontWeight: 780 }}>
+                Gateway가 JWT를 검증하고 사용자 컨텍스트를 <strong>X-User-*</strong> 헤더로 전달했습니다.
               </div>
             </div>
-            <div style={{ display: 'grid', gap: 7 }}>
-              {[
-                ['Gateway', 'JWT 검증 후 사용자 컨텍스트 전달'],
-                ['일반 권한 판단', '상세 정보가 필요한 경우에만 User 호출'],
-                ['AOP 권한 제어', '@RequiresMasterRole로 역할 체크 로직 통합'],
-              ].map(([label, text]) => (
-                <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 10, padding: '9px 11px', display: 'grid', gridTemplateColumns: '104px 1fr', gap: 10, alignItems: 'center' }}>
-                  <div style={{ color: blue, fontSize: 11.8, fontWeight: 950 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 12.2, lineHeight: 1.34, fontWeight: 800 }}>{text}</div>
+            <div style={{ minHeight: 0, display: 'grid', gridTemplateColumns: '1.05fr 0.82fr', gap: 10, alignItems: 'stretch' }}>
+              <div style={{ border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: '10px 12px', display: 'grid', gridTemplateRows: 'auto auto', gap: 8 }}>
+                <div style={{ color: blue, fontSize: 11.8, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  Gateway 중심 인증 흐름
                 </div>
-              ))}
-            </div>
-            <div style={{ minHeight: 0, border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: 12, display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 9 }}>
-              <div style={{ color: blue, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Gateway 중심 인증 흐름
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 7 }}>
+                  {[
+                    ['Client', 'JWT 포함 요청'],
+                    ['Gateway', 'JWT 검증'],
+                    ['Service', 'X-User-* 헤더 기반 처리'],
+                  ].map(([title, desc], idx) => (
+                    <React.Fragment key={title}>
+                      <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 12, padding: '10px 8px', minHeight: 59, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
+                        <div style={{ color: idx === 1 ? blue : navy, fontSize: 13.7, fontWeight: 950, lineHeight: 1.1, marginBottom: 5 }}>{title}</div>
+                        <div style={{ color: slate, fontSize: 10.3, lineHeight: 1.24, fontWeight: 760, wordBreak: 'keep-all' }}>{desc}</div>
+                      </div>
+                      {idx < 2 ? (
+                        <div style={{ color: blue, fontSize: 20, fontWeight: 950 }}>→</div>
+                      ) : null}
+                    </React.Fragment>
+                  ))}
+                </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'grid', gap: 7 }}>
                 {[
-                  ['Client', 'JWT 포함 요청'],
-                  ['Gateway', 'JWT 검증'],
-                  ['Service', 'X-User-* 헤더 기반 처리'],
-                ].map(([title, desc], idx) => (
-                  <React.Fragment key={title}>
-                    <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 13, padding: '11px 9px', minHeight: 72, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
-                      <div style={{ color: idx === 1 ? blue : navy, fontSize: 16, fontWeight: 950, lineHeight: 1.1, marginBottom: 7 }}>{title}</div>
-                      <div style={{ color: slate, fontSize: 11.7, lineHeight: 1.28, fontWeight: 760 }}>{desc}</div>
-                    </div>
-                    {idx < 2 ? (
-                      <div style={{ color: blue, fontSize: 22, fontWeight: 950 }}>→</div>
-                    ) : null}
-                  </React.Fragment>
+                  ['권한 판단', 'Gateway와 AOP에서 일반 권한을 우선 처리'],
+                  ['호출 최소화', '상세 정보가 필요할 때만 User 서비스 호출'],
+                ].map(([label, text], idx) => (
+                  <div key={label} style={{ border: `1px solid ${idx === 0 ? '#ddd6fe' : '#bbf7d0'}`, background: idx === 0 ? '#f5f3ff' : '#ecfdf5', borderRadius: 11, padding: '9px 10px' }}>
+                    <div style={{ color: idx === 0 ? violet : green, fontSize: 11.2, fontWeight: 950, marginBottom: 3 }}>{label}</div>
+                    <div style={{ color: navy, fontSize: 10.8, lineHeight: 1.3, fontWeight: 800, wordBreak: 'keep-all' }}>{text}</div>
+                  </div>
                 ))}
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <div style={{ border: '1px solid #ddd6fe', background: '#f5f3ff', borderRadius: 11, padding: '10px 11px' }}>
-                  <div style={{ color: violet, fontSize: 11.5, fontWeight: 950, marginBottom: 4 }}>권한 판단</div>
-                  <div style={{ color: navy, fontSize: 12, lineHeight: 1.32, fontWeight: 800 }}>AOP(@RequiresMasterRole)로 역할 체크 통합</div>
-                </div>
-                <div style={{ border: '1px solid #bbf7d0', background: '#ecfdf5', borderRadius: 11, padding: '10px 11px' }}>
-                  <div style={{ color: green, fontSize: 11.5, fontWeight: 950, marginBottom: 4 }}>호출 최소화</div>
-                  <div style={{ color: navy, fontSize: 12, lineHeight: 1.32, fontWeight: 800 }}>추가 정보 필요 시에만 User 서비스 선택 호출</div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div style={{ border: '1px solid #c4b5fd', background: '#f5f3ff', borderRadius: 10, padding: '9px 12px', color: navy, fontSize: 12.4, lineHeight: 1.35, fontWeight: 880 }}>
-                일반 요청의 권한은 Gateway에서 판단하고, 사용자 상세 정보가 필요한 경우에만 User를 호출합니다.
               </div>
             </div>
           </div>
@@ -1900,7 +1917,6 @@ function M3SolutionSlide() {
     </Slide>
   )
 }
-
 function M3ResultSlide() {
   return (
     <Slide eyebrow="3M" title="Result" subtitle="결합도 제거와 인증 흐름 영향 범위 축소" dense>
