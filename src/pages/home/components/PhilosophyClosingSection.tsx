@@ -240,36 +240,38 @@ export default function PhilosophyClosingSection() {
 
         {companyInsight && (
           <article
-            className={`mt-10 rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
+            className={`mt-10 rounded-2xl border px-6 py-6 shadow-lg md:relative md:left-[calc(50%+3rem)] md:w-[calc(100vw-20rem)] md:max-w-[106rem] md:-translate-x-1/2 md:px-8 md:py-7 ${
               dark
                 ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
                 : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
             }`}
           >
-            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(360px,600px)] md:items-start">
               <div className="min-w-0">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   {companyInsight.logoSrc ? (
                     <img
                       src={companyInsight.logoSrc}
                       alt={companyInsight.logoAlt}
-                      className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                      className="h-14 w-14 shrink-0 rounded-2xl object-cover md:h-16 md:w-16"
                     />
                   ) : (
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2563EB] text-lg font-black text-white">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#2563EB] text-2xl font-black text-white md:h-16 md:w-16">
                       {companyInsight.brand.slice(0, 1).toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <p className="text-xl font-black leading-none tracking-normal">{companyInsight.brand}</p>
-                    <p className={`mt-2 text-xs font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
+                    <p className="text-2xl font-black leading-none tracking-normal md:text-3xl">
+                      {companyInsight.brand}
+                    </p>
+                    <p className={`mt-3 text-sm font-black md:text-base ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
                       {companyInsight.label}
                     </p>
                   </div>
                 </div>
 
                 <p
-                  className={`mt-4 text-sm font-semibold leading-6 break-keep ${
+                  className={`mt-7 max-w-4xl text-lg font-bold leading-9 break-keep ${
                     dark ? 'text-[#d8d8d8]' : 'text-slate-700'
                   }`}
                 >
@@ -278,38 +280,38 @@ export default function PhilosophyClosingSection() {
               </div>
 
               <div
-                className={`rounded-xl border px-4 py-3 text-xs font-semibold leading-5 break-keep md:max-w-[300px] ${
+                className={`rounded-2xl border px-5 py-4 text-base font-bold leading-8 break-keep md:px-6 md:py-5 ${
                   dark ? 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100' : 'border-emerald-200 bg-emerald-50 text-emerald-900'
                 }`}
               >
-                <span className="block font-black">{companyInsight.noteTitle}</span>
-                {companyInsight.noteBody}
+                <span className="mb-2 block text-lg font-black">{companyInsight.noteTitle}</span>
+                <span>{companyInsight.noteBody}</span>
               </div>
             </div>
 
             {companyInsight.flow.length > 0 && (
               <div
-                className={`mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 text-xs font-bold ${
+                className={`mt-7 flex flex-wrap items-center gap-3 rounded-2xl border px-5 py-4 text-base font-black ${
                   dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
                 }`}
               >
                 <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
                 {companyInsight.flow.map((step, index) => (
-                  <span className="flex items-center gap-2" key={step}>
+                  <span className="flex items-center gap-3" key={step}>
                     <span>{step}</span>
                     {index < companyInsight.flow.length - 1 && (
-                      <i className={`ri-arrow-right-line ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
+                      <i className={`ri-arrow-right-line text-lg ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
                     )}
                   </span>
                 ))}
               </div>
             )}
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-3">
               {companyInsight.keywords.map((keyword) => (
                 <span
                   key={keyword}
-                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+                  className={`rounded-full px-4 py-2 text-base font-black ${
                     dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
                   }`}
                 >

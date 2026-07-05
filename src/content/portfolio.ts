@@ -122,7 +122,11 @@ export const PROJECT_WORKFLOW = {
       icon: 'ri-file-text-line',
       purpose: '노트북LM에서 추출한 자료로\n문서화 · 학습 가이드 작성, 프롬프트 추출',
     },
-    { name: 'Claude Code', icon: 'ri-code-s-slash-line', purpose: '단일 단위 기능 구현' },
+    {
+      name: 'Claude Code',
+      icon: 'ri-code-s-slash-line',
+      purpose: '단일 단위 기능 구현\n프로젝트 - karpathy, RTK-AI, Serena',
+    },
     {
       name: 'Codex',
       icon: 'ri-search-eye-line',
