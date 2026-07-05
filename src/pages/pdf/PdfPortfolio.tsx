@@ -369,6 +369,8 @@ function Tags({ items }: { items: readonly string[] }) {
 }
 
 function HeroSlide() {
+  const personalBadges = ['LOC', 'TEL', 'GH', 'IN'] as const
+
   return (
     <Slide tone="light">
       <div
@@ -417,9 +419,9 @@ function HeroSlide() {
           </p>
           <div style={{ height: 1, background: line, marginBottom: 16 }} />
           <div style={{ display: 'grid', gap: 7, marginBottom: 18 }}>
-            {HERO_PERSONAL_INFO.map((row) => (
+            {HERO_PERSONAL_INFO.map((row, idx) => (
               <div key={row.text} style={{ display: 'flex', alignItems: 'center', gap: 10, color: slate, fontSize: 14 }}>
-                <i className={row.icon} style={{ color: navy, fontSize: 15, width: 18 }} />
+                <span style={{ width: 30, color: blue, fontSize: 10, fontWeight: 950 }}>{personalBadges[idx] ?? 'INFO'}</span>
                 <span>{row.text}</span>
               </div>
             ))}
@@ -630,6 +632,87 @@ function CollaborationSlide() {
             ))}
           </div>
         </div>
+      </div>
+    </Slide>
+  )
+}
+
+function AiWorkflowSlide() {
+  const phaseTone = {
+    direct: { color: blue, background: '#eff6ff', border: '#bfdbfe' },
+    ai: { color: violet, background: '#f5f3ff', border: '#ddd6fe' },
+  } as const
+  const toolBadges = ['NL', 'G/C', 'CC', 'CX'] as const
+
+  return (
+    <Slide eyebrow={PROJECT_WORKFLOW.label} title={PROJECT_WORKFLOW.title} subtitle={PROJECT_WORKFLOW.description} dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 11 }}>
+          {PROJECT_WORKFLOW.phases.map((phase, idx) => {
+            const tone = phaseTone[phase.tone]
+            return (
+              <Panel key={phase.owner} pad={13} background={tone.background} borderColor={tone.border}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 10,
+                      display: 'grid',
+                      placeItems: 'center',
+                      background: white,
+                      color: tone.color,
+                      fontSize: 13,
+                      fontWeight: 950,
+                    }}
+                  >
+                    {String(idx + 1).padStart(2, '0')}
+                  </div>
+                  <div style={{ color: tone.color, fontSize: 10.5, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    {phase.owner}
+                  </div>
+                </div>
+                <div style={{ color: navy, fontSize: 16.2, lineHeight: 1.32, fontWeight: 900 }}>{phase.detail}</div>
+              </Panel>
+            )
+          })}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 11, minHeight: 0 }}>
+          {PROJECT_WORKFLOW.tools.map((tool, idx) => {
+            const color = [blue, teal, violet, green][idx % 4]
+            return (
+              <Panel key={tool.name} pad={13} background={white} accent={color}>
+                <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 9 }}>
+                  <div
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 12,
+                      display: 'grid',
+                      placeItems: 'center',
+                      background: `${color}12`,
+                      color,
+                      fontSize: 22,
+                    }}
+                  >
+                    <span style={{ fontSize: 12.5, fontWeight: 950 }}>{toolBadges[idx] ?? String(idx + 1).padStart(2, '0')}</span>
+                  </div>
+                  <h3 style={{ margin: 0, color, fontSize: 16.5, lineHeight: 1.15, fontWeight: 950 }}>{tool.name}</h3>
+                  <p style={{ margin: 0, color: slate, fontSize: 12.1, lineHeight: 1.5, fontWeight: 760, whiteSpace: 'pre-line' }}>
+                    {tool.purpose}
+                  </p>
+                </div>
+              </Panel>
+            )
+          })}
+        </div>
+
+        <Panel pad={12} background="#f8fafc" borderColor="#cbd5e1">
+          <div style={{ color: navy, fontSize: 12.4, lineHeight: 1.5, fontWeight: 780, whiteSpace: 'pre-line' }}>
+            {PROJECT_WORKFLOW.toolsNote}
+          </div>
+        </Panel>
       </div>
     </Slide>
   )
@@ -1280,9 +1363,15 @@ function FeedShopP2ProblemThinkingSlide() {
 }
 
 function FeedShopP2SolutionSlide() {
+  const exceptionFlow = [
+    ['01', '저장·flush 종료', 'REQUIRED 안에서 유니크 제약 위반을 DB가 확정'],
+    ['02', '예외 경계 분리', '트랜잭션 밖에서 지정된 중복 예외만 분기 처리'],
+    ['03', '중복 응답 변환', '이미 반영된 투표 요청은 실패가 아닌 200 응답으로 정리'],
+  ] as const
+
   return (
-    <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.62fr 1.48fr 1.05fr', gap: 9, height: '100%' }}>
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약과 예외 경계를 분리해 중복 요청을 안정적으로 처리했습니다." dense>
+      <div style={{ display: 'grid', gridTemplateRows: '0.72fr 1.42fr 0.74fr', gap: 10, height: '100%' }}>
         <Panel pad={10} background={white} accent={blue}>
           <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
@@ -1326,36 +1415,93 @@ function FeedShopP2SolutionSlide() {
             </div>
           </div>
         </Panel>
-        <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 7, height: '100%' }}>
-            <div>
-              <SectionLabel>Solution 3</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
-              <p style={{ margin: '6px 0 0', color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 780 }}>
-                카운터를 Redis로 분리해 DB 락 경합 자체를 제거
-              </p>
-            </div>
-            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
-              <div style={{ display: 'grid', gap: 3 }}>
-                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>
-                  <strong>기존:</strong> feed_votes INSERT(event_id FK → S-lock) + feeds UPDATE(X-lock) 교차 → 두 잠금이 서로를 기다리는 <strong>데드락</strong> 발생
-                </div>
-                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>
-                  <strong>Redis INCR:</strong> DB 잠금 체계 바깥에서 단일 명령어로 카운터 처리 → lock 없이 데드락 구조적 제거
-                </div>
+        <Panel pad={11} background="#f8fafc" borderColor="#cbd5e1">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9, height: '100%' }}>
+            {exceptionFlow.map(([step, title, detail], idx) => (
+              <div key={step} style={{ borderRadius: 11, background: idx === 1 ? '#eff6ff' : white, border: `1px solid ${idx === 1 ? '#bfdbfe' : line}`, padding: '10px 11px' }}>
+                <div style={{ color: blue, fontSize: 10, fontWeight: 950, marginBottom: 4 }}>{step}</div>
+                <div style={{ color: navy, fontSize: 13, fontWeight: 950, lineHeight: 1.22, marginBottom: 5 }}>{title}</div>
+                <div style={{ color: slate, fontSize: 10.8, lineHeight: 1.38, fontWeight: 760 }}>{detail}</div>
               </div>
-            </div>
-            <div style={{ display: 'grid', gap: 6, alignContent: 'center' }}>
-              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 11px', color: navy, fontSize: 11.2, lineHeight: 1.4, fontWeight: 800 }}>
-                Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 복구하고 정기 보정
-              </div>
-              <div style={{ color: '#92400e', fontSize: 10.4, lineHeight: 1.35, fontWeight: 800 }}>
-                한계: DB·Redis 간 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 보장 범위 밖
-              </div>
-            </div>
+            ))}
           </div>
         </Panel>
+      </div>
+    </Slide>
+  )
+}
+
+function FeedShopP2RedisSolutionSlide() {
+  const lockFlow = [
+    ['feed_votes INSERT', 'event_id FK 확인 과정에서 S-lock 획득'],
+    ['feeds UPDATE', '투표 수 갱신을 위해 X-lock 대기'],
+    ['교차 대기', '동시 요청이 서로 다른 락을 잡고 기다리며 데드락 발생'],
+  ] as const
+  const redisFlow = [
+    ['원자 연산', 'Redis INCR 하나로 카운터 증가를 처리'],
+    ['락 분리', 'DB row lock 경합에서 투표 수 갱신을 분리'],
+    ['복구 기준', 'feed_votes COUNT를 원본으로 삼아 재계산 가능'],
+  ] as const
+
+  return (
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — Redis 카운터 분리" subtitle="Redis INCR로 데드락 구조를 제거하고, DB 원본 기준 복구 경로를 남겼습니다." dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 11, height: '100%' }}>
+        <Panel pad={13} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.35fr', gap: 15, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>Solution 3</SectionLabel>
+              <h2 style={{ margin: 0, color: navy, fontSize: 21, lineHeight: 1.18, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
+            </div>
+            <p style={{ margin: 0, color: slate, fontSize: 13.3, lineHeight: 1.48, fontWeight: 780 }}>
+              투표 카운터를 DB 업데이트에서 분리해 lock 경쟁을 줄이고, Redis 장애나 키 유실 상황에서는 DB 투표 이력을 원본으로 다시 보정하도록 설계했습니다.
+            </p>
+          </div>
+        </Panel>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, minHeight: 0 }}>
+          <Panel pad={13} background="#fffbeb" borderColor="#fde68a">
+            <SectionLabel color={amber}>Deadlock Cause</SectionLabel>
+            <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
+              {lockFlow.map(([title, detail], idx) => (
+                <div key={title} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#fed7aa', color: '#92400e', fontSize: 11, fontWeight: 950 }}>{idx + 1}</div>
+                  <div>
+                    <div style={{ color: '#78350f', fontSize: 13.2, fontWeight: 950, marginBottom: 3 }}>{title}</div>
+                    <div style={{ color: '#92400e', fontSize: 11.4, lineHeight: 1.43, fontWeight: 760 }}>{detail}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+
+          <Panel pad={13} background="#ecfdf5" borderColor="#a7f3d0">
+            <SectionLabel color={green}>Redis INCR</SectionLabel>
+            <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
+              {redisFlow.map(([title, detail], idx) => (
+                <div key={title} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#bbf7d0', color: green, fontSize: 11, fontWeight: 950 }}>{idx + 1}</div>
+                  <div>
+                    <div style={{ color: '#064e3b', fontSize: 13.2, fontWeight: 950, marginBottom: 3 }}>{title}</div>
+                    <div style={{ color: '#065f46', fontSize: 11.4, lineHeight: 1.43, fontWeight: 760 }}>{detail}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 11 }}>
+          <Panel pad={11} background="#eff6ff" borderColor="#bfdbfe">
+            <div style={{ color: navy, fontSize: 12.3, lineHeight: 1.42, fontWeight: 820 }}>
+              Redis 키 유실·장애 시 <strong style={{ color: blue }}>feed_votes COUNT</strong>를 원본으로 복구하고 정기 보정합니다.
+            </div>
+          </Panel>
+          <Panel pad={11} background="#fff7ed" borderColor="#fed7aa">
+            <div style={{ color: '#92400e', fontSize: 11.3, lineHeight: 1.42, fontWeight: 800 }}>
+              한계: DB·Redis 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 별도 보상 설계가 필요합니다.
+            </div>
+          </Panel>
+        </div>
       </div>
     </Slide>
   )
@@ -1787,7 +1933,9 @@ function ClosingSlide() {
                     <div style={{ color, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 3 }}>{block.titleEn}</div>
                     <div style={{ fontSize: 20.5, fontWeight: 950, color: navy, lineHeight: 1.18 }}>{block.titleKo}</div>
                   </div>
-                  <i className={block.icon} style={{ marginLeft: 'auto', color, fontSize: 28, opacity: 0.85 }} />
+                  <div style={{ marginLeft: 'auto', width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: white, color, fontSize: 11, fontWeight: 950 }}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </div>
                 </div>
               </div>
               <div style={{ padding: '18px 18px 16px', display: 'grid', alignContent: 'start', gap: 11 }}>
@@ -1826,6 +1974,108 @@ function ClosingSlide() {
   )
 }
 
+const BANKCOW_DIRECTION = {
+  brand: 'bankcow',
+  label: '한우 조각투자 플랫폼',
+  summary: '데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한 신뢰 흐름으로 바꾸는 일이라고 이해했습니다.',
+  noteTitle: '인상 깊었던 글',
+  noteBody: '일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.',
+  flow: ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'],
+  keywords: ['데이터는 고객의 자산', '깊은 도메인 이해', '프로세스와 개발 로직', '끝까지 마무리하는 태도'],
+} as const
+
+const BANKCOW_BACKEND_POINTS = [
+  ['정합성', '예치금·수익률·정산 금액이 같은 기준으로 맞아야 합니다.'],
+  ['상태 전이', '투자 신청부터 경매 이후까지 흐름이 추적 가능해야 합니다.'],
+  ['복구 기준', '오류 발생 시 원본 데이터와 보정 경로가 남아야 합니다.'],
+] as const
+
+const BANKCOW_NOTES = [
+  {
+    title: '개발 판단',
+    body: '도메인을 이해해야 프로세스와 개발 로직을 정확히 결정할 수 있다고 보았습니다.',
+    bullets: ['상태 전이 기준 선행', '정산 데이터 기준 확인'],
+  },
+  {
+    title: '태도',
+    body: BANKCOW_DIRECTION.noteBody,
+    bullets: ['시작보다 마무리 책임', '끝까지 검증하는 습관'],
+  },
+] as const
+
+function BankcowDirectionSlide() {
+  return (
+    <Slide eyebrow="Direction" title="Bankcow에서 바라본 백엔드 방향" subtitle="금융·농가·투자자·실물자산이 이어지는 도메인에서 백엔드는 신뢰 가능한 흐름을 만드는 역할이라고 정리했습니다." dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: 14 }}>
+          <Panel pad={16} background={white} accent={blue}>
+            <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: 13, alignItems: 'center', marginBottom: 12 }}>
+              <div style={{ width: 58, height: 58, borderRadius: 15, background: blue, display: 'grid', placeItems: 'center', overflow: 'hidden' }}>
+                <img src={asset('bankcow-logo.png')} alt="bankcow logo" style={{ width: 42, height: 42, objectFit: 'contain', display: 'block' }} />
+              </div>
+              <div>
+                <div style={{ color: navy, fontSize: 25, lineHeight: 1.05, fontWeight: 950 }}>{BANKCOW_DIRECTION.brand}</div>
+                <div style={{ marginTop: 6, color: blue, fontSize: 13.4, lineHeight: 1.2, fontWeight: 950 }}>{BANKCOW_DIRECTION.label}</div>
+              </div>
+            </div>
+            <p style={{ margin: 0, color: slate, fontSize: 15, lineHeight: 1.55, fontWeight: 820 }}>
+              {BANKCOW_DIRECTION.summary}
+            </p>
+          </Panel>
+
+          <Panel pad={15} background="#ecfdf5" borderColor="#86efac">
+            <SectionLabel color={green}>{BANKCOW_DIRECTION.noteTitle}</SectionLabel>
+            <p style={{ margin: '8px 0 0', color: '#064e3b', fontSize: 15.2, lineHeight: 1.52, fontWeight: 900 }}>
+              {BANKCOW_DIRECTION.noteBody}
+            </p>
+          </Panel>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, minHeight: 0 }}>
+          {BANKCOW_NOTES.map((note, idx) => (
+            <Panel key={note.title} pad={15} background={idx === 0 ? '#eff6ff' : '#f8fafc'} borderColor={idx === 0 ? '#bfdbfe' : '#cbd5e1'}>
+              <div style={{ color: idx === 0 ? blue : navy, fontSize: 11, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 7 }}>
+                {note.title}
+              </div>
+              <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.48, fontWeight: 800 }}>{note.body}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 12 }}>
+                {note.bullets.map((bullet) => (
+                  <span key={bullet} style={{ borderRadius: 999, background: white, border: `1px solid ${idx === 0 ? '#bfdbfe' : line}`, color: idx === 0 ? blue : slate, padding: '5px 10px', fontSize: 10.8, fontWeight: 900 }}>
+                    {bullet}
+                  </span>
+                ))}
+              </div>
+            </Panel>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 12 }}>
+          <Panel pad={12} background={white} borderColor="#dbe3ef">
+            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${BANKCOW_DIRECTION.flow.length}, 1fr)`, gap: 8 }}>
+              {BANKCOW_DIRECTION.flow.map((item, idx) => (
+                <div key={item} style={{ borderRadius: 12, background: idx === 0 ? '#eff6ff' : '#f8fafc', border: `1px solid ${idx === 0 ? '#bfdbfe' : line}`, padding: '10px 9px', textAlign: 'center' }}>
+                  <div style={{ color: blue, fontSize: 10, fontWeight: 950, marginBottom: 4 }}>{String(idx + 1).padStart(2, '0')}</div>
+                  <div style={{ color: navy, fontSize: 12.2, fontWeight: 950, lineHeight: 1.2 }}>{item}</div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+          <Panel pad={12} background="#f8fafc" borderColor="#cbd5e1">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 7 }}>
+              {BANKCOW_BACKEND_POINTS.map(([title, body]) => (
+                <div key={title}>
+                  <div style={{ color: blue, fontSize: 11.3, fontWeight: 950, marginBottom: 4 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 9.9, lineHeight: 1.35, fontWeight: 760 }}>{body}</div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
 function ResourcesContactSlide() {
   return (
     <Slide eyebrow={RESOURCES_SECTION.kicker} title="자료 모음 · 연락하기" subtitle="프로젝트 문서와 연락 채널을 마지막에 정리했습니다." dense>
@@ -1833,7 +2083,9 @@ function ResourcesContactSlide() {
         <Panel pad={16} background="#f8fbff" accent={green}>
           <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <i className="ri-links-line" style={{ color: green, fontSize: 23 }} />
+              <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 10, fontWeight: 950 }}>
+                URL
+              </div>
               <div>
                 <SectionLabel color={green}>{RESOURCES_SECTION.title}</SectionLabel>
                 <div style={{ color: slate, fontSize: 12.8, fontWeight: 760 }}>프로젝트 기획, 협업 가이드, 실습 기록을 확인할 수 있는 자료입니다.</div>
@@ -1859,11 +2111,11 @@ function ResourcesContactSlide() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                    <div style={{ width: 26, height: 26, borderRadius: 8, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 15, fontWeight: 950 }}>
-                      <i className={link.icon} />
+                    <div style={{ width: 26, height: 26, borderRadius: 8, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 9.5, fontWeight: 950 }}>
+                      {String(idx + 1).padStart(2, '0')}
                     </div>
                     <div style={{ color: green, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.09em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
-                    <i className="ri-arrow-right-up-line" style={{ marginLeft: 'auto', color: green, fontSize: 14 }} />
+                    <span style={{ marginLeft: 'auto', color: green, fontSize: 10, fontWeight: 950 }}>OPEN</span>
                   </div>
                   <div style={{ color: navy, fontSize: 13.8, fontWeight: 950, lineHeight: 1.18 }}>{link.label}</div>
                 </a>
@@ -1879,7 +2131,7 @@ function ResourcesContactSlide() {
               <div style={{ color: '#cbd5e1', fontSize: 13.2, lineHeight: 1.4, fontWeight: 760 }}>백엔드 개발자로서 수치 검증과 구조 설계를 바탕으로 문제를 끝까지 해결합니다.</div>
             </div>
             <div style={{ display: 'grid', alignContent: 'center', gap: 12 }}>
-              {CONTACT_LINKS.map((link) => (
+              {CONTACT_LINKS.map((link, idx) => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -1887,8 +2139,8 @@ function ResourcesContactSlide() {
                   rel={link.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 11, alignItems: 'center', textDecoration: 'none' }}
                 >
-                  <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 18 }}>
-                    <i className={link.icon} />
+                  <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 10, fontWeight: 950 }}>
+                    {(['GH', 'EM', 'IN'] as const)[idx] ?? 'CT'}
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: 14.2, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.label}</div>
                 </a>
@@ -2003,6 +2255,7 @@ export default function PdfPortfolio() {
       <AboutSlide />
       <ProjectsOverviewSlide />
       <CollaborationSlide />
+      <AiWorkflowSlide />
 
       <ProjectCaseCover
         eyebrow="Backend Case Study 01"
@@ -2025,6 +2278,7 @@ export default function PdfPortfolio() {
       <FeedShopP1ResultImagesSlide />
       <FeedShopP2ProblemThinkingSlide />
       <FeedShopP2SolutionSlide />
+      <FeedShopP2RedisSolutionSlide />
       <FeedShopP2ResultSlide />
       <FeedShopReflectionSlide />
 
@@ -2047,6 +2301,7 @@ export default function PdfPortfolio() {
       <M3ReflectionSlide />
 
       <ClosingSlide />
+      <BankcowDirectionSlide />
       <ExperienceSlide />
       <ResourcesContactSlide />
     </>
