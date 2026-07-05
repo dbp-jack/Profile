@@ -583,15 +583,15 @@ function CollaborationEvidence({
   imageHeight: string
 }) {
   return (
-    <Panel pad={9} background={white} borderColor="#cbd5e1">
-      <div style={{ display: 'grid', gridTemplateRows: `${imageHeight} auto`, gap: 7, height: '100%' }}>
+    <Panel pad={10} background={white} borderColor="#cbd5e1">
+      <div style={{ display: 'grid', gridTemplateRows: `${imageHeight} auto`, gap: 9 }}>
         <div style={{ minHeight: 0, borderRadius: 8, overflow: 'hidden', border: `1px solid ${line}`, background: soft }}>
           <img src={asset(item.image)} alt={item.alt} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
         </div>
         <div>
-          <div style={{ color: blue, fontSize: 8.5, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase' }}>{item.label}</div>
-          <div style={{ marginTop: 2, color: navy, fontSize: 13.2, fontWeight: 950 }}>{item.title}</div>
-          <div style={{ marginTop: 2, color: slate, fontSize: 9.6, lineHeight: 1.35, fontWeight: 700 }}>{item.description}</div>
+          <div style={{ color: blue, fontSize: 9.6, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase' }}>{item.label}</div>
+          <div style={{ marginTop: 3, color: navy, fontSize: 15.8, lineHeight: 1.16, fontWeight: 950 }}>{item.title}</div>
+          <div style={{ marginTop: 4, color: slate, fontSize: 11.2, lineHeight: 1.38, fontWeight: 740 }}>{item.description}</div>
         </div>
       </div>
     </Panel>
@@ -603,20 +603,20 @@ function CollaborationSlide() {
 
   return (
     <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} subtitle={WORK_STYLE_SECTION.subtitle} dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 16, height: '100%', minHeight: 0 }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 15, height: '100%', minHeight: 0, alignContent: 'start' }}>
         <div>
           <SectionLabel>{COLLABORATION_SECTION.kicker}</SectionLabel>
-          <div style={{ color: navy, fontSize: 18.2, fontWeight: 950, lineHeight: 1.22, marginBottom: 7 }}>{COLLABORATION_SECTION.title}</div>
-          <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.48, fontWeight: 780 }}>{COLLABORATION_SECTION.intro}</div>
+          <div style={{ color: navy, fontSize: 20.4, fontWeight: 950, lineHeight: 1.2, marginBottom: 8 }}>{COLLABORATION_SECTION.title}</div>
+          <div style={{ color: slate, fontSize: 14, lineHeight: 1.45, fontWeight: 780 }}>{COLLABORATION_SECTION.intro}</div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, minHeight: 0 }}>
           {evidenceItems.map((item) => (
-            <CollaborationEvidence key={item.title} item={item} imageHeight="50mm" />
+            <CollaborationEvidence key={item.title} item={item} imageHeight="62mm" />
           ))}
         </div>
         <a
           href={COLLABORATION_SECTION.guideUrl}
-          style={{ color: blue, fontSize: 11.5, fontWeight: 950, textDecoration: 'none' }}
+          style={{ color: blue, fontSize: 13.2, fontWeight: 950, textDecoration: 'none' }}
         >
           JIRA 가이드라인 보기 · {COLLABORATION_SECTION.guideUrl}
         </a>
@@ -631,53 +631,79 @@ function AiWorkflowSlide() {
     ai: { color: violet, background: '#f5f3ff', border: '#ddd6fe' },
   } as const
   const toolBadges = ['NL', 'G/C', 'CC', 'CX'] as const
+  const toolColors = [blue, teal, violet, green] as const
+  const toolRoles = ['출처 검증', '자료 정리', '기능 구현', '오류 포착'] as const
 
   return (
     <Slide eyebrow={PROJECT_WORKFLOW.label} title={PROJECT_WORKFLOW.title} subtitle={PROJECT_WORKFLOW.description} dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 13, height: '100%' }}>
-        <Panel pad={13} background="#f8fafc" accent={blue} borderColor="#bfdbfe">
-          <SectionLabel>Process</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9, marginTop: 9 }}>
-          {PROJECT_WORKFLOW.phases.map((phase, idx) => {
-            const tone = phaseTone[phase.tone]
-            return (
-                <div key={phase.owner} style={{ borderRadius: 10, background: white, border: `1px solid ${tone.border}`, padding: '11px 12px', minHeight: 48 }}>
-                  <div style={{ color: tone.color, fontSize: 10.4, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>
-                    {String(idx + 1).padStart(2, '0')} · {phase.owner}
+      <div style={{ display: 'grid', gridTemplateRows: '48mm 54mm 35mm', gap: 11, height: '100%', minHeight: 0 }}>
+        <Panel pad={14} background="#f8fafc" accent={blue} borderColor="#bfdbfe">
+          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '88px 1fr', gap: 14, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>Process</SectionLabel>
+              <div style={{ color: navy, fontSize: 19.5, lineHeight: 1.16, fontWeight: 950 }}>
+                직접 판단
+                <br />
+                AI 실행
+                <br />
+                직접 검증
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, height: '100%' }}>
+              {PROJECT_WORKFLOW.phases.map((phase, idx) => {
+                const tone = phaseTone[phase.tone]
+                return (
+                  <div
+                    key={phase.owner}
+                    style={{
+                      borderRadius: 11,
+                      background: white,
+                      border: `1px solid ${tone.border}`,
+                      padding: '12px 13px',
+                      display: 'grid',
+                      alignContent: 'center',
+                    }}
+                  >
+                    <div style={{ color: tone.color, fontSize: 13.8, fontWeight: 950, lineHeight: 1.16, marginBottom: 7 }}>
+                      {String(idx + 1).padStart(2, '0')} · {phase.owner}
+                    </div>
+                    <div style={{ color: navy, fontSize: 13.5, lineHeight: 1.34, fontWeight: 850 }}>{phase.detail}</div>
                   </div>
-                  <div style={{ color: navy, fontSize: 11.4, lineHeight: 1.34, fontWeight: 850 }}>{phase.detail}</div>
-                </div>
-            )
-          })}
+                )
+              })}
+            </div>
           </div>
         </Panel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, minHeight: 0 }}>
           {PROJECT_WORKFLOW.tools.map((tool, idx) => {
-            const color = [blue, teal, violet, green][idx % 4]
+            const color = toolColors[idx % toolColors.length]
             return (
               <Panel key={tool.name} pad={12} background={white} borderColor="#cbd5e1">
-                <div style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start', minHeight: 52 }}>
-                  <div
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 9,
-                      display: 'grid',
-                      placeItems: 'center',
-                      background: `${color}12`,
-                      color,
-                      fontSize: 10.5,
-                      fontWeight: 950,
-                    }}
-                  >
-                    {toolBadges[idx] ?? String(idx + 1).padStart(2, '0')}
+                <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 8, height: '100%' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '42px 1fr', gap: 10, alignItems: 'center' }}>
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 9,
+                        display: 'grid',
+                        placeItems: 'center',
+                        background: `${color}12`,
+                        color,
+                        fontSize: 12.4,
+                        fontWeight: 950,
+                      }}
+                    >
+                      {toolBadges[idx] ?? String(idx + 1).padStart(2, '0')}
+                    </div>
+                    <h3 style={{ margin: 0, color, fontSize: 16.2, lineHeight: 1.14, fontWeight: 950 }}>{tool.name}</h3>
                   </div>
-                  <div>
-                    <h3 style={{ margin: 0, color, fontSize: 13.4, lineHeight: 1.15, fontWeight: 950 }}>{tool.name}</h3>
-                    <p style={{ margin: '6px 0 0', color: slate, fontSize: 9.8, lineHeight: 1.38, fontWeight: 780, whiteSpace: 'pre-line' }}>
-                      {tool.purpose}
-                    </p>
+                  <p style={{ margin: 0, color: slate, fontSize: 11.7, lineHeight: 1.4, fontWeight: 780, whiteSpace: 'pre-line' }}>
+                    {tool.purpose}
+                  </p>
+                  <div style={{ justifySelf: 'start', borderRadius: 999, padding: '5px 9px', background: `${color}12`, color, fontSize: 10.8, fontWeight: 900 }}>
+                    {toolRoles[idx] ?? '활용'}
                   </div>
                 </div>
               </Panel>
@@ -685,10 +711,15 @@ function AiWorkflowSlide() {
           })}
         </div>
 
-        <Panel pad={12} background="#f5f3ff" accent={violet} borderColor="#ddd6fe">
-          <SectionLabel color={violet}>운영 기준</SectionLabel>
-          <div style={{ color: navy, fontSize: 11.4, lineHeight: 1.45, fontWeight: 800, whiteSpace: 'pre-line', marginTop: 6 }}>
-            {PROJECT_WORKFLOW.toolsNote}
+        <Panel pad={13} background="#f5f3ff" accent={violet} borderColor="#ddd6fe">
+          <div style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 14, height: '100%', alignItems: 'center' }}>
+            <div>
+              <SectionLabel color={violet}>운영 기준</SectionLabel>
+              <div style={{ color: navy, fontSize: 18, lineHeight: 1.2, fontWeight: 950 }}>AI는 보조, 검증은 직접</div>
+            </div>
+            <div style={{ color: navy, fontSize: 13.4, lineHeight: 1.44, fontWeight: 820, whiteSpace: 'pre-line' }}>
+              {PROJECT_WORKFLOW.toolsNote}
+            </div>
           </div>
         </Panel>
       </div>
@@ -875,38 +906,82 @@ function FeedShopDeveloperPerspectiveSlide() {
     ['이벤트 목록 조회 병목', '재방문 흐름 진입점인 이벤트 목록이 느려지면 탐색 단계에서 이탈 가능성이 커집니다.'],
     ['투표 동시성 보장', '랭킹 상위 피드에 투표가 몰릴 때 데이터 정합성이 흔들리면 서비스 신뢰도가 떨어집니다.'],
   ]
+  const riskItems = [
+    ['01', '진입 부하', '목록 조회 요청이 몰리는 구간', blue, '#eff6ff', '#bfdbfe'],
+    ['02', '랭킹 피크', '상위 피드 투표 요청 집중', amber, '#fff7ed', '#fed7aa'],
+    ['03', '신뢰 기준', '정확한 투표 수와 보상 흐름', red, '#fef2f2', '#fecaca'],
+  ] as const
 
   return (
     <Slide eyebrow="FeedShop" title="개발자 관점에서의 핵심 과제" subtitle="서비스 흐름을 지키기 위해 분리한 두 가지 부하 축" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 12, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '92mm 38mm', gap: 12, height: '100%', minHeight: 0, alignContent: 'start' }}>
         <Panel pad={17} background={white} accent={blue}>
-          <div style={{ height: '100%', display: 'grid', alignContent: 'center', gap: 13 }}>
-            <SectionLabel>Developer Perspective</SectionLabel>
-            <ParagraphRich html={feedshop.developerPerspective ?? ''} size={16.2} lineHeight={1.5} />
+          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '1.35fr 0.8fr', gap: 18, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>Developer Perspective</SectionLabel>
+              <ParagraphRich html={feedshop.developerPerspective ?? ''} size={18.8} lineHeight={1.5} />
+            </div>
+            <div style={{ display: 'grid', gap: 9 }}>
+              {riskItems.map(([no, title, desc, color, background, borderColor]) => (
+                <div
+                  key={title}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '42px 1fr',
+                    gap: 10,
+                    alignItems: 'center',
+                    padding: '10px 11px',
+                    borderRadius: 11,
+                    background,
+                    border: `1px solid ${borderColor}`,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 10,
+                      display: 'grid',
+                      placeItems: 'center',
+                      background: white,
+                      color,
+                      fontSize: 15,
+                      fontWeight: 950,
+                    }}
+                  >
+                    {no}
+                  </div>
+                  <div>
+                    <div style={{ color, fontSize: 12.6, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 3, color: slate, fontSize: 11.6, lineHeight: 1.35, fontWeight: 760 }}>{desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </Panel>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {focusItems.map(([title, desc], idx) => (
             <Panel key={title} pad={15} background={idx === 0 ? '#eff6ff' : '#fff7ed'} borderColor={idx === 0 ? '#bfdbfe' : '#fed7aa'} accent={idx === 0 ? blue : amber}>
-              <div style={{ display: 'grid', gridTemplateColumns: '42px 1fr', gap: 12, alignItems: 'center' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '48px 1fr', gap: 13, alignItems: 'center', height: '100%' }}>
                 <div
                   style={{
-                    width: 42,
-                    height: 42,
+                    width: 46,
+                    height: 46,
                     borderRadius: 12,
                     background: white,
                     color: idx === 0 ? blue : amber,
                     display: 'grid',
                     placeItems: 'center',
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: 950,
                   }}
                 >
                   {String(idx + 1).padStart(2, '0')}
                 </div>
                 <div>
-                  <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 18.2, fontWeight: 950, lineHeight: 1.18 }}>{title}</h3>
-                  <p style={{ margin: 0, color: slate, fontSize: 12.8, lineHeight: 1.4, fontWeight: 760 }}>{desc}</p>
+                  <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19.6, fontWeight: 950, lineHeight: 1.18 }}>{title}</h3>
+                  <p style={{ margin: 0, color: slate, fontSize: 13.6, lineHeight: 1.4, fontWeight: 760 }}>{desc}</p>
                 </div>
               </div>
             </Panel>
