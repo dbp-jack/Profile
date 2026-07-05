@@ -13,13 +13,13 @@
 ## Local manager
 
 - Run the project locally and open `/manage`.
-- `src/pages/manage/` is intentionally git-ignored. Keep it on the local disk only.
+- `src/pages/manage/` is tracked so local chats and worktrees share the same current manager source.
 - Select, hide, or reorder page blocks and individual projects, choose a copy profile, and copy the generated public URL.
 - Save the current composition under a company-specific name and ASCII link key such as `ably`; custom presets stay in local browser storage while the generated URL is independently shareable.
 - The manager is enabled only during local development on `localhost`, `127.0.0.1`, or `::1`.
 - Production builds omit the `/manage` route and fail the build if local manager source is bundled by mistake.
 
-For a separately deployed manager, create a separate private app or protect it behind platform authentication such as an access proxy or protected hosting environment. Do not publish it from this public repository.
+For a separately deployed manager, create a separate private app or protect it behind platform authentication such as an access proxy or protected hosting environment. Do not publish `/manage` from the public GitHub Pages build.
 
 ## Company presets
 
