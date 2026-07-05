@@ -1089,35 +1089,35 @@ function FeedShopP1ThinkingSolutionSlide() {
       <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
         <Panel pad={12} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ color: slate, fontSize: 12.5, fontWeight: 760, lineHeight: 1.34, marginBottom: 7 }}>
+          <div style={{ color: slate, fontSize: 13.6, fontWeight: 760, lineHeight: 1.36, marginBottom: 8 }}>
             쿼리 비효율과 반복 조회 비용을 분리한 뒤 해결방안을 비교했습니다.
           </div>
           <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.22fr 1.12fr 1.52fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 9.7, fontWeight: 950 }}>
-              {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 7px' }}>{label}</div>)}
+            <div style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.48fr 0.74fr', background: '#f1f5f9', color: slate, fontSize: 11.1, fontWeight: 950 }}>
+              {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 9px' }}>{label}</div>)}
             </div>
             {alternatives.map(([option, strength, limit, decision], idx) => (
               <div
                 key={option}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '1.22fr 1.12fr 1.52fr 0.72fr',
+                  gridTemplateColumns: '1.24fr 1.1fr 1.48fr 0.74fr',
                   borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`,
                   background: idx === 3 ? '#eff6ff' : white,
                   color: navy,
-                  fontSize: 9.5,
-                  lineHeight: 1.28,
+                  fontSize: 11.2,
+                  lineHeight: 1.34,
                   fontWeight: 760,
                 }}
               >
-                <div style={{ padding: '5px 7px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
-                <div style={{ padding: '5px 7px' }}>{strength}</div>
-                <div style={{ padding: '5px 7px' }}>{limit}</div>
-                <div style={{ padding: '5px 7px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
+                <div style={{ padding: '7px 9px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                <div style={{ padding: '7px 9px' }}>{strength}</div>
+                <div style={{ padding: '7px 9px' }}>{limit}</div>
+                <div style={{ padding: '7px 9px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 7, borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', color: '#9a3412', padding: '7px 9px', fontSize: 10.6, lineHeight: 1.32, fontWeight: 850 }}>
+          <div style={{ marginTop: 8, borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', color: '#9a3412', padding: '8px 10px', fontSize: 12.2, lineHeight: 1.35, fontWeight: 850 }}>
             캐시로 문제를 가리기보다 쿼리 구조를 먼저 개선하고, 반복 조회 비용만 Redis로 분리했습니다.
           </div>
         </Panel>
@@ -1342,10 +1342,10 @@ function FeedShopP1ResultImagesSlide() {
 function FeedShopP2ProblemThinkingSlide() {
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — 피드 투표 동시성 문제" subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1.18fr 0.82fr', gap: 10, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, height: '100%', alignContent: 'start' }}>
         <Panel pad={11} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 10, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 10, alignContent: 'start' }}>
             <div style={{ color: slate, fontSize: 14.2, lineHeight: 1.45, fontWeight: 780 }}>
                 중복 투표 방지 로직이 코드 레벨에만 존재하고, DB 유니크 제약이 없어 동시 요청 시
                 <strong style={{ color: red, fontWeight: 950 }}> TOCTOU 취약점</strong>이 발생했습니다.
@@ -1386,10 +1386,10 @@ function FeedShopP2ProblemThinkingSlide() {
         </Panel>
         <Panel pad={11} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 7 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 9 }}>
             <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1.15fr 1.55fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 9.6, fontWeight: 950 }}>
-                {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 7px' }}>{label}</div>)}
+              <div style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', background: '#f1f5f9', color: slate, fontSize: 11.2, fontWeight: 950 }}>
+                {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '8px 9px' }}>{label}</div>)}
               </div>
               {[
                 ['코드 중복 검사', '구현 단순', '동시 요청이 검사를 함께 통과', '제외'],
@@ -1397,15 +1397,15 @@ function FeedShopP2ProblemThinkingSlide() {
                 ['DB 유니크 제약', '중복 물리 차단', '예외·카운터 락 별도 처리', '부분 적용'],
                 ['제약 + NOT_SUPPORTED + INCR', '중복·예외·카운터 분리', 'DB·Redis 정합성 검증 필요', '최종 선택'],
               ].map(([option, strength, limit, decision], idx) => (
-                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.25fr 1.15fr 1.55fr 0.72fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 9.3, lineHeight: 1.25, fontWeight: 760 }}>
-                  <div style={{ padding: '5px 7px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
-                  <div style={{ padding: '5px 7px' }}>{strength}</div>
-                  <div style={{ padding: '5px 7px' }}>{limit}</div>
-                  <div style={{ padding: '5px 7px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
+                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 11.2, lineHeight: 1.34, fontWeight: 760 }}>
+                  <div style={{ padding: '8px 9px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                  <div style={{ padding: '8px 9px' }}>{strength}</div>
+                  <div style={{ padding: '8px 9px' }}>{limit}</div>
+                  <div style={{ padding: '8px 9px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 10, padding: '8px 11px', color: '#9a3412', fontSize: 11.4, lineHeight: 1.34, fontWeight: 900 }}>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 10, padding: '10px 12px', color: '#9a3412', fontSize: 13.2, lineHeight: 1.36, fontWeight: 900 }}>
               중복 차단은 DB 제약으로 보장하고, 빈번한 카운터 갱신은 Redis 원자 연산으로 분리해 락 경합을 제거했습니다.
             </div>
           </div>
@@ -1719,10 +1719,10 @@ function M3ReflectionSlide() {
 function M3ProblemThinkingSlide() {
   return (
     <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.72fr 1.35fr', gap: 11, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
         <Panel pad={13} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, height: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, alignContent: 'start' }}>
             <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.45, fontWeight: 800 }}>
               Auth·User를 하나로 두는 안과 요청마다 User를 조회하는 안을 비교해,
               책임 경계와 인증 컨텍스트 전달 방식을 결정했습니다.
@@ -1733,7 +1733,7 @@ function M3ProblemThinkingSlide() {
                 ['요청별 재조회 대안', '최신 role은 반영하지만 호출 증가·User 장애 전파 위험'],
                 ['JWT 컨텍스트 대안', '일반 권한 판단을 Gateway로 집중해 인증 경로 단순화'],
               ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '12px 14px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 70 }}>
+                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '10px 13px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 64 }}>
                   <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
                   <div style={{ color: slate, fontSize: 13.3, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
                 </div>
@@ -1743,11 +1743,11 @@ function M3ProblemThinkingSlide() {
         </Panel>
         <Panel pad={14} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 9, height: '100%' }}>
-            <div style={{ color: slate, fontSize: 13, fontWeight: 780, lineHeight: 1.38 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 9, height: '100%', alignContent: 'start' }}>
+            <div style={{ color: slate, fontSize: 14.4, fontWeight: 780, lineHeight: 1.38 }}>
               문제를 서비스 경계와 인증 컨텍스트 전달 두 레이어로 분리해 비교했습니다.
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '0.92fr 1.08fr', gap: 9, minHeight: 0 }}>
+            <div style={{ display: 'grid', gap: 9 }}>
               {[
                 {
                   title: '서비스 경계',
@@ -1765,26 +1765,26 @@ function M3ProblemThinkingSlide() {
                   ],
                 },
               ].map((group) => (
-                <div key={group.title} style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}`, alignSelf: 'stretch' }}>
-                  <div style={{ background: '#f1f5f9', color: navy, fontSize: 11.5, fontWeight: 950, padding: '7px 8px' }}>{group.title}</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.05fr 1.35fr 0.65fr', background: '#f8fafc', color: slate, fontSize: 8.6, fontWeight: 950 }}>
-                    {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '5px 6px' }}>{label}</div>)}
+                <div key={group.title} style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}` }}>
+                  <div style={{ background: '#f1f5f9', color: navy, fontSize: 14.4, fontWeight: 950, padding: '9px 11px' }}>{group.title}</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.5fr 0.7fr', background: '#f8fafc', color: slate, fontSize: 11.4, fontWeight: 950 }}>
+                    {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 9px' }}>{label}</div>)}
                   </div>
                   {group.rows.map(([option, strength, limit, decision]) => {
                     const selected = decision === '선택'
                     return (
-                      <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.05fr 1.35fr 0.65fr', borderTop: `1px solid ${selected ? '#bfdbfe' : line}`, background: selected ? '#eff6ff' : white, color: navy, fontSize: 8.8, lineHeight: 1.28, fontWeight: 760 }}>
-                        <div style={{ padding: '6px', fontWeight: 920, color: selected ? blue : navy }}>{option}</div>
-                        <div style={{ padding: '6px' }}>{strength}</div>
-                        <div style={{ padding: '6px' }}>{limit}</div>
-                        <div style={{ padding: '6px', fontWeight: 950, color: selected ? blue : red }}>{decision}</div>
+                      <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.5fr 0.7fr', borderTop: `1px solid ${selected ? '#bfdbfe' : line}`, background: selected ? '#eff6ff' : white, color: navy, fontSize: 11.6, lineHeight: 1.35, fontWeight: 760 }}>
+                        <div style={{ padding: '8px 9px', fontWeight: 920, color: selected ? blue : navy }}>{option}</div>
+                        <div style={{ padding: '8px 9px' }}>{strength}</div>
+                        <div style={{ padding: '8px 9px' }}>{limit}</div>
+                        <div style={{ padding: '8px 9px', fontWeight: 950, color: selected ? blue : red }}>{decision}</div>
                       </div>
                     )
                   })}
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '11px 13px', color: '#9a3412', fontSize: 12.6, lineHeight: 1.38, fontWeight: 900 }}>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '12px 14px', color: '#9a3412', fontSize: 14.2, lineHeight: 1.38, fontWeight: 900 }}>
               Auth와 User는 변경되는 이유(인증 정책 vs 사용자 정보)가 서로 다르므로 분리했고,
               <br />
               일반 권한 판단은 JWT 컨텍스트로 Gateway에서 처리하는 안을 적용했습니다.
