@@ -599,39 +599,27 @@ function CollaborationEvidence({
 }
 
 function CollaborationSlide() {
-  const [sprint, slack, guide] = COLLABORATION_SECTION.evidence
+  const evidenceItems = COLLABORATION_SECTION.evidence
 
   return (
     <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} subtitle={WORK_STYLE_SECTION.subtitle} dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr 0.82fr auto auto', gap: 9, height: '100%', minHeight: 0 }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 16, height: '100%', minHeight: 0 }}>
         <div>
           <SectionLabel>{COLLABORATION_SECTION.kicker}</SectionLabel>
-          <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>{COLLABORATION_SECTION.title}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, minHeight: 0 }}>
-            <CollaborationEvidence item={sprint} imageHeight="36mm" />
-            <CollaborationEvidence item={slack} imageHeight="36mm" />
-          </div>
+          <div style={{ color: navy, fontSize: 18.2, fontWeight: 950, lineHeight: 1.22, marginBottom: 7 }}>{COLLABORATION_SECTION.title}</div>
+          <div style={{ color: slate, fontSize: 12.8, lineHeight: 1.48, fontWeight: 780 }}>{COLLABORATION_SECTION.intro}</div>
         </div>
-        <CollaborationEvidence item={guide} imageHeight="26mm" />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, minHeight: 0 }}>
+          {evidenceItems.map((item) => (
+            <CollaborationEvidence key={item.title} item={item} imageHeight="50mm" />
+          ))}
+        </div>
         <a
           href={COLLABORATION_SECTION.guideUrl}
-          style={{ color: blue, fontSize: 9.5, fontWeight: 900, textDecoration: 'none' }}
+          style={{ color: blue, fontSize: 11.5, fontWeight: 950, textDecoration: 'none' }}
         >
           JIRA 가이드라인 보기 · {COLLABORATION_SECTION.guideUrl}
         </a>
-
-        <div style={{ borderTop: `1px solid ${line}`, paddingTop: 8 }}>
-          <SectionLabel>{PROJECT_WORKFLOW.label}</SectionLabel>
-          <div style={{ color: navy, fontSize: 13.2, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>{PROJECT_WORKFLOW.title}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 5 }}>
-            {PROJECT_WORKFLOW.phases.map((phase, index) => (
-              <div key={phase.owner} style={{ paddingLeft: index === 0 ? 0 : 8, paddingRight: 8, borderLeft: index === 0 ? 'none' : `1px solid ${line}` }}>
-                <div style={{ color: phase.tone === 'ai' ? violet : blue, fontSize: 8.2, fontWeight: 950 }}>{phase.owner}</div>
-                <div style={{ color: slate, fontSize: 7.7, lineHeight: 1.3, fontWeight: 720, marginTop: 1 }}>{phase.detail}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </Slide>
   )
@@ -646,70 +634,60 @@ function AiWorkflowSlide() {
 
   return (
     <Slide eyebrow={PROJECT_WORKFLOW.label} title={PROJECT_WORKFLOW.title} subtitle={PROJECT_WORKFLOW.description} dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 11 }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 13, height: '100%' }}>
+        <Panel pad={13} background="#f8fafc" accent={blue} borderColor="#bfdbfe">
+          <SectionLabel>Process</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9, marginTop: 9 }}>
           {PROJECT_WORKFLOW.phases.map((phase, idx) => {
             const tone = phaseTone[phase.tone]
             return (
-              <Panel key={phase.owner} pad={13} background={tone.background} borderColor={tone.border}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                  <div
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: 10,
-                      display: 'grid',
-                      placeItems: 'center',
-                      background: white,
-                      color: tone.color,
-                      fontSize: 13,
-                      fontWeight: 950,
-                    }}
-                  >
-                    {String(idx + 1).padStart(2, '0')}
+                <div key={phase.owner} style={{ borderRadius: 10, background: white, border: `1px solid ${tone.border}`, padding: '11px 12px', minHeight: 48 }}>
+                  <div style={{ color: tone.color, fontSize: 10.4, fontWeight: 950, lineHeight: 1.2, marginBottom: 6 }}>
+                    {String(idx + 1).padStart(2, '0')} · {phase.owner}
                   </div>
-                  <div style={{ color: tone.color, fontSize: 10.5, fontWeight: 950, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                    {phase.owner}
-                  </div>
+                  <div style={{ color: navy, fontSize: 11.4, lineHeight: 1.34, fontWeight: 850 }}>{phase.detail}</div>
                 </div>
-                <div style={{ color: navy, fontSize: 16.2, lineHeight: 1.32, fontWeight: 900 }}>{phase.detail}</div>
-              </Panel>
             )
           })}
-        </div>
+          </div>
+        </Panel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 11, minHeight: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
           {PROJECT_WORKFLOW.tools.map((tool, idx) => {
             const color = [blue, teal, violet, green][idx % 4]
             return (
-              <Panel key={tool.name} pad={13} background={white} accent={color}>
-                <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 9 }}>
+              <Panel key={tool.name} pad={12} background={white} borderColor="#cbd5e1">
+                <div style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start', minHeight: 52 }}>
                   <div
                     style={{
-                      width: 38,
-                      height: 38,
-                      borderRadius: 12,
+                      width: 28,
+                      height: 28,
+                      borderRadius: 9,
                       display: 'grid',
                       placeItems: 'center',
                       background: `${color}12`,
                       color,
-                      fontSize: 22,
+                      fontSize: 10.5,
+                      fontWeight: 950,
                     }}
                   >
-                    <span style={{ fontSize: 12.5, fontWeight: 950 }}>{toolBadges[idx] ?? String(idx + 1).padStart(2, '0')}</span>
+                    {toolBadges[idx] ?? String(idx + 1).padStart(2, '0')}
                   </div>
-                  <h3 style={{ margin: 0, color, fontSize: 16.5, lineHeight: 1.15, fontWeight: 950 }}>{tool.name}</h3>
-                  <p style={{ margin: 0, color: slate, fontSize: 12.1, lineHeight: 1.5, fontWeight: 760, whiteSpace: 'pre-line' }}>
-                    {tool.purpose}
-                  </p>
+                  <div>
+                    <h3 style={{ margin: 0, color, fontSize: 13.4, lineHeight: 1.15, fontWeight: 950 }}>{tool.name}</h3>
+                    <p style={{ margin: '6px 0 0', color: slate, fontSize: 9.8, lineHeight: 1.38, fontWeight: 780, whiteSpace: 'pre-line' }}>
+                      {tool.purpose}
+                    </p>
+                  </div>
                 </div>
               </Panel>
             )
           })}
         </div>
 
-        <Panel pad={12} background="#f8fafc" borderColor="#cbd5e1">
-          <div style={{ color: navy, fontSize: 12.4, lineHeight: 1.5, fontWeight: 780, whiteSpace: 'pre-line' }}>
+        <Panel pad={12} background="#f5f3ff" accent={violet} borderColor="#ddd6fe">
+          <SectionLabel color={violet}>운영 기준</SectionLabel>
+          <div style={{ color: navy, fontSize: 11.4, lineHeight: 1.45, fontWeight: 800, whiteSpace: 'pre-line', marginTop: 6 }}>
             {PROJECT_WORKFLOW.toolsNote}
           </div>
         </Panel>
@@ -1363,15 +1341,9 @@ function FeedShopP2ProblemThinkingSlide() {
 }
 
 function FeedShopP2SolutionSlide() {
-  const exceptionFlow = [
-    ['01', '저장·flush 종료', 'REQUIRED 안에서 유니크 제약 위반을 DB가 확정'],
-    ['02', '예외 경계 분리', '트랜잭션 밖에서 지정된 중복 예외만 분기 처리'],
-    ['03', '중복 응답 변환', '이미 반영된 투표 요청은 실패가 아닌 200 응답으로 정리'],
-  ] as const
-
   return (
-    <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약과 예외 경계를 분리해 중복 요청을 안정적으로 처리했습니다." dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.72fr 1.42fr 0.74fr', gap: 10, height: '100%' }}>
+    <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '0.62fr 1.18fr 0.95fr', gap: 8, height: '100%' }}>
         <Panel pad={10} background={white} accent={blue}>
           <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
             <div>
@@ -1415,15 +1387,34 @@ function FeedShopP2SolutionSlide() {
             </div>
           </div>
         </Panel>
-        <Panel pad={11} background="#f8fafc" borderColor="#cbd5e1">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9, height: '100%' }}>
-            {exceptionFlow.map(([step, title, detail], idx) => (
-              <div key={step} style={{ borderRadius: 11, background: idx === 1 ? '#eff6ff' : white, border: `1px solid ${idx === 1 ? '#bfdbfe' : line}`, padding: '10px 11px' }}>
-                <div style={{ color: blue, fontSize: 10, fontWeight: 950, marginBottom: 4 }}>{step}</div>
-                <div style={{ color: navy, fontSize: 13, fontWeight: 950, lineHeight: 1.22, marginBottom: 5 }}>{title}</div>
-                <div style={{ color: slate, fontSize: 10.8, lineHeight: 1.38, fontWeight: 760 }}>{detail}</div>
+        <Panel pad={10} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 7, height: '100%' }}>
+            <div>
+              <SectionLabel>Solution 3</SectionLabel>
+              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
+              <p style={{ margin: '6px 0 0', color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 780 }}>
+                카운터를 Redis로 분리해 DB 락 경합 자체를 제거
+              </p>
+            </div>
+            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
+              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
+              <div style={{ display: 'grid', gap: 3 }}>
+                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.35, fontWeight: 760 }}>
+                  <strong>기존:</strong> feed_votes INSERT(event_id FK → S-lock) + feeds UPDATE(X-lock) 교차 → 두 잠금이 서로를 기다리는 데드락 발생
+                </div>
+                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.35, fontWeight: 760 }}>
+                  <strong>Redis INCR:</strong> DB 잠금 체계 바깥에서 단일 명령어로 카운터 처리 → lock 없이 데드락 구조적 제거
+                </div>
               </div>
-            ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 7 }}>
+              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '8px 10px', color: navy, fontSize: 10.8, lineHeight: 1.34, fontWeight: 800 }}>
+                Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 복구하고 정기 보정
+              </div>
+              <div style={{ color: '#92400e', fontSize: 9.8, lineHeight: 1.35, fontWeight: 800 }}>
+                한계: DB·Redis 간 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 보장 범위 밖
+              </div>
+            </div>
           </div>
         </Panel>
       </div>
