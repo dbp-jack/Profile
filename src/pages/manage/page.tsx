@@ -21,6 +21,7 @@ import {
 } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId, PortfolioPreset } from '@/portfolio-builder/types'
 import { COPY_PROFILES, getCopyProfile } from '@/portfolio-builder/copy-profiles'
+import './page.css'
 
 const STORAGE_KEY = 'portfolio-manager-blocks'
 const PROJECT_STORAGE_KEY = 'portfolio-manager-projects'

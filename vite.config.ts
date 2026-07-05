@@ -10,13 +10,19 @@ function blockLocalManagerInPublicBuild(): PluginOption {
   return {
     name: 'block-local-manager-in-public-build',
     apply: 'build' as const,
-    generateBundle(_options: unknown, bundle: Record<string, { type: string; modules?: Record<string, unknown>; code?: string }>) {
+    generateBundle(_options: unknown, bundle: Record<string, {
+      type: string
+      modules?: Record<string, unknown>
+      code?: string
+      source?: string | Uint8Array
+    }>) {
       for (const output of Object.values(bundle)) {
-        if (output.type !== 'chunk') continue
-
-        const bundledManageModule = Object.keys(output.modules ?? {}).find((moduleId) =>
-          moduleId.split(path.sep).join('/').includes(localManagerSourcePath),
-        )
+        const bundledManageModule =
+          output.type === 'chunk'
+            ? Object.keys(output.modules ?? {}).find((moduleId) =>
+                moduleId.split(path.sep).join('/').includes(localManagerSourcePath),
+              )
+            : null
 
         if (bundledManageModule) {
           throw new Error(
@@ -24,11 +30,14 @@ function blockLocalManagerInPublicBuild(): PluginOption {
           )
         }
 
+        const outputText =
+          output.code ?? (typeof output.source === 'string' ? output.source : '')
+
         if (
-          output.code?.includes('Local Portfolio Manager') ||
-          output.code?.includes('portfolio-manager-') ||
-          output.code?.includes('포트폴리오 블록 조합') ||
-          output.code?.includes('../pages/manage/page.tsx')
+          outputText.includes('Local Portfolio Manager') ||
+          outputText.includes('portfolio-manager-') ||
+          outputText.includes('포트폴리오 블록 조합') ||
+          outputText.includes('../pages/manage/page.tsx')
         ) {
           throw new Error('Local portfolio manager strings were included in a public build.')
         }
