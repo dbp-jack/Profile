@@ -159,7 +159,7 @@ function Slide({
             <div
               style={{
                 color: isNavy ? '#93c5fd' : blue,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 800,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -187,7 +187,7 @@ function Slide({
               style={{
                 margin: '7px 0 0',
                 color: isNavy ? '#cbd5e1' : muted,
-                fontSize: 13,
+                fontSize: 13.6,
                 lineHeight: 1.5,
               }}
             >
@@ -228,8 +228,8 @@ function SectionLabel({ children, color = blue }: { children: React.ReactNode; c
     <div
       style={{
         color,
-        fontSize: 10,
-        fontWeight: 900,
+        fontSize: 11.4,
+        fontWeight: 950,
         letterSpacing: '0.14em',
         textTransform: 'uppercase',
         marginBottom: 7,
@@ -292,7 +292,7 @@ function KpiCard({
     >
       <div style={{ color, fontSize: 25, lineHeight: 1, fontWeight: 950, letterSpacing: '-0.03em' }}>{value}</div>
       <div style={{ marginTop: 6, color: navy, fontSize: 12, fontWeight: 950 }}>{label}</div>
-      {caption && <div style={{ marginTop: 4, color: muted, fontSize: 10.5, lineHeight: 1.35 }}>{caption}</div>}
+      {caption && <div style={{ marginTop: 4, color: muted, fontSize: 11.6, lineHeight: 1.36 }}>{caption}</div>}
     </div>
   )
 }
@@ -421,7 +421,7 @@ function HeroSlide() {
           <div style={{ display: 'grid', gap: 7, marginBottom: 18 }}>
             {HERO_PERSONAL_INFO.map((row, idx) => (
               <div key={row.text} style={{ display: 'flex', alignItems: 'center', gap: 10, color: slate, fontSize: 14 }}>
-                <span style={{ width: 30, color: blue, fontSize: 10, fontWeight: 950 }}>{personalBadges[idx] ?? 'INFO'}</span>
+                <span style={{ width: 30, color: blue, fontSize: 11.2, fontWeight: 950 }}>{personalBadges[idx] ?? 'INFO'}</span>
                 <span>{row.text}</span>
               </div>
             ))}
@@ -500,7 +500,7 @@ function ProjectsOverviewSlide() {
               <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto auto auto auto', alignContent: 'space-between', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ color: blue, fontWeight: 900, fontSize: 12 }}>프로젝트 {idx + 1}</span>
-                  <span style={{ background: accentColors[idx], color: white, borderRadius: 999, padding: '5px 10px', fontSize: 10.5, fontWeight: 900 }}>{project.badge}</span>
+                  <span style={{ background: accentColors[idx], color: white, borderRadius: 999, padding: '5px 10px', fontSize: 11.4, fontWeight: 900 }}>{project.badge}</span>
                 </div>
                 <h2 style={{ margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: '-0.03em' }}>{project.name}</h2>
                 <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.52, fontWeight: 750 }}>{project.description}</p>
@@ -515,7 +515,7 @@ function ProjectsOverviewSlide() {
                   <div
                     style={{
                       color: highlights[idx].color,
-                      fontSize: 10,
+                      fontSize: 11.2,
                       fontWeight: 950,
                       letterSpacing: '0.13em',
                       textTransform: 'uppercase',
@@ -589,7 +589,7 @@ function CollaborationEvidence({
           <img src={asset(item.image)} alt={item.alt} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
         </div>
         <div>
-          <div style={{ color: blue, fontSize: 9.6, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase' }}>{item.label}</div>
+          <div style={{ color: blue, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase' }}>{item.label}</div>
           <div style={{ marginTop: 3, color: navy, fontSize: 15.8, lineHeight: 1.16, fontWeight: 950 }}>{item.title}</div>
           <div style={{ marginTop: 4, color: slate, fontSize: 11.2, lineHeight: 1.38, fontWeight: 740 }}>{item.description}</div>
         </div>
@@ -702,7 +702,7 @@ function AiWorkflowSlide() {
                   <p style={{ margin: 0, color: slate, fontSize: 11.7, lineHeight: 1.4, fontWeight: 780, whiteSpace: 'pre-line' }}>
                     {tool.purpose}
                   </p>
-                  <div style={{ justifySelf: 'start', borderRadius: 999, padding: '5px 9px', background: `${color}12`, color, fontSize: 10.8, fontWeight: 900 }}>
+                  <div style={{ justifySelf: 'start', borderRadius: 999, padding: '5px 9px', background: `${color}12`, color, fontSize: 11.5, fontWeight: 900 }}>
                     {toolRoles[idx] ?? '활용'}
                   </div>
                 </div>
@@ -761,7 +761,7 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ color, fontSize: 9.8, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase', marginBottom: 5 }}>
+                      <div style={{ color, fontSize: 11.2, fontWeight: 950, letterSpacing: '0.13em', textTransform: 'uppercase', marginBottom: 5 }}>
                         ROLE {String(idx + 1).padStart(2, '0')}
                       </div>
                       <h3 style={{ margin: 0, color: navy, fontSize: 19.2, fontWeight: 950, lineHeight: 1.18 }}>{role.title}</h3>
@@ -810,7 +810,7 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
                     background: idx === 0 ? '#f8fbff' : idx === 1 ? '#f7fefb' : '#fbf9ff',
                     color,
                     padding: '8px 10px',
-                    fontSize: 10.8,
+                    fontSize: 11.5,
                     fontWeight: 950,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
@@ -1034,9 +1034,9 @@ function FeedShopP1ProblemSlide() {
                           padding: '10px 10px',
                         }}
                       >
-                        <div style={{ color: muted, fontSize: 10.8, fontWeight: 900, lineHeight: 1.2 }}>{metric.label}</div>
+                        <div style={{ color: muted, fontSize: 11.5, fontWeight: 900, lineHeight: 1.2 }}>{metric.label}</div>
                         <div style={{ color: metric.tone, fontSize: 22.5, fontWeight: 950, lineHeight: 1.05, marginTop: 6 }}>{metric.value}</div>
-                        <div style={{ color: slate, fontSize: 10.8, fontWeight: 800, marginTop: 5 }}>{metric.caption}</div>
+                        <div style={{ color: slate, fontSize: 11.5, fontWeight: 800, marginTop: 5 }}>{metric.caption}</div>
                       </div>
                     ))}
                   </div>
@@ -1162,7 +1162,7 @@ function FeedShopP1ThinkingSolutionSlide() {
                 style={{ width: '100%', height: '100%', maxHeight: '45mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
-            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 11.4, fontWeight: 900, textDecoration: 'none' }}>
               구현 코드·실패 과정·커밋 근거 → Wiki
             </a>
           </div>
@@ -1192,7 +1192,7 @@ function FeedShopP1SolutionResultSlide() {
               </div>
             </div>
             <div style={{ borderRadius: 10, border: '1px solid #fde68a', background: '#fffbeb', padding: '8px 11px' }}>
-              <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>분산 캐시로 Redis를 선택한 이유</div>
+              <div style={{ color: '#92400e', fontSize: 11.2, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>분산 캐시로 Redis를 선택한 이유</div>
               <div style={{ color: '#78350f', fontSize: 11.2, lineHeight: 1.42, fontWeight: 760 }}>
                 인메모리 캐시(ConcurrentMapCacheManager) 먼저 검토 → GCP Cloud Run 수평 확장 시 인스턴스마다 캐시가 달라 <strong style={{ fontWeight: 950 }}>캐시 불일치</strong> 발생 가능
                 → Redis(외부 공유 캐시)로 전환해 모든 인스턴스가 동일한 캐시 참조
@@ -1201,7 +1201,7 @@ function FeedShopP1SolutionResultSlide() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
               {cacheStrategies.map(([label, value, caption]) => (
                 <div key={label} style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
-                  <div style={{ color: blue, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
+                  <div style={{ color: blue, fontSize: 11.3, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
                   <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginTop: 4, lineHeight: 1.18 }}>{value}</div>
                   <div style={{ color: slate, fontSize: 11.2, fontWeight: 760, marginTop: 3, lineHeight: 1.28 }}>{caption}</div>
                 </div>
@@ -1217,7 +1217,7 @@ function FeedShopP1SolutionResultSlide() {
                 style={{ width: '100%', height: '100%', maxHeight: '56mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
-            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 11.4, fontWeight: 900, textDecoration: 'none' }}>
               @Cacheable·TTL·무효화 구현 상세 → Wiki
             </a>
           </div>
@@ -1257,18 +1257,18 @@ function FeedShopP1ResultTableSlide() {
           <SectionLabel color={green}>단계별 개선 흐름 (동시 1,000명 기준)</SectionLabel>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', gap: 8, alignItems: 'center', marginTop: 6 }}>
             <div style={{ textAlign: 'center', border: '1px solid #fecaca', borderRadius: 10, background: '#fff7f7', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>Before</div>
+              <div style={{ color: muted, fontSize: 11.3, fontWeight: 900, marginBottom: 3 }}>Before</div>
               <div style={{ color: red, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>6,818ms</div>
             </div>
             <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
             <div style={{ textAlign: 'center', border: '1px solid #fed7aa', borderRadius: 10, background: '#fff7ed', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>fetchJoin 적용 후</div>
+              <div style={{ color: muted, fontSize: 11.3, fontWeight: 900, marginBottom: 3 }}>fetchJoin 적용 후</div>
               <div style={{ color: amber, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>4,191ms</div>
               <div style={{ color: amber, fontSize: 11, fontWeight: 900 }}>-39%</div>
             </div>
             <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
             <div style={{ textAlign: 'center', border: '1px solid #bbf7d0', borderRadius: 10, background: '#ecfdf5', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 10.4, fontWeight: 900, marginBottom: 3 }}>Redis 캐시 후</div>
+              <div style={{ color: muted, fontSize: 11.3, fontWeight: 900, marginBottom: 3 }}>Redis 캐시 후</div>
               <div style={{ color: green, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>638ms</div>
               <div style={{ color: green, fontSize: 11, fontWeight: 900 }}>-91%</div>
             </div>
@@ -1329,7 +1329,7 @@ function FeedShopP1ResultImagesSlide() {
                     background: white,
                   }}
                 />
-                <div style={{ color: slate, fontSize: 9.8, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
+                <div style={{ color: slate, fontSize: 11.2, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
           </div>
@@ -1378,7 +1378,7 @@ function FeedShopP2ProblemThinkingSlide() {
                   </div>
                 </div>
               </div>
-              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%ED%94%BC%EB%93%9C-%ED%88%AC%ED%91%9C-%EB%8F%99%EC%8B%9C%EC%84%B1-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 10.5, fontWeight: 900, textDecoration: 'none' }}>
+              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%ED%94%BC%EB%93%9C-%ED%88%AC%ED%91%9C-%EB%8F%99%EC%8B%9C%EC%84%B1-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 11.4, fontWeight: 900, textDecoration: 'none' }}>
                 수정 전 코드·재현 근거 → Wiki
               </a>
             </div>
@@ -1443,7 +1443,7 @@ function FeedShopP2SolutionSlide() {
               </p>
             </div>
             <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>NOT_SUPPORTED 선택 과정</div>
+              <div style={{ color: '#92400e', fontSize: 11.2, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>NOT_SUPPORTED 선택 과정</div>
               <div style={{ display: 'grid', gap: 4 }}>
                 {([
                   ['❌ 시도 1', 'REQUIRES_NEW → 내부 rollback이 외부 Hibernate Session 오염, 정상 작업(포인트 지급 등)까지 전부 실패'],
@@ -1451,8 +1451,8 @@ function FeedShopP2SolutionSlide() {
                   ['✅ 최종', 'NOT_SUPPORTED → saveVote·earnPoints·recordActivity 각각이 독립 트랜잭션, 예외가 다른 작업으로 전파되지 않음'],
                 ] as const).map(([label, text]) => (
                   <div key={label} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 6, alignItems: 'start' }}>
-                    <div style={{ color: '#92400e', fontSize: 10, fontWeight: 950, paddingTop: 1 }}>{label}</div>
-                    <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+                    <div style={{ color: '#92400e', fontSize: 11.2, fontWeight: 950, paddingTop: 1 }}>{label}</div>
+                    <div style={{ color: '#78350f', fontSize: 11.4, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
                   </div>
                 ))}
               </div>
@@ -1472,21 +1472,21 @@ function FeedShopP2SolutionSlide() {
               </p>
             </div>
             <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 9.6, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
+              <div style={{ color: '#92400e', fontSize: 11.2, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
               <div style={{ display: 'grid', gap: 3 }}>
-                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.35, fontWeight: 760 }}>
+                <div style={{ color: '#78350f', fontSize: 11.4, lineHeight: 1.35, fontWeight: 760 }}>
                   <strong>기존:</strong> feed_votes INSERT(event_id FK → S-lock) + feeds UPDATE(X-lock) 교차 → 두 잠금이 서로를 기다리는 데드락 발생
                 </div>
-                <div style={{ color: '#78350f', fontSize: 10.6, lineHeight: 1.35, fontWeight: 760 }}>
+                <div style={{ color: '#78350f', fontSize: 11.4, lineHeight: 1.35, fontWeight: 760 }}>
                   <strong>Redis INCR:</strong> DB 잠금 체계 바깥에서 단일 명령어로 카운터 처리 → lock 없이 데드락 구조적 제거
                 </div>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 7 }}>
-              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '8px 10px', color: navy, fontSize: 10.8, lineHeight: 1.34, fontWeight: 800 }}>
+              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '8px 10px', color: navy, fontSize: 11.5, lineHeight: 1.34, fontWeight: 800 }}>
                 Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 복구하고 정기 보정
               </div>
-              <div style={{ color: '#92400e', fontSize: 9.8, lineHeight: 1.35, fontWeight: 800 }}>
+              <div style={{ color: '#92400e', fontSize: 11.2, lineHeight: 1.35, fontWeight: 800 }}>
                 한계: DB·Redis 간 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 보장 범위 밖
               </div>
             </div>
@@ -1571,12 +1571,12 @@ function FeedShopP2RedisSolutionSlide() {
             return (
               <Panel key={title} pad={11} background={tone.background} borderColor={tone.border}>
                 <div style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 9, alignItems: 'center' }}>
-                  <div style={{ width: 29, height: 29, borderRadius: 9, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 10.8, fontWeight: 950 }}>
+                  <div style={{ width: 29, height: 29, borderRadius: 9, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 11.5, fontWeight: 950 }}>
                     {idx + 1}
                   </div>
                   <div>
                     <div style={{ color: tone.color, fontSize: 12.2, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
-                    <div style={{ marginTop: 3, color: slate, fontSize: 10.5, lineHeight: 1.35, fontWeight: 760 }}>{detail}</div>
+                    <div style={{ marginTop: 3, color: slate, fontSize: 11.4, lineHeight: 1.35, fontWeight: 760 }}>{detail}</div>
                   </div>
                 </div>
               </Panel>
@@ -1628,7 +1628,7 @@ function FeedShopP2ResultSlide() {
             {kpis.map(([label, value]) => (
               <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 48, display: 'grid', alignContent: 'center' }}>
                 <div style={{ color: green, fontSize: 19.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 10.7, fontWeight: 850, marginTop: 4 }}>{label}</div>
+                <div style={{ color: '#065f46', fontSize: 11.5, fontWeight: 850, marginTop: 4 }}>{label}</div>
               </div>
             ))}
           </div>
@@ -1653,7 +1653,7 @@ function FeedShopP2ResultSlide() {
                     background: white,
                   }}
                 />
-                <div style={{ color: slate, fontSize: 9.7, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
+                <div style={{ color: slate, fontSize: 11.2, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
           </div>
@@ -1845,7 +1845,7 @@ function M3SolutionSlide() {
                   border: '#bfdbfe',
                 },
               ].map((item) => (
-                <div key={item.label} style={{ minHeight: 0, border: `1px solid ${item.border}`, borderRadius: 12, background: item.bg, padding: '9px 10px 8px', display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 7 }}>
+                <div key={item.label} style={{ minHeight: 0, border: `1px solid ${item.border}`, borderRadius: 12, background: item.bg, padding: '9px 10px 8px', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 7 }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10 }}>
                     <div style={{ color: item.tone, fontSize: 12.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.label}</div>
                     <div style={{ color: navy, fontSize: 12.4, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</div>
@@ -1854,11 +1854,8 @@ function M3SolutionSlide() {
                     <img
                       src={asset(item.src)}
                       alt={item.title}
-                      style={{ width: '100%', height: '100%', maxHeight: '65mm', objectFit: 'contain', display: 'block' }}
+                      style={{ width: '100%', height: '100%', maxHeight: '74mm', objectFit: 'contain', display: 'block' }}
                     />
-                  </div>
-                  <div style={{ color: slate, fontSize: 10.2, lineHeight: 1.28, fontWeight: 780 }}>
-                    {item.caption}
                   </div>
                 </div>
               ))}
@@ -1890,7 +1887,7 @@ function M3SolutionSlide() {
                     <React.Fragment key={title}>
                       <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 12, padding: '10px 8px', minHeight: 59, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
                         <div style={{ color: idx === 1 ? blue : navy, fontSize: 13.7, fontWeight: 950, lineHeight: 1.1, marginBottom: 5 }}>{title}</div>
-                        <div style={{ color: slate, fontSize: 10.3, lineHeight: 1.24, fontWeight: 760, wordBreak: 'keep-all' }}>{desc}</div>
+                        <div style={{ color: slate, fontSize: 11.2, lineHeight: 1.24, fontWeight: 760, wordBreak: 'keep-all' }}>{desc}</div>
                       </div>
                       {idx < 2 ? (
                         <div style={{ color: blue, fontSize: 20, fontWeight: 950 }}>→</div>
@@ -1906,7 +1903,7 @@ function M3SolutionSlide() {
                 ].map(([label, text], idx) => (
                   <div key={label} style={{ border: `1px solid ${idx === 0 ? '#ddd6fe' : '#bbf7d0'}`, background: idx === 0 ? '#f5f3ff' : '#ecfdf5', borderRadius: 11, padding: '9px 10px' }}>
                     <div style={{ color: idx === 0 ? violet : green, fontSize: 11.2, fontWeight: 950, marginBottom: 3 }}>{label}</div>
-                    <div style={{ color: navy, fontSize: 10.8, lineHeight: 1.3, fontWeight: 800, wordBreak: 'keep-all' }}>{text}</div>
+                    <div style={{ color: navy, fontSize: 11.5, lineHeight: 1.3, fontWeight: 800, wordBreak: 'keep-all' }}>{text}</div>
                   </div>
                 ))}
               </div>
@@ -1991,7 +1988,7 @@ function ExperienceSlide() {
             <div style={{ display: 'grid', gridTemplateColumns: '112px 1fr', gap: 14, alignItems: 'center' }}>
               <div>
                 <div style={{ color: muted, fontSize: 11, fontWeight: 800 }}>{item.period}</div>
-                <div style={{ display: 'inline-block', marginTop: 5, background: blue, color: white, borderRadius: 999, padding: '3px 9px', fontSize: 10, fontWeight: 900 }}>{item.category}</div>
+                <div style={{ display: 'inline-block', marginTop: 5, background: blue, color: white, borderRadius: 999, padding: '3px 9px', fontSize: 11.2, fontWeight: 900 }}>{item.category}</div>
               </div>
               <div>
                 <div style={{ fontSize: 14.5, fontWeight: 900, marginBottom: 4 }}>{item.title}</div>
@@ -2150,7 +2147,7 @@ function BankcowDirectionSlide() {
               <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.48, fontWeight: 800 }}>{note.body}</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 12 }}>
                 {note.bullets.map((bullet) => (
-                  <span key={bullet} style={{ borderRadius: 999, background: white, border: `1px solid ${idx === 0 ? '#bfdbfe' : line}`, color: idx === 0 ? blue : slate, padding: '5px 10px', fontSize: 10.8, fontWeight: 900 }}>
+                  <span key={bullet} style={{ borderRadius: 999, background: white, border: `1px solid ${idx === 0 ? '#bfdbfe' : line}`, color: idx === 0 ? blue : slate, padding: '5px 10px', fontSize: 11.5, fontWeight: 900 }}>
                     {bullet}
                   </span>
                 ))}
@@ -2164,7 +2161,7 @@ function BankcowDirectionSlide() {
             <div style={{ display: 'grid', gridTemplateColumns: `repeat(${BANKCOW_DIRECTION.flow.length}, 1fr)`, gap: 8 }}>
               {BANKCOW_DIRECTION.flow.map((item, idx) => (
                 <div key={item} style={{ borderRadius: 12, background: idx === 0 ? '#eff6ff' : '#f8fafc', border: `1px solid ${idx === 0 ? '#bfdbfe' : line}`, padding: '10px 9px', textAlign: 'center' }}>
-                  <div style={{ color: blue, fontSize: 10, fontWeight: 950, marginBottom: 4 }}>{String(idx + 1).padStart(2, '0')}</div>
+                  <div style={{ color: blue, fontSize: 11.2, fontWeight: 950, marginBottom: 4 }}>{String(idx + 1).padStart(2, '0')}</div>
                   <div style={{ color: navy, fontSize: 12.2, fontWeight: 950, lineHeight: 1.2 }}>{item}</div>
                 </div>
               ))}
@@ -2175,7 +2172,7 @@ function BankcowDirectionSlide() {
               {BANKCOW_BACKEND_POINTS.map(([title, body]) => (
                 <div key={title}>
                   <div style={{ color: blue, fontSize: 11.3, fontWeight: 950, marginBottom: 4 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 9.9, lineHeight: 1.35, fontWeight: 760 }}>{body}</div>
+                  <div style={{ color: slate, fontSize: 11.2, lineHeight: 1.35, fontWeight: 760 }}>{body}</div>
                 </div>
               ))}
             </div>
@@ -2193,7 +2190,7 @@ function ResourcesContactSlide() {
         <Panel pad={16} background="#f8fbff" accent={green}>
           <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 10, fontWeight: 950 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 11.2, fontWeight: 950 }}>
                 URL
               </div>
               <div>
@@ -2221,11 +2218,11 @@ function ResourcesContactSlide() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                    <div style={{ width: 26, height: 26, borderRadius: 8, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 9.5, fontWeight: 950 }}>
+                    <div style={{ width: 26, height: 26, borderRadius: 8, display: 'grid', placeItems: 'center', background: '#ecfdf5', color: green, fontSize: 11.1, fontWeight: 950 }}>
                       {String(idx + 1).padStart(2, '0')}
                     </div>
-                    <div style={{ color: green, fontSize: 10.4, fontWeight: 950, letterSpacing: '0.09em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
-                    <span style={{ marginLeft: 'auto', color: green, fontSize: 10, fontWeight: 950 }}>OPEN</span>
+                    <div style={{ color: green, fontSize: 11.3, fontWeight: 950, letterSpacing: '0.09em' }}>RESOURCE {String(idx + 1).padStart(2, '0')}</div>
+                    <span style={{ marginLeft: 'auto', color: green, fontSize: 11.2, fontWeight: 950 }}>OPEN</span>
                   </div>
                   <div style={{ color: navy, fontSize: 13.8, fontWeight: 950, lineHeight: 1.18 }}>{link.label}</div>
                 </a>
@@ -2249,14 +2246,14 @@ function ResourcesContactSlide() {
                   rel={link.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 11, alignItems: 'center', textDecoration: 'none' }}
                 >
-                  <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 10, fontWeight: 950 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#1e293b', color: '#93c5fd', fontSize: 11.2, fontWeight: 950 }}>
                     {(['GH', 'EM', 'IN'] as const)[idx] ?? 'CT'}
                   </div>
                   <div style={{ color: '#e2e8f0', fontSize: 14.2, fontWeight: 850, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{link.label}</div>
                 </a>
               ))}
             </div>
-            <div style={{ borderTop: '1px solid #334155', paddingTop: 13, color: '#94a3b8', fontSize: 10.8, lineHeight: 1.4, fontWeight: 720 }}>
+            <div style={{ borderTop: '1px solid #334155', paddingTop: 13, color: '#94a3b8', fontSize: 11.5, lineHeight: 1.4, fontWeight: 720 }}>
               Portfolio · Backend Software Engineer
             </div>
           </div>
@@ -2314,23 +2311,23 @@ export default function PdfPortfolio() {
         .pdf-rich table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 9.6px;
+          font-size: 10.8px;
         }
         .pdf-rich th,
         .pdf-rich td {
-          padding: 4px 6px !important;
+          padding: 4.5px 6.5px !important;
           border-top: 1px solid #e2e8f0;
         }
         .pdf-table-compact table {
-          font-size: 9.1px !important;
+          font-size: 10.4px !important;
         }
         .pdf-table-compact th,
         .pdf-table-compact td {
-          padding: 2.5px 5px !important;
+          padding: 3.5px 5.5px !important;
         }
         .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] {
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-          font-size: 8.8px !important;
+          font-size: 10.1px !important;
           line-height: 1.34 !important;
           padding: 7px 9px !important;
           overflow: hidden !important;
