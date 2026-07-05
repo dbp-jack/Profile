@@ -39,18 +39,18 @@ export const PORTFOLIO_BLOCK_REGISTRY: Record<PortfolioBlockId, PortfolioBlockDe
     component: ProjectsSection,
     placement: 'main',
   },
-  experience: {
-    id: 'experience',
-    label: 'Experience',
-    description: '경력, 교육과 대외활동',
-    component: ExperienceSection,
-    placement: 'main',
-  },
   closing: {
     id: 'closing',
     label: 'Direction',
     description: '개발 철학, 성장 방향과 기업 이해',
     component: PhilosophyClosingSection,
+    placement: 'main',
+  },
+  experience: {
+    id: 'experience',
+    label: 'Experience',
+    description: '경력, 교육과 대외활동',
+    component: ExperienceSection,
     placement: 'main',
   },
   resources: {

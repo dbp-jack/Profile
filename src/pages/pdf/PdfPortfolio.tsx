@@ -2046,8 +2046,8 @@ export default function PdfPortfolio() {
       <M3ResultSlide />
       <M3ReflectionSlide />
 
-      <ExperienceSlide />
       <ClosingSlide />
+      <ExperienceSlide />
       <ResourcesContactSlide />
     </>
   )

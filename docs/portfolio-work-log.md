@@ -38,11 +38,11 @@
   - FeedShop은 이력서·README·Wiki에서 `이벤트 목록 조회 성능`과 `투표 동시성` 두 축이 확인되어 bullet 2개로 유지합니다.
   - 3M과 FIX는 성과를 억지로 2개로 나누지 않고 단일 문장으로 유지합니다.
 - `src/pages/home/components/AboutSection.tsx`
-  - About 영역 카드와 하이라이트 문구 담당
+  - Strengths 영역 카드와 하이라이트 문구 담당
 
 ## 지금까지 완료한 주요 작업
 
-- `How I Work` 섹션을 `Projects`보다 먼저 오도록 순서를 조정했습니다.
+- `Work Style` 섹션을 `Projects`보다 먼저 오도록 순서를 조정했습니다.
 - Projects 제목 아래 프로젝트 간략 소개 카드 위치를 바로잡았습니다.
 - FeedShop와 3M 카드의 `소개`, `성과`, `회고`, `담당 역할`, `핵심 과제` 위치를 동일하게 맞췄습니다.
 - FeedShop 성과 문장에 응답시간 개선율과 DB 조회 쿼리 감소율, 효과 문장을 추가했습니다.
