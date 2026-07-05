@@ -1508,10 +1508,15 @@ function FeedShopP2RedisSolutionSlide() {
     ['락 분리', 'DB row lock 경합에서 투표 수 갱신을 분리'],
     ['복구 기준', 'feed_votes COUNT를 원본으로 삼아 재계산 가능'],
   ] as const
+  const outcomeFlow = [
+    ['분리 전', '투표 이력 저장과 카운터 갱신이 같은 DB 락 흐름에 묶였습니다.'],
+    ['분리 후', 'DB에는 투표 이력을 남기고, Redis는 카운터 증가만 맡겼습니다.'],
+    ['복구 기준', 'Redis 값은 빠른 조회용으로 두고, feed_votes COUNT를 원본으로 삼았습니다.'],
+  ] as const
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Redis 카운터 분리" subtitle="Redis INCR로 데드락 구조를 제거하고, DB 원본 기준 복구 경로를 남겼습니다." dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 11, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto auto', gap: 10, height: '100%', alignContent: 'start' }}>
         <Panel pad={13} background={white} accent={blue}>
           <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.35fr', gap: 15, alignItems: 'center' }}>
             <div>
@@ -1524,7 +1529,7 @@ function FeedShopP2RedisSolutionSlide() {
           </div>
         </Panel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, minHeight: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'start' }}>
           <Panel pad={13} background="#fffbeb" borderColor="#fde68a">
             <SectionLabel color={amber}>Deadlock Cause</SectionLabel>
             <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
@@ -1554,6 +1559,29 @@ function FeedShopP2RedisSolutionSlide() {
               ))}
             </div>
           </Panel>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+          {outcomeFlow.map(([title, detail], idx) => {
+            const tone = idx === 0
+              ? { color: '#92400e', background: '#fffbeb', border: '#fde68a', badge: '#fed7aa' }
+              : idx === 1
+                ? { color: green, background: '#ecfdf5', border: '#a7f3d0', badge: '#bbf7d0' }
+                : { color: blue, background: '#eff6ff', border: '#bfdbfe', badge: '#dbeafe' }
+            return (
+              <Panel key={title} pad={11} background={tone.background} borderColor={tone.border}>
+                <div style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 9, alignItems: 'center' }}>
+                  <div style={{ width: 29, height: 29, borderRadius: 9, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 10.8, fontWeight: 950 }}>
+                    {idx + 1}
+                  </div>
+                  <div>
+                    <div style={{ color: tone.color, fontSize: 12.2, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 3, color: slate, fontSize: 10.5, lineHeight: 1.35, fontWeight: 760 }}>{detail}</div>
+                  </div>
+                </div>
+              </Panel>
+            )
+          })}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 11 }}>
