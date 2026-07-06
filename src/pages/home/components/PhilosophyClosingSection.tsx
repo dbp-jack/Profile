@@ -92,7 +92,7 @@ function CompanyInsightCard({
 }) {
   return (
     <article
-      className={`mb-8 rounded-[1.5rem] border px-5 py-5 shadow-md md:mb-10 md:px-6 md:py-6 ${
+      className={`rounded-[1.5rem] border px-5 py-5 shadow-md md:col-span-2 md:px-6 md:py-6 ${
         dark
           ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
           : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
@@ -228,8 +228,6 @@ export default function PhilosophyClosingSection() {
             </p>
           </div>
 
-          {companyInsight && <CompanyInsightCard companyInsight={companyInsight} dark={dark} />}
-
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {CLOSING_BLOCKS.map((block) => (
               <div
@@ -331,6 +329,8 @@ export default function PhilosophyClosingSection() {
                 )
               }),
             )}
+
+            {companyInsight && <CompanyInsightCard companyInsight={companyInsight} dark={dark} />}
           </div>
         </div>
       </div>
