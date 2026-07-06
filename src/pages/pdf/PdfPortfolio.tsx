@@ -289,7 +289,7 @@ function KpiCard({
         padding: '13px 14px',
       }}
     >
-      <div style={{ color, fontSize: 25, lineHeight: 1, fontWeight: 950, letterSpacing: '-0.03em' }}>{value}</div>
+      <div style={{ color, fontSize: 25, lineHeight: 1, fontWeight: 950, letterSpacing: '-0.03em', whiteSpace: 'nowrap' }}>{value}</div>
       <div style={{ marginTop: 6, color: navy, fontSize: 13, fontWeight: 950 }}>{label}</div>
       {caption && <div style={{ marginTop: 4, color: muted, fontSize: 12.6, lineHeight: 1.36 }}>{caption}</div>}
     </div>
@@ -1110,7 +1110,7 @@ function FeedShopP1ThinkingSolutionSlide() {
                 }}
               >
                 <div style={{ padding: '7px 9px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
-                <div style={{ padding: '7px 9px' }}>{strength}</div>
+                <div style={{ padding: '7px 9px', whiteSpace: strength.includes('→') ? 'nowrap' : undefined }}>{strength}</div>
                 <div style={{ padding: '7px 9px' }}>{limit}</div>
                 <div style={{ padding: '7px 9px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
               </div>
@@ -1152,7 +1152,7 @@ function FeedShopP1ThinkingSolutionSlide() {
               }}
             >
                 <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter 측정</div>
-              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950 }}>조회 쿼리 42회 → 2회</div>
+              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950, whiteSpace: 'nowrap' }}>조회 쿼리 42 → 2회</div>
             </div>
             <div style={{ minHeight: 0 }}>
               <img
@@ -1246,24 +1246,24 @@ function FeedShopP1ResultTableSlide() {
         <Panel pad={13} background="#f8fafc" borderColor="#bbf7d0" accent={green}>
           <div style={{ display: 'grid', gap: 9 }}>
             <SectionLabel color={green}>Result Summary</SectionLabel>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.42fr) minmax(0, 0.98fr)', gap: 10, alignItems: 'stretch' }}>
-              <div style={{ border: `1px solid #bbf7d0`, borderRadius: 12, background: white, padding: '12px 14px', display: 'grid', alignContent: 'center', gap: 8, wordBreak: 'keep-all' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 9 }}>
+              <div style={{ border: `1px solid #bbf7d0`, borderRadius: 12, background: white, padding: '12px 16px', display: 'grid', alignContent: 'center', gap: 8, wordBreak: 'keep-all' }}>
                 <div style={{ color: green, fontSize: 18.4, lineHeight: 1.18, fontWeight: 950 }}>
                   QueryDSL fetchJoin + Redis 캐시 적용으로 이벤트 목록 조회 병목 개선
                 </div>
                 <div style={{ display: 'grid', gap: 6 }}>
                   {summaryPoints.map(([label, text]) => (
-                    <div key={label} style={{ display: 'grid', gridTemplateColumns: '78px 1fr', gap: 9, alignItems: 'center' }}>
+                    <div key={label} style={{ display: 'grid', gridTemplateColumns: '70px minmax(0, 1fr)', gap: 8, alignItems: 'center' }}>
                       <div style={{ color: green, fontSize: 13.5, lineHeight: 1.2, fontWeight: 950 }}>{label}</div>
                       <div style={{ color: slate, fontSize: 14, lineHeight: 1.34, fontWeight: 830 }}>{text}</div>
                     </div>
                   ))}
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8 }}>
                 {kpis.map((item) => (
-                  <div key={item.label} style={{ textAlign: 'center', border: `1px solid ${item.border}`, borderRadius: 11, background: item.background, padding: '8px 9px', display: 'grid', alignContent: 'center', wordBreak: 'keep-all' }}>
-                    <div style={{ color: item.color, fontSize: 19.5, fontWeight: 950, lineHeight: 1.08 }}>{item.value}</div>
+                  <div key={item.label} style={{ textAlign: 'center', border: `1px solid ${item.border}`, borderRadius: 11, background: item.background, padding: '7px 8px', display: 'grid', alignContent: 'center', wordBreak: 'keep-all' }}>
+                    <div style={{ color: item.color, fontSize: 18.8, fontWeight: 950, lineHeight: 1.08, whiteSpace: 'nowrap' }}>{item.value}</div>
                     <div style={{ color: item.labelColor, fontSize: 12.4, fontWeight: 850, marginTop: 4 }}>{item.label}</div>
                   </div>
                 ))}
@@ -1534,52 +1534,56 @@ function FeedShopP2RedisSolutionSlide() {
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Redis 카운터 분리" subtitle="Redis INCR로 데드락 구조를 제거하고, DB 원본 기준 복구 경로를 남겼습니다." dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto auto', gap: 10, height: '100%', alignContent: 'center' }}>
-        <Panel pad={13} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.35fr', gap: 15, alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.74fr 1.86fr 0.92fr 0.68fr', gap: 14, height: '100%', alignItems: 'stretch' }}>
+        <Panel pad={16} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 26, alignItems: 'center', height: '100%' }}>
             <div>
               <SectionLabel>Solution 3</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 21, lineHeight: 1.18, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
+              <h2 style={{ margin: 0, color: navy, fontSize: 22, lineHeight: 1.18, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
             </div>
-            <p style={{ margin: 0, color: slate, fontSize: 13.3, lineHeight: 1.48, fontWeight: 780 }}>
+            <p style={{ margin: 0, color: slate, fontSize: 13.8, lineHeight: 1.52, fontWeight: 780 }}>
               투표 카운터를 DB 업데이트에서 분리해 lock 경쟁을 줄이고, Redis 장애나 키 유실 상황에서는 DB 투표 이력을 원본으로 다시 보정하도록 설계했습니다.
             </p>
           </div>
         </Panel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, alignItems: 'start' }}>
-          <Panel pad={13} background="#fffbeb" borderColor="#fde68a">
-            <SectionLabel color={amber}>Deadlock Cause</SectionLabel>
-            <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, alignItems: 'stretch' }}>
+          <Panel pad={16} background="#fffbeb" borderColor="#fde68a">
+            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%' }}>
+              <SectionLabel color={amber}>Deadlock Cause</SectionLabel>
+              <div style={{ display: 'grid', gap: 12, alignContent: 'space-evenly', marginTop: 10 }}>
               {lockFlow.map(([title, detail], idx) => (
-                <div key={title} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start' }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#fed7aa', color: '#92400e', fontSize: 12, fontWeight: 950 }}>{idx + 1}</div>
+                <div key={title} style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'start' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#fed7aa', color: '#92400e', fontSize: 12.8, fontWeight: 950 }}>{idx + 1}</div>
                   <div>
-                    <div style={{ color: '#78350f', fontSize: 13.2, fontWeight: 950, marginBottom: 3 }}>{title}</div>
-                    <div style={{ color: '#92400e', fontSize: 12.4, lineHeight: 1.43, fontWeight: 760 }}>{detail}</div>
+                    <div style={{ color: '#78350f', fontSize: 13.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
+                    <div style={{ color: '#92400e', fontSize: 12.9, lineHeight: 1.46, fontWeight: 760 }}>{detail}</div>
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           </Panel>
 
-          <Panel pad={13} background="#ecfdf5" borderColor="#a7f3d0">
-            <SectionLabel color={green}>Redis INCR</SectionLabel>
-            <div style={{ display: 'grid', gap: 8, marginTop: 8 }}>
+          <Panel pad={16} background="#ecfdf5" borderColor="#a7f3d0">
+            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%' }}>
+              <SectionLabel color={green}>Redis INCR</SectionLabel>
+              <div style={{ display: 'grid', gap: 12, alignContent: 'space-evenly', marginTop: 10 }}>
               {redisFlow.map(([title, detail], idx) => (
-                <div key={title} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 8, alignItems: 'start' }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 9, display: 'grid', placeItems: 'center', background: '#bbf7d0', color: green, fontSize: 12, fontWeight: 950 }}>{idx + 1}</div>
+                <div key={title} style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'start' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#bbf7d0', color: green, fontSize: 12.8, fontWeight: 950 }}>{idx + 1}</div>
                   <div>
-                    <div style={{ color: '#064e3b', fontSize: 13.2, fontWeight: 950, marginBottom: 3 }}>{title}</div>
-                    <div style={{ color: '#065f46', fontSize: 12.4, lineHeight: 1.43, fontWeight: 760 }}>{detail}</div>
+                    <div style={{ color: '#064e3b', fontSize: 13.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
+                    <div style={{ color: '#065f46', fontSize: 12.9, lineHeight: 1.46, fontWeight: 760 }}>{detail}</div>
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           </Panel>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
           {outcomeFlow.map(([title, detail], idx) => {
             const tone = idx === 0
               ? { color: '#92400e', background: '#fffbeb', border: '#fde68a', badge: '#fed7aa' }
@@ -1587,14 +1591,14 @@ function FeedShopP2RedisSolutionSlide() {
                 ? { color: green, background: '#ecfdf5', border: '#a7f3d0', badge: '#bbf7d0' }
                 : { color: blue, background: '#eff6ff', border: '#bfdbfe', badge: '#dbeafe' }
             return (
-              <Panel key={title} pad={11} background={tone.background} borderColor={tone.border}>
-                <div style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 9, alignItems: 'center' }}>
-                  <div style={{ width: 29, height: 29, borderRadius: 9, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 12.5, fontWeight: 950 }}>
+              <Panel key={title} pad={14} background={tone.background} borderColor={tone.border}>
+                <div style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'center', height: '100%' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 12.8, fontWeight: 950 }}>
                     {idx + 1}
                   </div>
                   <div>
-                    <div style={{ color: tone.color, fontSize: 13.2, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
-                    <div style={{ marginTop: 3, color: slate, fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>{detail}</div>
+                    <div style={{ color: tone.color, fontSize: 13.6, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 4, color: slate, fontSize: 12.8, lineHeight: 1.38, fontWeight: 760 }}>{detail}</div>
                   </div>
                 </div>
               </Panel>
@@ -1602,14 +1606,14 @@ function FeedShopP2RedisSolutionSlide() {
           })}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 11 }}>
-          <Panel pad={11} background="#eff6ff" borderColor="#bfdbfe">
-            <div style={{ color: navy, fontSize: 13.3, lineHeight: 1.42, fontWeight: 820 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 14 }}>
+          <Panel pad={14} background="#eff6ff" borderColor="#bfdbfe">
+            <div style={{ height: '100%', display: 'flex', alignItems: 'center', color: navy, fontSize: 13.6, lineHeight: 1.45, fontWeight: 820 }}>
               Redis 키 유실·장애 시 <strong style={{ color: blue }}>feed_votes COUNT</strong>를 원본으로 복구하고 정기 보정합니다.
             </div>
           </Panel>
-          <Panel pad={11} background="#fff7ed" borderColor="#fed7aa">
-            <div style={{ color: '#92400e', fontSize: 12.3, lineHeight: 1.42, fontWeight: 800 }}>
+          <Panel pad={14} background="#fff7ed" borderColor="#fed7aa">
+            <div style={{ height: '100%', display: 'flex', alignItems: 'center', color: '#92400e', fontSize: 12.8, lineHeight: 1.45, fontWeight: 800 }}>
               한계: DB·Redis 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 별도 보상 설계가 필요합니다.
             </div>
           </Panel>
@@ -1697,18 +1701,27 @@ function ProjectReflectionSlide({
   return (
     <Slide eyebrow={eyebrow} title="프로젝트 회고" subtitle={subtitle} dense>
       <div style={{ display: 'grid', alignContent: 'center', height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '0.68fr 1.32fr', gap: 14, alignItems: 'stretch' }}>
-          <div style={{ display: 'grid', gap: 9, alignContent: 'center' }}>
+        <Panel pad={22} background={white} borderColor="#bfdbfe" accent={blue}>
+          <div style={{ display: 'grid', gap: 14 }}>
+            <div>
+              <SectionLabel>Retrospective</SectionLabel>
+              <div style={{ color: navy, fontSize: 24.2, lineHeight: 1.16, fontWeight: 950, marginBottom: 13 }}>{reflection.title}</div>
+              <Rich html={reflection.body} size={17.2} lineHeight={1.56} />
+              <div style={{ marginTop: 13, color: muted, fontSize: 12.2, fontWeight: 760 }}>
+                근거: {evidence}
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
             {highlights.map((item) => (
               <div
                 key={item.title}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '38px 1fr',
+                  gridTemplateColumns: '40px 1fr',
                   gap: 10,
                   alignItems: 'center',
-                  minHeight: 68,
-                  padding: '10px 12px',
+                  minHeight: 78,
+                  padding: '12px 13px',
                   borderRadius: 12,
                   background: item.background,
                   border: `1px solid ${item.borderColor}`,
@@ -1730,21 +1743,14 @@ function ProjectReflectionSlide({
                   {item.no}
                 </div>
                 <div>
-                  <div style={{ color: item.color, fontSize: 13.4, lineHeight: 1.18, fontWeight: 950 }}>{item.title}</div>
-                  <div style={{ marginTop: 4, color: slate, fontSize: 12.9, lineHeight: 1.36, fontWeight: 760 }}>{item.desc}</div>
+                  <div style={{ color: item.color, fontSize: 13.5, lineHeight: 1.18, fontWeight: 950 }}>{item.title}</div>
+                  <div style={{ marginTop: 4, color: slate, fontSize: 12.8, lineHeight: 1.35, fontWeight: 760 }}>{item.desc}</div>
                 </div>
               </div>
             ))}
-          </div>
-          <Panel pad={23} background={white} borderColor="#bfdbfe" accent={blue}>
-            <SectionLabel>Retrospective</SectionLabel>
-            <div style={{ color: navy, fontSize: 25.2, lineHeight: 1.16, fontWeight: 950, marginBottom: 15 }}>{reflection.title}</div>
-            <Rich html={reflection.body} size={18.5} lineHeight={1.63} />
-            <div style={{ marginTop: 16, color: muted, fontSize: 12.4, fontWeight: 760 }}>
-              근거: {evidence}
             </div>
-          </Panel>
-        </div>
+          </div>
+        </Panel>
       </div>
     </Slide>
   )
