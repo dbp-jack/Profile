@@ -83,6 +83,100 @@ function getCompanyInsightFromSearch(search: string): CompanyInsight | null {
   return null
 }
 
+function CompanyInsightCard({
+  companyInsight,
+  dark,
+}: {
+  companyInsight: CompanyInsight
+  dark: boolean
+}) {
+  return (
+    <article
+      className={`mb-8 rounded-[1.5rem] border px-5 py-5 shadow-md md:mb-10 md:px-6 md:py-6 ${
+        dark
+          ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
+          : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
+      }`}
+    >
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(320px,0.58fr)] md:items-start">
+        <div className="min-w-0">
+          <div className="flex items-center gap-4">
+            {companyInsight.logoSrc ? (
+              <img
+                src={companyInsight.logoSrc}
+                alt={companyInsight.logoAlt}
+                className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+              />
+            ) : (
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#2563EB] text-2xl font-black text-white">
+                {companyInsight.brand.slice(0, 1).toUpperCase()}
+              </div>
+            )}
+            <div className="min-w-0">
+              <p className="text-3xl font-black leading-none tracking-normal">{companyInsight.brand}</p>
+              <p className={`mt-2 text-base font-black ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
+                {companyInsight.label}
+              </p>
+            </div>
+          </div>
+
+          <p
+            className={`mt-6 max-w-4xl text-base font-bold leading-8 break-keep md:text-lg ${
+              dark ? 'text-[#d8d8d8]' : 'text-slate-700'
+            }`}
+          >
+            {companyInsight.summary}
+          </p>
+        </div>
+
+        <div
+          className={`rounded-2xl border px-5 py-4 md:px-6 md:py-5 ${
+            dark
+              ? 'border-[#315342] bg-emerald-400/10 text-emerald-100'
+              : 'border-emerald-200 bg-emerald-50 text-emerald-950'
+          }`}
+        >
+          <h3 className="text-lg font-black leading-snug break-keep md:text-xl">{companyInsight.noteTitle}</h3>
+          <p className="mt-3 text-base font-bold leading-8 break-keep">{companyInsight.noteBody}</p>
+        </div>
+      </div>
+
+      {companyInsight.flow.length > 0 && (
+        <div
+          className={`mt-6 rounded-2xl border px-5 py-4 md:px-6 ${
+            dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
+          }`}
+        >
+          <div className="flex flex-wrap items-center gap-3 text-base font-black md:text-lg">
+            <span className={dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}>핵심 흐름</span>
+            {companyInsight.flow.map((step, index) => (
+              <span className="flex items-center gap-3" key={step}>
+                <span>{step}</span>
+                {index < companyInsight.flow.length - 1 && (
+                  <i className={`ri-arrow-right-line text-xl ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        {companyInsight.keywords.map((keyword) => (
+          <span
+            key={keyword}
+            className={`rounded-full px-4 py-2 text-base font-black ${
+              dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
+            }`}
+          >
+            {keyword}
+          </span>
+        ))}
+      </div>
+    </article>
+  )
+}
+
 export default function PhilosophyClosingSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
@@ -133,6 +227,8 @@ export default function PhilosophyClosingSection() {
               {CLOSING_SECTION.subtitle}
             </p>
           </div>
+
+          {companyInsight && <CompanyInsightCard companyInsight={companyInsight} dark={dark} />}
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {CLOSING_BLOCKS.map((block) => (
@@ -237,98 +333,6 @@ export default function PhilosophyClosingSection() {
             )}
           </div>
         </div>
-
-        {companyInsight && (
-          <article className="mx-auto mt-8 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
-            <div
-              className={`rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
-                dark
-                  ? 'border-[#424242] bg-[#2b2b2b] text-[#f4f4f4] shadow-black/20'
-                  : 'border-indigo-100/90 bg-white text-slate-950 shadow-slate-200/90'
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                {companyInsight.logoSrc ? (
-                  <img
-                    src={companyInsight.logoSrc}
-                    alt={companyInsight.logoAlt}
-                    className="h-14 w-14 shrink-0 rounded-2xl object-cover"
-                  />
-                ) : (
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#2563EB] text-2xl font-black text-white">
-                    {companyInsight.brand.slice(0, 1).toUpperCase()}
-                  </div>
-                )}
-                <div className="min-w-0">
-                  <p className="text-2xl font-black leading-none tracking-normal">{companyInsight.brand}</p>
-                  <p className={`mt-2 text-sm font-black ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>
-                    {companyInsight.label}
-                  </p>
-                </div>
-              </div>
-
-              <p
-                className={`mt-5 text-base font-bold leading-8 break-keep ${
-                  dark ? 'text-[#d8d8d8]' : 'text-slate-700'
-                }`}
-              >
-                {companyInsight.summary}
-              </p>
-            </div>
-
-            <div
-              className={`rounded-2xl border border-l-[3px] px-5 py-5 shadow-sm md:px-6 ${
-                dark
-                  ? 'border-[#315342] border-l-emerald-400 bg-emerald-400/10 text-emerald-100'
-                  : 'border-emerald-200 border-l-emerald-500 bg-emerald-50 text-emerald-900'
-              }`}
-            >
-              <p className="text-[0.6875rem] font-black uppercase tracking-[0.14em] opacity-80">Company Insight</p>
-              <h3 className="mt-2 text-xl font-black leading-snug break-keep">{companyInsight.noteTitle}</h3>
-              <p className="mt-4 text-base font-bold leading-8 break-keep">{companyInsight.noteBody}</p>
-            </div>
-
-            {companyInsight.flow.length > 0 && (
-              <div
-                className={`rounded-2xl border px-5 py-4 shadow-sm md:px-6 ${
-                  dark ? 'border-[#424242] bg-[#303030] text-[#d8d8d8]' : 'border-slate-200 bg-slate-50 text-slate-700'
-                }`}
-              >
-                <p className={`mb-3 text-sm font-black ${dark ? 'text-[#8fb5ff]' : 'text-[#1d4ed8]'}`}>핵심 흐름</p>
-                <div className="flex flex-wrap items-center gap-3 text-base font-black">
-                  {companyInsight.flow.map((step, index) => (
-                    <span className="flex items-center gap-3" key={step}>
-                      <span>{step}</span>
-                      {index < companyInsight.flow.length - 1 && (
-                        <i className={`ri-arrow-right-line text-lg ${dark ? 'text-[#777777]' : 'text-slate-300'}`} aria-hidden />
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div
-              className={`rounded-2xl border px-5 py-4 shadow-sm md:px-6 ${
-                companyInsight.flow.length === 0 ? 'md:col-span-2' : ''
-              } ${dark ? 'border-[#424242] bg-[#303030]' : 'border-slate-200 bg-white'}`}
-            >
-              <p className={`mb-3 text-sm font-black ${dark ? 'text-[#8fb5ff]' : 'text-[#3730a3]'}`}>관점 키워드</p>
-              <div className="flex flex-wrap gap-2.5">
-                {companyInsight.keywords.map((keyword) => (
-                  <span
-                    key={keyword}
-                    className={`rounded-full px-3.5 py-2 text-sm font-black ${
-                      dark ? 'bg-[#333333] text-[#d8d8d8]' : 'bg-[#EEF2FF] text-[#3730a3]'
-                    }`}
-                  >
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </article>
-        )}
       </div>
     </section>
   )
