@@ -239,7 +239,7 @@ export default function PhilosophyClosingSection() {
         </div>
 
         {companyInsight && (
-          <article className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <article className="mx-auto mt-8 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
             <div
               className={`rounded-2xl border px-5 py-5 shadow-md md:px-6 ${
                 dark

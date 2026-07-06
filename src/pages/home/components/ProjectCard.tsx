@@ -3,6 +3,12 @@ import type { ProjectData, ProjectRoleItem } from '@/content/projects/types'
 import { useDarkMode } from '@/hooks/useDarkMode'
 
 type Props = { project: ProjectData; index: number }
+type ReflectionHighlight = {
+  no: string
+  title: string
+  desc: string
+  tone: 'blue' | 'amber' | 'red' | 'violet' | 'green'
+}
 
 const IS_DEV = import.meta.env.DEV
 const devWarnedKeys = new Set<string>()
@@ -55,8 +61,93 @@ function filterFilledRoles(roles: ProjectRoleItem[]): ProjectRoleItem[] {
   return roles.filter((r) => (r.title?.trim() ?? '').length > 0 || (r.detail?.trim() ?? '').length > 0)
 }
 
+function getReflectionHighlights(projectId: string): ReflectionHighlight[] {
+  if (projectId === 'feedshop') {
+    return [
+      { no: '01', title: '진입 부하', desc: '목록 조회 요청이 몰리는 구간', tone: 'blue' },
+      { no: '02', title: '랭킹 피크', desc: '상위 피드 투표 요청 집중', tone: 'amber' },
+      { no: '03', title: '신뢰 기준', desc: '정확한 투표 수와 보상 흐름', tone: 'red' },
+    ]
+  }
+  if (projectId === 'three-m') {
+    return [
+      { no: '01', title: '책임 경계', desc: 'Auth·User 변경 이유 분리', tone: 'blue' },
+      { no: '02', title: '인증 경로', desc: 'Gateway 중심 권한 판단', tone: 'violet' },
+      { no: '03', title: '검증 기준', desc: '권한 응답 일관성 확인', tone: 'green' },
+    ]
+  }
+  return []
+}
 
+function getReflectionToneClasses(tone: ReflectionHighlight['tone'], dark: boolean) {
+  if (dark) {
+    switch (tone) {
+      case 'amber':
+        return {
+          card: 'border-amber-900/50 bg-amber-950/20',
+          number: 'bg-[#2f2f34] text-amber-300',
+          title: 'text-amber-300',
+        }
+      case 'red':
+        return {
+          card: 'border-red-900/50 bg-red-950/20',
+          number: 'bg-[#2f2f34] text-red-300',
+          title: 'text-red-300',
+        }
+      case 'violet':
+        return {
+          card: 'border-violet-900/50 bg-violet-950/20',
+          number: 'bg-[#2f2f34] text-violet-300',
+          title: 'text-violet-300',
+        }
+      case 'green':
+        return {
+          card: 'border-emerald-900/50 bg-emerald-950/20',
+          number: 'bg-[#2f2f34] text-emerald-300',
+          title: 'text-emerald-300',
+        }
+      default:
+        return {
+          card: 'border-blue-900/50 bg-blue-950/20',
+          number: 'bg-[#2f2f34] text-blue-300',
+          title: 'text-blue-300',
+        }
+    }
+  }
 
+  switch (tone) {
+    case 'amber':
+      return {
+        card: 'border-amber-200 bg-amber-50/80',
+        number: 'bg-white text-amber-600',
+        title: 'text-amber-600',
+      }
+    case 'red':
+      return {
+        card: 'border-red-200 bg-red-50/80',
+        number: 'bg-white text-red-600',
+        title: 'text-red-600',
+      }
+    case 'violet':
+      return {
+        card: 'border-violet-200 bg-violet-50/80',
+        number: 'bg-white text-violet-600',
+        title: 'text-violet-600',
+      }
+    case 'green':
+      return {
+        card: 'border-emerald-200 bg-emerald-50/80',
+        number: 'bg-white text-emerald-600',
+        title: 'text-emerald-600',
+      }
+    default:
+      return {
+        card: 'border-blue-200 bg-blue-50/80',
+        number: 'bg-white text-blue-600',
+        title: 'text-blue-600',
+      }
+  }
+}
 function ProjectBackgroundCard({
   title,
   body,
@@ -516,6 +607,7 @@ export default function ProjectCard({ project, index }: Props) {
   const showContextBlock = usePlanningVariantTop || showLegacyContext
   const isFeedShopProject = project.id === 'feedshop'
   const isWideArchitectureProject = isFeedShopProject || project.id === 'three-m'
+  const reflectionHighlights = getReflectionHighlights(project.id)
   if (perspectiveSection?.cards?.length) {
     perspectiveSection.cards.forEach((card, cardIdx) => {
       const contextKey = `${project.name}#${card.title || cardIdx}`
@@ -758,25 +850,54 @@ export default function ProjectCard({ project, index }: Props) {
           >
             프로젝트 회고
           </p>
-          <div className={`rounded-lg border px-4 py-3.5 ${dark ? 'border-[#3f4650] bg-[#2c3139]' : 'border-slate-200 bg-white'}`}>
-            <strong className={`mb-1.5 block text-base ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
-              {project.projectReflection.title}
-            </strong>
-            <p
-              className={`text-sm font-medium leading-relaxed md:text-base ${dark ? 'text-slate-200' : 'text-slate-700'}`}
-              dangerouslySetInnerHTML={{ __html: project.projectReflection.body }}
-            />
-            {project.projectReflection.sourceUrl ? (
-              <a
-                href={project.projectReflection.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2 ${dark ? 'text-blue-100' : 'text-[#2563EB]'}`}
-              >
-                Wiki 트러블슈팅 기록 보기
-                <i className="ri-external-link-line" aria-hidden />
-              </a>
+          <div className={`grid gap-3 ${reflectionHighlights.length ? 'md:grid-cols-[0.68fr_1.32fr]' : ''}`}>
+            {reflectionHighlights.length ? (
+              <div className="grid gap-2.5 md:content-center">
+                {reflectionHighlights.map((item) => {
+                  const tone = getReflectionToneClasses(item.tone, dark)
+                  return (
+                    <div
+                      key={item.title}
+                      className={`grid min-h-[4.5rem] grid-cols-[2.5rem_1fr] items-center gap-3 rounded-xl border px-3 py-2.5 ${tone.card}`}
+                    >
+                      <span
+                        className={`grid h-9 w-9 place-items-center rounded-lg text-base font-extrabold ${tone.number}`}
+                      >
+                        {item.no}
+                      </span>
+                      <span className="min-w-0">
+                        <strong className={`block text-sm font-extrabold leading-tight md:text-base ${tone.title}`}>
+                          {item.title}
+                        </strong>
+                        <span className={`mt-1 block text-sm font-semibold leading-snug ${dark ? 'text-slate-200' : 'text-slate-700'}`}>
+                          {item.desc}
+                        </span>
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
             ) : null}
+            <div className={`rounded-lg border px-4 py-3.5 ${dark ? 'border-[#3f4650] bg-[#2c3139]' : 'border-slate-200 bg-white'}`}>
+              <strong className={`mb-1.5 block text-base ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}>
+                {project.projectReflection.title}
+              </strong>
+              <p
+                className={`text-sm font-medium leading-relaxed md:text-base ${dark ? 'text-slate-200' : 'text-slate-700'}`}
+                dangerouslySetInnerHTML={{ __html: project.projectReflection.body }}
+              />
+              {project.projectReflection.sourceUrl ? (
+                <a
+                  href={project.projectReflection.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2 ${dark ? 'text-blue-100' : 'text-[#2563EB]'}`}
+                >
+                  Wiki 트러블슈팅 기록 보기
+                  <i className="ri-external-link-line" aria-hidden />
+                </a>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}

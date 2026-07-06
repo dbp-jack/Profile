@@ -58,7 +58,7 @@ export const ABOUT_CARDS = [
     title: '문제 해결 능력',
     subtitle: '성능 병목을 찾아 수치로 증명',
     description:
-      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6,818ms → 638ms)\n이벤트 목록 조회 쿼리 수 42회 → <span class="font-bold text-[#2563EB]">2회 축소</span> 후 Redis 캐시 적용\nnGrinder 동시 1,000명 기준 TPS 216% 향상 검증',
+      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6,818ms → 638ms)\nfetchJoin으로 SQL 42회 → <span class="font-bold text-[#2563EB]">2회 축소</span>, Redis Cache Hit SQL 0회 확인\nnGrinder 동시 1,000명 기준 TPS 216% 향상 검증',
   },
   {
     icon: 'ri-node-tree',
@@ -72,7 +72,7 @@ export const ABOUT_CARDS = [
     title: '책임감',
     subtitle: '끝까지 완수로 증명한 책임감',
     description:
-      '건설현장 관리자 대시보드 기획·설계·개발 단독 주도\n연장된 기간 내 완성도를 높여서 구현했고, 고양 킨텍스 시연 행사까지 성공적으로 시연 연결',
+      '건설현장 관리자 대시보드 기획·설계·개발을 주도적으로 진행\n연장된 기간 내 완성도를 높여서 구현했고, 고양 킨텍스 시연 행사까지 성공적으로 시연 연결',
   },
 ] as const
 
