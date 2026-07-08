@@ -1834,6 +1834,97 @@ function M3ReflectionSlide() {
   )
 }
 
+function M3DeveloperPerspectiveSlide() {
+  const focusItems = [
+    ['Auth/User 책임 분리', '인증 정책 변경이 사용자 도메인 배포와 장애로 번지지 않도록 변경 이유를 분리했습니다.'],
+    ['Gateway 권한 판단', '서비스별 인증 로직 분산을 줄이고 JWT 컨텍스트 기반 일반 권한 흐름을 한 지점에서 정리했습니다.'],
+  ]
+  const riskItems = [
+    ['01', '책임 혼재', '인증 정책 변경이 User 도메인까지 확산', red, '#fef2f2', '#fecaca'],
+    ['02', '재조회 비용', '요청별 User 조회로 호출 증가·장애 전파', amber, '#fff7ed', '#fed7aa'],
+    ['03', '권한 일관성', 'Gateway·AOP·서비스 응답 기준 연결', blue, '#eff6ff', '#bfdbfe'],
+  ] as const
+
+  return (
+    <Slide eyebrow="3M" title="개발자 관점에서의 핵심 과제" subtitle="B2B 물류 인증 흐름을 안정화하기 위해 분리한 두 가지 설계 축" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '92mm 38mm', gap: 12, height: '100%', minHeight: 0, alignContent: 'start' }}>
+        <Panel pad={17} background={white} accent={blue}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '0.68fr 1.32fr', gap: 18, alignItems: 'center' }}>
+            <div style={{ display: 'grid', gap: 8 }}>
+              {riskItems.map(([no, title, desc, color, background, borderColor]) => (
+                <div
+                  key={title}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '38px 1fr',
+                    gap: 9,
+                    alignItems: 'center',
+                    padding: '9px 10px',
+                    borderRadius: 11,
+                    background,
+                    border: `1px solid ${borderColor}`,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: 10,
+                      display: 'grid',
+                      placeItems: 'center',
+                      background: white,
+                      color,
+                      fontSize: 14.5,
+                      fontWeight: 950,
+                    }}
+                  >
+                    {no}
+                  </div>
+                  <div>
+                    <div style={{ color, fontSize: 13.2, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 3, color: slate, fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>{desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div>
+              <SectionLabel>Developer Perspective</SectionLabel>
+              <ParagraphRich html={m3.developerPerspective ?? ''} size={18.6} lineHeight={1.5} />
+            </div>
+          </div>
+        </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {focusItems.map(([title, desc], idx) => (
+            <Panel key={title} pad={15} background={idx === 0 ? '#eff6ff' : '#f5f3ff'} borderColor={idx === 0 ? '#bfdbfe' : '#ddd6fe'} accent={idx === 0 ? blue : violet}>
+              <div style={{ display: 'grid', gridTemplateColumns: '48px 1fr', gap: 13, alignItems: 'center', height: '100%' }}>
+                <div
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: 12,
+                    background: white,
+                    color: idx === 0 ? blue : violet,
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontSize: 20,
+                    fontWeight: 950,
+                  }}
+                >
+                  {String(idx + 1).padStart(2, '0')}
+                </div>
+                <div>
+                  <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19.6, fontWeight: 950, lineHeight: 1.18 }}>{title}</h3>
+                  <p style={{ margin: 0, color: slate, fontSize: 13.6, lineHeight: 1.4, fontWeight: 760 }}>{desc}</p>
+                </div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
 function M3ProblemThinkingSlide() {
   return (
     <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
@@ -2520,6 +2611,7 @@ export default function PdfPortfolio() {
       />
       <ProjectIntroSlide project={m3} title="3M" />
       <ArchitectureSlide project={m3} title="3M" />
+      <M3DeveloperPerspectiveSlide />
       <M3ProblemThinkingSlide />
       <M3SolutionSlide />
       <M3ResultSlide />
