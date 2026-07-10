@@ -28,6 +28,14 @@ The current sidebar baseline is:
 
 Do not replace these labels with older wording such as `Hero`, `About`, `How I Work`, or `Closing`.
 
+## Mentor Feedback Review Loop
+
+- Treat `docs/mentor-feedback-rubric.md` as the single source of truth for portfolio and resume feedback.
+- Before changing any portfolio page, re-read the active source IDs and integrated rules for that page.
+- Work one page at a time in this order: review, discuss and confirm with the user, edit, verify web/PDF consistency, then update the page review log.
+- Keep source-specific advice separate. Resolve overlaps and conflicts only through the rubric's conflict decisions.
+- Portfolio rules are active now. Resume rules stay pending until the user provides the new resume after the portfolio is complete.
+
 ## Backup Rule
 
 - Backups and temporary patches are safety nets, not the source of truth.
