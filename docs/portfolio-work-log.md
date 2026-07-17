@@ -70,8 +70,12 @@
 - Profile 추천 문구 세트
   - 실제 반영 파일은 `src/portfolio-builder/copy-profiles.ts`, `src/portfolio-builder/copy-profiles.test.ts`, `src/pages/manage/page.tsx`입니다.
   - `performance-validation` ID의 `성능·동시성 검증 중심` 세트를 추가하고, 관리 페이지에서만 선택 가능한 `추천` 카드와 Profile 문구 미리보기를 반영했습니다.
-  - 기본 문구와 기존 프리셋은 대체하지 않았습니다. Task 3 브라우저에서 기본 웹과 기본 `/pdf` 첫 페이지의 기존 문구를 각각 1개씩 확인한 뒤 관리 선택값도 `default`로 복원했습니다.
-  - 검증: `npm test`의 문구 프로필 테스트, `npm run lint`, `npm run build`; `/manage` 추천 카드 선택·`aria-pressed`·생성 URL, 직접 URL `copy=performance-validation`, 새로고침 복원, Desktop·Mobile 미리보기의 가로 넘침 0px를 확인했습니다.
+  - 유지한 기본 Profile 원문은 `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`입니다. Task 3 브라우저에서 기본 웹 `http://127.0.0.1:5176/`과 PDF `http://127.0.0.1:5176/pdf` 첫 페이지에 이 문구가 각각 1개씩 표시되는 것을 확인한 뒤 관리 선택값을 `default`로 복원했습니다.
+  - 자동 테스트가 명시적으로 고정한 범위는 `default`, `performance-validation`, `backend-impact`입니다.
+  - `event-driven`, `PUBLIC_PRESETS`, `COMPANY_PUBLIC_PRESETS`는 이번 구현 diff에서 미수정임을 확인했습니다. 이 세 범위에 대해 별도 동작 테스트를 수행했다고 주장하지 않습니다.
+  - 관리 화면은 `http://127.0.0.1:5176/manage`이며, 쿼리가 아니라 로컬 저장 상태로 문구 세트를 선택합니다. 추천 세트를 선택하면 생성 URL과 미리보기 URL에 `copy=performance-validation`이 포함됩니다.
+  - 추천 직접 URL은 `http://127.0.0.1:5176/?blocks=hero,about,projects,closing,experience,resources,contact,footer&projects=feedshop,three-m&copy=performance-validation`입니다.
+  - 검증: `npm test`의 문구 프로필 테스트, `npm run lint`, `npm run build`; 관리 화면 추천 카드 선택·`aria-pressed`·생성/미리보기 URL, 추천 직접 URL, 새로고침 복원, Desktop·Mobile 미리보기의 가로 넘침 0px를 확인했습니다.
   - 사용자 화면 확인 전에는 상태를 `반영·검증 완료 · 사용자 확인 대기`로 유지하며, `Strengths` 구현을 시작하지 않습니다.
 - Direction > 뱅카우
   - 회사 설명을 투자자의 자산 흐름, 한우 생애주기, 투자 신청부터 정산까지의 상태·데이터 일관성 중심으로 교체했습니다.

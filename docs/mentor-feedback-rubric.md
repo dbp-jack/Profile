@@ -569,12 +569,18 @@
 
 | 점검 항목 | 판정 | 근거 또는 수정 방향 |
 | --- | --- | --- |
-| 기본 Profile 문구 | 충족 | 마스터 기본 문구는 유지하고, 필요할 때만 추천 세트를 명시적으로 선택하도록 분리 |
+| 기본 Profile 문구 | 충족 | `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`를 마스터 기본값으로 유지하고, 필요할 때만 추천 세트를 명시적으로 선택하도록 분리 |
 | 첫 노출 메시지 | 충족 | 추천 세트에서 문제 범위(성능 병목·동시성), 검증 수단(수치·테스트), 백엔드 역할을 한 문장으로 제시 |
 | 결과와 검증 | 충족 | Strengths·Projects 소개까지 지표·테스트·정합성 검증 흐름으로 함께 바꾸고, 과장된 사용자·비즈니스 성과는 추가하지 않음 |
-| 기존 문구 호환성 | 충족 | `backend-impact` 보존 단위 테스트가 통과했고, 기본 웹과 기본 `/pdf`는 Task 3 브라우저에서 기존 문구가 각각 1개씩 확인됨 |
-| 관리 선택과 공유 URL | 충족 | 추천 카드 1개, 별 아이콘·추천 표시, `aria-pressed=true`, `copy=performance-validation` 생성 링크와 직접 URL을 확인 |
+| 자동 회귀 테스트 범위 | 충족 | 단위 테스트가 `default`, `performance-validation`, `backend-impact`의 ID와 핵심 문구를 명시적으로 고정 |
+| 미수정 프리셋 범위 | 충족 | `event-driven`, `PUBLIC_PRESETS`, `COMPANY_PUBLIC_PRESETS`는 이번 구현 diff에서 미수정임을 확인했으며, 별도 동작 테스트를 수행했다고 판정하지 않음 |
+| 관리 선택과 공유 URL | 충족 | 관리 화면은 로컬 저장 상태를 선택하고, 생성 URL과 미리보기 URL에 `copy=performance-validation`이 들어가는 구조로 확인 |
 | 저장과 반응형 | 충족 | 추천 세트 새로고침 복원, Desktop·Mobile 전환, 카드·iframe의 가로 넘침 0px, 마지막 기본 문구·Desktop 복원 확인 |
+
+#### 유지한 기본 Profile
+
+- 원문: `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`
+- 회귀 확인: Task 3 브라우저에서 기본 웹과 기본 `/pdf` 첫 페이지에 위 원문이 각각 1개씩 표시되는 것을 확인
 
 #### 확정 추천 문구 세트
 
@@ -590,15 +596,26 @@
 - 문구 계약·추천 메타데이터: `src/portfolio-builder/copy-profiles.ts`
 - 문구 계약 회귀 테스트: `src/portfolio-builder/copy-profiles.test.ts`
 - 추천 표시·Profile 문구 미리보기·선택 상태: `src/pages/manage/page.tsx`
-- 기본 Profile과 기본 `/pdf`: Task 3에서 기본 웹과 `/pdf` 첫 페이지의 기존 문구를 각각 1개씩 확인했으며, 기본 문구 상태로 복원함
+- 기본 Profile과 기본 `/pdf`: Task 3에서 `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`를 기본 웹과 `/pdf` 첫 페이지에서 각각 1개씩 확인했으며, 관리 선택값을 `default`로 복원함
+
+#### 재현 URL과 관리 선택 구조
+
+- 관리 화면: `http://127.0.0.1:5176/manage`
+  - 관리 화면 자체의 쿼리로 문구를 선택하지 않고 로컬 저장 상태를 변경함
+  - 추천 세트를 선택하면 생성 URL과 미리보기 URL에 `copy=performance-validation`이 포함됨
+- 추천 직접 URL: `http://127.0.0.1:5176/?blocks=hero,about,projects,closing,experience,resources,contact,footer&projects=feedshop,three-m&copy=performance-validation`
+- 기본 웹: `http://127.0.0.1:5176/`
+- PDF: `http://127.0.0.1:5176/pdf`
 
 #### 검증 결과
 
-- `/manage`에서 추천 카드 1개, 별 아이콘·`추천` 표시, 확정 Profile 문구, 선택 후 `aria-pressed=true`를 확인
-- 생성 링크와 직접 URL에서 `copy=performance-validation`을 확인하고, Profile·Strengths 소개·Projects 소개의 확정 문구를 각각 1개씩 확인
+- `http://127.0.0.1:5176/manage`에서 추천 카드 1개, 별 아이콘·`추천` 표시, 확정 Profile 문구, 선택 후 `aria-pressed=true`를 확인
+- 관리 화면의 로컬 선택 상태로 생성·미리보기 URL에 `copy=performance-validation`이 포함되는 것을 확인하고, 추천 직접 URL에서 Profile·Strengths 소개·Projects 소개의 확정 문구를 각각 1개씩 확인
 - 추천 세트 선택은 새로고침 뒤 복원됐고, 알 수 없는 `copy` 값은 기존 기본 문구로 폴백함
 - Mobile 미리보기의 카드·iframe·HTML 문서 가로 넘침은 모두 `0px`; 마지막 상태는 `기본 문구`와 `Desktop` 선택 상태
-- 기본 웹과 `/pdf` 첫 페이지에서 기존 기본 문구를 각각 1개씩 확인했고, 브라우저 콘솔·페이지 오류는 0건
+- 기본 웹 `http://127.0.0.1:5176/`과 PDF `http://127.0.0.1:5176/pdf` 첫 페이지에서 `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`를 각각 1개씩 확인했고, 브라우저 콘솔·페이지 오류는 0건
+- 자동 테스트는 `default`, `performance-validation`, `backend-impact`를 명시적으로 고정함
+- `event-driven`, `PUBLIC_PRESETS`, `COMPANY_PUBLIC_PRESETS`는 이번 구현 diff에서 미수정임을 확인했으며, 별도 동작 테스트를 수행했다고 주장하지 않음
 
 - 남은 문제: 관리 페이지의 추천 카드, 선택된 Profile 미리보기, 기본 문구 복원 상태를 사용자가 화면에서 확인하기 전까지 `완료`로 바꾸지 않으며, 다음 `Strengths` 작업을 시작하지 않음
 
