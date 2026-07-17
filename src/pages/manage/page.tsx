@@ -657,15 +657,27 @@ export default function PortfolioManagerPage() {
                             key={profile.id}
                             type="button"
                             onClick={() => updateCopyProfile(profile.id)}
+                            aria-pressed={selected}
                             className={`w-full rounded-md border px-3 py-2.5 text-left ${
                               selected
                                 ? 'border-blue-300 bg-blue-50'
                                 : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
                             }`}
                           >
-                            <span className="block text-sm font-bold">{profile.name}</span>
+                            <span className="flex items-start justify-between gap-2">
+                              <span className="text-sm font-bold">{profile.name}</span>
+                              {profile.recommended ? (
+                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[0.65rem] font-extrabold text-amber-700 ring-1 ring-amber-200">
+                                  <i className="ri-star-line" aria-hidden="true" />
+                                  추천
+                                </span>
+                              ) : null}
+                            </span>
                             <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
                               {profile.description}
+                            </span>
+                            <span className="mt-2 block rounded-md bg-white/80 px-2.5 py-2 text-xs font-semibold leading-relaxed text-slate-700 ring-1 ring-slate-200/80">
+                              {profile.heroRoleTitle}
                             </span>
                           </button>
                         )
