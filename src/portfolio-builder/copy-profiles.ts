@@ -4,6 +4,7 @@ export type PortfolioCopyProfile = {
   id: string
   name: string
   description: string
+  recommended?: boolean
   heroRoleTitle: string
   aboutIntro: string
   projectsSubtitle: string
@@ -17,6 +18,18 @@ export const COPY_PROFILES: readonly PortfolioCopyProfile[] = [
     heroRoleTitle: HERO_ROLE_TITLE,
     aboutIntro: ABOUT_SECTION.intro,
     projectsSubtitle: PROJECTS_SECTION.subtitle,
+  },
+  {
+    id: 'performance-validation',
+    name: '성능·동시성 검증 중심',
+    description: 'FeedShop의 응답 지연과 투표 동시성 검증 경험을 앞에 배치합니다.',
+    recommended: true,
+    heroRoleTitle:
+      '성능 병목과 동시성 문제를 수치와 테스트로 검증하는 백엔드 개발자',
+    aboutIntro:
+      '응답 지연과 동시성 문제를 지표와 테스트로 재현하고, 데이터 정합성과 서비스 안정성을 검증합니다.',
+    projectsSubtitle:
+      '성능 병목과 동시성 문제를 어떤 지표와 테스트로 확인하고 해결했는지 보여드립니다.',
   },
   {
     id: 'backend-impact',
@@ -38,7 +51,7 @@ export const COPY_PROFILES: readonly PortfolioCopyProfile[] = [
     projectsSubtitle:
       '주문·결제 이벤트 흐름과 동시성 문제를 어떤 책임 분리와 검증으로 해결했는지 보여드립니다.',
   },
-] as const
+] as const satisfies readonly PortfolioCopyProfile[]
 
 export const DEFAULT_COPY_PROFILE = COPY_PROFILES[0]
 
