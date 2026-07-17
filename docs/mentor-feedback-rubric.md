@@ -572,8 +572,8 @@
 | 기본 Profile 문구 | 충족 | `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`를 마스터 기본값으로 유지하고, 필요할 때만 추천 세트를 명시적으로 선택하도록 분리 |
 | 첫 노출 메시지 | 충족 | 추천 세트에서 문제 범위(성능 병목·동시성), 검증 수단(수치·테스트), 백엔드 역할을 한 문장으로 제시 |
 | 결과와 검증 | 충족 | Strengths·Projects 소개까지 지표·테스트·정합성 검증 흐름으로 함께 바꾸고, 과장된 사용자·비즈니스 성과는 추가하지 않음 |
-| 자동 회귀 테스트 범위 | 충족 | 단위 테스트가 `default`, `performance-validation`, `backend-impact`의 ID와 핵심 문구를 명시적으로 고정 |
-| 미수정 프리셋 범위 | 충족 | `event-driven`, `PUBLIC_PRESETS`, `COMPANY_PUBLIC_PRESETS`는 이번 구현 diff에서 미수정임을 확인했으며, 별도 동작 테스트를 수행했다고 판정하지 않음 |
+| 자동 회귀 테스트 범위 | 충족 | `npm test`의 1개 파일·7개 테스트가 (1) `default` 마스터 문구, (2) `performance-validation`의 유일 `recommended` 상태, (3) `performance-validation`의 정확한 이름·설명·핵심 문구 3개, (4) `backend-impact` 보존, (5) `event-driven` ID·핵심 문구 3개, (6) `PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑, (7) `COMPANY_PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑을 명시적으로 고정 |
+| 데이터 계약과 브라우저 검증 범위 | 충족 | `event-driven`과 두 프리셋 매핑은 데이터 계약·특성화 테스트로 검증했으며, 개별 공개·기업 프리셋의 브라우저 흐름은 별도로 재실행하지 않음 |
 | 관리 선택과 공유 URL | 충족 | 관리 화면은 로컬 저장 상태를 선택하고, 생성 URL과 미리보기 URL에 `copy=performance-validation`이 들어가는 구조로 확인 |
 | 저장과 반응형 | 충족 | 추천 세트 새로고침 복원, Desktop·Mobile 전환, 카드·iframe의 가로 넘침 0px, 마지막 기본 문구·Desktop 복원 확인 |
 
@@ -614,8 +614,8 @@
 - 추천 세트 선택은 새로고침 뒤 복원됐고, 알 수 없는 `copy` 값은 기존 기본 문구로 폴백함
 - Mobile 미리보기의 카드·iframe·HTML 문서 가로 넘침은 모두 `0px`; 마지막 상태는 `기본 문구`와 `Desktop` 선택 상태
 - 기본 웹 `http://127.0.0.1:5176/`과 PDF `http://127.0.0.1:5176/pdf` 첫 페이지에서 `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`를 각각 1개씩 확인했고, 브라우저 콘솔·페이지 오류는 0건
-- 자동 테스트는 `default`, `performance-validation`, `backend-impact`를 명시적으로 고정함
-- `event-driven`, `PUBLIC_PRESETS`, `COMPANY_PUBLIC_PRESETS`는 이번 구현 diff에서 미수정임을 확인했으며, 별도 동작 테스트를 수행했다고 주장하지 않음
+- `npm test`는 1개 파일·7개 테스트로 (1) `default` 마스터 문구, (2) `performance-validation`의 유일 `recommended` 상태, (3) `performance-validation`의 정확한 이름·설명·핵심 문구 3개, (4) `backend-impact` 보존, (5) `event-driven` ID·핵심 문구 3개, (6) `PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑, (7) `COMPANY_PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑을 명시적으로 검증함
+- 이 범위는 데이터 계약·특성화 커버리지이며, `event-driven`과 두 프리셋 매핑은 테스트됨. 개별 공개·기업 프리셋의 브라우저 흐름은 별도로 재실행하지 않음
 
 - 남은 문제: 관리 페이지의 추천 카드, 선택된 Profile 미리보기, 기본 문구 복원 상태를 사용자가 화면에서 확인하기 전까지 `완료`로 바꾸지 않으며, 다음 `Strengths` 작업을 시작하지 않음
 
