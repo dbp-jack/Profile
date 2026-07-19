@@ -2690,8 +2690,6 @@ export default function PdfPortfolio() {
       <HeroSlide />
       <AboutSlide />
       <ProjectsOverviewSlide />
-      <CollaborationSlide />
-      <AiWorkflowSlide />
 
       <ProjectCaseCover
         eyebrow="Backend Case Study 01"
@@ -2736,6 +2734,9 @@ export default function PdfPortfolio() {
       <M3SolutionSlide />
       <M3ResultSlide />
       <M3ReflectionSlide />
+
+      <CollaborationSlide />
+      <AiWorkflowSlide />
 
       <ClosingSlide />
       <BankcowDirectionSlide />

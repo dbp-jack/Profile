@@ -14,8 +14,6 @@ export default function ProjectsSection() {
     .filter((project): project is (typeof PROJECTS)[number] => Boolean(project))
   return (
     <>
-      <CollaborationSection />
-
       <section
         id="projects"
         className={`transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
@@ -60,6 +58,8 @@ export default function ProjectsSection() {
           </div>
         </div>
       </section>
+
+      <CollaborationSection />
     </>
   )
 }

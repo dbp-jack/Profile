@@ -24,7 +24,7 @@ If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is 
 
 The current sidebar baseline is:
 
-`Profile → Strengths → Work Style → Projects → P1 FeedShop → P2 3M → Direction → Experience → Resources → Contact`
+`Profile → Strengths → Projects → P1 FeedShop → P2 3M → Work Style → Direction → Experience → Resources → Contact`
 
 Do not replace these labels with older wording such as `Hero`, `About`, `How I Work`, or `Closing`.
 

@@ -34,16 +34,16 @@ export const BASE_NAV_LINKS: readonly SidebarNavLink[] = [
   },
   {
     blockId: 'projects',
-    label: 'Work Style',
-    href: '#collaboration',
-    icon: 'ri-team-line',
+    label: 'Projects',
+    href: '#projects',
+    icon: 'ri-code-box-line',
     anchorKind: 'section-heading',
   },
   {
     blockId: 'projects',
-    label: 'Projects',
-    href: '#projects',
-    icon: 'ri-code-box-line',
+    label: 'Work Style',
+    href: '#collaboration',
+    icon: 'ri-team-line',
     anchorKind: 'section-heading',
   },
   {
