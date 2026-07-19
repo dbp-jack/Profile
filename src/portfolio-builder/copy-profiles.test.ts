@@ -10,7 +10,7 @@ describe('copy profile presets', () => {
   it('keeps the current master copy as the default', () => {
     expect(DEFAULT_COPY_PROFILE.id).toBe('default')
     expect(DEFAULT_COPY_PROFILE.heroRoleTitle).toBe(
-      '수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자',
+      '수치로 검증하고, 팀 흐름을 움직이는 백엔드 개발자',
     )
   })
 

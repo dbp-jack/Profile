@@ -70,7 +70,8 @@
 - Profile 추천 문구 세트
   - 실제 반영 파일은 `src/portfolio-builder/copy-profiles.ts`, `src/portfolio-builder/copy-profiles.test.ts`, `src/pages/manage/page.tsx`입니다.
   - `performance-validation` ID의 `성능·동시성 검증 중심` 세트를 추가하고, 관리 페이지에서만 선택 가능한 `추천` 카드와 Profile 문구 미리보기를 반영했습니다.
-  - 유지한 기본 Profile 원문은 `수치로 증명하고, 팀 흐름을 움직이는 백엔드 개발자`입니다. Task 3 브라우저에서 기본 웹 `http://127.0.0.1:5176/`과 PDF `http://127.0.0.1:5176/pdf` 첫 페이지에 이 문구가 각각 1개씩 표시되는 것을 확인한 뒤 관리 선택값을 `default`로 복원했습니다.
+  - 기본 Profile 문구는 2026-07-19에 `수치로 검증하고, 팀 흐름을 움직이는 백엔드 개발자`로 통일했습니다. 기존 Task 3에서는 당시 기본 문구가 웹과 PDF 첫 페이지에 함께 표시되는 구조를 확인했고, 이번 변경에서도 같은 공유 원본을 사용합니다.
+  - `npm test`, `npm run lint`, `npm run build`를 통과했고, canonical 로컬 서버의 웹·PDF·관리 화면 및 관리 미리보기에서 현재 문구만 노출되는 것을 확인했습니다.
   - `npm test`의 1개 파일·7개 테스트는 (1) `default` 마스터 문구, (2) `performance-validation`의 유일 `recommended` 상태, (3) `performance-validation`의 정확한 이름·설명·핵심 문구 3개, (4) `backend-impact` 보존, (5) `event-driven` ID·핵심 문구 3개, (6) `PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑, (7) `COMPANY_PUBLIC_PRESETS` 정확한 `id -> copyProfileId` 매핑을 명시적으로 검증합니다.
   - 이 범위는 데이터 계약·특성화 커버리지입니다. `event-driven`과 두 프리셋 매핑은 테스트되었지만, 개별 공개·기업 프리셋의 브라우저 흐름은 별도로 재실행하지 않았습니다.
   - 관리 화면은 `http://127.0.0.1:5176/manage`이며, 쿼리가 아니라 로컬 저장 상태로 문구 세트를 선택합니다. 추천 세트를 선택하면 생성 URL과 미리보기 URL에 `copy=performance-validation`이 포함됩니다.
