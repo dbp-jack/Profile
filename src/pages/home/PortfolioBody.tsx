@@ -1,6 +1,7 @@
 import { PORTFOLIO_BLOCK_REGISTRY } from '@/portfolio-builder/block-registry'
 import { PortfolioCompositionProvider } from '@/portfolio-builder/composition-context'
 import { DEFAULT_PUBLIC_PRESET } from '@/portfolio-builder/presets'
+import { DEFAULT_STRENGTHS_PROFILE } from '@/portfolio-builder/strengths-profiles'
 import type { PortfolioBlockId } from '@/portfolio-builder/types'
 
 type PortfolioBodyProps = {
@@ -9,6 +10,7 @@ type PortfolioBodyProps = {
   blockIds?: readonly PortfolioBlockId[]
   projectIds?: readonly string[]
   copyProfileId?: string
+  strengthsProfileId?: string
 }
 
 /** 메인 스크롤 페이지 본문 — 웹(`/`)과 PDF 미리보기(`/pdf`)에서 동일하게 사용 */
@@ -17,6 +19,7 @@ export default function PortfolioBody({
   blockIds = DEFAULT_PUBLIC_PRESET.blocks,
   projectIds = DEFAULT_PUBLIC_PRESET.projectIds,
   copyProfileId = DEFAULT_PUBLIC_PRESET.copyProfileId,
+  strengthsProfileId = DEFAULT_STRENGTHS_PROFILE.id,
 }: PortfolioBodyProps) {
   const mainBlockIds = blockIds.filter(
     (blockId) => PORTFOLIO_BLOCK_REGISTRY[blockId].placement === 'main',
@@ -46,7 +49,11 @@ export default function PortfolioBody({
   )
 
   return (
-    <PortfolioCompositionProvider projectIds={projectIds} copyProfileId={copyProfileId}>
+    <PortfolioCompositionProvider
+      projectIds={projectIds}
+      copyProfileId={copyProfileId}
+      strengthsProfileId={strengthsProfileId}
+    >
       <main>{renderedMainBlocks}</main>
       {footerBlockIds.map(renderBlock)}
     </PortfolioCompositionProvider>

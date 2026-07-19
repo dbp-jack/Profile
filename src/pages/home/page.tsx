@@ -8,6 +8,7 @@ import {
   parsePublicBlockSelection,
   parsePublicCopyProfile,
   parsePublicProjectSelection,
+  parsePublicStrengthsProfile,
 } from '@/portfolio-builder/presets'
 import PortfolioBody from './PortfolioBody'
 import Sidebar from './components/Sidebar'
@@ -25,6 +26,7 @@ export default function Home() {
       copyProfileId: searchParams.has('copy')
         ? parsePublicCopyProfile(searchParams.get('copy'))
         : preset.copyProfileId,
+      strengthsProfileId: parsePublicStrengthsProfile(searchParams.get('strengths')),
     }
   }, [searchParams])
 

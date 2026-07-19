@@ -14,7 +14,7 @@ export const feedShopProject: ProjectData = {
       result: 'QueryDSL fetchJoin으로 이벤트 목록 조회 쿼리 수를 42회 → 2회로 줄이고, Redis Cache Hit 재요청은 SQL 0회로 분리해 응답시간 6,818ms → 638ms(약 91% 단축)·TPS 216% 향상으로 재방문 진입점의 사용자 이탈을 방지했습니다. 동시 3,000명 투표에서도 HTTP 오류·DB 중복 저장 0건으로 투표 수 정합성을 확보했습니다.',
     },
     overviewSummary: {
-      intro: '구매 이후 재방문을 만드는 패션 커머스에서 이벤트·피드 도메인과 배포/운영을 맡았습니다.',
+      intro: '구매 이후 피드 공유·투표·이벤트 참여로 재방문을 유도하는 커뮤니티형 패션 커머스에서 이벤트·피드 도메인과 배포/운영을 맡았습니다.',
       achievement: [
         '동시 투표 TOCTOU 문제를 해결해, 최대 3,000명 구간 HTTP 오류·DB 중복 저장 0건으로 투표 수 정합성 유지',
         '이벤트 목록 N+1 병목을 개선해, 6,818ms → 638ms(91% 단축)·TPS 216% 향상으로 사용자 이탈 방지',
@@ -48,9 +48,10 @@ export const feedShopProject: ProjectData = {
       },
     ],
     serviceOverview:
-      '<span class="font-bold">\'나라면 이 쇼핑몰을 다시 쓸까?\'</span>라는 질문에서 시작한 커뮤니티형 패션 커머스입니다.\n사용자가 구매 이후에도 <span class="font-semibold">피드 공유·투표·이벤트 참여</span>를 통해 다시 방문하도록 설계했습니다.\n구매 인증 기반 이벤트와 피드 투표를 연결하고, 상위 참여자에게 포인트·쿠폰을 제공해<br><span class="font-bold">\'구매 → 참여 → 보상 → 재방문\'</span>으로 이어지는 흐름을 만들었습니다.<div class="mt-3"><a href="https://www.feedshop.store" target="_blank" rel="noopener noreferrer" class="inline-flex font-semibold text-[#2563EB] underline underline-offset-2">배포 프론트 화면 보기</a><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">백엔드 운영 상태에 따라 API 기반 기능은 제한될 수 있습니다.</p></div>',
+      '<strong class="block text-lg font-extrabold leading-relaxed text-slate-900 dark:text-slate-100">1인 도·소매 신생기업 10곳 중 약 3곳만 5년 뒤에도 생존했습니다.</strong><span class="mt-2 block">도·소매업 소상공인의 46.9%가 경쟁 심화를 경영 애로로 꼽는 시장에서, 상품을 한 번 판매하는 것만으로는 고객이 다시 방문할 이유를 만들기 어렵다는 문제입니다.</span><span class="mt-3 block">FeedShop은 1회성 판매를 넘어, <strong>‘구매 → 참여 → 보상 → 재방문’</strong>의 흐름을 만든 커뮤니티형 패션 커머스입니다.</span><span class="mt-3 flex flex-wrap gap-x-4 gap-y-2"><a href="https://www.kostat.go.kr/boardDownload.es?bid=11469&amp;list_no=434555&amp;seq=3" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-600 underline underline-offset-2 dark:text-slate-300">기업생멸행정통계</a><a href="https://www.kostat.go.kr/boardDownload.es?bid=12029&amp;list_no=428839&amp;seq=1" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-600 underline underline-offset-2 dark:text-slate-300">소상공인실태조사</a></span>',
+    developerPerspectiveTitle: '서비스 흐름에서 발견한 핵심 문제',
     developerPerspective:
-      '재방문을 만드는 흐름에서 핵심 진입점은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 참여</span>였습니다.\n이벤트 기간에는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">목록 조회 요청이 특정 시간에 몰리고</span>, 랭킹 상위 피드에는 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 요청이 집중</span>되는 구조였습니다.\n이때 이벤트 목록 응답이 느려지거나 <span class="font-semibold text-red-500 dark:text-red-400">투표 수 정합성</span>이 흔들리면 사용자 이탈과 서비스 신뢰 저하로 이어질 수 있다고 판단했습니다.\n그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 개선</span>과 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성 보장</span>을 핵심 과제로 설정했습니다.',
+      '재방문 흐름의 핵심 진입점은 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 참여</span>였습니다.\n이벤트 기간에는 목록 조회 요청이 몰리는 가운데, N+1 쿼리와 메모리 필터링으로 <span class="font-semibold text-red-500 dark:text-red-400">응답이 지연되면서,</span> 이벤트 탐색 중 사용자 이탈로 이어질 수 있는 구조였고,\n상위 피드에는 투표가 집중되면서, <span class="font-semibold text-red-500 dark:text-red-400">확인과 저장의 분리</span>로 중복 투표 문제가 생겨 <span class="font-semibold text-red-500 dark:text-red-400">투표 결과와 서비스에 대한 신뢰가 저하</span>될 수 있는 구조였습니다.\n그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 개선</span>과 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성·정합성 보장</span>을 핵심 과제로 설정했습니다.',
     techStack: ['SpringBoot 3.3.12', 'QueryDSL', 'MySQL', 'Redis', 'Docker', 'GCP', 'GitHub', 'JIRA', 'nGrinder', 'Scouter'],
     roles: [
       {

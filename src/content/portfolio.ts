@@ -85,83 +85,87 @@ export const PROJECTS_SECTION = {
 
 export const WORK_STYLE_SECTION = {
   kicker: 'Work Style',
-  title: '팀 협업과 AI 활용을 더해 일합니다.',
-  subtitle: '결과를 만드는 과정에서 팀과 어떻게 맞추고, AI를 어디까지 활용하는지를 담았습니다.',
+  title: '팀의 작업 흐름을 만들고, 결과를 직접 검증합니다.',
+  subtitle: '협업 과정은 가시화하고, AI는 정의한 범위에서만 활용하며 최종 판단은 직접 책임집니다.',
 } as const
 
 export const PROJECT_WORKFLOW = {
   label: 'AI Workflow',
-  title: '기획·설계는 직접, AI는 정의된 작업에 활용합니다.',
-  description:
-    '요구사항과 설계 판단은 직접 수행하고, AI는 문서로 정의한 범위의 코드 작성에 활용하며 완성된 결과는 다시 직접 검증하고 수정합니다.',
-  phases: [
+  title: 'AI를 활용하는 현재와 다음 단계',
+  description: '작업 목적에 맞춰 AI 도구의 역할을 나누고, 문제 정의와 최종 검증은 직접 수행합니다.',
+  currentStage: {
+    label: '현재 단계',
+    title: 'Codex로 만드는 나만의 플래너',
+    description:
+      'Codex와 다양한 AI를 활용해 할 일·루틴·일정·지원 기록·메모를 한곳에서 관리하는 나만의 플래너를 만들고 있습니다. 일상 속 생산성을 높이며 생각과 기록의 방식을 구조화하고 있습니다.',
+    linkLabel: '나만의 플래너 제작 후기',
+    linkUrl:
+      'https://www.linkedin.com/posts/minsoo-jeong-31861b401_codex-aiupqsqb-snzsmgspf-activity-7477935583982632960-1lvw',
+  },
+  flowTitle: '도구별 활용 흐름',
+  flowDescription: '모든 도구를 한 번에 사용하지 않고, 작업 목적에 맞는 단계를 선택합니다.',
+  steps: [
     {
-      owner: '직접 수행',
-      detail: '요구사항·완료 기준 정의 · 구조·데이터 흐름·기술 선택',
-      tone: 'direct',
+      label: '근거 수집',
+      tool: 'NotebookLM',
+      icon: 'ri-book-open-line',
+      detail: '공식 자료 기반 조사와 근거 정리',
     },
     {
-      owner: 'AI 활용',
-      detail: '정의된 범위의 코드 작성 · 반복 작업 수행',
-      tone: 'ai',
-    },
-    {
-      owner: '직접 검증',
-      detail: '요구사항·실제 동작 대조 · 결과 수정',
-      tone: 'direct',
-    },
-  ],
-  tools: [
-    {
-      name: 'NotebookLM',
-      icon: 'ri-shield-check-line',
-      purpose: '할루시네이션 최소화\n공식 출처 검증 후 자료 추출',
-    },
-    {
-      name: '제미나이 · 클로드',
+      label: '사고·문서 구조화',
+      tool: 'Claude · Gemini',
       icon: 'ri-file-text-line',
-      purpose: '노트북LM에서 추출한 자료로\n문서화 · 학습 가이드 작성, 프롬프트 추출',
+      detail: '생각과 문서 구조화 · 대안 탐색',
     },
     {
-      name: 'Claude Code',
+      label: '구현·자동화',
+      tool: 'Codex · Claude Code',
       icon: 'ri-code-s-slash-line',
-      purpose: '단일 단위 기능 구현\n프로젝트 - karpathy, RTK-AI, Serena',
+      detail:
+        'Codex · 나만의 플래너 구현·업무 자동화·코드 점검\nClaude Code · 정의된 범위의 단위 기능 구현',
     },
     {
-      name: 'Codex',
-      icon: 'ri-search-eye-line',
-      purpose: '놓친 엣지케이스·로직 오류 캐치\n이후 코드는 직접 검토',
+      label: '직접 검증',
+      tool: '최종 판단',
+      icon: 'ri-shield-check-line',
+      detail: '코드 이해 · 변경 영향 · 빌드·테스트·실제 동작 확인',
     },
   ],
-  toolsNote:
-    '프롬프트는 제한을 둔 버전과 제한을 두지 않은 버전을 상황에 맞게 활용합니다.\n현재 Claude Code는 플러그인으로 토큰 사용을 절약하고, OpenRouter API를 MCP 에이전트로 연결해 활용하고 있습니다.',
+  verificationNote:
+    '할루시네이션·누락·과도한 변경 가능성을 전제로 결과를 다시 확인하고, 직접 설명할 수 있는 코드만 반영합니다.',
+  nextStage: {
+    label: '다음 단계',
+    title: '일상을 넘어 기술 문제의 본질 해결',
+    description:
+      '현재 단계가 자리 잡으면 AI 활용 범위를 일상 속 생산성 향상에서 기술 문제로 넓혀, 문제의 원인을 깊이 분석하고 본질적인 해결책을 설계·검증하는 단계로 확장할 예정입니다.',
+  },
 } as const
 
 export const COLLABORATION_SECTION = {
   kicker: 'Collaboration',
-  title: '협업 체계가 없던 팀에 만든 주간 스프린트 흐름',
+  title: '협업 체계가 없던 팀에 주간 스프린트 흐름을 만들었습니다.',
   intro:
-    '스프린트가 없던 팀에 주간 스프린트 방식을 도입하고, 스크럼으로 작업 범위와 진행 상황을 정리했으며 JIRA 이슈·커밋은 Slack에 자동 공유하고, 일정·기술 자료는 Confluence에서 통합 관리했습니다.',
+    '스프린트 운영 기준 제안 및 JIRA 가이드라인을 배포하고, 스크럼 기반의 작업 관리, Slack 알림 자동화(이슈·커밋), Confluence 문서화(일정·기술·테스트)를 통해 개발 프로세스를 효율화했습니다.',
   guideUrl: 'https://dev99-tale.tistory.com/69',
   evidence: [
     {
       label: 'Plan',
       title: '주간 스프린트 운영',
-      description: '백로그를 스프린트 단위로 나누고 담당·상태·완료 범위를 관리',
+      description: '백로그를 주간 단위로 나누고 담당·상태·완료 범위를 팀이 함께 확인',
       image: '/collaboration-jira-sprint.png',
       alt: 'JIRA 백로그에서 주간 스프린트와 업무 상태를 관리한 화면',
     },
     {
       label: 'Automate',
       title: 'JIRA-Slack 자동 공유',
-      description: '이슈 생성과 연결된 커밋 정보를 팀 채널에 자동 공유',
+      description: '이슈 생성과 연결된 커밋을 팀 채널에 자동 공유해 변경 흐름을 가시화',
       image: '/collaboration-slack-automation.png',
       alt: 'JIRA 이슈와 Git 커밋 변경 사항이 Slack에 자동 공유된 화면',
     },
     {
       label: 'Organize',
       title: '일정·자료 통합 관리',
-      description: '스프린트 일정과 기술·테스트 자료를 Confluence에 체계화',
+      description: '스프린트 일정과 기술·테스트 자료의 위치를 Confluence로 통합',
       image: '/collaboration-confluence-materials.png',
       alt: 'Confluence에 스프린트 일정과 프로젝트 자료를 체계적으로 정리한 화면',
     },
@@ -274,6 +278,7 @@ export type ResourceLink = {
   label: string
   description: string
   url: string
+  projectId?: string
 }
 
 export const RESOURCE_LINKS: readonly ResourceLink[] = [
@@ -330,16 +335,18 @@ export const RESOURCE_LINKS: readonly ResourceLink[] = [
     label: 'FIX GitHub',
     description: '주문·결제 이벤트 흐름과 Kafka 구현 코드',
     url: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT',
+    projectId: 'fix-ticketing',
   },
   {
     icon: 'ri-book-open-line',
     label: 'FIX Wiki',
     description: '티켓팅 프로젝트 설계와 팀 문서 기록',
     url: 'https://github.com/FINAL-SPARTA/SPARTA-FINAL-PROJECT/wiki',
+    projectId: 'fix-ticketing',
   },
   {
     icon: 'ri-notion-fill',
-    label: '16 I 4 U',
+    label: '3M · 16 I 4 U',
     description: '팀 프로젝트 운영 자료와 협업 산출물 모음',
     url: 'https://app.notion.com/p/16-I-4-U-1f0eeaa2f0af80bd9f00d0a062903703',
   },

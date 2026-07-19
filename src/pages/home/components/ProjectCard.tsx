@@ -513,7 +513,8 @@ export default function ProjectCard({ project, index }: Props) {
   const showLegacyContext = !usePlanningVariantTop && (hasPlanning || hasGoal)
   const showContextBlock = usePlanningVariantTop || showLegacyContext
   const isFeedShopProject = project.id === 'feedshop'
-  const isWideArchitectureProject = isFeedShopProject || project.id === 'three-m'
+  const showDeveloperPerspectiveBeforeRoles = isFeedShopProject || project.id === 'three-m'
+  const isWideArchitectureProject = showDeveloperPerspectiveBeforeRoles
   const reflectionParagraphs = project.projectReflection?.body
     .split(/<br\s*\/?>/gi)
     .map((paragraph) => paragraph.trim())
@@ -584,6 +585,14 @@ export default function ProjectCard({ project, index }: Props) {
               <div className="pdf-project-summary-grid space-y-4">
                 {overviewSection ? (
                   <ProjectBackgroundCard title={overviewSection.title} body={overviewSection.body} dark={dark} />
+                ) : null}
+                {showDeveloperPerspectiveBeforeRoles && project.developerPerspective ? (
+                  <ProjectBackgroundCard
+                    title={project.developerPerspectiveTitle ?? '개발자 관점에서의 핵심 과제'}
+                    body={project.developerPerspective}
+                    dark={dark}
+                    className="pdf-developer-perspective"
+                  />
                 ) : null}
                 <div
                   className={`rounded-xl border p-3 md:p-3.5 ${dark ? 'border-[#333333] bg-[#252525]' : 'border-gray-200 bg-gray-50/90'}`}
@@ -690,9 +699,9 @@ export default function ProjectCard({ project, index }: Props) {
                   ) : null}
                 </div>
               ) : null}
-              {project.developerPerspective ? (
+              {project.developerPerspective && !showDeveloperPerspectiveBeforeRoles ? (
                 <ProjectBackgroundCard
-                  title="개발자 관점에서의 핵심 과제"
+                  title={project.developerPerspectiveTitle ?? '개발자 관점에서의 핵심 과제'}
                   body={project.developerPerspective}
                   dark={dark}
                   className="pdf-developer-perspective"

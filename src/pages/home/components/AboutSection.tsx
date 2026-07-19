@@ -1,20 +1,15 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
-import { ABOUT_CARDS, ABOUT_SECTION } from '@/content/portfolio'
+import { ABOUT_SECTION } from '@/content/portfolio'
 import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 const NUMS = ['01', '02', '03']
 
-const ABOUT_HIGHLIGHTS = [
-  '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · SQL <span class="font-black text-[#2563EB]">42→2/0</span>',
-  '팀 스프린트 <span class="font-black text-[#2563EB]">가시성 확보</span>',
-  '<span class="font-black text-[#2563EB]">기획·설계·개발을 주도적으로 진행</span>',
-] as const
-
 export default function AboutSection() {
   const { dark } = useDarkMode()
-  const { copyProfile } = usePortfolioComposition()
+  const { copyProfile, strengthsProfile } = usePortfolioComposition()
   const { ref, visible } = useFadeIn()
+  const usesLegacyLayout = strengthsProfile.bulletStyle === 'legacy'
 
   return (
     <section
@@ -47,16 +42,16 @@ export default function AboutSection() {
             {ABOUT_SECTION.kicker}
           </span>
           <h2 className={`text-3xl font-bold md:text-4xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}>
-            {ABOUT_SECTION.title}
+            {strengthsProfile.title}
           </h2>
           <p className={`mx-auto mt-3 max-w-2xl text-sm leading-relaxed md:text-base ${dark ? 'text-[#d1d5db]' : 'text-slate-700'}`}>
-            {copyProfile.aboutIntro}
+            {usesLegacyLayout ? copyProfile.aboutIntro : strengthsProfile.intro}
           </p>
         </div>
 
         {/* 카드 3개 — 세로 나열 가로 레이아웃 */}
         <div className="flex flex-col gap-5">
-          {ABOUT_CARDS.map((card, i) => {
+          {strengthsProfile.cards.map((card, i) => {
             const bullets = card.description
               .split('\n')
               .map((l) => l.trim())
@@ -73,7 +68,9 @@ export default function AboutSection() {
               >
                 {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-3.5 sm:w-36 sm:flex-col sm:justify-center sm:gap-1.5 sm:border-b-0 sm:border-r sm:px-0 sm:py-5 ${
+                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-3.5 sm:flex-col sm:justify-center sm:gap-1.5 sm:border-b-0 sm:border-r sm:py-5 ${
+                    usesLegacyLayout ? 'sm:w-36 sm:px-0' : 'sm:w-44 sm:px-3'
+                  } ${
                     dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
@@ -100,23 +97,44 @@ export default function AboutSection() {
                         ? 'border-[#31558e] bg-[#233654] text-[#dbeafe]'
                         : 'border-[#BFDBFE] bg-[#EFF6FF] text-[#172554]'
                     }`}
-                    dangerouslySetInnerHTML={{ __html: ABOUT_HIGHLIGHTS[i] }}
+                    dangerouslySetInnerHTML={{ __html: strengthsProfile.highlights[i] }}
                   />
 
-                  {/* 체크 bullet 목록 */}
-                  <ul className={i === 0 ? 'space-y-1' : i === 1 ? 'space-y-1.5' : 'space-y-2'}>
+                  <ul
+                    className={
+                      usesLegacyLayout
+                        ? i === 0
+                          ? 'space-y-1'
+                          : i === 1
+                            ? 'space-y-1.5'
+                            : 'space-y-2'
+                        : 'space-y-1.5'
+                    }
+                  >
                     {bullets.map((line, j) => {
-                      const noCheck = j === 0 && i < 2
-                      return (
-                      <li key={j} className="flex min-w-0 items-start gap-3">
-                        {!noCheck && <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>}
-                        <span
-                          className={`min-w-0 break-keep ${noCheck ? 'font-semibold' : ''} text-sm leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-slate-800'}`}
-                          dangerouslySetInnerHTML={{ __html: line }}
-                        />
-                      </li>
-                    )})}
+                      const noCheck = usesLegacyLayout && j === 0 && i < 2
 
+                      return (
+                        <li key={j} className="flex min-w-0 items-start gap-3">
+                          {usesLegacyLayout ? (
+                            !noCheck && (
+                              <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
+                            )
+                          ) : (
+                            <span
+                              aria-hidden
+                              className="mt-2.5 h-px w-3 shrink-0 bg-[#2563EB]"
+                            />
+                          )}
+                          <span
+                            className={`min-w-0 break-keep text-sm leading-relaxed ${
+                              noCheck ? 'font-semibold' : ''
+                            } ${dark ? 'text-[#c8c8c8]' : 'text-slate-800'}`}
+                            dangerouslySetInnerHTML={{ __html: line }}
+                          />
+                        </li>
+                      )
+                    })}
                   </ul>
                 </div>
               </article>

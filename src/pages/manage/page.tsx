@@ -21,11 +21,17 @@ import {
 } from '@/portfolio-builder/presets'
 import type { PortfolioBlockId, PortfolioPreset } from '@/portfolio-builder/types'
 import { COPY_PROFILES, getCopyProfile } from '@/portfolio-builder/copy-profiles'
+import {
+  DEFAULT_STRENGTHS_PROFILE,
+  STRENGTHS_PROFILES,
+  getStrengthsProfile,
+} from '@/portfolio-builder/strengths-profiles'
 import './page.css'
 
 const STORAGE_KEY = 'portfolio-manager-blocks'
 const PROJECT_STORAGE_KEY = 'portfolio-manager-projects'
 const COPY_STORAGE_KEY = 'portfolio-manager-copy'
+const STRENGTHS_STORAGE_KEY = 'portfolio-manager-strengths'
 const CUSTOM_PRESET_STORAGE_KEY = 'portfolio-manager-custom-presets'
 const COMPANY_KEY_STORAGE_KEY = 'portfolio-manager-company-key'
 
@@ -147,6 +153,10 @@ function loadSavedCopyProfile(): string {
   return getCopyProfile(window.localStorage.getItem(COPY_STORAGE_KEY)).id
 }
 
+function loadSavedStrengthsProfile(): string {
+  return getStrengthsProfile(window.localStorage.getItem(STRENGTHS_STORAGE_KEY)).id
+}
+
 function loadCustomPresets(): readonly PortfolioPreset[] {
   const saved = window.localStorage.getItem(CUSTOM_PRESET_STORAGE_KEY)
   if (!saved) return []
@@ -175,6 +185,7 @@ export default function PortfolioManagerPage() {
   const [blockIds, setBlockIds] = useState<readonly PortfolioBlockId[]>(loadSavedBlocks)
   const [projectIds, setProjectIds] = useState<readonly string[]>(loadSavedProjects)
   const [copyProfileId, setCopyProfileId] = useState(loadSavedCopyProfile)
+  const [strengthsProfileId, setStrengthsProfileId] = useState(loadSavedStrengthsProfile)
   const [customPresets, setCustomPresets] = useState<readonly PortfolioPreset[]>(loadCustomPresets)
   const [presetName, setPresetName] = useState('')
   const [companyKey, setCompanyKey] = useState(() =>
@@ -187,17 +198,26 @@ export default function PortfolioManagerPage() {
   const previewStageRef = useRef<HTMLDivElement>(null)
 
   const publicPath = useMemo(
-    () => createPublicPortfolioPath(blockIds, projectIds, copyProfileId, companyKey),
-    [blockIds, projectIds, copyProfileId, companyKey],
+    () =>
+      createPublicPortfolioPath(
+        blockIds,
+        projectIds,
+        copyProfileId,
+        companyKey,
+        strengthsProfileId,
+      ),
+    [blockIds, projectIds, copyProfileId, companyKey, strengthsProfileId],
   )
   const shortPublicPath = useMemo(() => {
+    if (strengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id) return null
+
     const companyPreset = getCompanyPreset(companyKey)
     if (!companyPreset || !matchesPreset(companyPreset, blockIds, projectIds, copyProfileId, companyKey)) {
       return null
     }
 
     return createCompanyPortfolioPath(companyKey)
-  }, [blockIds, companyKey, copyProfileId, projectIds])
+  }, [blockIds, companyKey, copyProfileId, projectIds, strengthsProfileId])
   const publicUrl = useMemo(
     () => new URL((shortPublicPath ?? publicPath).replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
     [publicPath, shortPublicPath],
@@ -235,6 +255,7 @@ export default function PortfolioManagerPage() {
   const activePreviewMode =
     PREVIEW_MODES.find((mode) => mode.id === previewMode) ?? PREVIEW_MODES[0]
   const selectedCopyProfile = getCopyProfile(copyProfileId)
+  const selectedStrengthsProfile = getStrengthsProfile(strengthsProfileId)
   const copiedLabel =
     copyStatus === 'url'
       ? 'URL 복사됨'
@@ -286,6 +307,12 @@ export default function PortfolioManagerPage() {
   const updateCopyProfile = (nextCopyProfileId: string) => {
     setCopyProfileId(getCopyProfile(nextCopyProfileId).id)
     window.localStorage.setItem(COPY_STORAGE_KEY, getCopyProfile(nextCopyProfileId).id)
+  }
+
+  const updateStrengthsProfile = (nextStrengthsProfileId: string) => {
+    const normalizedStrengthsProfileId = getStrengthsProfile(nextStrengthsProfileId).id
+    setStrengthsProfileId(normalizedStrengthsProfileId)
+    window.localStorage.setItem(STRENGTHS_STORAGE_KEY, normalizedStrengthsProfileId)
   }
 
   const updateCompanyKey = (nextCompanyKey: string) => {
@@ -504,6 +531,10 @@ export default function PortfolioManagerPage() {
                     {selectedCopyProfile.name}
                   </p>
                   <p>
+                    <span className="font-bold text-slate-800">Strengths</span> ·{' '}
+                    {selectedStrengthsProfile.name}
+                  </p>
+                  <p>
                     <span className="font-bold text-slate-800">프로젝트</span> ·{' '}
                     {selectedProjectNames.join(', ')}
                   </p>
@@ -678,6 +709,43 @@ export default function PortfolioManagerPage() {
                             </span>
                             <span className="mt-2 block rounded-md bg-white/80 px-2.5 py-2 text-xs font-semibold leading-relaxed text-slate-700 ring-1 ring-slate-200/80">
                               {profile.heroRoleTitle}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </section>
+
+                  <section className="border-t border-slate-200 pt-4">
+                    <h2 className="text-sm font-extrabold">Strengths 구성</h2>
+                    <div className="mt-3 space-y-2">
+                      {STRENGTHS_PROFILES.map((profile) => {
+                        const selected = profile.id === strengthsProfileId
+                        return (
+                          <button
+                            key={profile.id}
+                            type="button"
+                            onClick={() => updateStrengthsProfile(profile.id)}
+                            aria-pressed={selected}
+                            className={`w-full rounded-md border px-3 py-2.5 text-left ${
+                              selected
+                                ? 'border-blue-300 bg-blue-50'
+                                : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
+                            }`}
+                          >
+                            <span className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-bold">{profile.name}</span>
+                              {selected ? (
+                                <span className="shrink-0 rounded-full bg-blue-600 px-2 py-0.5 text-[0.65rem] font-bold text-white">
+                                  선택됨
+                                </span>
+                              ) : null}
+                            </span>
+                            <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
+                              {profile.description}
+                            </span>
+                            <span className="mt-2 block rounded-md bg-white/80 px-2.5 py-2 text-xs font-semibold leading-relaxed text-slate-700 ring-1 ring-slate-200/80">
+                              {profile.title}
                             </span>
                           </button>
                         )
@@ -983,7 +1051,8 @@ export default function PortfolioManagerPage() {
                   실시간 미리보기
                 </p>
                 <p className="mt-0.5 truncate text-sm font-extrabold text-slate-700">
-                  {selectedProjectNames.join(' · ')} / {selectedCopyProfile.name}
+                  {selectedProjectNames.join(' · ')} / {selectedCopyProfile.name} /{' '}
+                  {selectedStrengthsProfile.name}
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5">

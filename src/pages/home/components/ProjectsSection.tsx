@@ -20,7 +20,7 @@ export default function ProjectsSection() {
         id="projects"
         className={`transition-colors duration-300 ${dark ? 'bg-[#242424]' : 'bg-white'}`}
       >
-        {/* 기존 헤더 — 건들지 않음 */}
+        {/* 프로젝트 소개 헤더 */}
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-8 md:pt-28 md:pb-10">
           <div data-sidebar-anchor="projects" className="text-center">
             <span

@@ -6,6 +6,7 @@ import {
 } from './types'
 import { DEFAULT_PROJECT_IDS, normalizeProjectIds } from '@/content/projects'
 import { DEFAULT_COPY_PROFILE, getCopyProfile } from './copy-profiles'
+import { DEFAULT_STRENGTHS_PROFILE, getStrengthsProfile } from './strengths-profiles'
 
 type CompanyPortfolioPreset = PortfolioPreset & {
   companyKeys: readonly string[]
@@ -132,20 +133,29 @@ export function parsePublicCopyProfile(value: string | null): string {
   return getCopyProfile(value).id
 }
 
+export function parsePublicStrengthsProfile(value: string | null): string {
+  return getStrengthsProfile(value).id
+}
+
 export function createPublicPortfolioPath(
   blocks: readonly PortfolioBlockId[],
   projectIds: readonly string[],
   copyProfileId: string,
   companyKey?: string,
+  strengthsProfileId = DEFAULT_STRENGTHS_PROFILE.id,
 ) {
   const normalizedProjectIds = normalizeProjectIds(projectIds)
   const normalizedCompanyKey = normalizeCompanyKey(companyKey)
+  const normalizedStrengthsProfileId = getStrengthsProfile(strengthsProfileId).id
   const params = new URLSearchParams({
     blocks: blocks.join(','),
     projects: normalizedProjectIds.join(','),
     copy: getCopyProfile(copyProfileId).id,
   })
   if (normalizedCompanyKey) params.set('company', normalizedCompanyKey)
+  if (normalizedStrengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id) {
+    params.set('strengths', normalizedStrengthsProfileId)
+  }
   return `/?${params.toString()}`
 }
 

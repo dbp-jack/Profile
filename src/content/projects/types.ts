@@ -46,6 +46,8 @@ export interface ProjectData {
   }>
   /** 개발자 관점 핵심 과제 — perspectiveSection 대신 단순 텍스트 카드로 노출 (선택). */
   developerPerspective?: string
+  /** 개발자 관점 핵심 과제 카드 제목 (기본값: 개발자 관점에서의 핵심 과제). */
+  developerPerspectiveTitle?: string
   /** 사용자 관점 기획 카드 — `serviceOverview`와 함께 사용 */
   userPerspectivePlanning?: {
     subtitle: string

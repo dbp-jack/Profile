@@ -1,10 +1,16 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
 import { RESOURCE_LINKS, RESOURCES_SECTION } from '@/content/portfolio'
+import { usePortfolioComposition } from '@/portfolio-builder/composition-state'
 
 export default function ResourcesSection() {
   const { dark } = useDarkMode()
   const { ref, visible } = useFadeIn()
+  const { projectIds } = usePortfolioComposition()
+  const visibleResourceLinks = RESOURCE_LINKS.filter(
+    (item) => !item.projectId || projectIds.includes(item.projectId),
+  )
+
   return (
     <section
       id="resources"
@@ -32,7 +38,7 @@ export default function ResourcesSection() {
         </div>
 
         <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-          {RESOURCE_LINKS.map((item) => (
+          {visibleResourceLinks.map((item) => (
             <a
               key={item.label}
               href={item.url}

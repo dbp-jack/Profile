@@ -15,12 +15,12 @@ const SUMMARY_HIGHLIGHT_TERMS = [
   '91% 단축',
   'TPS 216% 향상',
   '216%',
-  '정확한 집계',
+  '투표 수 정합성 유지',
   '사용자 이탈 방지',
   'UserService→Auth',
   '결합도 0건',
   '순환 의존 없음',
-  '배포 영향 범위 축소',
+  '장애 전파 위험 방지',
 ]
 
 const SUMMARY_HIGHLIGHT_PATTERN = new RegExp(
@@ -60,7 +60,6 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
   return (
     <div id="projects-overview" className={`projects-overview ${dark ? 'bg-[#242424]' : 'bg-white'} pb-10 md:pb-12`}>
       <div className="mx-auto max-w-5xl px-6">
-        {/* 프로젝트 개요 카드 */}
         <div className="projects-overview-grid grid grid-cols-1 gap-4 lg:grid-cols-2">
           {selectedProjects.map(({ overview: project, detail }) => {
             const overviewSummary = detail?.overviewSummary
@@ -71,44 +70,53 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                   ['성과', overviewSummary.achievement, 'lg:min-h-[4.5rem]'],
                 ] as const
               : []
+            const hasMetadata = Boolean(detail?.period || detail?.contribution)
 
             return (
               <div
                 key={project.name}
                 className={`projects-overview-card flex h-full flex-col rounded-xl border p-4 ${
-                  dark
-                  ? 'border-[#3d3d3d] bg-[#2a2a2a]'
-                  : 'border-gray-200 bg-white'
+                  dark ? 'border-[#3d3d3d] bg-[#2a2a2a]' : 'border-gray-200 bg-white'
                 }`}
               >
-                {/* 아이콘 + 프로젝트명 */}
-                <div className="mb-2.5 flex flex-wrap items-center gap-2.5">
-                  <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                      dark ? 'bg-[#1f2a3d]' : 'bg-blue-50'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    <i className={`${project.icon} ${project.iconColor} text-xl`} />
-                  </span>
-                  <h3
-                    className={`text-2xl font-extrabold leading-tight ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}
-                  >
-                    {project.name}
-                  </h3>
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-extrabold leading-none text-white ${project.badgeColor}`}
-                  >
-                    {projectType}
-                  </span>
+                <div className="mb-2.5 flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                        dark ? 'bg-[#1f2a3d]' : 'bg-blue-50'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <i className={`${project.icon} ${project.iconColor} text-xl`} />
+                    </span>
+                    <h3
+                      className={`text-2xl font-extrabold leading-tight ${dark ? 'text-[#e8e8e8]' : 'text-[#0f172a]'}`}
+                    >
+                      {project.name}
+                    </h3>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-extrabold leading-none text-white ${project.badgeColor}`}
+                    >
+                      {projectType}
+                    </span>
+                  </div>
+
+                  {hasMetadata ? (
+                    <div
+                      className={`shrink-0 text-right text-[11px] font-semibold leading-relaxed sm:text-xs ${
+                        dark ? 'text-[#b6c3d8]' : 'text-slate-600'
+                      }`}
+                    >
+                      {detail?.period ? <p className="whitespace-nowrap">{detail.period}</p> : null}
+                      {detail?.contribution ? <p className="whitespace-nowrap">{detail.contribution}</p> : null}
+                    </div>
+                  ) : null}
                 </div>
 
-                {/* 한 줄 정의 */}
                 <p className={`mb-3 text-base font-semibold leading-relaxed ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}>
                   {project.description}
                 </p>
 
-                {/* 기술 스택 */}
                 <div
                   className={`mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-relaxed ${
                     dark ? 'text-[#b6c3d8]' : 'text-slate-700'
@@ -121,16 +129,14 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                   >
                     Stack
                   </span>
-                  {project.tech.map((t, index) => (
+                  {project.tech.map((tech, index) => (
                     <span
-                      key={t}
+                      key={tech}
                       className={`font-mono font-semibold ${dark ? 'text-[#d5dce8]' : 'text-slate-700'}`}
                     >
-                      {t}
+                      {tech}
                       {index < project.tech.length - 1 ? (
-                        <span className={dark ? 'ml-2 text-[#64748b]' : 'ml-2 text-slate-300'}>
-                          /
-                        </span>
+                        <span className={dark ? 'ml-2 text-[#64748b]' : 'ml-2 text-slate-300'}>/</span>
                       ) : null}
                     </span>
                   ))}
@@ -147,7 +153,9 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                         <div
                           key={label}
                           lang="ko"
-                          className={`break-keep text-sm leading-relaxed ${minHeightClass} ${dark ? 'text-[#dbe4f0]' : 'text-slate-800'}`}
+                          className={`break-keep text-sm leading-relaxed ${minHeightClass} ${
+                            dark ? 'text-[#dbe4f0]' : 'text-slate-800'
+                          }`}
                         >
                           <div className={`mb-1 font-extrabold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
                             {label}
@@ -162,9 +170,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                               ))}
                             </ul>
                           ) : (
-                            <p className="m-0">
-                              {label === '성과' ? renderAchievementText(text, dark) : text}
-                            </p>
+                            <p className="m-0">{label === '성과' ? renderAchievementText(text, dark) : text}</p>
                           )}
                         </div>
                       ))}
@@ -173,8 +179,11 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                 ) : null}
 
                 <div className="mt-auto space-y-2">
-                  {/* 담당 역할 */}
-                  <div className={`rounded-lg border px-3 py-2 ${dark ? 'border-[#3a3a3a] bg-[#242424]' : 'border-blue-100 bg-blue-50/50'}`}>
+                  <div
+                    className={`rounded-lg border px-3 py-2 ${
+                      dark ? 'border-[#3a3a3a] bg-[#242424]' : 'border-blue-100 bg-blue-50/50'
+                    }`}
+                  >
                     <div className="mb-1 flex items-center gap-2">
                       <i className={`ri-user-settings-line text-sm ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`} />
                       <span className={`text-sm font-bold ${dark ? 'text-[#d8d8d8]' : 'text-gray-800'}`}>담당 역할</span>
@@ -184,7 +193,6 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                     </p>
                   </div>
 
-                  {/* 핵심 과제 */}
                   <div className={`rounded-lg p-3 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
                     <div className="mb-1 flex items-center gap-2">
                       <i className={`${project.challengeIcon} text-sm ${dark ? 'text-[#94a3b8]' : 'text-slate-700'}`} />
