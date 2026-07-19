@@ -515,10 +515,6 @@ export default function ProjectCard({ project, index }: Props) {
   const isFeedShopProject = project.id === 'feedshop'
   const showDeveloperPerspectiveBeforeRoles = isFeedShopProject || project.id === 'three-m'
   const isWideArchitectureProject = showDeveloperPerspectiveBeforeRoles
-  const reflectionParagraphs = project.projectReflection?.body
-    .split(/<br\s*\/?>/gi)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean) ?? []
   if (perspectiveSection?.cards?.length) {
     perspectiveSection.cards.forEach((card, cardIdx) => {
       const contextKey = `${project.name}#${card.title || cardIdx}`
@@ -777,16 +773,11 @@ export default function ProjectCard({ project, index }: Props) {
             >
               {project.projectReflection.title}
             </strong>
-            <div className="mt-3 space-y-3.5">
-              {reflectionParagraphs.map((paragraph, paragraphIndex) => (
-                <p
-                  key={`${project.id}-reflection-${paragraphIndex}`}
-                  lang="ko"
-                  className={`break-keep text-[0.95rem] font-medium leading-[1.78] [line-break:strict] md:text-base ${dark ? 'text-slate-200' : 'text-slate-700'}`}
-                  dangerouslySetInnerHTML={{ __html: paragraph }}
-                />
-              ))}
-            </div>
+            <div
+              lang="ko"
+              className={`mt-3 break-keep text-[0.95rem] font-medium leading-[1.72] [line-break:strict] md:text-base ${dark ? 'text-slate-200' : 'text-slate-700'}`}
+              dangerouslySetInnerHTML={{ __html: project.projectReflection.body }}
+            />
             {project.projectReflection.sourceUrl ? (
               <div className={`mt-4 border-t pt-3.5 ${dark ? 'border-[#434b56]' : 'border-slate-200'}`}>
                 <a

@@ -46,9 +46,19 @@ type ReflectionHighlight = {
 
 const feedshop = PROJECTS[0]
 const m3 = PROJECTS[1]
-const pdfProjectOverviews = DEFAULT_PROJECT_IDS.map((projectId) =>
-  PROJECT_OVERVIEWS.find((project) => project.id === projectId),
-).filter((project): project is (typeof PROJECT_OVERVIEWS)[number] => Boolean(project))
+type PdfProjectCard = {
+  overview: (typeof PROJECT_OVERVIEWS)[number]
+  detail: (typeof PROJECTS)[number]
+}
+
+const pdfProjectCards = DEFAULT_PROJECT_IDS.map((projectId) => {
+  const overview = PROJECT_OVERVIEWS.find((project) => project.id === projectId)
+  const detail = PROJECTS.find((project) => project.id === projectId)
+  return overview && detail ? { overview, detail } : null
+}).filter((project): project is PdfProjectCard => Boolean(project))
+const pdfResourceLinks = RESOURCE_LINKS.filter(
+  (link) => !link.projectId || DEFAULT_PROJECT_IDS.includes(link.projectId),
+)
 const heroSkillTags = HERO_SKILL_GROUPS.flatMap((group) => group.tags)
 
 function asset(path?: string): string {
@@ -443,12 +453,22 @@ function AboutSlide() {
               <div style={{ borderRight: `1px solid ${line}`, height: '100%', display: 'grid', placeItems: 'center' }}>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ color: blue, fontSize: 34, fontWeight: 950, lineHeight: 1 }}>{String(idx + 1).padStart(2, '0')}</div>
-                  <div style={{ marginTop: 8, fontWeight: 950, fontSize: 14.2, lineHeight: 1.25 }}>{card.title}</div>
+                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontWeight: 950, fontSize: 14.2, lineHeight: 1.25 }}>
+                    <i className={card.icon} style={{ color: blue, fontSize: 16 }} aria-hidden />
+                    <span>{card.title}</span>
+                  </div>
                 </div>
               </div>
               <div style={{ display: 'grid', alignContent: 'center', gap: 8 }}>
                 <h2 style={{ margin: 0, fontSize: 20.2, fontWeight: 950, lineHeight: 1.25 }}>{card.subtitle}</h2>
-                <Rich html={card.description.replace(/\n/g, '<br/>')} size={14.1} lineHeight={1.46} />
+                <div style={{ display: 'grid', gap: 6, color: slate, fontSize: 14.1, lineHeight: 1.46 }}>
+                  {card.description.split('\n').map((line) => (
+                    <div key={line} style={{ display: 'grid', gridTemplateColumns: '18px 1fr', gap: 3 }}>
+                      <strong style={{ color: blue }}>✓</strong>
+                      <Rich html={line} size={14.1} lineHeight={1.46} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </Panel>
@@ -460,108 +480,96 @@ function AboutSlide() {
 
 function ProjectsOverviewSlide() {
   const highlights = [
-    {
-      title: '핵심 성과',
-      items: [
-        ['91% 단축', '동시 1,000명 기준 응답시간 6,818ms → 638ms'],
-        ['SQL 42회 → 2회', 'fetchJoin 적용 후 Cache Hit 0회 분리'],
-        ['오류·중복 0건', '동시 3,000명 투표 테스트 기준'],
-      ],
-      color: blue,
-    },
-    {
-      title: '핵심 성과',
-      items: [
-        ['CBO 0건', 'UserService → Auth 도메인 결합도 제거'],
-        ['단방향 의존', 'Feign DTO 중심 참조, 순환 의존 없음'],
-        ['Gateway\n권한 판단', 'JWT payload 기반 User 재조회 감소'],
-      ],
-      color: violet,
-    },
-    {
-      title: '핵심 성과',
-      items: [
-        ['비동기 경계', '주문 요청이 결제 완료를 직접 기다리지 않음'],
-        ['이벤트 타입 분리', '성공·실패·취소 상태 전이를 코드로 분리'],
-        ['보상 흐름 구현', '결제 실패·취소 시 주문 취소 이벤트 연계'],
-      ],
-      color: teal,
-    },
-  ]
+    [
+      ['91% 단축', '동시 1,000명 기준 응답시간 6,818ms → 638ms · 사용자 이탈 방지'],
+      ['SQL 42회 → 2회', 'fetchJoin 적용 후 Cache Hit 0회 분리'],
+      ['오류·중복 0건', '동시 3,000명 투표 테스트 · 투표 수 정합성 유지'],
+    ],
+    [
+      ['CBO 0건', 'UserService → Auth 도메인 결합도 제거 · 장애 전파 위험 방지'],
+      ['단방향 의존', 'Feign DTO 중심 참조 · 순환 의존 없음'],
+      ['Gateway 권한 판단', 'JWT payload 기반 User 재조회 감소'],
+    ],
+    [
+      ['비동기 경계', '주문 요청이 결제 완료를 직접 기다리지 않음'],
+      ['이벤트 타입 분리', '성공·실패·취소 상태 전이를 코드로 분리'],
+      ['보상 흐름 구현', '결제 실패·취소 시 주문 취소 이벤트 연계'],
+    ],
+  ] as const
   const accentColors = [blue, violet, teal]
 
   return (
-    <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle="핵심 프로젝트를 목적·역할·문제 해결 중심으로 요약했습니다.">
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto auto', gap: 9, height: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${pdfProjectOverviews.length}, 1fr)`, gap: 13, minHeight: 0 }}>
-          {pdfProjectOverviews.map((project, idx) => (
-            <Panel key={project.name} pad={14} background={white} accent={accentColors[idx]}>
-              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto auto auto auto', alignContent: 'space-between', gap: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ color: blue, fontWeight: 900, fontSize: 13 }}>프로젝트 {idx + 1}</span>
-                  <span style={{ background: accentColors[idx], color: white, borderRadius: 999, padding: '5px 10px', fontSize: 12.4, fontWeight: 900 }}>{project.badge}</span>
-                </div>
-                <h2 style={{ margin: 0, fontSize: 28, fontWeight: 950, letterSpacing: '-0.03em' }}>{project.name}</h2>
-                <p style={{ margin: 0, color: slate, fontSize: 13.4, lineHeight: 1.52, fontWeight: 750 }}>{project.description}</p>
-                <div
-                  style={{
-                    borderRadius: 14,
-                    border: `1px solid ${highlights[idx].color}24`,
-                    background: '#f8fafc',
-                    padding: '10px 12px',
-                  }}
-                >
-                  <div
-                    style={{
-                      color: highlights[idx].color,
-                      fontSize: 12.2,
-                      fontWeight: 950,
-                      letterSpacing: '0.13em',
-                      textTransform: 'uppercase',
-                      marginBottom: 8,
-                    }}
-                  >
-                    {highlights[idx].title}
+    <Slide eyebrow={PROJECTS_SECTION.kicker} title={PROJECTS_SECTION.title} subtitle={PROJECTS_SECTION.subtitle}>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 9, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${pdfProjectCards.length}, 1fr)`, gap: 13, minHeight: 0 }}>
+          {pdfProjectCards.map(({ overview: project, detail }, idx) => {
+            const summary = detail.overviewSummary
+            const accent = accentColors[idx]
+            const projectHighlights = highlights[idx] ?? []
+
+            return (
+              <Panel key={project.name} pad={14} background={white} accent={accent}>
+                <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto auto 1fr auto auto', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                    <span style={{ color: accent, fontWeight: 900, fontSize: 13 }}>프로젝트 {idx + 1}</span>
+                    <span style={{ background: accent, color: white, borderRadius: 999, padding: '5px 10px', fontSize: 12.4, fontWeight: 900 }}>{project.badge}</span>
                   </div>
-                  <div style={{ display: 'grid', gap: 6 }}>
-                    {highlights[idx].items.map(([value, caption]) => (
-                      <div
-                        key={value}
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'max-content 1fr',
-                          gap: 14,
-                          alignItems: 'center',
-                          borderRadius: 12,
-                          padding: '8px 10px',
-                          background: white,
-                          border: `1px solid ${highlights[idx].color}30`,
-                        }}
-                      >
-                        <div
-                          style={{
-                            color: highlights[idx].color,
-                            fontSize: 17.5,
-                            fontWeight: 950,
-                            lineHeight: 1.12,
-                            whiteSpace: value.includes('\n') ? 'pre-line' : 'nowrap',
-                          }}
-                        >
-                          {value}
-                        </div>
-                        <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.38, fontWeight: 800 }}>{caption}</div>
+                  <div style={{ display: 'flex', alignItems: 'end', justifyContent: 'space-between', gap: 14 }}>
+                    <h2 style={{ margin: 0, fontSize: 27, fontWeight: 950, letterSpacing: '-0.03em' }}>{project.name}</h2>
+                    <div style={{ color: muted, fontSize: 11.8, lineHeight: 1.35, fontWeight: 850, textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <div>{detail.period}</div>
+                      <div>{detail.contribution ?? detail.teamSize}</div>
+                    </div>
+                  </div>
+                  <p style={{ margin: 0, color: slate, fontSize: 13.3, lineHeight: 1.45, fontWeight: 780 }}>{project.description}</p>
+                  <div style={{ borderTop: `1px solid ${accent}35`, borderBottom: `1px solid ${accent}35`, background: '#f8fafc', padding: '10px 3px', display: 'grid', alignContent: 'start', gap: 8 }}>
+                    <div>
+                      <SectionLabel color={accent}>소개</SectionLabel>
+                      <p style={{ margin: 0, color: slate, fontSize: 12.8, lineHeight: 1.42, fontWeight: 770 }}>{summary?.intro ?? detail.description}</p>
+                    </div>
+                    <div>
+                      <SectionLabel color={accent}>핵심 성과</SectionLabel>
+                      <div style={{ display: 'grid', gap: 5 }}>
+                        {projectHighlights.map(([value, caption]) => (
+                          <div
+                            key={value}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: 'max-content 1fr',
+                              gap: 10,
+                              alignItems: 'center',
+                              borderRadius: 10,
+                              padding: '6px 8px',
+                              background: white,
+                              border: `1px solid ${accent}30`,
+                            }}
+                          >
+                            <span style={{ color: accent, fontSize: 15.5, lineHeight: 1.12, fontWeight: 950, whiteSpace: 'nowrap' }}>
+                              {value}
+                            </span>
+                            <span style={{ color: slate, fontSize: 11.4, lineHeight: 1.3, fontWeight: 800 }}>
+                              {caption}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+                  </div>
+                  <Tags items={project.tech} />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, borderTop: `1px solid ${line}`, paddingTop: 9 }}>
+                    <div>
+                      <SectionLabel color={accent}>담당 역할</SectionLabel>
+                      <p style={{ margin: 0, color: slate, fontSize: 12.3, lineHeight: 1.38, fontWeight: 760 }}>{project.role}</p>
+                    </div>
+                    <div style={{ borderLeft: `1px solid ${line}`, paddingLeft: 12 }}>
+                      <SectionLabel color={accent}>핵심 과제</SectionLabel>
+                      <p style={{ margin: 0, color: slate, fontSize: 12.3, lineHeight: 1.38, fontWeight: 760 }}>{project.challenge}</p>
+                    </div>
                   </div>
                 </div>
-                <Tags items={project.tech} />
-                <Panel pad={9} background="#f8fafc" borderColor={`${accentColors[idx]}40`}>
-                  <SectionLabel color={accentColors[idx]}>핵심 과제</SectionLabel>
-                  <p style={{ margin: 0, color: slate, fontSize: 13.5, lineHeight: 1.48, fontWeight: 760 }}>{project.challenge}</p>
-                </Panel>
-              </div>
-            </Panel>
-          ))}
+              </Panel>
+            )
+          })}
         </div>
         {feedshop.problemEnvironment && (
           <Panel pad={10} background="#f1f5f9">
@@ -758,7 +766,15 @@ function AiWorkflowSlide() {
   )
 }
 
-function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title: string }) {
+function ProjectIntroSlide({
+  project,
+  title,
+  showRoleLabels = true,
+}: {
+  project: typeof feedshop
+  title: string
+  showRoleLabels?: boolean
+}) {
   const roleColors = [blue, green, violet]
   const roleLabels = ['Domain Ownership', 'Deployment', 'Team Leading']
 
@@ -782,7 +798,7 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
 
             return (
             <Panel key={role.title} pad={0} background={white} accent={color}>
-              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}>
+              <div style={{ height: '100%', display: 'grid', gridTemplateRows: showRoleLabels ? 'auto 1fr auto' : 'auto 1fr' }}>
                 <div
                   style={{
                     padding: '13px 14px 11px',
@@ -833,23 +849,25 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
                     ))}
                   </div>
                 </div>
-                <div
-                  style={{
-                    margin: '0 16px 15px',
-                    borderRadius: 10,
-                    border: `1px solid ${color}2f`,
-                    background: idx === 0 ? '#f8fbff' : idx === 1 ? '#f7fefb' : '#fbf9ff',
-                    color,
-                    padding: '8px 10px',
-                    fontSize: 12.5,
-                    fontWeight: 950,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    textAlign: 'center',
-                  }}
-                >
-                  {roleLabels[idx] ?? 'Responsibility'}
-                </div>
+                {showRoleLabels && (
+                  <div
+                    style={{
+                      margin: '0 16px 15px',
+                      borderRadius: 10,
+                      border: `1px solid ${color}2f`,
+                      background: idx === 0 ? '#f8fbff' : idx === 1 ? '#f7fefb' : '#fbf9ff',
+                      color,
+                      padding: '8px 10px',
+                      fontSize: 12.5,
+                      fontWeight: 950,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {roleLabels[idx] ?? 'Responsibility'}
+                  </div>
+                )}
               </div>
             </Panel>
             )
@@ -860,7 +878,17 @@ function ProjectIntroSlide({ project, title }: { project: typeof feedshop; title
   )
 }
 
-function ArchitectureSlide({ project, title }: { project: typeof feedshop; title: string }) {
+function ArchitectureSlide({
+  project,
+  title,
+  showOwnershipLabel = true,
+  showDetailMarkers = false,
+}: {
+  project: typeof feedshop
+  title: string
+  showOwnershipLabel?: boolean
+  showDetailMarkers?: boolean
+}) {
   const ownershipLabel = project.architectureOwnershipLabel ?? '맡은 작업'
 
   return (
@@ -873,26 +901,28 @@ function ArchitectureSlide({ project, title }: { project: typeof feedshop; title
               alt={`${title} architecture`}
               style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', display: 'block' }}
             />
-            <div
-              style={{
-                position: 'absolute',
-                right: 10,
-                bottom: 8,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                border: `2px solid ${blue}`,
-                borderRadius: 8,
-                background: 'rgba(255,255,255,0.94)',
-                color: blue,
-                padding: '5px 9px',
-                fontSize: 13.6,
-                fontWeight: 950,
-              }}
-            >
-              <span style={{ width: 9, height: 9, border: `2px solid ${blue}`, display: 'inline-block' }} />
-              {ownershipLabel}
-            </div>
+            {showOwnershipLabel && (
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 10,
+                  bottom: 8,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  border: `2px solid ${blue}`,
+                  borderRadius: 8,
+                  background: 'rgba(255,255,255,0.94)',
+                  color: blue,
+                  padding: '5px 9px',
+                  fontSize: 13.6,
+                  fontWeight: 950,
+                }}
+              >
+                <span style={{ width: 9, height: 9, border: `2px solid ${blue}`, display: 'inline-block' }} />
+                {ownershipLabel}
+              </div>
+            )}
           </div>
         </Panel>
         <div style={{ display: 'grid', gridTemplateRows: `repeat(${project.architectureDetails?.length ?? 1}, minmax(0, 1fr))`, gap: 9, minHeight: 0 }}>
@@ -913,12 +943,31 @@ function ArchitectureSlide({ project, title }: { project: typeof feedshop; title
                   {String(sectionIdx + 1).padStart(2, '0')}
                 </div>
                 <div style={{ padding: '10px 12px', display: 'grid', alignContent: 'center' }}>
-                  <h3 style={{ margin: '0 0 6px', color: blue, fontSize: 16.6, fontWeight: 950, lineHeight: 1.16, textTransform: 'uppercase' }}>{section.title}</h3>
-                  {section.description && <p style={{ margin: '0 0 6px', color: slate, fontSize: 13.7, lineHeight: 1.36, fontWeight: 760 }}>{section.description}</p>}
+                  <h3 style={{ margin: '0 0 6px', color: blue, fontSize: 16.6, fontWeight: 950, lineHeight: 1.16, textTransform: 'uppercase', wordBreak: 'keep-all' }}>{section.title}</h3>
+                  {section.description && <p style={{ margin: '0 0 6px', color: slate, fontSize: 13.7, lineHeight: 1.36, fontWeight: 760, wordBreak: 'keep-all' }}>{section.description}</p>}
                   {section.items.map((item, idx) => (
-                    <ul key={idx} style={{ margin: 0, paddingLeft: 17, color: slate }}>
+                    <ul key={idx} style={{ margin: 0, paddingLeft: showDetailMarkers ? 0 : 17, color: slate }}>
                       {item.bullets.map((bullet) => (
-                        <li key={bullet} style={{ fontSize: 13.8, lineHeight: 1.36, marginBottom: 3, fontWeight: 760 }}>{bullet}</li>
+                        <li
+                          key={bullet}
+                          style={{
+                            listStyle: showDetailMarkers ? 'none' : undefined,
+                            display: showDetailMarkers ? 'grid' : undefined,
+                            gridTemplateColumns: showDetailMarkers ? '7px 1fr' : undefined,
+                            gap: showDetailMarkers ? 8 : undefined,
+                            alignItems: showDetailMarkers ? 'start' : undefined,
+                            fontSize: 14.6,
+                            lineHeight: 1.36,
+                            marginBottom: 5,
+                            fontWeight: 760,
+                            wordBreak: 'keep-all',
+                          }}
+                        >
+                          {showDetailMarkers && (
+                            <span style={{ width: 6, height: 6, borderRadius: 999, background: blue, marginTop: 7 }} />
+                          )}
+                          <span>{bullet}</span>
+                        </li>
                       ))}
                     </ul>
                   ))}
@@ -934,60 +983,60 @@ function ArchitectureSlide({ project, title }: { project: typeof feedshop; title
 
 function FeedShopDeveloperPerspectiveSlide() {
   const focusItems = [
-    ['이벤트 목록 조회 병목', '재방문 흐름 진입점인 이벤트 목록이 느려지면 탐색 단계에서 이탈 가능성이 커집니다.'],
-    ['투표 동시성 보장', '랭킹 상위 피드에 투표가 몰릴 때 데이터 정합성이 흔들리면 서비스 신뢰도가 떨어집니다.'],
+    ['이벤트 목록 조회 병목 개선', '응답 지연으로 이벤트 탐색 중 사용자 이탈이 발생할 수 있는 위험을 줄이는 과제입니다.'],
+    ['투표 동시성·정합성 보장', '중복 투표로 결과와 서비스에 대한 신뢰가 저하될 수 있는 위험을 막는 과제입니다.'],
   ]
   const riskItems = [
-    ['01', '진입 부하', '목록 조회 요청이 몰리는 구간', blue, '#eff6ff', '#bfdbfe'],
-    ['02', '랭킹 피크', '상위 피드 투표 요청 집중', amber, '#fff7ed', '#fed7aa'],
-    ['03', '신뢰 기준', '정확한 투표 수와 보상 흐름', red, '#fef2f2', '#fecaca'],
+    ['01', '목록 응답 지연', 'N+1·메모리 필터링으로 탐색 중 이탈 위험', red, '#fef2f2', '#fecaca'],
+    ['02', '중복 투표', '확인·저장 분리로 결과 신뢰 저하 위험', amber, '#fff7ed', '#fed7aa'],
+    ['03', '핵심 과제', '조회 병목 개선·동시성 및 정합성 보장', blue, '#eff6ff', '#bfdbfe'],
   ] as const
 
   return (
-    <Slide eyebrow="FeedShop" title="개발자 관점에서의 핵심 과제" subtitle="서비스 흐름을 지키기 위해 분리한 두 가지 부하 축" dense>
+    <Slide eyebrow="FeedShop" title={feedshop.developerPerspectiveTitle ?? '서비스 흐름에서 발견한 핵심 문제'} subtitle="재방문 흐름의 진입점에서 발견한 성능·정합성 위험" dense>
       <div style={{ display: 'grid', gridTemplateRows: '92mm 38mm', gap: 12, height: '100%', minHeight: 0, alignContent: 'start' }}>
         <Panel pad={17} background={white} accent={blue}>
-          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '0.68fr 1.32fr', gap: 18, alignItems: 'center' }}>
-            <div style={{ display: 'grid', gap: 8 }}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '1.18fr 0.82fr', gap: 20, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>Developer Perspective</SectionLabel>
+              <ParagraphRich html={feedshop.developerPerspective ?? ''} size={18.4} lineHeight={1.5} />
+            </div>
+            <div style={{ display: 'grid', gap: 10 }}>
               {riskItems.map(([no, title, desc, color, background, borderColor]) => (
                 <div
                   key={title}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '38px 1fr',
-                    gap: 9,
+                    gridTemplateColumns: '44px 1fr',
+                    gap: 11,
                     alignItems: 'center',
-                    padding: '9px 10px',
-                    borderRadius: 11,
+                    padding: '11px 13px',
+                    borderRadius: 12,
                     background,
                     border: `1px solid ${borderColor}`,
                   }}
                 >
                   <div
                     style={{
-                      width: 34,
-                      height: 34,
+                      width: 40,
+                      height: 40,
                       borderRadius: 10,
                       display: 'grid',
                       placeItems: 'center',
                       background: white,
                       color,
-                      fontSize: 14.5,
+                      fontSize: 16.2,
                       fontWeight: 950,
                     }}
                   >
                     {no}
                   </div>
                   <div>
-                    <div style={{ color, fontSize: 13.2, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
-                    <div style={{ marginTop: 3, color: slate, fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>{desc}</div>
+                    <div style={{ color, fontSize: 14.4, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 4, color: slate, fontSize: 13, lineHeight: 1.34, fontWeight: 800 }}>{desc}</div>
                   </div>
                 </div>
               ))}
-            </div>
-            <div>
-              <SectionLabel>Developer Perspective</SectionLabel>
-              <ParagraphRich html={feedshop.developerPerspective ?? ''} size={19.1} lineHeight={1.52} />
             </div>
           </div>
         </Panel>
@@ -1047,7 +1096,7 @@ function FeedShopP1ProblemSlide() {
                       <span style={{ width: 8, height: 8, borderRadius: 999, background: red, marginTop: 8 }} />
                       <div>
                         <div style={{ color: navy, fontSize: 15.2, fontWeight: 950, lineHeight: 1.22 }}>{title}</div>
-                        <div style={{ color: slate, fontSize: 13.8, fontWeight: 720, lineHeight: 1.38, marginTop: 2 }}>{desc}</div>
+                        <div style={{ color: slate, fontSize: 14.6, fontWeight: 720, lineHeight: 1.38, marginTop: 2 }}>{desc}</div>
                       </div>
                     </div>
                   ))}
@@ -1114,18 +1163,23 @@ function FeedShopP1ThinkingSolutionSlide() {
     ['QueryDSL fetchJoin', '조회 쿼리 42회 → 2회', '반복 조회마다 DB 접근', '부분 적용'],
     ['fetchJoin + Redis', '쿼리 개선 후 반복 조회 제거', '캐시 정합성 관리 필요', '최종 선택'],
   ]
+  const cacheStrategies = [
+    ['캐시 대상', '이벤트 목록', '조회 빈번 · 변경 적음'],
+    ['캐시 방식', '@Cacheable + Redis', '분산 환경 캐시 유지'],
+    ['정합성', 'TTL · @CacheEvict', '변경 시 캐시 무효화'],
+  ]
 
   return (
-    <Slide eyebrow="FeedShop" title="문제 해결 1 — Thinking · Solution 1단계" subtitle="쿼리 최적화" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
-        <Panel pad={12} background={white} accent={amber}>
-          <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ color: slate, fontSize: 13.6, fontWeight: 760, lineHeight: 1.36, marginBottom: 8 }}>
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — Thinking" subtitle="쿼리 구조와 캐시 전략을 분리해 판단" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1.05fr 0.95fr', gap: 10, height: '100%', minHeight: 0 }}>
+        <Panel pad={11} background={white} accent={amber}>
+          <SectionLabel color={amber}>Thinking 1 · 해결 순서</SectionLabel>
+          <div style={{ color: slate, fontSize: 14.2, fontWeight: 760, lineHeight: 1.34, marginBottom: 7 }}>
             쿼리 비효율과 반복 조회 비용을 분리한 뒤 해결방안을 비교했습니다.
           </div>
           <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.48fr 0.74fr', background: '#f1f5f9', color: slate, fontSize: 12.1, fontWeight: 950 }}>
-              {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 9px' }}>{label}</div>)}
+            <div style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.48fr 0.74fr', background: '#f1f5f9', color: slate, fontSize: 12.4, fontWeight: 950 }}>
+              {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '6px 8px' }}>{label}</div>)}
             </div>
             {alternatives.map(([option, strength, limit, decision], idx) => (
               <div
@@ -1136,66 +1190,38 @@ function FeedShopP1ThinkingSolutionSlide() {
                   borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`,
                   background: idx === 3 ? '#eff6ff' : white,
                   color: navy,
-                  fontSize: 12.2,
-                  lineHeight: 1.34,
+                  fontSize: 12.7,
+                  lineHeight: 1.28,
                   fontWeight: 760,
                 }}
               >
-                <div style={{ padding: '7px 9px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
-                <div style={{ padding: '7px 9px', whiteSpace: strength.includes('→') ? 'nowrap' : undefined }}>{strength}</div>
-                <div style={{ padding: '7px 9px' }}>{limit}</div>
-                <div style={{ padding: '7px 9px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
+                <div style={{ padding: '6px 8px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
+                <div style={{ padding: '6px 8px', whiteSpace: strength.includes('→') ? 'nowrap' : undefined }}>{strength}</div>
+                <div style={{ padding: '6px 8px' }}>{limit}</div>
+                <div style={{ padding: '6px 8px', fontWeight: 950, color: idx === 3 ? blue : idx === 2 ? amber : red }}>{decision}</div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 8, borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', color: '#9a3412', padding: '8px 10px', fontSize: 13.2, lineHeight: 1.35, fontWeight: 850 }}>
+          <div style={{ marginTop: 7, borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', color: '#9a3412', padding: '7px 10px', fontSize: 13.8, lineHeight: 1.32, fontWeight: 850 }}>
             캐시로 문제를 가리기보다 쿼리 구조를 먼저 개선하고, 반복 조회 비용만 Redis로 분리했습니다.
           </div>
         </Panel>
-        <Panel pad={12} background={white} accent={blue}>
-          <SectionLabel>Solution 1</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr', gap: 9, height: '100%' }}>
-            <div
-              style={{
-                borderRadius: 13,
-                background: '#eff6ff',
-                border: '1px solid #bfdbfe',
-                padding: '11px 13px',
-              }}
-            >
-              <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19.5, fontWeight: 950, lineHeight: 1.18 }}>1단계 — 쿼리 최적화</h3>
-              <div style={{ color: slate, fontSize: 14.1, lineHeight: 1.4, fontWeight: 780 }}>
-                QueryDSL leftJoin + fetchJoin으로 연관 데이터를 한 번에 조회해 <span style={{ color: blue, fontWeight: 950 }}>N+1 제거</span>,
-                페이징 count 쿼리는 <span style={{ color: blue, fontWeight: 950 }}>countDistinct</span>로 분리 보정
+        <Panel pad={11} background={white} accent={amber}>
+          <SectionLabel color={amber}>Thinking 2 · 캐시 선택</SectionLabel>
+          <div style={{ borderRadius: 10, border: '1px solid #fde68a', background: '#fffbeb', padding: '8px 11px', marginBottom: 8 }}>
+            <div style={{ color: '#92400e', fontSize: 12.5, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>분산 캐시로 Redis를 선택한 이유</div>
+            <div style={{ color: '#78350f', fontSize: 12.8, lineHeight: 1.38, fontWeight: 760 }}>
+              인메모리 캐시(ConcurrentMapCacheManager)는 GCP Cloud Run 수평 확장 시 인스턴스마다 캐시가 달라질 수 있었습니다. 외부 공유 캐시인 Redis를 선택해 동일한 캐시를 참조하도록 했습니다.
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+            {cacheStrategies.map(([label, value, caption]) => (
+              <div key={label} style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
+                <div style={{ color: blue, fontSize: 12.3, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
+                <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginTop: 4, lineHeight: 1.18 }}>{value}</div>
+                <div style={{ color: slate, fontSize: 12.7, fontWeight: 760, marginTop: 3, lineHeight: 1.28 }}>{caption}</div>
               </div>
-            </div>
-            <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '10px 12px', color: navy, fontSize: 13.4, lineHeight: 1.4, fontWeight: 820 }}>
-              <strong style={{ color: blue }}>fetchJoin</strong>으로 eventDetail·rewards를 한 번에 조회하고, 페이징 count는 <strong style={{ color: blue }}>countDistinct</strong>로 분리
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                borderRadius: 12,
-                background: white,
-                border: '1px solid #bfdbfe',
-                padding: '8px 12px',
-              }}
-            >
-                <div style={{ color: navy, fontSize: 13, fontWeight: 950 }}>Scouter 측정</div>
-              <div style={{ color: blue, fontSize: 16.2, fontWeight: 950, whiteSpace: 'nowrap' }}>조회 쿼리 42 → 2회</div>
-            </div>
-            <div style={{ minHeight: 0 }}>
-              <img
-                src={asset('phase1-scouter-sql2.png')}
-                alt="fetchJoin SQL 2회"
-                style={{ width: '100%', height: '100%', maxHeight: '45mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
-              />
-            </div>
-            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.4, fontWeight: 900, textDecoration: 'none' }}>
-              구현 코드·실패 과정·커밋 근거 → Wiki
-            </a>
+            ))}
           </div>
         </Panel>
       </div>
@@ -1204,53 +1230,57 @@ function FeedShopP1ThinkingSolutionSlide() {
 }
 
 function FeedShopP1SolutionResultSlide() {
-  const cacheStrategies = [
-    ['캐시 대상', '이벤트 목록', '조회 빈번 · 변경 적음'],
-    ['캐시 방식', '@Cacheable + Redis', '분산 환경 캐시 유지'],
-    ['정합성', 'TTL · @CacheEvict', '변경 시 캐시 무효화'],
-  ]
-
   return (
-    <Slide eyebrow="FeedShop" title="문제 해결 1 — Solution 2단계" subtitle="Redis 캐시 전략 적용" dense>
-      <div style={{ display: 'grid', height: '100%' }}>
+    <Slide eyebrow="FeedShop" title="문제 해결 1 — Solution 1단계 / 2단계" subtitle="쿼리 최적화 → Redis 캐시 전략 적용" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 10, height: '100%', minHeight: 0 }}>
         <Panel pad={12} background={white} accent={blue}>
-          <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto 1fr auto', gap: 9, height: '100%' }}>
-            <div>
-              <h3 style={{ margin: '0 0 5px', color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.18 }}>2단계 — 캐시 전략 적용</h3>
-              <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.4, fontWeight: 760 }}>
-                반복 조회 비용을 줄이기 위해 이벤트 목록 특성에 맞춰 Redis 캐시를 적용했습니다.
+          <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 12, height: '100%', minHeight: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <SectionLabel>Solution 1</SectionLabel>
+              <h3 style={{ margin: '0 0 7px', color: navy, fontSize: 19.5, fontWeight: 950, lineHeight: 1.18 }}>1단계 — 쿼리 최적화</h3>
+              <div style={{ color: slate, fontSize: 14.1, lineHeight: 1.38, fontWeight: 780 }}>
+                QueryDSL leftJoin + fetchJoin으로 eventDetail·rewards를 한 번에 조회해 <span style={{ color: blue, fontWeight: 950 }}>N+1을 제거</span>하고, 페이징 count 쿼리는 <span style={{ color: blue, fontWeight: 950 }}>countDistinct</span>로 분리해 집계 결과를 보정했습니다.
               </div>
-            </div>
-            <div style={{ borderRadius: 10, border: '1px solid #fde68a', background: '#fffbeb', padding: '8px 11px' }}>
-              <div style={{ color: '#92400e', fontSize: 12.2, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>분산 캐시로 Redis를 선택한 이유</div>
-              <div style={{ color: '#78350f', fontSize: 12.2, lineHeight: 1.42, fontWeight: 760 }}>
-                인메모리 캐시(ConcurrentMapCacheManager) 먼저 검토 → GCP Cloud Run 수평 확장 시 인스턴스마다 캐시가 달라 <strong style={{ fontWeight: 950 }}>캐시 불일치</strong> 발생 가능
-                → Redis(외부 공유 캐시)로 전환해 모든 인스턴스가 동일한 캐시 참조
+              <div style={{ marginTop: 9, borderRadius: 11, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
+                <div style={{ color: slate, fontSize: 12.7, fontWeight: 900 }}>Scouter 측정</div>
+                <div style={{ color: blue, fontSize: 17, fontWeight: 950, marginTop: 3 }}>조회 쿼리 42 → 2회</div>
               </div>
+              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.4, fontWeight: 900, textDecoration: 'none', marginTop: 'auto' }}>
+                구현 코드·실패 과정·커밋 근거 → Wiki
+              </a>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-              {cacheStrategies.map(([label, value, caption]) => (
-                <div key={label} style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
-                  <div style={{ color: blue, fontSize: 12.3, fontWeight: 950, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 14.4, fontWeight: 950, marginTop: 4, lineHeight: 1.18 }}>{value}</div>
-                  <div style={{ color: slate, fontSize: 12.2, fontWeight: 760, marginTop: 3, lineHeight: 1.28 }}>{caption}</div>
-                </div>
-              ))}
+            <div style={{ minHeight: 0, display: 'grid', alignItems: 'center' }}>
+              <img
+                src={asset('phase1-scouter-sql2.png')}
+                alt="fetchJoin SQL 2회"
+                style={{ width: '100%', height: '100%', maxHeight: '66mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+              />
             </div>
-            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, minHeight: 0 }}>
-              <div style={{ borderRadius: 12, border: '1px solid #bfdbfe', background: '#eff6ff', color: blue, fontSize: 16.2, fontWeight: 950, padding: '9px 12px' }}>
-                Redis 캐시 적용 후 재요청 확인
+          </div>
+        </Panel>
+        <Panel pad={12} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 12, height: '100%', minHeight: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <SectionLabel>Solution 2</SectionLabel>
+              <h3 style={{ margin: '0 0 7px', color: navy, fontSize: 19.5, fontWeight: 950, lineHeight: 1.18 }}>2단계 — 캐시 전략 적용</h3>
+              <div style={{ color: slate, fontSize: 14.1, lineHeight: 1.38, fontWeight: 780 }}>
+                <span style={{ color: blue, fontWeight: 950 }}>@Cacheable</span>로 이벤트 목록을 캐싱하고, <span style={{ color: blue, fontWeight: 950 }}>TTL·@CacheEvict</span>로 변경 시점의 캐시를 무효화해 반복 조회 비용과 캐시 정합성을 함께 관리했습니다.
               </div>
+              <div style={{ marginTop: 9, borderRadius: 11, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 10px' }}>
+                <div style={{ color: slate, fontSize: 12.7, fontWeight: 900 }}>Scouter 재요청 측정</div>
+                <div style={{ color: blue, fontSize: 17, fontWeight: 950, marginTop: 3 }}>재요청 SQL Count 0회</div>
+              </div>
+              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.4, fontWeight: 900, textDecoration: 'none', marginTop: 'auto' }}>
+                @Cacheable·TTL·무효화 구현 상세 → Wiki
+              </a>
+            </div>
+            <div style={{ minHeight: 0, display: 'grid', alignItems: 'center' }}>
               <img
                 src={asset('phase2a-scouter-cache-hit2.png')}
                 alt="Redis 캐시 적용 후 재요청 확인"
-                style={{ width: '100%', height: '100%', maxHeight: '56mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
+                style={{ width: '100%', height: '100%', maxHeight: '66mm', objectFit: 'contain', objectPosition: 'center', borderRadius: 10, border: `1px solid ${line}`, display: 'block' }}
               />
             </div>
-            <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%AA%A9%EB%A1%9D-%EC%A1%B0%ED%9A%8C-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.4, fontWeight: 900, textDecoration: 'none' }}>
-              @Cacheable·TTL·무효화 구현 상세 → Wiki
-            </a>
           </div>
         </Panel>
       </div>
@@ -1260,76 +1290,55 @@ function FeedShopP1SolutionResultSlide() {
 
 function FeedShopP1ResultTableSlide() {
   const sec = feedshop.problemSections![0]
-  const summaryPoints = [
-    ['수치 성과', '동시 1,000명 기준 응답시간 6,818ms → 638ms(91%), TPS 216% 향상'],
-    ['쿼리 감소', 'fetchJoin 42회 → 2회, Cache Hit SQL 0회'],
-    ['사용자 효과', '재방문 진입점의 응답 지연을 줄여 이벤트 탐색 중 사용자 이탈 방지'],
-  ]
-  const kpis = [
-    { label: '응답시간', value: '91% 단축', color: green, border: '#a7f3d0', background: '#ecfdf5', labelColor: '#065f46' },
-    { label: 'TPS', value: '216% 향상', color: blue, border: '#bfdbfe', background: '#eff6ff', labelColor: '#1e3a8a' },
-    { label: 'SQL Count', value: '42회 → 2회', color: violet, border: '#ddd6fe', background: '#f5f3ff', labelColor: '#5b21b6' },
-    { label: '전략', value: 'fetchJoin + Redis', color: amber, border: '#fed7aa', background: '#fff7ed', labelColor: '#92400e' },
-  ]
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — 성능 개선 결과" subtitle="QueryDSL fetchJoin + Redis 캐시 적용 결과" dense>
-      <div style={{ display: 'grid', alignContent: 'center', gap: 11, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '1.08fr 0.92fr', gap: 11, height: '100%', minHeight: 0 }}>
         <Panel pad={13} background="#f8fafc" borderColor="#bbf7d0" accent={green}>
-          <div style={{ display: 'grid', gap: 9 }}>
-            <SectionLabel color={green}>Result Summary</SectionLabel>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 9 }}>
-              <div style={{ border: `1px solid #bbf7d0`, borderRadius: 12, background: white, padding: '12px 16px', display: 'grid', alignContent: 'center', gap: 8, wordBreak: 'keep-all' }}>
-                <div style={{ color: green, fontSize: 18.4, lineHeight: 1.18, fontWeight: 950 }}>
-                  QueryDSL fetchJoin + Redis 캐시 적용으로 이벤트 목록 조회 병목 개선
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 10, height: '100%', alignContent: 'center' }}>
+            <SectionLabel color={green}>Result Summary · 동시 1,000명 기준</SectionLabel>
+            <div style={{ display: 'grid', gap: 5, wordBreak: 'keep-all' }}>
+              <div style={{ color: green, fontSize: 20.5, lineHeight: 1.18, fontWeight: 950 }}>
+                응답시간 91% 단축 · TPS 216% 향상
+              </div>
+              <div style={{ color: slate, fontSize: 14.5, lineHeight: 1.35, fontWeight: 800 }}>
+                fetchJoin으로 쿼리 구조를 개선한 뒤 Redis로 반복 조회 비용을 분리했습니다.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '0.66fr 1.34fr', alignItems: 'center', marginTop: 4, color: slate, fontSize: 16.5, lineHeight: 1.38, fontWeight: 850 }}>
+                <div style={{ whiteSpace: 'nowrap' }}>
+                  <strong style={{ color: green }}>TPS</strong> 138.7 → 438.3 (+216%)
                 </div>
-                <div style={{ display: 'grid', gap: 6 }}>
-                  {summaryPoints.map(([label, text]) => (
-                    <div key={label} style={{ display: 'grid', gridTemplateColumns: '70px minmax(0, 1fr)', gap: 8, alignItems: 'center' }}>
-                      <div style={{ color: green, fontSize: 13.5, lineHeight: 1.2, fontWeight: 950 }}>{label}</div>
-                      <div style={{ color: slate, fontSize: 14, lineHeight: 1.34, fontWeight: 830 }}>{text}</div>
-                    </div>
-                  ))}
+                <div style={{ borderLeft: '1px solid #bbf7d0', paddingLeft: 12 }}>
+                  <strong style={{ color: green }}>사용자 효과</strong> 재방문 진입점의 응답 지연을 줄여 이벤트 탐색 중 사용자 이탈 방지
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8 }}>
-                {kpis.map((item) => (
-                  <div key={item.label} style={{ textAlign: 'center', border: `1px solid ${item.border}`, borderRadius: 11, background: item.background, padding: '7px 8px', display: 'grid', alignContent: 'center', wordBreak: 'keep-all' }}>
-                    <div style={{ color: item.color, fontSize: 18.8, fontWeight: 950, lineHeight: 1.08, whiteSpace: 'nowrap' }}>{item.value}</div>
-                    <div style={{ color: item.labelColor, fontSize: 12.4, fontWeight: 850, marginTop: 4 }}>{item.label}</div>
-                  </div>
-                ))}
+            </div>
+            <div style={{ overflow: 'hidden', border: '1px solid #bbf7d0', borderRadius: 12, background: white, display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'stretch' }}>
+              <div style={{ display: 'grid', alignContent: 'center', textAlign: 'center', padding: '11px 12px', background: '#fff7f7' }}>
+                <div style={{ color: muted, fontSize: 12.8, fontWeight: 900 }}>Before</div>
+                <div style={{ color: red, fontSize: 22, fontWeight: 950, lineHeight: 1.1, marginTop: 3 }}>6,818ms</div>
+                <div style={{ color: slate, fontSize: 12.8, fontWeight: 850, marginTop: 5 }}>SQL 42회</div>
+              </div>
+              <div style={{ display: 'grid', placeItems: 'center', color: slate, fontSize: 20, fontWeight: 950, padding: '0 8px' }}>→</div>
+              <div style={{ display: 'grid', alignContent: 'center', textAlign: 'center', padding: '11px 12px', background: '#fff7ed' }}>
+                <div style={{ color: muted, fontSize: 12.8, fontWeight: 900 }}>fetchJoin 적용 후</div>
+                <div style={{ color: amber, fontSize: 22, fontWeight: 950, lineHeight: 1.1, marginTop: 3 }}>4,191ms</div>
+                <div style={{ color: amber, fontSize: 12.8, fontWeight: 900, marginTop: 5 }}>-39% · SQL 2회</div>
+              </div>
+              <div style={{ display: 'grid', placeItems: 'center', color: slate, fontSize: 20, fontWeight: 950, padding: '0 8px' }}>→</div>
+              <div style={{ display: 'grid', alignContent: 'center', textAlign: 'center', padding: '11px 12px', background: '#ecfdf5' }}>
+                <div style={{ color: muted, fontSize: 12.8, fontWeight: 900 }}>Redis 캐시 후</div>
+                <div style={{ color: green, fontSize: 22, fontWeight: 950, lineHeight: 1.1, marginTop: 3 }}>638ms</div>
+                <div style={{ color: green, fontSize: 12.8, fontWeight: 900, marginTop: 5 }}>91% · Cache Hit SQL 0회</div>
               </div>
             </div>
-          </div>
-        </Panel>
-        <Panel pad={12} background={white} borderColor="#bbf7d0" accent={green}>
-          <SectionLabel color={green}>단계별 개선 흐름 (동시 1,000명 기준)</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', gap: 8, alignItems: 'center', marginTop: 6 }}>
-            <div style={{ textAlign: 'center', border: '1px solid #fecaca', borderRadius: 10, background: '#fff7f7', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 12.3, fontWeight: 900, marginBottom: 3 }}>Before</div>
-              <div style={{ color: red, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>6,818ms</div>
-            </div>
-            <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
-            <div style={{ textAlign: 'center', border: '1px solid #fed7aa', borderRadius: 10, background: '#fff7ed', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 12.3, fontWeight: 900, marginBottom: 3 }}>fetchJoin 적용 후</div>
-              <div style={{ color: amber, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>4,191ms</div>
-              <div style={{ color: amber, fontSize: 12, fontWeight: 900 }}>-39%</div>
-            </div>
-            <div style={{ color: slate, fontSize: 18, fontWeight: 950, textAlign: 'center' }}>→</div>
-            <div style={{ textAlign: 'center', border: '1px solid #bbf7d0', borderRadius: 10, background: '#ecfdf5', padding: '8px 10px' }}>
-              <div style={{ color: muted, fontSize: 12.3, fontWeight: 900, marginBottom: 3 }}>Redis 캐시 후</div>
-              <div style={{ color: green, fontSize: 20, fontWeight: 950, lineHeight: 1.08 }}>638ms</div>
-              <div style={{ color: green, fontSize: 12, fontWeight: 900 }}>91%</div>
-            </div>
-          </div>
-          <div style={{ marginTop: 7, color: slate, fontSize: 12, lineHeight: 1.38, fontWeight: 760 }}>
-            fetchJoin 단독 적용 시 39% 개선 · Redis 캐시 추가 후 최종 91% 개선 — 두 단계 각각의 기여를 수치로 확인
           </div>
         </Panel>
         <Panel pad={13} background="#f0fdf4" borderColor="#bbf7d0" accent={green}>
-          <SectionLabel color={green}>Result Table</SectionLabel>
-          <Rich html={extractTable(sec.result)} size={13.1} lineHeight={1.36} className="pdf-table-fit" />
+          <SectionLabel color={green}>Result Table · 동일 부하 조건 상세 비교</SectionLabel>
+          <div style={{ marginTop: 8 }}>
+            <Rich html={extractTable(sec.result)} size={14} lineHeight={1.4} className="pdf-table-fit" />
+          </div>
         </Panel>
       </div>
     </Slide>
@@ -1337,53 +1346,85 @@ function FeedShopP1ResultTableSlide() {
 }
 
 function FeedShopP1ResultImagesSlide() {
-  const resultImages = [
-    ['동시 100명 Before', 'before-ngrinder-v100.png', '평균 응답시간 645ms, TPS 154.6 수준에서 처리량 한계 확인'],
-    ['동시 100명 After', 'phase2a-ngrinder-v100.png', '응답시간 209ms, TPS 470.1로 개선되어 단기 트래픽 대응 폭 확대'],
-    ['동시 1,000명 Before', 'before-ngrinder-v1000.png', '평균 응답시간 6,818ms까지 증가하며 조회 병목이 뚜렷하게 드러남'],
-    ['동시 1,000명 After', 'phase2a-ngrinder-v1000.png', '응답시간 638ms, TPS 438.3으로 개선되어 고부하 구간 안정화'],
+  const comparisons = [
+    {
+      load: '동시 100명',
+      before: 'before-ngrinder-v100.png',
+      after: 'phase2a-ngrinder-v100.png',
+      response: '645ms → 209ms',
+      responseChange: '68% 단축',
+      tps: '154.6 → 470.1',
+      tpsChange: '+204%',
+    },
+    {
+      load: '동시 1,000명',
+      before: 'before-ngrinder-v1000.png',
+      after: 'phase2a-ngrinder-v1000.png',
+      response: '6,818ms → 638ms',
+      responseChange: '91% 단축',
+      tps: '138.7 → 438.3',
+      tpsChange: '+216%',
+    },
   ]
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 1 — nGrinder 부하 테스트 결과" subtitle="Before / After 성능 수치 비교" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 9, height: '100%' }}>
-        <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 12, alignItems: 'center' }}>
-            <div>
-              <SectionLabel color={green}>Load Test Focus</SectionLabel>
-              <div style={{ color: navy, fontSize: 16.4, fontWeight: 950, lineHeight: 1.22 }}>동시 사용자 증가 구간에서 개선 효과를 검증</div>
-            </div>
-            <div style={{ color: slate, fontSize: 13.6, lineHeight: 1.42, fontWeight: 760 }}>
-              같은 부하 조건에서 Before / After를 나란히 비교해<br />
-              응답시간, TPS, 고부하 안정성 변화를 확인했습니다.
-            </div>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 7, height: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 14, alignItems: 'center', border: '1px solid #a7f3d0', borderLeft: `4px solid ${green}`, borderRadius: 8, background: '#ecfdf5', padding: '7px 11px' }}>
+          <div style={{ color: green, fontSize: 13.2, fontWeight: 950 }}>동일 부하 조건</div>
+          <div style={{ color: slate, fontSize: 13.4, lineHeight: 1.3, fontWeight: 780 }}>
+            Before / After의 응답시간과 TPS를 nGrinder 결과 화면으로 검증했습니다.
           </div>
-        </Panel>
-        <Panel pad={8} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
-            {resultImages.map(([label, src, caption]) => (
-              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 4 }}>
-                <div style={{ color: navy, fontSize: 12.2, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
-                <img
-                  src={asset(src)}
-                  alt={`nGrinder ${label}`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    minHeight: 0,
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                    borderRadius: 8,
-                    border: `1px solid ${line}`,
-                    display: 'block',
-                    background: white,
-                  }}
-                />
-                <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 8, minHeight: 0 }}>
+          {comparisons.map((comparison) => (
+            <Panel key={comparison.load} pad={8} background={white} accent={blue}>
+              <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 6, height: '100%', minHeight: 0 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8, alignItems: 'center', color: slate, fontSize: 14.2, lineHeight: 1.25, fontWeight: 850 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, whiteSpace: 'nowrap' }}>
+                    <strong style={{ color: red }}>Before</strong>
+                    <strong style={{ color: navy }}>{comparison.load}</strong>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, minWidth: 0, whiteSpace: 'nowrap' }}>
+                    <strong style={{ color: green }}>After</strong>
+                    <span>
+                      응답시간 <strong style={{ color: navy }}>{comparison.response}</strong>{' '}
+                      <strong style={{ color: green }}>({comparison.responseChange})</strong>
+                    </span>
+                    <span>
+                      TPS <strong style={{ color: navy }}>{comparison.tps}</strong>{' '}
+                      <strong style={{ color: green }}>({comparison.tpsChange})</strong>
+                    </span>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8, minHeight: 0 }}>
+                  {[
+                    ['Before', comparison.before],
+                    ['After', comparison.after],
+                  ].map(([label, src]) => (
+                    <div key={src} style={{ minHeight: 0 }}>
+                      <img
+                        src={asset(src)}
+                        alt={`nGrinder ${comparison.load} ${label}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          minHeight: 0,
+                          objectFit: 'contain',
+                          objectPosition: 'center',
+                          borderRadius: 7,
+                          border: `1px solid ${line}`,
+                          display: 'block',
+                          background: white,
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-        </Panel>
+            </Panel>
+          ))}
+        </div>
       </div>
     </Slide>
   )
@@ -1392,11 +1433,11 @@ function FeedShopP1ResultImagesSlide() {
 function FeedShopP2ProblemThinkingSlide() {
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — 피드 투표 동시성 문제" subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, height: '100%', alignContent: 'start' }}>
-        <Panel pad={11} background={white} accent={red}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.88fr 1.12fr', gap: 20, height: '100%', minHeight: 0 }}>
+        <Panel pad={10} background={white} accent={red}>
           <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 10, alignContent: 'start' }}>
-            <div style={{ color: slate, fontSize: 14.2, lineHeight: 1.45, fontWeight: 780 }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 8, alignContent: 'start' }}>
+            <div style={{ color: slate, fontSize: 14.8, lineHeight: 1.4, fontWeight: 800 }}>
                 중복 투표 방지 로직이 코드 레벨에만 존재하고, DB 유니크 제약이 없어 동시 요청 시
                 <strong style={{ color: red, fontWeight: 950 }}> TOCTOU 취약점</strong>이 발생했습니다.
             </div>
@@ -1406,39 +1447,39 @@ function FeedShopP2ProblemThinkingSlide() {
                 ['취약점', '중복 체크와 저장 사이 틈'],
                   ['결과', '중복 투표 삽입'],
                 ].map(([label, value]) => (
-                <div key={label} style={{ border: `1px solid #fecaca`, borderRadius: 11, background: '#fff7f7', padding: '12px 12px', display: 'grid', alignContent: 'center' }}>
-                  <div style={{ color: red, fontSize: 12.2, fontWeight: 950, marginBottom: 5 }}>{label}</div>
-                  <div style={{ color: navy, fontSize: 15, fontWeight: 950, lineHeight: 1.2 }}>{value}</div>
+                <div key={label} style={{ border: `1px solid #fecaca`, borderRadius: 10, background: '#fff7f7', padding: '9px 11px', display: 'grid', alignContent: 'center' }}>
+                  <div style={{ color: red, fontSize: 12.8, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 15.6, fontWeight: 950, lineHeight: 1.18 }}>{value}</div>
                   </div>
                 ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 8, alignItems: 'start' }}>
-              <div style={{ color: red, fontSize: 13.5, fontWeight: 950 }}>수정 전 경쟁 구간</div>
+            <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 6, alignItems: 'start' }}>
+              <div style={{ color: red, fontSize: 14.2, fontWeight: 950 }}>수정 전 경쟁 구간</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignContent: 'start' }}>
-                <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
-                  <div style={{ color: red, fontSize: 13, fontWeight: 950, marginBottom: 5 }}>① 중복 체크</div>
-                  <div style={{ color: slate, fontSize: 13.2, lineHeight: 1.36, fontWeight: 760 }}>
+                <div style={{ border: `1px solid #fecaca`, borderRadius: 10, background: '#fff7f7', padding: '8px 11px' }}>
+                  <div style={{ color: red, fontSize: 13.5, fontWeight: 950, marginBottom: 4 }}>① 중복 체크</div>
+                  <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.32, fontWeight: 780 }}>
                     <strong style={{ color: red }}>existsByEventIdAndUserId</strong> 통과 후 저장 전까지 경쟁 구간이 생김
                   </div>
                 </div>
-                <div style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '11px 12px' }}>
-                  <div style={{ color: red, fontSize: 13, fontWeight: 950, marginBottom: 5 }}>② 투표 저장</div>
-                  <div style={{ color: slate, fontSize: 13.2, lineHeight: 1.36, fontWeight: 760 }}>
+                <div style={{ border: `1px solid #fecaca`, borderRadius: 10, background: '#fff7f7', padding: '8px 11px' }}>
+                  <div style={{ color: red, fontSize: 13.5, fontWeight: 950, marginBottom: 4 }}>② 투표 저장</div>
+                  <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.32, fontWeight: 780 }}>
                     두 요청이 동시에 통과하면 <strong style={{ color: red }}>save</strong>가 중복 실행될 수 있음
                   </div>
                 </div>
               </div>
-              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%ED%94%BC%EB%93%9C-%ED%88%AC%ED%91%9C-%EB%8F%99%EC%8B%9C%EC%84%B1-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.4, fontWeight: 900, textDecoration: 'none' }}>
+              <a href="https://github.com/dbp-jack/FeedShop_Backend_Refactoring/wiki/%ED%94%BC%EB%93%9C-%ED%88%AC%ED%91%9C-%EB%8F%99%EC%8B%9C%EC%84%B1-%EA%B0%9C%EC%84%A0" style={{ color: blue, fontSize: 12.9, fontWeight: 900, textDecoration: 'none' }}>
                 수정 전 코드·재현 근거 → Wiki
               </a>
             </div>
           </div>
         </Panel>
-        <Panel pad={11} background={white} accent={amber}>
+        <Panel pad={10} background={white} accent={amber}>
           <SectionLabel color={amber}>Thinking</SectionLabel>
           <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 9 }}>
             <div style={{ overflow: 'hidden', borderRadius: 10, border: `1px solid ${line}` }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', background: '#f1f5f9', color: slate, fontSize: 12.2, fontWeight: 950 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', background: '#f1f5f9', color: slate, fontSize: 13.2, fontWeight: 950 }}>
                 {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '8px 9px' }}>{label}</div>)}
               </div>
               {[
@@ -1447,7 +1488,7 @@ function FeedShopP2ProblemThinkingSlide() {
                 ['DB 유니크 제약', '중복 물리 차단', '예외·카운터 락 별도 처리', '부분 적용'],
                 ['제약 + NOT_SUPPORTED + INCR', '중복·예외·카운터 분리', 'DB·Redis 정합성 검증 필요', '최종 선택'],
               ].map(([option, strength, limit, decision], idx) => (
-                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 12.2, lineHeight: 1.34, fontWeight: 760 }}>
+                <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.28fr 1.12fr 1.48fr 0.78fr', borderTop: `1px solid ${idx === 3 ? '#bfdbfe' : line}`, background: idx === 3 ? '#eff6ff' : white, color: navy, fontSize: 13.1, lineHeight: 1.3, fontWeight: 780 }}>
                   <div style={{ padding: '8px 9px', fontWeight: 920, color: idx === 3 ? blue : navy }}>{option}</div>
                   <div style={{ padding: '8px 9px' }}>{strength}</div>
                   <div style={{ padding: '8px 9px' }}>{limit}</div>
@@ -1455,7 +1496,7 @@ function FeedShopP2ProblemThinkingSlide() {
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 10, padding: '10px 12px', color: '#9a3412', fontSize: 13.2, lineHeight: 1.36, fontWeight: 900 }}>
+            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 10, padding: '10px 12px', color: '#9a3412', fontSize: 14.2, lineHeight: 1.34, fontWeight: 900 }}>
               중복 차단은 DB 제약으로 보장하고, 빈번한 카운터 갱신은 Redis 원자 연산으로 분리해 락 경합을 제거했습니다.
             </div>
           </div>
@@ -1466,190 +1507,91 @@ function FeedShopP2ProblemThinkingSlide() {
 }
 
 function FeedShopP2SolutionSlide() {
+  const transactionOptions = [
+    ['제외', 'REQUIRES_NEW', '내부 rollback이 외부 Hibernate Session을 오염시켜 포인트 지급 등 정상 작업까지 실패'],
+    ['제외', 'noRollbackFor', 'JPA flush 이전에 세션 오염이 먼저 발생해 예외 전파를 막지 못함'],
+    ['최종 선택', 'NOT_SUPPORTED', '저장·포인트·활동 기록을 독립 트랜잭션으로 분리해 예외 전파 차단'],
+  ]
+
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Solution" subtitle="DB 유니크 제약 · 예외 처리 · Redis INCR" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.66fr 1.08fr 0.98fr', gap: 7, height: '100%' }}>
-        <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 8, height: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateRows: '0.56fr 1.12fr 1.12fr', gap: 9, height: '100%', minHeight: 0 }}>
+        <Panel pad={9} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateColumns: '0.72fr 1.28fr', gap: 15, alignItems: 'center', height: '100%' }}>
             <div>
               <SectionLabel>Solution 1</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>1단계 — DB 유니크 제약 추가</h2>
-              <p style={{ margin: '6px 0 0', color: slate, fontSize: 13, lineHeight: 1.38, fontWeight: 780 }}>
-                <strong>(event_id, voter_id)</strong> 조합에 유니크 제약을 걸어 DB 레벨에서 중복 투표를 차단
-              </p>
+              <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.18, fontWeight: 950 }}>1단계 — DB 유니크 제약</h2>
             </div>
-            <div style={{ borderRadius: 11, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '10px 12px', color: navy, fontSize: 13.2, lineHeight: 1.38, fontWeight: 820 }}>
-              DB 제약은 중복 INSERT를 막는 <strong style={{ color: blue }}>최종 방어선</strong>
+            <div style={{ display: 'grid', gap: 6 }}>
+              <div style={{ color: slate, fontSize: 14.3, lineHeight: 1.34, fontWeight: 800 }}>
+                <strong style={{ color: navy }}>(event_id, voter_id)</strong> 조합을 유니크 키로 지정해 동시 요청의 중복 저장을 DB에서 차단했습니다.
+              </div>
+              <div style={{ borderRadius: 9, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '7px 10px', color: navy, fontSize: 13.8, lineHeight: 1.28, fontWeight: 850 }}>
+                중복 INSERT를 막는 <strong style={{ color: blue }}>최종 방어선</strong>
+              </div>
             </div>
           </div>
         </Panel>
-        <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 7, height: '100%' }}>
-            <div>
-              <SectionLabel>Solution 2</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>2단계 — 저장 로직 분리 + 예외 처리</h2>
-              <p style={{ margin: '6px 0 0', color: slate, fontSize: 13, lineHeight: 1.38, fontWeight: 780 }}>
-                중복 삽입 시도는 <strong>DataIntegrityViolationException</strong>으로 감지하고, 예외 처리로 200 반환
-              </p>
+        <Panel pad={9} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 6, height: '100%', minHeight: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.72fr 1.28fr', gap: 15, alignItems: 'end' }}>
+              <div>
+                <SectionLabel>Solution 2</SectionLabel>
+                <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.18, fontWeight: 950 }}>2단계 — 저장·예외 분리</h2>
+              </div>
+              <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.32, fontWeight: 800 }}>
+                유니크 제약 위반은 <strong>DataIntegrityViolationException</strong>으로 감지하고 중복 응답으로 변환했습니다.
+              </div>
             </div>
-            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 12.2, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 5 }}>NOT_SUPPORTED 선택 과정</div>
-              <div style={{ display: 'grid', gap: 4 }}>
-                {([
-                  ['❌ 시도 1', 'REQUIRES_NEW → 내부 rollback이 외부 Hibernate Session 오염, 정상 작업(포인트 지급 등)까지 전부 실패'],
-                  ['❌ 시도 2', 'noRollbackFor → JPA flush() 이전에 세션 오염 먼저 발생, 효과 없음'],
-                  ['✅ 최종', 'NOT_SUPPORTED → saveVote·earnPoints·recordActivity 각각이 독립 트랜잭션, 예외가 다른 작업으로 전파되지 않음'],
-                ] as const).map(([label, text]) => (
-                  <div key={label} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 6, alignItems: 'start' }}>
-                    <div style={{ color: '#92400e', fontSize: 12.2, fontWeight: 950, paddingTop: 1 }}>{label}</div>
-                    <div style={{ color: '#78350f', fontSize: 12.4, lineHeight: 1.38, fontWeight: 760 }}>{text}</div>
+            <div style={{ overflow: 'hidden', borderRadius: 9, border: `1px solid ${line}`, display: 'grid', gridTemplateRows: 'repeat(3, minmax(0, 1fr))', minHeight: 0 }}>
+              {transactionOptions.map(([decision, option, reason], idx) => (
+                <div key={option} style={{ display: 'grid', gridTemplateColumns: '0.5fr 0.9fr 2.6fr', gap: 8, alignItems: 'center', borderTop: idx === 0 ? 'none' : `1px solid ${idx === 2 ? '#bfdbfe' : line}`, background: idx === 2 ? '#eff6ff' : '#fffbeb', padding: '6px 9px', color: navy, fontSize: 13.1, lineHeight: 1.26, fontWeight: 780 }}>
+                  <div style={{ color: idx === 2 ? blue : red, fontWeight: 950 }}>{decision}</div>
+                  <div style={{ color: idx === 2 ? blue : '#92400e', fontWeight: 950 }}>{option}</div>
+                  <div>{reason}</div>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '9px 11px', color: navy, fontSize: 12.2, lineHeight: 1.4, fontWeight: 800 }}>
-              저장·flush는 REQUIRED에서 끝내고, 트랜잭션 밖에서 지정된 유니크 제약 위반만 중복 응답으로 변환
-            </div>
-          </div>
-        </Panel>
-        <Panel pad={10} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 7, height: '100%' }}>
-            <div>
-              <SectionLabel>Solution 3</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 17, lineHeight: 1.2, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
-              <p style={{ margin: '6px 0 0', color: slate, fontSize: 13, lineHeight: 1.38, fontWeight: 780 }}>
-                카운터를 Redis로 분리해 DB 락 경합 자체를 제거
-              </p>
-            </div>
-            <div style={{ borderRadius: 9, border: '1px solid #fde68a', background: '#fffbeb', padding: '7px 10px' }}>
-              <div style={{ color: '#92400e', fontSize: 12.2, fontWeight: 950, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 4 }}>데드락 원인 · Redis INCR 선택</div>
-              <div style={{ display: 'grid', gap: 3 }}>
-                <div style={{ color: '#78350f', fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>
-                  <strong>기존:</strong> feed_votes INSERT(event_id FK → S-lock) + feeds UPDATE(X-lock) 교차 → 두 잠금이 서로를 기다리는 데드락 발생
-                </div>
-                <div style={{ color: '#78350f', fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>
-                  <strong>Redis INCR:</strong> DB 잠금 체계 바깥에서 단일 명령어로 카운터 처리 → lock 없이 데드락 구조적 제거
-                </div>
-              </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 7 }}>
-              <div style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '8px 10px', color: navy, fontSize: 12.5, lineHeight: 1.34, fontWeight: 800 }}>
-                Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 복구하고 정기 보정
-              </div>
-              <div style={{ color: '#92400e', fontSize: 12.2, lineHeight: 1.35, fontWeight: 800 }}>
-                한계: DB·Redis 간 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 보장 범위 밖
-              </div>
-            </div>
-          </div>
-        </Panel>
-      </div>
-    </Slide>
-  )
-}
-
-function FeedShopP2RedisSolutionSlide() {
-  const lockFlow = [
-    ['feed_votes INSERT', 'event_id FK 확인 과정에서 S-lock 획득'],
-    ['feeds UPDATE', '투표 수 갱신을 위해 X-lock 대기'],
-    ['교차 대기', '동시 요청이 서로 다른 락을 잡고 기다리며 데드락 발생'],
-  ] as const
-  const redisFlow = [
-    ['원자 연산', 'Redis INCR 하나로 카운터 증가를 처리'],
-    ['락 분리', 'DB row lock 경합에서 투표 수 갱신을 분리'],
-    ['복구 기준', 'feed_votes COUNT를 원본으로 삼아 재계산 가능'],
-  ] as const
-  const outcomeFlow = [
-    ['분리 전', '투표 이력 저장과 카운터 갱신이 같은 DB 락 흐름에 묶였습니다.'],
-    ['분리 후', 'DB에는 투표 이력을 남기고, Redis는 카운터 증가만 맡겼습니다.'],
-    ['복구 기준', 'Redis 값은 빠른 조회용으로 두고, feed_votes COUNT를 원본으로 삼았습니다.'],
-  ] as const
-
-  return (
-    <Slide eyebrow="FeedShop" title="문제 해결 2 — Redis 카운터 분리" subtitle="Redis INCR로 데드락 구조를 제거하고, DB 원본 기준 복구 경로를 남겼습니다." dense>
-      <div style={{ display: 'grid', gridTemplateRows: '0.74fr 1.86fr 0.92fr 0.68fr', gap: 14, height: '100%', alignItems: 'stretch' }}>
-        <Panel pad={16} background={white} accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 26, alignItems: 'center', height: '100%' }}>
-            <div>
-              <SectionLabel>Solution 3</SectionLabel>
-              <h2 style={{ margin: 0, color: navy, fontSize: 22, lineHeight: 1.18, fontWeight: 950 }}>3단계 — Redis INCR 원자적 연산</h2>
-            </div>
-            <p style={{ margin: 0, color: slate, fontSize: 13.8, lineHeight: 1.52, fontWeight: 780 }}>
-              투표 카운터를 DB 업데이트에서 분리해 lock 경쟁을 줄이고, Redis 장애나 키 유실 상황에서는 DB 투표 이력을 원본으로 다시 보정하도록 설계했습니다.
-            </p>
-          </div>
-        </Panel>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, alignItems: 'stretch' }}>
-          <Panel pad={16} background="#fffbeb" borderColor="#fde68a">
-            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%' }}>
-              <SectionLabel color={amber}>Deadlock Cause</SectionLabel>
-              <div style={{ display: 'grid', gap: 12, alignContent: 'space-evenly', marginTop: 10 }}>
-              {lockFlow.map(([title, detail], idx) => (
-                <div key={title} style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'start' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#fed7aa', color: '#92400e', fontSize: 12.8, fontWeight: 950 }}>{idx + 1}</div>
-                  <div>
-                    <div style={{ color: '#78350f', fontSize: 13.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
-                    <div style={{ color: '#92400e', fontSize: 12.9, lineHeight: 1.46, fontWeight: 760 }}>{detail}</div>
-                  </div>
-                </div>
               ))}
+            </div>
+            <div style={{ borderRadius: 9, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '7px 10px', color: navy, fontSize: 13.3, lineHeight: 1.3, fontWeight: 850 }}>
+              저장·flush는 REQUIRED에서 끝내고, NOT_SUPPORTED 흐름에서 지정된 유니크 제약 위반만 중복 응답으로 변환
+            </div>
+          </div>
+        </Panel>
+        <Panel pad={9} background={white} accent={blue}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 6, height: '100%', minHeight: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.72fr 1.28fr', gap: 15, alignItems: 'end' }}>
+              <div>
+                <SectionLabel>Solution 3</SectionLabel>
+                <h2 style={{ margin: 0, color: navy, fontSize: 18, lineHeight: 1.18, fontWeight: 950 }}>3단계 — Redis INCR</h2>
+              </div>
+              <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.32, fontWeight: 800 }}>
+                투표 카운터 갱신을 Redis 원자 연산으로 분리해 DB 락 경합을 제거했습니다.
               </div>
             </div>
-          </Panel>
-
-          <Panel pad={16} background="#ecfdf5" borderColor="#a7f3d0">
-            <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%' }}>
-              <SectionLabel color={green}>Redis INCR</SectionLabel>
-              <div style={{ display: 'grid', gap: 12, alignContent: 'space-evenly', marginTop: 10 }}>
-              {redisFlow.map(([title, detail], idx) => (
-                <div key={title} style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'start' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: '#bbf7d0', color: green, fontSize: 12.8, fontWeight: 950 }}>{idx + 1}</div>
-                  <div>
-                    <div style={{ color: '#064e3b', fontSize: 13.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
-                    <div style={{ color: '#065f46', fontSize: 12.9, lineHeight: 1.46, fontWeight: 760 }}>{detail}</div>
-                  </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8, minHeight: 0 }}>
+              <div style={{ borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', padding: '8px 10px', display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: '#c2410c', fontSize: 12.8, fontWeight: 950, marginBottom: 4 }}>기존 DB 카운터</div>
+                <div style={{ color: '#7c2d12', fontSize: 13.2, lineHeight: 1.3, fontWeight: 780 }}>
+                  INSERT의 S-lock과 UPDATE의 X-lock이 교차해 서로를 기다리는 데드락 발생
                 </div>
-              ))}
+              </div>
+              <div style={{ borderRadius: 9, border: '1px solid #a7f3d0', background: '#ecfdf5', padding: '8px 10px', display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 12.8, fontWeight: 950, marginBottom: 4 }}>Redis INCR</div>
+                <div style={{ color: '#065f46', fontSize: 13.2, lineHeight: 1.3, fontWeight: 780 }}>
+                  DB 잠금 체계 밖에서 단일 명령으로 카운터를 갱신해 카운터 락 경합 제거
+                </div>
               </div>
             </div>
-          </Panel>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
-          {outcomeFlow.map(([title, detail], idx) => {
-            const tone = idx === 0
-              ? { color: '#92400e', background: '#fffbeb', border: '#fde68a', badge: '#fed7aa' }
-              : idx === 1
-                ? { color: green, background: '#ecfdf5', border: '#a7f3d0', badge: '#bbf7d0' }
-                : { color: blue, background: '#eff6ff', border: '#bfdbfe', badge: '#dbeafe' }
-            return (
-              <Panel key={title} pad={14} background={tone.background} borderColor={tone.border}>
-                <div style={{ display: 'grid', gridTemplateColumns: '38px 1fr', gap: 10, alignItems: 'center', height: '100%' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 10, display: 'grid', placeItems: 'center', background: tone.badge, color: tone.color, fontSize: 12.8, fontWeight: 950 }}>
-                    {idx + 1}
-                  </div>
-                  <div>
-                    <div style={{ color: tone.color, fontSize: 13.6, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
-                    <div style={{ marginTop: 4, color: slate, fontSize: 12.8, lineHeight: 1.38, fontWeight: 760 }}>{detail}</div>
-                  </div>
-                </div>
-              </Panel>
-            )
-          })}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: 14 }}>
-          <Panel pad={14} background="#eff6ff" borderColor="#bfdbfe">
-            <div style={{ height: '100%', display: 'flex', alignItems: 'center', color: navy, fontSize: 13.6, lineHeight: 1.45, fontWeight: 820 }}>
-              Redis 키 유실·장애 시 <strong style={{ color: blue }}>feed_votes COUNT</strong>를 원본으로 복구하고 정기 보정합니다.
+            <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: 8 }}>
+              <div style={{ borderRadius: 9, border: '1px solid #bfdbfe', background: '#eff6ff', padding: '7px 10px', color: navy, fontSize: 13.1, lineHeight: 1.3, fontWeight: 820 }}>
+                복구: Redis 키 유실·장애 시 feed_votes COUNT를 원본으로 재동기화
+              </div>
+              <div style={{ borderRadius: 9, border: '1px solid #fed7aa', background: '#fff7ed', padding: '7px 10px', color: '#9a3412', fontSize: 13.1, lineHeight: 1.3, fontWeight: 820 }}>
+                한계: 장애 구간의 실시간 강한 정합성·리워드 재처리는 보장 범위 밖
+              </div>
             </div>
-          </Panel>
-          <Panel pad={14} background="#fff7ed" borderColor="#fed7aa">
-            <div style={{ height: '100%', display: 'flex', alignItems: 'center', color: '#92400e', fontSize: 12.8, lineHeight: 1.45, fontWeight: 800 }}>
-              한계: DB·Redis 장애 구간의 실시간 강한 정합성과 투표 리워드 재처리는 별도 보상 설계가 필요합니다.
-            </div>
-          </Panel>
-        </div>
+          </div>
+        </Panel>
       </div>
     </Slide>
   )
@@ -1657,41 +1599,43 @@ function FeedShopP2RedisSolutionSlide() {
 
 function FeedShopP2ResultSlide() {
   const resultImages = [
-    ['정합성 검증 — DB count와 Redis count 일치', 'phase2b-redis-count-verify.png', 'Redis INCR 결과와 API 조회 count가 동일해 투표 수 정합성을 확인'],
-    ['nGrinder — 동시 500명 요청 성공', 'vuser500_result.png', '평균 TPS 588.1 · 평균 응답 833ms · 68,548건 성공 / 오류 0건 — TPS가 대체로 550~650 구간을 유지'],
-    ['nGrinder — 동시 1,000명 요청 성공', 'vuser1000_result.png', '평균 TPS 437.0 · 평균 응답 2.19초 · 48,231건 성공 / 오류 0건 — 부하 증가에 따른 응답 지연 확인'],
-    ['nGrinder — 동시 3,000명 요청 성공', 'vuser3000_result.png', '평균 TPS 551.1 · 평균 응답 5.00초 · 63,026건 성공 / 오류 0건 — 정합성은 유지했지만 고부하 처리 지연 한계 확인'],
+    ['정합성 검증', 'phase2b-redis-count-verify.png', 'DB count 3 = Redis count 3 · 투표 수 정합성 확인'],
+    ['nGrinder · 동시 500명', 'vuser500_result.png', 'TPS 588.1 · 평균 응답 833ms · 성공 68,548건 · 오류 0건'],
+    ['nGrinder · 동시 1,000명', 'vuser1000_result.png', 'TPS 437.0 · 평균 응답 2.19초 · 성공 48,231건 · 오류 0건'],
+    ['nGrinder · 동시 3,000명', 'vuser3000_result.png', 'TPS 551.1 · 평균 응답 5.00초 · 성공 63,026건 · 오류 0건 · 다음 응답속도 최적화 기준 확인'],
   ]
   const kpis = [
-    ['에러율', '0%'],
+    ['오류율', '0%'],
     ['중복 투표', '0건'],
-    ['정합성', '부하 테스트 구간에서 DB = Redis'],
+    ['count 정합성', 'DB = Redis'],
     ['검증 구간', '500→3,000명'],
   ]
 
   return (
     <Slide eyebrow="FeedShop" title="문제 해결 2 — Result" subtitle="정합성 검증 · nGrinder 부하 테스트" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 10, height: '100%' }}>
-        <Panel pad={12} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.16fr repeat(4, 0.72fr)', gap: 8, alignItems: 'center' }}>
-            <div style={{ color: slate, fontSize: 13.1, lineHeight: 1.42, fontWeight: 830 }}>
-              동시 500→3,000명 전 구간 <strong style={{ color: green }}>에러율 0%</strong>,
-              <strong style={{ color: green }}> 중복 투표 0건</strong> 확인,
-              <strong style={{ color: blue }}> DB count = Redis count</strong> 투표 수 정합성 검증
+      <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 8, height: '100%' }}>
+        <Panel pad={10} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.55fr repeat(4, 0.82fr)', gap: 8, alignItems: 'center' }}>
+            <div style={{ color: slate, fontSize: 14.2, lineHeight: 1.38, fontWeight: 830, wordBreak: 'keep-all' }}>
+              동시 500→3,000명 부하 테스트에서 <strong style={{ color: green }}>오류·중복 투표 0건</strong>을 확인하고,
+              <strong style={{ color: blue }}> DB count와 Redis count 일치</strong>로 투표 수 정합성을 검증했습니다.
             </div>
             {kpis.map(([label, value]) => (
-              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 48, display: 'grid', alignContent: 'center' }}>
-                <div style={{ color: green, fontSize: 19.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
-                <div style={{ color: '#065f46', fontSize: 12.5, fontWeight: 850, marginTop: 4 }}>{label}</div>
+              <div key={label} style={{ textAlign: 'center', borderLeft: `1px solid #bbf7d0`, minHeight: 54, display: 'grid', alignContent: 'center' }}>
+                <div style={{ color: green, fontSize: 17.8, fontWeight: 950, lineHeight: 1.08, whiteSpace: 'nowrap' }}>{value}</div>
+                <div style={{ color: '#065f46', fontSize: 12.8, fontWeight: 850, marginTop: 5 }}>{label}</div>
               </div>
             ))}
           </div>
         </Panel>
-        <Panel pad={10} background={white} accent={green}>
+        <Panel pad={8} background={white} accent={green}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, height: '100%' }}>
             {resultImages.map(([label, src, caption]) => (
-              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 4 }}>
-                <div style={{ color: navy, fontSize: 12.1, fontWeight: 950, lineHeight: 1.15 }}>{label}</div>
+              <div key={src} style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr)', gap: 5 }}>
+                <div style={{ display: 'grid', alignContent: 'start', gap: 2, height: 52, fontSize: 13.2, lineHeight: 1.22 }}>
+                  <div style={{ color: navy, fontWeight: 950 }}>{label}</div>
+                  <div style={{ color: slate, fontWeight: 760 }}>{caption}</div>
+                </div>
                 <img
                   src={asset(src)}
                   alt={label}
@@ -1707,7 +1651,6 @@ function FeedShopP2ResultSlide() {
                     background: white,
                   }}
                 />
-                <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.25, fontWeight: 720 }}>{caption}</div>
               </div>
             ))}
           </div>
@@ -1723,24 +1666,30 @@ function ProjectReflectionSlide({
   reflection,
   evidence,
   highlights,
+  panelMinHeight,
 }: {
   eyebrow: string
   subtitle: string
   reflection: NonNullable<typeof feedshop.projectReflection>
   evidence: string
   highlights: ReflectionHighlight[]
+  panelMinHeight?: number
 }) {
   return (
     <Slide eyebrow={eyebrow} title="프로젝트 회고" subtitle={subtitle} dense>
       <div style={{ display: 'grid', alignContent: 'center', height: '100%' }}>
-        <Panel pad={22} background={white} borderColor="#bfdbfe" accent={blue}>
-          <div style={{ display: 'grid', gap: 14 }}>
+        <div style={{ display: 'grid', minHeight: panelMinHeight }}>
+          <Panel pad={22} background={white} borderColor="#bfdbfe" accent={blue}>
+          <div style={{ display: 'grid', alignContent: panelMinHeight ? 'space-between' : undefined, gap: 14, height: panelMinHeight ? '100%' : undefined }}>
             <div>
               <SectionLabel>Retrospective</SectionLabel>
               <div style={{ color: navy, fontSize: 24.2, lineHeight: 1.16, fontWeight: 950, marginBottom: 13 }}>{reflection.title}</div>
               <Rich html={reflection.body} size={17.2} lineHeight={1.56} />
               <div style={{ marginTop: 13, color: muted, fontSize: 12.2, fontWeight: 760 }}>
-                근거: {evidence}
+                근거:{' '}
+                <a href={reflection.sourceUrl} style={{ color: blue, fontWeight: 900, textDecoration: 'none' }}>
+                  {evidence}
+                </a>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
@@ -1782,7 +1731,8 @@ function ProjectReflectionSlide({
             ))}
             </div>
           </div>
-        </Panel>
+          </Panel>
+        </div>
       </div>
     </Slide>
   )
@@ -1794,30 +1744,31 @@ function FeedShopReflectionSlide() {
   return (
     <ProjectReflectionSlide
       eyebrow="FeedShop"
-      subtitle="두 핵심 흐름을 개선하며 느낀 점"
+      subtitle="두 핵심 흐름을 개선하며 얻은 판단 기준"
       reflection={reflection}
       evidence="FeedShop Wiki 성능 개선 작업 · 이벤트 조회 성능 및 피드 투표 동시성"
+      panelMinHeight={426}
       highlights={[
         {
           no: '01',
-          title: '진입 부하',
-          desc: '목록 조회 요청이 몰리는 구간',
+          title: '조회 원칙',
+          desc: '쿼리 구조 개선 후 캐시 적용',
           color: blue,
           background: '#eff6ff',
           borderColor: '#bfdbfe',
         },
         {
           no: '02',
-          title: '랭킹 피크',
-          desc: '상위 피드 투표 요청 집중',
+          title: '정합성 경계',
+          desc: 'DB 유니크 제약으로 중복 차단',
           color: amber,
           background: '#fff7ed',
           borderColor: '#fed7aa',
         },
         {
           no: '03',
-          title: '신뢰 기준',
-          desc: '정확한 투표 수와 보상 흐름',
+          title: '복구 기준',
+          desc: 'DB 이력을 원본으로 Redis 보정',
           color: red,
           background: '#fef2f2',
           borderColor: '#fecaca',
@@ -1836,6 +1787,7 @@ function M3ReflectionSlide() {
       subtitle="허브 관리자 권한 흐름을 끝까지 검증한 과정"
       reflection={reflection}
       evidence="3M Wiki · Auth/User/Gateway 통합 테스트 결과 보고서"
+      panelMinHeight={426}
       highlights={[
         {
           no: '01',
@@ -1868,60 +1820,60 @@ function M3ReflectionSlide() {
 
 function M3DeveloperPerspectiveSlide() {
   const focusItems = [
-    ['Auth/User 책임 분리', '인증 정책 변경이 사용자 도메인 배포와 장애로 번지지 않도록 변경 이유를 분리했습니다.'],
-    ['Gateway 권한 판단', '서비스별 인증 로직 분산을 줄이고 JWT 컨텍스트 기반 일반 권한 흐름을 한 지점에서 정리했습니다.'],
+    ['Auth·User 책임 분리', '인증 정책 변경이 User 모듈 배포까지 확산되는 높은 결합도를 낮추는 과제입니다.'],
+    ['Gateway 중심 인증 흐름', '매 요청 User 조회의 호출 증가와 장애 전파 위험을 줄이는 과제입니다.'],
   ]
   const riskItems = [
-    ['01', '책임 혼재', '인증 정책 변경이 User 도메인까지 확산', red, '#fef2f2', '#fecaca'],
-    ['02', '재조회 비용', '요청별 User 조회로 호출 증가·장애 전파', amber, '#fff7ed', '#fed7aa'],
-    ['03', '권한 일관성', 'Gateway·AOP·서비스 응답 기준 연결', blue, '#eff6ff', '#bfdbfe'],
+    ['01', '권한 판단 오류', '역할별 권한 차이로 물류 전체에 영향', red, '#fef2f2', '#fecaca'],
+    ['02', '높은 결합도', '인증 정책 변경이 User 배포까지 확산', amber, '#fff7ed', '#fed7aa'],
+    ['03', '장애 전파', '매 요청 User 조회로 호출 증가·장애 확산', blue, '#eff6ff', '#bfdbfe'],
   ] as const
 
   return (
-    <Slide eyebrow="3M" title="개발자 관점에서의 핵심 과제" subtitle="B2B 물류 인증 흐름을 안정화하기 위해 분리한 두 가지 설계 축" dense>
+    <Slide eyebrow="3M" title={m3.developerPerspectiveTitle ?? '서비스 흐름에서 발견한 핵심 문제'} subtitle="역할별 권한과 서비스 경계에서 발견한 결합도·장애 전파 위험" dense>
       <div style={{ display: 'grid', gridTemplateRows: '92mm 38mm', gap: 12, height: '100%', minHeight: 0, alignContent: 'start' }}>
         <Panel pad={17} background={white} accent={blue}>
-          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '0.68fr 1.32fr', gap: 18, alignItems: 'center' }}>
-            <div style={{ display: 'grid', gap: 8 }}>
+          <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '1.18fr 0.82fr', gap: 20, alignItems: 'center' }}>
+            <div>
+              <SectionLabel>Developer Perspective</SectionLabel>
+              <ParagraphRich html={m3.developerPerspective ?? ''} size={17.8} lineHeight={1.48} />
+            </div>
+            <div style={{ display: 'grid', gap: 10 }}>
               {riskItems.map(([no, title, desc, color, background, borderColor]) => (
                 <div
                   key={title}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '38px 1fr',
-                    gap: 9,
+                    gridTemplateColumns: '44px 1fr',
+                    gap: 11,
                     alignItems: 'center',
-                    padding: '9px 10px',
-                    borderRadius: 11,
+                    padding: '11px 13px',
+                    borderRadius: 12,
                     background,
                     border: `1px solid ${borderColor}`,
                   }}
                 >
                   <div
                     style={{
-                      width: 34,
-                      height: 34,
+                      width: 40,
+                      height: 40,
                       borderRadius: 10,
                       display: 'grid',
                       placeItems: 'center',
                       background: white,
                       color,
-                      fontSize: 14.5,
+                      fontSize: 16.2,
                       fontWeight: 950,
                     }}
                   >
                     {no}
                   </div>
                   <div>
-                    <div style={{ color, fontSize: 13.2, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
-                    <div style={{ marginTop: 3, color: slate, fontSize: 12.4, lineHeight: 1.35, fontWeight: 760 }}>{desc}</div>
+                    <div style={{ color, fontSize: 14.4, lineHeight: 1.15, fontWeight: 950 }}>{title}</div>
+                    <div style={{ marginTop: 4, color: slate, fontSize: 13, lineHeight: 1.34, fontWeight: 800 }}>{desc}</div>
                   </div>
                 </div>
               ))}
-            </div>
-            <div>
-              <SectionLabel>Developer Perspective</SectionLabel>
-              <ParagraphRich html={m3.developerPerspective ?? ''} size={18.6} lineHeight={1.5} />
             </div>
           </div>
         </Panel>
@@ -1957,115 +1909,195 @@ function M3DeveloperPerspectiveSlide() {
   )
 }
 
-function M3ProblemThinkingSlide() {
+function M3ProblemSlide() {
+  const causes = [
+    {
+      no: '01',
+      title: 'Auth·User 책임 혼재',
+      desc: '인증 정책과 사용자 정보 변경이 같은 모듈에 묶여 있었습니다.',
+      flow: '인증 정책 변경 → User 동반 배포',
+    },
+    {
+      no: '02',
+      title: '요청마다 User 재조회',
+      desc: '최신 권한은 반영할 수 있지만 모든 요청이 User 상태에 의존했습니다.',
+      flow: '요청 증가 → 서비스 호출 증가 → 장애 전파 위험',
+    },
+  ]
+
   return (
-    <Slide eyebrow="3M" title={m3.problemHeadline ?? '인증 구조 설계 및 서비스 경계 문제'} subtitle="Problem · Thinking" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 11, height: '100%' }}>
-        <Panel pad={13} background={white} accent={red}>
-          <SectionLabel color={red}>Problem</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 10, alignContent: 'start' }}>
-            <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.45, fontWeight: 800 }}>
-              Auth·User를 하나로 두는 안과 요청마다 User를 조회하는 안을 비교해,
-              책임 경계와 인증 컨텍스트 전달 방식을 결정했습니다.
+    <Slide eyebrow="3M" title="문제 해결 — 인증 구조와 서비스 경계" subtitle="Problem · 변경 영향과 장애 전파 위험" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '1fr 39mm', gap: 12, height: '100%', minHeight: 0 }}>
+        <Panel pad={18} background={white} accent={red}>
+          <SectionLabel color={red}>Problem Cause</SectionLabel>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 15, height: '100%' }}>
+            <div style={{ color: slate, fontSize: 17.2, lineHeight: 1.48, fontWeight: 780 }}>
+              역할별 권한이 다른 물류 흐름에서 인증 경계가 섞이거나 권한 조회가 한 서비스에 집중되면,
+              <strong style={{ color: red }}> 배포 영향과 장애 전파 범위가 함께 커질 수 있었습니다.</strong>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
-              {[
-                ['책임 혼재', '인증 정책 변경 시 User 도메인까지 배포 영향 확산'],
-                ['요청별 재조회 대안', '최신 role은 반영하지만 호출 증가·User 장애 전파 위험'],
-                ['JWT 컨텍스트 대안', '일반 권한 판단을 Gateway로 집중해 인증 경로 단순화'],
-              ].map(([title, desc]) => (
-                <div key={title} style={{ border: `1px solid #fecaca`, borderRadius: 12, background: '#fff7f7', padding: '10px 13px', display: 'grid', alignContent: 'center', gap: 7, minHeight: 64 }}>
-                  <div style={{ color: red, fontSize: 13, fontWeight: 950 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 13.3, lineHeight: 1.4, fontWeight: 780 }}>{desc}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Panel>
-        <Panel pad={14} background={white} accent={amber}>
-          <SectionLabel color={amber}>Thinking</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 9, height: '100%', alignContent: 'start' }}>
-            <div style={{ color: slate, fontSize: 14.4, fontWeight: 780, lineHeight: 1.38 }}>
-              문제를 서비스 경계와 인증 컨텍스트 전달 두 레이어로 분리해 비교했습니다.
-            </div>
-            <div style={{ display: 'grid', gap: 9 }}>
-              {[
-                {
-                  title: '서비스 경계',
-                  rows: [
-                    ['책임 혼재', '구현·공유 간단', '정책 변경이 User 배포까지 확산', '제외'],
-                    ['Auth/User 분리', '변경·배포 경계 분리', '서비스 간 계약 관리 필요', '선택'],
-                  ],
-                },
-                {
-                  title: '인증 컨텍스트 전달',
-                  rows: [
-                    ['요청별 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
-                    ['Gateway 로컬 캐시', 'User 호출 감소', '캐시 불일치·무효화', '제외'],
-                    ['JWT userId·role', '일반 경로에서 Gateway 권한 판단', '클레임·헤더 계약 관리', '선택'],
-                  ],
-                },
-              ].map((group) => (
-                <div key={group.title} style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}` }}>
-                  <div style={{ background: '#f1f5f9', color: navy, fontSize: 14.4, fontWeight: 950, padding: '9px 11px' }}>{group.title}</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.5fr 0.7fr', background: '#f8fafc', color: slate, fontSize: 12.4, fontWeight: 950 }}>
-                    {['검토안', '장점', '한계', '판단'].map((label) => <div key={label} style={{ padding: '7px 9px' }}>{label}</div>)}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              {causes.map((item) => (
+                <div key={item.no} style={{ border: '1px solid #fecaca', borderRadius: 12, background: '#fff7f7', padding: '17px 18px', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, display: 'grid', placeItems: 'center', color: red, background: white, fontSize: 16.4, fontWeight: 950 }}>{item.no}</div>
+                    <div style={{ color: red, fontSize: 18.2, fontWeight: 950 }}>{item.title}</div>
                   </div>
-                  {group.rows.map(([option, strength, limit, decision]) => {
-                    const selected = decision === '선택'
-                    return (
-                      <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.24fr 1.1fr 1.5fr 0.7fr', borderTop: `1px solid ${selected ? '#bfdbfe' : line}`, background: selected ? '#eff6ff' : white, color: navy, fontSize: 12.6, lineHeight: 1.35, fontWeight: 760 }}>
-                        <div style={{ padding: '8px 9px', fontWeight: 920, color: selected ? blue : navy }}>{option}</div>
-                        <div style={{ padding: '8px 9px' }}>{strength}</div>
-                        <div style={{ padding: '8px 9px' }}>{limit}</div>
-                        <div style={{ padding: '8px 9px', fontWeight: 950, color: selected ? blue : red }}>{decision}</div>
-                      </div>
-                    )
-                  })}
+                  <div style={{ color: slate, fontSize: 15.1, lineHeight: 1.45, fontWeight: 780 }}>{item.desc}</div>
+                  <div style={{ alignSelf: 'end', border: '1px solid #fecaca', borderRadius: 10, background: white, padding: '12px 13px', color: navy, fontSize: 14.1, lineHeight: 1.35, fontWeight: 900 }}>
+                    {item.flow}
+                  </div>
                 </div>
               ))}
             </div>
-            <div style={{ border: `1px solid #fdba74`, background: '#fffbeb', borderRadius: 11, padding: '12px 14px', color: '#9a3412', fontSize: 14.2, lineHeight: 1.38, fontWeight: 900 }}>
-              Auth와 User는 변경되는 이유(인증 정책 vs 사용자 정보)가 서로 다르므로 분리했고,
-              <br />
-              일반 권한 판단은 JWT 컨텍스트로 Gateway에서 처리하는 안을 적용했습니다.
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+              {[
+                ['배포 영향', '인증 변경이 User 배포까지 확산'],
+                ['호출 의존', '일반 요청도 User 상태에 의존'],
+                ['권한 위험', '판단 오류가 주문·배송 흐름에 영향'],
+              ].map(([title, desc]) => (
+                <div key={title} style={{ border: `1px solid ${line}`, borderRadius: 11, background: soft, padding: '12px 13px' }}>
+                  <div style={{ color: red, fontSize: 13.3, fontWeight: 950, marginBottom: 5 }}>{title}</div>
+                  <div style={{ color: slate, fontSize: 13.5, lineHeight: 1.35, fontWeight: 800 }}>{desc}</div>
+                </div>
+              ))}
             </div>
           </div>
         </Panel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {[
+            ['01', '서비스 경계', 'Auth·User의 변경 이유와 배포 범위를 분리', blue, '#eff6ff', '#bfdbfe'],
+            ['02', '인증 컨텍스트', 'Gateway에서 일반 권한 판단 후 필요한 정보만 전달', violet, '#f5f3ff', '#ddd6fe'],
+          ].map(([no, title, desc, color, background, borderColor]) => (
+            <Panel key={title} pad={15} background={background} borderColor={borderColor} accent={color}>
+              <div style={{ display: 'grid', gridTemplateColumns: '46px 1fr', gap: 13, alignItems: 'center', height: '100%' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 11, background: white, color, display: 'grid', placeItems: 'center', fontSize: 18, fontWeight: 950 }}>{no}</div>
+                <div>
+                  <div style={{ color: navy, fontSize: 18.2, lineHeight: 1.18, fontWeight: 950 }}>{title}</div>
+                  <div style={{ marginTop: 5, color: slate, fontSize: 13.7, lineHeight: 1.38, fontWeight: 780 }}>{desc}</div>
+                </div>
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  )
+}
+
+function M3ThinkingSlide() {
+  const groups = [
+    {
+      label: 'Thinking 1 · 서비스 경계',
+      intro: '인증 정책과 사용자 정보의 변경 이유를 기준으로 서비스 경계를 비교했습니다.',
+      rows: [
+        ['책임 혼재', '구현·공유가 단순함', '정책 변경이 User 배포까지 확산', '제외'],
+        ['Auth/User 분리', '변경·배포 경계 분리', '서비스 간 계약 관리 필요', '최종 선택'],
+      ],
+      conclusion: 'Auth는 로그인·토큰 발급, User는 사용자 정보·권한 관리로 변경 이유를 분리했습니다.',
+    },
+    {
+      label: 'Thinking 2 · 인증 컨텍스트 전달',
+      intro: '최신 권한 반영과 호출·장애 전파 범위를 함께 비교했습니다.',
+      rows: [
+        ['요청별 User 재조회', '최신 role 즉시 반영', '호출 증가·User 장애 전파', '제외'],
+        ['Gateway 로컬 캐시', 'User 호출 감소', '캐시 불일치·무효화 관리', '제외'],
+        ['JWT userId·role', 'Gateway에서 일반 권한 판단', '클레임·헤더 계약 관리 필요', '최종 선택'],
+      ],
+      conclusion: '일반 권한은 Gateway의 JWT 컨텍스트로 판단하고, 상세 정보가 필요한 경우에만 User를 조회했습니다.',
+    },
+  ]
+
+  return (
+    <Slide eyebrow="3M" title="문제 해결 — Thinking" subtitle="서비스 경계와 인증 컨텍스트 전달 방식을 분리해 판단" dense>
+      <div style={{ display: 'grid', gridTemplateRows: '0.9fr 1.1fr', gap: 12, height: '100%', minHeight: 0 }}>
+        {groups.map((group) => (
+          <Panel key={group.label} pad={14} background={white} accent={amber}>
+            <SectionLabel color={amber}>{group.label}</SectionLabel>
+            <div style={{ color: slate, fontSize: 14.6, lineHeight: 1.38, fontWeight: 800, marginBottom: 9 }}>{group.intro}</div>
+            <div style={{ overflow: 'hidden', borderRadius: 11, border: `1px solid ${line}` }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.15fr 1.5fr 0.72fr', background: '#f1f5f9', color: slate, fontSize: 12.8, fontWeight: 950 }}>
+                {['검토안', '장점', '검토 사항', '판단'].map((label) => <div key={label} style={{ padding: '8px 10px' }}>{label}</div>)}
+              </div>
+              {group.rows.map(([option, strength, consideration, decision]) => {
+                const selected = decision === '최종 선택'
+                return (
+                  <div key={option} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.15fr 1.5fr 0.72fr', borderTop: `1px solid ${selected ? '#bfdbfe' : line}`, background: selected ? '#eff6ff' : white, color: navy, fontSize: 13.2, lineHeight: 1.35, fontWeight: 780 }}>
+                    <div style={{ padding: '9px 10px', fontWeight: 930, color: selected ? blue : navy }}>{option}</div>
+                    <div style={{ padding: '9px 10px' }}>{strength}</div>
+                    <div style={{ padding: '9px 10px' }}>{consideration}</div>
+                    <div style={{ padding: '9px 10px', fontWeight: 950, color: selected ? blue : red }}>{decision}</div>
+                  </div>
+                )
+              })}
+            </div>
+            <div style={{ marginTop: 9, border: '1px solid #fed7aa', borderRadius: 10, background: '#fff7ed', padding: '10px 12px', color: '#9a3412', fontSize: 13.5, lineHeight: 1.38, fontWeight: 880 }}>
+              {group.conclusion}
+            </div>
+          </Panel>
+        ))}
       </div>
     </Slide>
   )
 }
 
 function M3SolutionSlide() {
+  const boundaryPrinciples = [
+    ['책임 분리', 'Auth는 인증, User는 사용자 정보·권한 관리'],
+    ['정보 최소화', 'AuthUser에는 JWT 발급에 필요한 정보만 보관'],
+    ['단방향 통신', 'Auth → User Feign DTO 계약으로 역방향 참조 차단'],
+  ]
+  const authFlows = [
+    {
+      label: '개선 전',
+      title: '요청마다 User 조회',
+      tone: red,
+      border: '#fecaca',
+      background: '#fff7f7',
+      steps: [
+        ['Client', 'JWT 포함 요청'],
+        ['Service', '사용자 정보 요청'],
+        ['User', 'role·정보 반환'],
+        ['Service', '권한 판단'],
+      ],
+      note: '매 요청마다 서비스 간 호출이 발생해 호출량이 늘고, User 장애가 권한 흐름으로 전파될 수 있었습니다.',
+    },
+    {
+      label: '개선 후',
+      title: 'Gateway 중심 인증 흐름',
+      tone: blue,
+      border: '#bfdbfe',
+      background: '#eff6ff',
+      steps: [
+        ['Client', 'JWT 포함 요청'],
+        ['Gateway', 'JWT 검증'],
+        ['X-User-*', 'userId·role 전달'],
+        ['Service', 'AOP 권한 처리'],
+      ],
+      note: '일반 요청은 전달된 컨텍스트로 처리하고, 상세 사용자 정보가 필요할 때만 User 서비스를 호출하도록 분리했습니다.',
+    },
+  ]
+  const authPrinciples = [
+    ['검증 책임', 'Gateway 인증 필터에서 JWT 검증'],
+    ['컨텍스트 계약', 'X-User-* 헤더로 userId·role 전달'],
+    ['권한·예외 처리', 'AOP로 역할을 확인하고 상세 정보만 User 조회'],
+  ]
+
   return (
-    <Slide eyebrow="3M" title="Solution" subtitle="서비스 경계 분리와 인증 흐름 단순화" dense>
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gap: 11, height: '100%', minHeight: 0 }}>
+    <>
+    <Slide eyebrow="3M" title="문제 해결 — Solution 1단계" subtitle="Auth/User 서비스 경계 분리" dense>
+      <div style={{ height: '100%', minHeight: 0, display: 'grid' }}>
         <Panel pad={13} background={white} accent={blue}>
           <SectionLabel>Solution 1</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', gap: 10, height: '100%', minHeight: 0 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '0.7fr 1fr', gap: 12, alignItems: 'end' }}>
-              <div>
-                <div style={{ color: navy, fontSize: 19, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
-                  1단계 — Auth/User 서비스 경계 분리
-                </div>
-                <div style={{ color: slate, fontSize: 13.8, lineHeight: 1.4, fontWeight: 780 }}>
-                  책임이 섞인 구조와 분리 후 구조를 함께 비교해, 인증 변경 영향 범위를 줄이는 방향으로 정리했습니다.
-                </div>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 12, height: 'calc(100% - 26px)', minHeight: 0 }}>
+            <div>
+              <div style={{ color: navy, fontSize: 22, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
+                1단계 — Auth/User 서비스 경계 분리
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                {[
-                  ['Auth', '로그인·회원가입·JWT 발급'],
-                  ['User', '사용자 정보·권한 관리'],
-                ].map(([label, text]) => (
-                  <div key={label} style={{ border: '1px solid #bfdbfe', background: '#eff6ff', borderRadius: 11, padding: '9px 11px' }}>
-                    <div style={{ color: blue, fontSize: 12.6, fontWeight: 950, marginBottom: 4 }}>{label}</div>
-                    <div style={{ color: navy, fontSize: 12.7, lineHeight: 1.32, fontWeight: 800 }}>{text}</div>
-                  </div>
-                ))}
+              <div style={{ color: slate, fontSize: 15.8, lineHeight: 1.42, fontWeight: 780, wordBreak: 'keep-all' }}>
+                인증 정책과 사용자 정보가 같은 책임에 섞인 구조를 분리해, 서로 다른 변경 이유가 배포와 장애 영향으로 이어지는 범위를 줄였습니다.
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '0.82fr 1.18fr', gap: 10, minHeight: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: 12, minHeight: 0 }}>
               {[
                 {
                   label: '개선 전',
@@ -2086,134 +2118,143 @@ function M3SolutionSlide() {
                   border: '#bfdbfe',
                 },
               ].map((item) => (
-                <div key={item.label} style={{ minHeight: 0, border: `1px solid ${item.border}`, borderRadius: 12, background: item.bg, padding: '9px 10px 8px', display: 'grid', gridTemplateRows: 'auto 1fr', gap: 7 }}>
+                <div key={item.label} style={{ minHeight: 0, overflow: 'hidden', border: `1px solid ${item.border}`, borderRadius: 12, background: item.bg, padding: '10px 11px', display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10 }}>
-                    <div style={{ color: item.tone, fontSize: 13.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.label}</div>
-                    <div style={{ color: navy, fontSize: 13.4, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</div>
+                    <div style={{ color: item.tone, fontSize: 13.8, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.label}</div>
+                    <div style={{ color: navy, fontSize: 14.2, fontWeight: 950, lineHeight: 1.15 }}>{item.title}</div>
                   </div>
-                  <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 9, background: white, padding: 5, display: 'grid', placeItems: 'center' }}>
+                  <div style={{ minHeight: 0, border: `1px solid ${line}`, borderRadius: 9, background: white, padding: 6, display: 'grid', placeItems: 'center' }}>
                     <img
                       src={asset(item.src)}
                       alt={item.title}
-                      style={{ width: '100%', height: '100%', maxHeight: '74mm', objectFit: 'contain', display: 'block' }}
+                      style={{ width: '100%', height: '100%', maxHeight: '118mm', objectFit: 'contain', display: 'block' }}
                     />
                   </div>
+                  <div style={{ color: slate, fontSize: 12.6, lineHeight: 1.32, fontWeight: 760, wordBreak: 'keep-all' }}>{item.caption}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
+              {boundaryPrinciples.map(([label, text]) => (
+                <div key={label} style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#f8fbff', padding: '10px 12px' }}>
+                  <div style={{ color: blue, fontSize: 12.7, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 13.2, lineHeight: 1.34, fontWeight: 820, wordBreak: 'keep-all' }}>{text}</div>
                 </div>
               ))}
             </div>
           </div>
         </Panel>
-        <Panel pad={12} background={white} accent={blue}>
+      </div>
+    </Slide>
+    <Slide eyebrow="3M" title="문제 해결 — Solution 2단계" subtitle="Gateway JWT 검증 → 사용자 컨텍스트 전달 → 서비스 권한 처리" dense>
+      <div style={{ height: '100%', minHeight: 0, display: 'grid' }}>
+        <Panel pad={13} background={white} accent={blue}>
           <SectionLabel>Solution 2</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: '0.78fr 1.22fr', gap: 12, alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 12, height: 'calc(100% - 26px)', minHeight: 0 }}>
             <div>
-              <div style={{ color: navy, fontSize: 17, fontWeight: 950, lineHeight: 1.15, marginBottom: 6 }}>
+              <div style={{ color: navy, fontSize: 22, fontWeight: 950, lineHeight: 1.15, marginBottom: 7 }}>
                 2단계 — 인증 흐름 단순화
               </div>
-              <div style={{ color: slate, fontSize: 13.2, lineHeight: 1.38, fontWeight: 780 }}>
-                Gateway가 JWT를 검증하고 사용자 컨텍스트를 <strong>X-User-*</strong> 헤더로 전달했습니다.
+              <div style={{ color: slate, fontSize: 15.8, lineHeight: 1.42, fontWeight: 780, wordBreak: 'keep-all' }}>
+                요청마다 User를 조회하던 흐름을 Gateway의 JWT 검증과 <strong>X-User-*</strong> 컨텍스트 전달로 바꿔, 일반 권한 처리와 상세 정보 조회를 분리했습니다.
               </div>
             </div>
-            <div style={{ minHeight: 0, display: 'grid', gridTemplateColumns: '1.05fr 0.82fr', gap: 10, alignItems: 'stretch' }}>
-              <div style={{ border: `1px solid #bfdbfe`, borderRadius: 12, background: '#f8fbff', padding: '10px 12px', display: 'grid', gridTemplateRows: 'auto auto', gap: 8 }}>
-                <div style={{ color: blue, fontSize: 12.8, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                  Gateway 중심 인증 흐름
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 7 }}>
-                  {[
-                    ['Client', 'JWT 포함 요청'],
-                    ['Gateway', 'JWT 검증'],
-                    ['Service', 'X-User-* 헤더 기반 처리'],
-                  ].map(([title, desc], idx) => (
-                    <React.Fragment key={title}>
-                      <div style={{ border: `1px solid ${idx === 1 ? blue : line}`, background: idx === 1 ? '#eff6ff' : white, borderRadius: 12, padding: '10px 8px', minHeight: 59, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
-                        <div style={{ color: idx === 1 ? blue : navy, fontSize: 13.7, fontWeight: 950, lineHeight: 1.1, marginBottom: 5 }}>{title}</div>
-                        <div style={{ color: slate, fontSize: 12.2, lineHeight: 1.24, fontWeight: 760, wordBreak: 'keep-all' }}>{desc}</div>
-                      </div>
-                      {idx < 2 ? (
-                        <div style={{ color: blue, fontSize: 20, fontWeight: 950 }}>→</div>
-                      ) : null}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: 'grid', gap: 7 }}>
-                {[
-                  ['권한 판단', 'Gateway와 AOP에서 일반 권한을 우선 처리'],
-                  ['호출 최소화', '상세 정보가 필요할 때만 User 서비스 호출'],
-                ].map(([label, text], idx) => (
-                  <div key={label} style={{ border: `1px solid ${idx === 0 ? '#ddd6fe' : '#bbf7d0'}`, background: idx === 0 ? '#f5f3ff' : '#ecfdf5', borderRadius: 11, padding: '9px 10px' }}>
-                    <div style={{ color: idx === 0 ? violet : green, fontSize: 12.2, fontWeight: 950, marginBottom: 3 }}>{label}</div>
-                    <div style={{ color: navy, fontSize: 12.5, lineHeight: 1.3, fontWeight: 800, wordBreak: 'keep-all' }}>{text}</div>
+            <div style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+              {authFlows.map((flow) => (
+                <div key={flow.label} style={{ minHeight: 0, border: `1px solid ${flow.border}`, borderRadius: 12, background: flow.background, padding: '11px 13px', display: 'grid', gridTemplateRows: 'auto minmax(0, 1fr) auto', gap: 9 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10 }}>
+                    <div style={{ color: flow.tone, fontSize: 13.8, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{flow.label}</div>
+                    <div style={{ color: navy, fontSize: 14.2, fontWeight: 950 }}>{flow.title}</div>
                   </div>
-                ))}
-              </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr auto 1fr', alignItems: 'center', gap: 8, minHeight: 0 }}>
+                    {flow.steps.map(([title, desc], idx) => (
+                      <React.Fragment key={`${flow.label}-${title}`}>
+                        <div style={{ height: '100%', minHeight: 76, border: `1px solid ${idx === 1 && flow.label === '개선 후' ? blue : line}`, background: idx === 1 && flow.label === '개선 후' ? '#dbeafe' : white, borderRadius: 11, padding: '10px 9px', display: 'grid', alignContent: 'center', textAlign: 'center' }}>
+                          <div style={{ color: idx === 1 && flow.label === '개선 후' ? blue : navy, fontSize: 15.2, fontWeight: 950, lineHeight: 1.12, marginBottom: 6 }}>{title}</div>
+                          <div style={{ color: slate, fontSize: 12.9, lineHeight: 1.3, fontWeight: 780, wordBreak: 'keep-all' }}>{desc}</div>
+                        </div>
+                        {idx < flow.steps.length - 1 ? (
+                          <div style={{ color: flow.tone, fontSize: 23, fontWeight: 950 }}>→</div>
+                        ) : null}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <div style={{ color: flow.label === '개선 전' ? '#991b1b' : '#1e3a8a', fontSize: 12.8, lineHeight: 1.34, fontWeight: 800, wordBreak: 'keep-all' }}>{flow.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 9 }}>
+              {authPrinciples.map(([label, text]) => (
+                <div key={label} style={{ borderRadius: 10, border: '1px solid #bfdbfe', background: '#f8fbff', padding: '10px 12px' }}>
+                  <div style={{ color: blue, fontSize: 12.7, fontWeight: 950, marginBottom: 4 }}>{label}</div>
+                  <div style={{ color: navy, fontSize: 13.2, lineHeight: 1.34, fontWeight: 820, wordBreak: 'keep-all' }}>{text}</div>
+                </div>
+              ))}
             </div>
           </div>
         </Panel>
       </div>
     </Slide>
+    </>
   )
 }
 function M3ResultSlide() {
+  const verificationRows = [
+    ['01', '서비스 경계', 'UserService → Auth CBO 0', '소스 코드 import 정적 분석', '인증 정책 변경 시 User 배포 영향 제거', green],
+    ['02', '의존성 방향', 'Auth → User 단방향 · 순환 의존 없음', 'Feign DTO 참조 구조 확인', '역방향 참조로 변경 영향이 되돌아오는 구조 방지', blue],
+    ['03', '권한 흐름', 'MASTER · HUB_MANAGER · 미인증 응답', 'Gateway · AOP 통합 테스트', '서비스별 권한 판단 일관성 확인', violet],
+  ]
+
   return (
-    <Slide eyebrow="3M" title="Result" subtitle="결합도 제거와 인증 흐름 영향 범위 축소" dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr auto', gap: 11, height: '100%' }}>
+    <Slide eyebrow="3M" title="문제 해결 — 검증 결과" subtitle="정적 분석 · 의존성 확인 · 권한 통합 테스트" dense>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%', minHeight: 0 }}>
         <Panel pad={14} background="#ecfdf5" borderColor="#a7f3d0" accent={green}>
-          <SectionLabel color={green}>Result Summary</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.35fr repeat(3, 0.72fr)', gap: 10, alignItems: 'center' }}>
+            <div>
+              <SectionLabel color={green}>Result Summary</SectionLabel>
+              <div style={{ color: navy, fontSize: 15.4, lineHeight: 1.42, fontWeight: 850 }}>
+                책임 경계는 코드 구조로, 권한 흐름은 통합 테스트로 나누어 검증했습니다.
+              </div>
+            </div>
             {[
-              ['결합도(CBO) 0건', 'UserService → Auth', '인증 정책 변경 시 User 모듈 배포 영향 제거', green],
-              ['단방향', 'Auth → User', 'Feign 호출용 DTO 중심 참조 · 순환 의존 없음', blue],
-              ['Gateway', '권한 판단', 'JWT payload 기반 일반 인증 경로 처리', violet],
-            ].map(([value, label, caption, color]) => (
-              <div key={label} style={{ border: `1px solid ${color}33`, borderRadius: 13, background: white, padding: '16px 15px', minHeight: 98, display: 'grid', alignContent: 'center', textAlign: 'center' }}>
-                <div style={{ color, fontSize: 21, fontWeight: 950, lineHeight: 1.05, marginBottom: 6 }}>{value}</div>
-                <div style={{ color: navy, fontSize: 13.6, fontWeight: 900, marginBottom: 5 }}>{label}</div>
-                <div style={{ color: slate, fontSize: 12.3, lineHeight: 1.28, fontWeight: 720 }}>{caption}</div>
+              ['CBO 0', 'UserService → Auth', green],
+              ['순환 의존 없음', 'Auth → User 단방향', blue],
+              ['일관성 검증', '권한 응답 통합 테스트', violet],
+            ].map(([value, label, color]) => (
+              <div key={label} style={{ borderLeft: '1px solid #bbf7d0', minHeight: 68, display: 'grid', alignContent: 'center', textAlign: 'center', padding: '0 8px' }}>
+                <div style={{ color, fontSize: 20.5, fontWeight: 950, lineHeight: 1.08 }}>{value}</div>
+                <div style={{ marginTop: 6, color: slate, fontSize: 12.6, lineHeight: 1.3, fontWeight: 800 }}>{label}</div>
               </div>
             ))}
           </div>
         </Panel>
-        <Panel pad={13} background="#f8fbff" borderColor="#bfdbfe" accent={blue}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr auto 1fr', alignItems: 'center', gap: 10 }}>
-            {[
-              ['정책 변경', 'Auth·Gateway 중심으로 반영', blue],
-              ['변경 영향 분리', 'User 모듈 배포 영향 제거', green],
-              ['인증 처리', 'Gateway에서 권한 판단', violet],
-            ].map(([title, desc, color], idx) => (
-              <React.Fragment key={title}>
-                <div style={{ border: `1px solid ${color}33`, background: white, borderRadius: 12, padding: '12px 14px', textAlign: 'center' }}>
-                  <div style={{ color, fontSize: 14.8, fontWeight: 950, marginBottom: 4 }}>{title}</div>
-                  <div style={{ color: slate, fontSize: 13.1, lineHeight: 1.3, fontWeight: 760 }}>{desc}</div>
-                </div>
-                {idx < 2 ? <div style={{ color: blue, fontSize: 21, fontWeight: 950 }}>→</div> : null}
-              </React.Fragment>
+        <Panel pad={16} background={white} accent={blue}>
+          <SectionLabel>검증 기준과 결과</SectionLabel>
+          <div style={{ overflow: 'hidden', border: `1px solid ${line}`, borderRadius: 12 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '48px 0.82fr 1.2fr 1.05fr 1.45fr', background: '#f1f5f9', color: slate, fontSize: 12.6, fontWeight: 950 }}>
+              {['', '검증 대상', '확인 결과', '검증 방법', '효과'].map((label, idx) => (
+                <div key={`${label}-${idx}`} style={{ padding: '9px 10px' }}>{label}</div>
+              ))}
+            </div>
+            {verificationRows.map(([no, target, result, method, effect, color]) => (
+              <div key={no} style={{ display: 'grid', gridTemplateColumns: '48px 0.82fr 1.2fr 1.05fr 1.45fr', alignItems: 'center', borderTop: `1px solid ${line}`, minHeight: 78, color: navy, fontSize: 13.4, lineHeight: 1.38, fontWeight: 780 }}>
+                <div style={{ width: 31, height: 31, borderRadius: 9, display: 'grid', placeItems: 'center', justifySelf: 'center', color: white, background: color, fontSize: 13.2, fontWeight: 950 }}>{no}</div>
+                <div style={{ padding: '12px 10px', color, fontWeight: 950 }}>{target}</div>
+                <div style={{ padding: '12px 10px', fontWeight: 900 }}>{result}</div>
+                <div style={{ padding: '12px 10px', color: slate }}>{method}</div>
+                <div style={{ padding: '12px 10px' }}>{effect}</div>
+              </div>
             ))}
           </div>
         </Panel>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, minHeight: 0 }}>
-          {[
-            ['배포 영향 제거', '인증 정책 변경 시 User 모듈 배포 영향 제거', 'Auth·Gateway 중심으로 인증 정책 변경 범위를 제한했습니다.', green],
-            ['순환 의존 없음', 'Feign DTO 중심의 단방향 참조로 제한', 'Auth → User 흐름은 유지하되 역방향 참조가 생기지 않도록 경계를 고정했습니다.', blue],
-            ['변경 범위 수렴', '한 도메인 수정이 다른 도메인 배포로 이어지지 않는 구조 확보', '인증 정책과 사용자 정책의 변경 이유를 각 모듈 안으로 수렴시켰습니다.', violet],
-          ].map(([title, headline, body, color], idx) => (
-            <Panel key={title} pad={15} background={white} accent={color}>
-              <div style={{ height: '100%', display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 11 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                  <div style={{ width: 31, height: 31, borderRadius: 9, display: 'grid', placeItems: 'center', color: white, background: color, fontSize: 13.2, fontWeight: 950 }}>
-                    {idx + 1}
-                  </div>
-                  <div style={{ color, fontSize: 13.2, fontWeight: 950, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{title}</div>
-                </div>
-                <div style={{ color: navy, fontSize: 18.2, lineHeight: 1.24, fontWeight: 950 }}>{headline}</div>
-                <div style={{ border: `1px solid ${color}24`, background: `${color}0d`, borderRadius: 12, padding: '13px 13px', color: slate, fontSize: 13.7, lineHeight: 1.43, fontWeight: 760, alignSelf: 'stretch', display: 'grid', alignContent: 'center' }}>{body}</div>
-              </div>
-            </Panel>
-          ))}
-        </div>
-        <div style={{ border: `1px solid ${line}`, background: soft, borderRadius: 12, padding: '12px 14px', color: slate, fontSize: 12.7, lineHeight: 1.4, fontWeight: 720 }}>
-          ※ CBO: 소스 코드 import 정적 분석으로 측정 — 실제 코드에서 참조된 외부 클래스 수 기준
+        <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 0.65fr', gap: 12 }}>
+          <div style={{ border: '1px solid #bbf7d0', background: '#ecfdf5', borderRadius: 12, padding: '13px 15px', color: '#065f46', fontSize: 13.8, lineHeight: 1.42, fontWeight: 850 }}>
+            인증 변경이 User 배포로 확산될 위험과 서비스마다 권한 판단이 달라질 위험을 줄였습니다.
+          </div>
+          <div style={{ border: `1px solid ${line}`, background: soft, borderRadius: 12, padding: '10px 13px', color: slate, fontSize: 11.9, lineHeight: 1.35, fontWeight: 720 }}>
+            <a href={m3.projectReflection?.sourceUrl} style={{ color: blue, fontWeight: 900, textDecoration: 'none' }}>통합 테스트 결과 보고서</a><br />
+            CBO는 소스 코드 import 정적 분석 기준입니다.
+          </div>
         </div>
       </div>
     </Slide>
@@ -2325,7 +2366,7 @@ function ClosingSlide() {
 const BANKCOW_DIRECTION = {
   brand: 'bankcow',
   label: '한우 조각투자 플랫폼',
-  summary: '데이터 하나하나가 고객의 자산과 연결되는 뱅카우에서, 백엔드는 복잡한 도메인을 정확한 신뢰 흐름으로 바꾸는 일이라고 이해했습니다.',
+  summary: '뱅카우는 투자자의 자산 흐름과 한우의 생애주기가 함께 움직이는 서비스라고 이해했습니다. 투자 신청부터 정산까지 상태와 데이터가 같은 기준으로 이어져야 사용자의 신뢰를 지킬 수 있습니다.',
   noteTitle: '인상 깊었던 글',
   noteBody: '일을 벌이는 사람은 많아도, 끝까지 마무리하는 사람은 많지 않다는 말이 기억에 남습니다.',
   flow: ['투자 신청', '사육 상태', '출하/판정/경매', '정산 반영'],
@@ -2345,15 +2386,15 @@ const BANKCOW_NOTES = [
     bullets: ['상태 전이 기준 선행', '정산 데이터 기준 확인'],
   },
   {
-    title: '태도',
-    body: BANKCOW_DIRECTION.noteBody,
-    bullets: ['시작보다 마무리 책임', '끝까지 검증하는 습관'],
+    title: '검증 경험',
+    body: 'FeedShop에서 조회 지연과 투표 동시성 문제를 지표와 테스트로 검증했습니다.',
+    bullets: ['응답 지연 검증', '동시 요청 정합성'],
   },
 ] as const
 
 function BankcowDirectionSlide() {
   return (
-    <Slide eyebrow="Direction" title="Bankcow에서 바라본 백엔드 방향" subtitle="금융·농가·투자자·실물자산이 이어지는 도메인에서 백엔드는 신뢰 가능한 흐름을 만드는 역할이라고 정리했습니다." dense>
+    <Slide eyebrow="Direction" title="자산과 상태의 흐름을 신뢰로 연결하는 백엔드" subtitle="금융·농가·투자자·실물자산이 이어지는 도메인에서 백엔드는 신뢰 가능한 흐름을 만드는 역할이라고 정리했습니다." dense>
       <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr auto', gap: 12, height: '100%' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: 14 }}>
           <Panel pad={16} background={white} accent={blue}>
@@ -2436,11 +2477,11 @@ function ResourcesContactSlide() {
               </div>
               <div>
                 <SectionLabel color={green}>{RESOURCES_SECTION.title}</SectionLabel>
-                <div style={{ color: slate, fontSize: 13.8, fontWeight: 760 }}>프로젝트 기획, 협업 가이드, 실습 기록을 확인할 수 있는 자료입니다.</div>
+                <div style={{ color: slate, fontSize: 14.6, fontWeight: 760 }}>프로젝트 기획, 협업 가이드, 실습 기록을 확인할 수 있는 자료입니다.</div>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
-              {RESOURCE_LINKS.map((link, idx) => (
+              {pdfResourceLinks.map((link, idx) => (
                 <a
                   key={link.label}
                   href={link.url}
@@ -2517,6 +2558,10 @@ export default function PdfPortfolio() {
         .pdf-rich p { margin: 0; }
         .pdf-rich ul { margin: 0; padding-left: 16px; }
         .pdf-rich li { margin-bottom: 2px; }
+        .pdf-rich .reflection-list { padding-left: 21px; }
+        .pdf-rich .reflection-list li { margin-bottom: 7px; }
+        .pdf-rich .reflection-list li:last-child { margin-bottom: 0; }
+        .pdf-rich .reflection-list li::marker { color: #2563eb; }
         .pdf-rich .font-bold,
         .pdf-rich .font-semibold,
         .pdf-rich strong,
@@ -2533,6 +2578,14 @@ export default function PdfPortfolio() {
         .pdf-rich .text-emerald-400 { color: ${green} !important; }
         .pdf-rich .text-amber-600,
         .pdf-rich .text-amber-300 { color: ${amber} !important; }
+        .pdf-rich .text-slate-900,
+        .pdf-rich [class~="dark:text-slate-100"] { color: ${navy} !important; }
+        .pdf-rich .text-slate-600,
+        .pdf-rich .text-slate-700,
+        .pdf-rich .text-slate-800,
+        .pdf-rich [class~="dark:text-slate-200"],
+        .pdf-rich [class~="dark:text-slate-300"],
+        .pdf-rich [class~="dark:text-slate-400"] { color: ${slate} !important; }
         .pdf-rich img {
           display: block;
           width: 100%;
@@ -2565,6 +2618,44 @@ export default function PdfPortfolio() {
         .pdf-table-compact th,
         .pdf-table-compact td {
           padding: 3.5px 5.5px !important;
+        }
+        .pdf-rich.pdf-table-fit > div {
+          background: #ffffff !important;
+          border-color: #cbd5e1 !important;
+          box-shadow: none !important;
+        }
+        .pdf-table-fit table {
+          background: #ffffff !important;
+          color: #334155 !important;
+          font-size: 14.2px !important;
+        }
+        .pdf-table-fit th,
+        .pdf-table-fit td {
+          background: #ffffff !important;
+          border-color: #e2e8f0 !important;
+          color: #334155 !important;
+          font-size: 14.2px !important;
+          line-height: 1.3 !important;
+          padding: 7px 9px !important;
+        }
+        .pdf-rich.pdf-table-fit thead th {
+          background: #e2e8f0 !important;
+          color: #334155 !important;
+        }
+        .pdf-table-fit tbody td:first-child {
+          color: #0f172a !important;
+          font-weight: 850 !important;
+        }
+        .pdf-table-fit tbody td:nth-child(2) {
+          color: #475569 !important;
+        }
+        .pdf-table-fit tbody td:nth-child(3) {
+          color: #2563eb !important;
+          font-weight: 850 !important;
+        }
+        .pdf-table-fit tbody td:nth-child(4) {
+          color: #059669 !important;
+          font-weight: 850 !important;
         }
         .pdf-rich [class*="bg-\\[\\#1a1a1a\\]"] {
           font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -2616,9 +2707,9 @@ export default function PdfPortfolio() {
           { label: '오류·중복', value: '0건', caption: '동시 3,000명 투표 테스트 구간', color: violet },
         ]}
       />
-      <ProjectIntroSlide project={feedshop} title="FeedShop" />
-      <ArchitectureSlide project={feedshop} title="FeedShop" />
+      <ProjectIntroSlide project={feedshop} title="FeedShop" showRoleLabels={false} />
       <FeedShopDeveloperPerspectiveSlide />
+      <ArchitectureSlide project={feedshop} title="FeedShop" showOwnershipLabel={false} showDetailMarkers />
       <FeedShopP1ProblemSlide />
       <FeedShopP1ThinkingSolutionSlide />
       <FeedShopP1SolutionResultSlide />
@@ -2626,25 +2717,25 @@ export default function PdfPortfolio() {
       <FeedShopP1ResultImagesSlide />
       <FeedShopP2ProblemThinkingSlide />
       <FeedShopP2SolutionSlide />
-      <FeedShopP2RedisSolutionSlide />
       <FeedShopP2ResultSlide />
       <FeedShopReflectionSlide />
 
       <ProjectCaseCover
         eyebrow="Backend Case Study 02"
         projectName="3M"
-        statement="Auth·User·Gateway 책임을 분리해 인증 흐름의 결합도를 낮췄습니다."
-        description="다수 서비스가 연결되는 B2B 물류 시스템에서 인증 정책 변경과 사용자 조회 장애가 전체 인증 흐름으로 번지지 않도록 서비스 경계를 재설계했습니다."
+        statement="Auth·User 책임을 분리하고 Gateway 권한 흐름을 통합 테스트로 검증했습니다."
+        description="업체·허브·배송 담당자가 연결되는 B2B 물류 시스템에서, 인증 정책 변경의 배포 영향과 User 장애 전파 위험을 줄이기 위해 서비스 경계와 권한 전달 방식을 분리했습니다."
         metrics={[
-          { label: 'UserService → Auth', value: 'CBO 0건', caption: '인증 정책 변경 시 User 배포 영향 제거', color: green },
-          { label: 'Auth → User', value: '단방향', caption: 'Feign DTO 중심 참조 · 순환 의존 없음', color: blue },
-          { label: '인증 판단', value: 'Gateway', caption: 'JWT payload 기반 일반 권한 판단', color: violet },
+          { label: 'UserService → Auth', value: 'CBO 0', caption: '인증 정책 변경 시 User 배포 영향 제거', color: green },
+          { label: '서비스 의존성', value: '순환 의존 없음', caption: 'Auth → User Feign DTO 단방향 참조', color: blue },
+          { label: '권한 응답', value: '일관성 검증', caption: 'MASTER · HUB_MANAGER · 미인증 통합 테스트', color: violet },
         ]}
       />
-      <ProjectIntroSlide project={m3} title="3M" />
-      <ArchitectureSlide project={m3} title="3M" />
+      <ProjectIntroSlide project={m3} title="3M" showRoleLabels={false} />
       <M3DeveloperPerspectiveSlide />
-      <M3ProblemThinkingSlide />
+      <ArchitectureSlide project={m3} title="3M" />
+      <M3ProblemSlide />
+      <M3ThinkingSlide />
       <M3SolutionSlide />
       <M3ResultSlide />
       <M3ReflectionSlide />

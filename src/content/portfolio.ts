@@ -56,16 +56,16 @@ export const ABOUT_CARDS = [
   {
     icon: 'ri-bar-chart-2-line',
     title: '문제 해결 능력',
-    subtitle: '성능 병목을 찾아 수치로 증명',
+    subtitle: 'N+1 병목을 fetchJoin과 Redis 캐싱으로 개선해 응답시간 91% 단축',
     description:
-      'N+1 쿼리 → fetchJoin + Redis 캐싱으로 응답시간 <span class="font-bold text-[#2563EB]">91% 단축</span> (6,818ms → 638ms)\nfetchJoin으로 SQL 42회 → <span class="font-bold text-[#2563EB]">2회 축소</span>, Redis Cache Hit SQL 0회 확인\nnGrinder 동시 1,000명 기준 TPS 216% 향상 검증',
+      'SQL 실행 횟수 42회 → <span class="font-bold text-[#2563EB]">2회</span>, Cache Hit 시 0회로 축소\n응답시간 6,818ms → <span class="font-bold text-[#2563EB]">638ms</span>, 동시 사용자 1,000명 기준 TPS 216% 향상',
   },
   {
     icon: 'ri-node-tree',
     title: '협업 시스템 설계',
-    subtitle: '백지 상태에서 팀 협업을 만든 경험',
+    subtitle: '백지 상태에서 팀 협업 환경을 구축해 스프린트 가시성 확보',
     description:
-      '제로베이스에서 팀 스프린트 <span class="font-bold text-[#2563EB]">가시성 확보</span>\n스프린트 일정·작업 범위 모두 없던 상태에서 JIRA 가이드라인 배포로 주간 스프린트를 구조화\nSlack 실시간 연동으로 팀 전체 진척 상황을 즉시 파악할 수 있는 환경 구성',
+      '스프린트 일정·작업 범위가 없던 상태에서 JIRA 가이드라인을 배포해 주간 스프린트 구조화\nSlack 실시간 연동으로 팀 전체의 진척 상황을 즉시 파악할 수 있는 환경 구성',
   },
   {
     icon: 'ri-checkbox-circle-line',

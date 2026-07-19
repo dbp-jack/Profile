@@ -31,10 +31,24 @@ Do not replace these labels with older wording such as `Hero`, `About`, `How I W
 ## Mentor Feedback Review Loop
 
 - Treat `docs/mentor-feedback-rubric.md` as the single source of truth for portfolio and resume feedback.
-- Before changing any portfolio page, re-read the active source IDs and integrated rules for that page.
+- Before changing any portfolio page, re-read the relevant passages from both original mentor PDFs, then re-read the active source IDs and integrated rules for that page. Record `해당 없음` when one source has no direct guidance.
 - Work one page at a time in this order: review, discuss and confirm with the user, edit, verify web/PDF consistency, then update the page review log.
+- After each page edit, record and show a concise `작업 전 → 작업 후 → 변경 이유` comparison before moving to the next page.
 - Keep source-specific advice separate. Resolve overlaps and conflicts only through the rubric's conflict decisions.
-- Portfolio rules are active now. Resume rules stay pending until the user provides the new resume after the portfolio is complete.
+- Portfolio rules and resume review rules are both active. Do not mix their source IDs or integrated rules.
+
+## Resume Review Workflow
+
+- The user maintains two resumes: `상세버전` and `함축버전`. Treat them as separate documents with different density goals, never as interchangeable revisions of one file.
+- The current canonical resume files are:
+  - `상세버전` (`v5_2`, 3 pages): `/Users/minsujeong/Downloads/멘토리용 이력서v5_2_상세.pdf`
+  - `함축버전` (`v5_2`, 2 pages): `/Users/minsujeong/Downloads/멘토리용 이력서v5_2_함축.pdf`
+- Before every resume review or wording proposal, re-open and compare both current resume files. Do not rely on conversation memory or a compacted context.
+- Re-read the resume-specific sources and integrated rules in `docs/mentor-feedback-rubric.md` before every review. Keep portfolio-only guidance out unless the rubric explicitly connects it to resume rules.
+- In this chat, do not edit either resume file. Propose changes for the user to apply in the format `수정 전 → 수정 후 → 변경 이유`.
+- Label every proposal with its target: `상세버전`, `함축버전`, or `공통`. Never assume a change applies to both.
+- After the detailed and compact resume reviews are complete, provide a separate `중간 버전` proposal that preserves the strongest evidence from the detailed version at a density between the two source resumes. Do not treat it as a replacement unless the user explicitly adopts it.
+- If either current resume file is unavailable or its version is ambiguous, stop and request the missing file before reviewing or proposing a change.
 
 ## Backup Rule
 

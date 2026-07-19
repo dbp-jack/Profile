@@ -56,10 +56,10 @@ export const threeMProject: ProjectData = {
       },
     ],
 	    serviceOverview:
-	      '업체의 주문이 지역 허브를 거쳐 배송 담당자에게 전달되는 전 과정을 하나의 흐름으로 관리하는 B2B 물류 시스템입니다.',
+	      '<strong class="block text-lg font-extrabold leading-relaxed text-slate-900 dark:text-slate-100">업체·허브·배송 담당자는 하나의 주문 흐름을 공유하지만, 역할과 권한은 서로 달랐습니다.</strong><span class="mt-2 block">3M은 주문 생성부터 지역 허브 이동, 배송 담당자 배정까지 역할별 업무를 연결하는 B2B 물류 관리 시스템입니다.</span>',
 	    developerPerspectiveTitle: '서비스 흐름에서 발견한 핵심 문제',
 	    developerPerspective:
-	      '동일한 주문 흐름에 참여하는 업체·허브·배송 담당자는 역할별 권한이 달라, 판단 오류 시 물류 전체에 영향을 줄 수 있는 구조였습니다.\n기존 구조는 인증과 사용자 관리가 혼재돼 정책 변경이 User 배포로 확산됐고, 매 요청마다 User를 조회해 호출 증가와 장애 전파 위험이 존재했습니다. 이에 따라 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Auth·User 책임 분리와 Gateway 중심의 인증 흐름 설계를 핵심 과제로 설정</span>하여 문제를 해결하고자 했습니다.',
+	      '동일한 주문 흐름에 참여하는 업체·허브·배송 담당자는 역할별 권한이 달라, <span class="font-semibold text-red-500 dark:text-red-400">권한 판단 오류가 물류 전체에 영향</span>을 줄 수 있었습니다.\n인증과 사용자 관리가 혼재되어 정책 변경이 <span class="font-semibold text-red-500 dark:text-red-400">User 배포까지 확산</span>되는 높은 결합도가 있었고,\n요청마다 User를 조회하면 <span class="font-semibold text-red-500 dark:text-red-400">호출 증가·User 장애 전파</span> 위험이 생겼습니다.\n그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Auth·User 책임 분리</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Gateway 중심 인증 흐름</span>을 핵심 과제로 설정했습니다.',
     techStack: ['SpringBoot 3.4.3', 'JWT', 'Spring Cloud Gateway', 'PostgreSQL', 'Docker', 'JIRA'],
     roles: [
 	      {
@@ -90,7 +90,7 @@ export const threeMProject: ProjectData = {
 	    projectReflection: {
 	      title: '요청 흐름 전체로 바라본 인증',
 	      body:
-	        '업체·허브·배송 담당자가 함께 사용하는 물류 시스템에서는 권한 판단이 한 지점에서만 흔들려도 주문·배송 흐름 전체의 안정성이 떨어질 수 있었습니다.<br/>Auth/User 책임 분리로 UserService→Auth 결합도 0건과 순환 의존 없음 구조를 만들고, 인증 정책 변경이 사용자 도메인 장애로 번지는 위험을 줄였습니다.<br/>또한 Gateway의 JWT 검증·X-User-* 헤더 전달·AOP 권한 체크를 연결해 서비스별 권한 판단 분산을 줄이고, MASTER/HUB_MANAGER/미인증 응답 기준을 통합 테스트로 검증해 권한 응답 일관성을 확보했습니다.<br/>이 경험을 통해 인증은 로그인 기능 하나가 아니라, 요청이 어떤 서비스로 흘러가더라도 같은 권한 판단과 응답을 유지하도록 설계해야 하는 흐름이라는 점을 체감했습니다.',
+	        '<p>책임 경계 설계에서는 기능 개수가 아니라 <strong>변경 이유를 기준으로 서비스를 분리</strong>해야 배포 영향을 설명할 수 있다는 점을 배웠습니다. 실제로 <strong>UserService → Auth CBO 0</strong>과 <strong>Auth → User 단방향·순환 의존 없음</strong>을 확인했습니다.</p><p class="mt-3">인증 흐름 설계에서는 로그인 성공만이 아니라 요청이 각 서비스에 도달할 때 <strong>동일한 사용자 컨텍스트가 전달되는지</strong> 확인해야 한다는 점을 느꼈습니다. <strong>Gateway JWT 검증 → X-User-* 헤더 전달 → AOP 권한 체크</strong>로 판단 경로를 연결했습니다.</p><p class="mt-3">검증에서는 구조가 깔끔해 보이는 것보다 <strong>실제 권한 응답의 일관성</strong>이 더 중요했습니다. <strong>MASTER·HUB_MANAGER·미인증 시나리오</strong>를 통합 테스트로 확인해 설계가 요청 흐름 전체에서 유지되는지 검증했습니다.</p>',
       sourceUrl:
         'https://github.com/sparta-i4u/sparta-msa/wiki/%5BTest-Report%5D%5B%EB%AF%BC%EC%88%98%E2%80%90User,-Auth,-Gateway-%EB%8F%84%EB%A9%94%EC%9D%B8%5D-%ED%86%B5%ED%95%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EA%B2%B0%EA%B3%BC-%EB%B3%B4%EA%B3%A0%EC%84%9C',
     },

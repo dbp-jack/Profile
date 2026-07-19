@@ -77,7 +77,7 @@ export default function AboutSection() {
                   <span className="text-3xl font-black leading-none text-[#2563EB] sm:text-4xl">
                     {NUMS[i]}
                   </span>
-                  <span className={`flex items-center gap-2 text-base font-extrabold sm:flex-col sm:gap-1 sm:text-center ${dark ? 'text-[#d6d6d6]' : 'text-gray-800'}`}>
+                  <span className={`flex items-center gap-2 text-base font-extrabold text-left ${dark ? 'text-[#d6d6d6]' : 'text-gray-800'}`}>
                     <i className={`${card.icon} text-lg text-[#2563EB] sm:text-xl`} aria-hidden />
                     <span>{card.title}</span>
                   </span>
@@ -89,15 +89,6 @@ export default function AboutSection() {
                   <h3
                     className={`${i === 0 ? 'mb-1.5' : 'mb-2'} text-lg font-extrabold leading-snug md:text-xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
                     dangerouslySetInnerHTML={{ __html: card.subtitle }}
-                  />
-
-                  <div
-                    className={`${i === 0 ? 'mb-2' : 'mb-2.5'} inline-flex w-fit max-w-full rounded-lg border px-2.5 py-1.5 text-sm font-bold leading-snug ${
-                      dark
-                        ? 'border-[#31558e] bg-[#233654] text-[#dbeafe]'
-                        : 'border-[#BFDBFE] bg-[#EFF6FF] text-[#172554]'
-                    }`}
-                    dangerouslySetInnerHTML={{ __html: strengthsProfile.highlights[i] }}
                   />
 
                   <ul
@@ -112,14 +103,10 @@ export default function AboutSection() {
                     }
                   >
                     {bullets.map((line, j) => {
-                      const noCheck = usesLegacyLayout && j === 0 && i < 2
-
                       return (
                         <li key={j} className="flex min-w-0 items-start gap-3">
                           {usesLegacyLayout ? (
-                            !noCheck && (
-                              <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
-                            )
+                            <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
                           ) : (
                             <span
                               aria-hidden
@@ -127,9 +114,7 @@ export default function AboutSection() {
                             />
                           )}
                           <span
-                            className={`min-w-0 break-keep text-sm leading-relaxed ${
-                              noCheck ? 'font-semibold' : ''
-                            } ${dark ? 'text-[#c8c8c8]' : 'text-slate-800'}`}
+                            className={`min-w-0 break-keep text-sm leading-relaxed ${dark ? 'text-[#c8c8c8]' : 'text-slate-800'}`}
                             dangerouslySetInnerHTML={{ __html: line }}
                           />
                         </li>
