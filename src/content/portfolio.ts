@@ -86,7 +86,8 @@ export const PROJECTS_SECTION = {
 export const WORK_STYLE_SECTION = {
   kicker: 'Work Style',
   title: '팀의 작업 흐름을 만들고, 결과를 직접 검증합니다.',
-  subtitle: '협업 과정은 가시화하고, AI는 정의한 범위에서만 활용하며 최종 판단은 직접 책임집니다.',
+  subtitle:
+    '협업 체계가 없던 팀에 주간 스프린트 운영 기준을 제안하고 JIRA 가이드라인을 배포했으며, Slack 알림 자동화와 Confluence 문서화로 작업 과정과 결과를 가시화했습니다.',
 } as const
 
 export const PROJECT_WORKFLOW = {
@@ -142,10 +143,6 @@ export const PROJECT_WORKFLOW = {
 } as const
 
 export const COLLABORATION_SECTION = {
-  kicker: 'Collaboration',
-  title: '협업 체계가 없던 팀에 주간 스프린트 흐름을 만들었습니다.',
-  intro:
-    '스프린트 운영 기준 제안 및 JIRA 가이드라인을 배포하고, 스크럼 기반의 작업 관리, Slack 알림 자동화(이슈·커밋), Confluence 문서화(일정·기술·테스트)를 통해 개발 프로세스를 효율화했습니다.',
   guideUrl: 'https://dev99-tale.tistory.com/69',
   evidence: [
     {

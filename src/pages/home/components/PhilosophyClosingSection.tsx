@@ -350,7 +350,22 @@ export default function PhilosophyClosingSection() {
               }),
             )}
 
-            {companyInsight && <CompanyInsightCard companyInsight={companyInsight} dark={dark} />}
+            {companyInsight && (
+              <>
+                <div className="mt-10 flex items-center gap-4 md:col-span-2 md:mt-14" aria-hidden="true">
+                  <span className={`h-px flex-1 ${dark ? 'bg-[#464646]' : 'bg-slate-200'}`} />
+                  <span
+                    className={`text-xs font-bold uppercase tracking-[0.18em] ${
+                      dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'
+                    }`}
+                  >
+                    Company Direction
+                  </span>
+                  <span className={`h-px flex-1 ${dark ? 'bg-[#464646]' : 'bg-slate-200'}`} />
+                </div>
+                <CompanyInsightCard companyInsight={companyInsight} dark={dark} />
+              </>
+            )}
           </div>
         </div>
       </div>

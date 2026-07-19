@@ -28,34 +28,15 @@ export default function CollaborationSection() {
           </p>
         </div>
 
-        {/* 팀 협업 프로세스 */}
+        {/* 팀 협업 근거 */}
         <div className="border-b pb-6">
-          <p className={`text-base font-extrabold uppercase tracking-wide ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}>
-            {COLLABORATION_SECTION.kicker}
-          </p>
-          <h4 className={`mt-1.5 text-xl font-extrabold leading-snug ${dark ? 'text-[#e8e8e8]' : 'text-slate-900'}`}>
-            {COLLABORATION_SECTION.title}
-          </h4>
-          <p className={`mt-3 max-w-4xl text-sm leading-7 ${dark ? 'text-[#d1d5db]' : 'text-slate-800'}`}>
-            {COLLABORATION_SECTION.intro}
-          </p>
-          <a
-            href={COLLABORATION_SECTION.guideUrl}
-            target="_blank"
-            rel="noreferrer"
-            className={`mt-3 inline-flex items-center gap-1.5 text-sm font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
-          >
-            <i className="ri-external-link-line" aria-hidden="true" />
-            JIRA 가이드라인 보기
-          </a>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
             {COLLABORATION_SECTION.evidence.map((item, index) => (
               <figure
                 key={item.title}
-                className={`overflow-hidden rounded-lg border ${
+                className={`h-full overflow-hidden rounded-lg border md:col-span-6 lg:col-span-4 ${
                   dark ? 'border-[#3d3d3d] bg-[#2a2a2a]' : 'border-slate-200 bg-slate-50'
-                } ${index === 2 ? 'md:col-span-2 xl:col-span-1' : ''}`}
+                } ${index === 2 ? 'md:col-start-4 lg:col-start-auto' : ''}`}
               >
                 <div className={`aspect-[16/10] overflow-hidden ${dark ? 'bg-[#1e1e1e]' : 'bg-white'}`}>
                   <img
@@ -79,6 +60,16 @@ export default function CollaborationSection() {
               </figure>
             ))}
           </div>
+
+          <a
+            href={COLLABORATION_SECTION.guideUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={`mt-4 inline-flex items-center gap-1.5 text-sm font-bold ${dark ? 'text-[#8fb5ff]' : 'text-[#2563EB]'}`}
+          >
+            <i className="ri-external-link-line" aria-hidden="true" />
+            JIRA 가이드라인 보기
+          </a>
         </div>
 
         {/* AI 활용 방식 */}

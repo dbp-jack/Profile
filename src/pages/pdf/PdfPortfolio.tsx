@@ -19,6 +19,7 @@ import {
   WORK_STYLE_SECTION,
 } from '@/content/portfolio'
 import { DEFAULT_PROJECT_IDS, PROJECTS, PROJECT_OVERVIEWS } from '@/content/projects'
+import { PUBLIC_PORTFOLIO_URL } from '@/portfolio-builder/access'
 
 declare const __BASE_PATH__: string
 
@@ -195,9 +196,10 @@ function Slide({
             <p
               style={{
                 margin: '7px 0 0',
-                color: isNavy ? '#cbd5e1' : muted,
-                fontSize: 13.6,
-                lineHeight: 1.5,
+                color: isNavy ? '#e2e8f0' : slate,
+                fontSize: 15,
+                lineHeight: 1.45,
+                fontWeight: 650,
               }}
             >
               {subtitle}
@@ -382,6 +384,31 @@ function HeroSlide() {
 
   return (
     <Slide tone="light">
+      <a
+        href={PUBLIC_PORTFOLIO_URL}
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          zIndex: 2,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          border: `1px solid #bfdbfe`,
+          borderRadius: 8,
+          padding: '9px 14px',
+          background: '#eff6ff',
+          color: blue,
+          fontSize: 13.5,
+          lineHeight: 1,
+          fontWeight: 900,
+          textDecoration: 'none',
+        }}
+      >
+        웹 포트폴리오 보기 <span aria-hidden="true">↗</span>
+      </a>
       <div
         style={{
           height: '100%',
@@ -607,15 +634,10 @@ function CollaborationSlide() {
 
   return (
     <Slide eyebrow={WORK_STYLE_SECTION.kicker} title={WORK_STYLE_SECTION.title} subtitle={WORK_STYLE_SECTION.subtitle} dense>
-      <div style={{ display: 'grid', gridTemplateRows: 'auto auto auto', gap: 15, height: '100%', minHeight: 0, alignContent: 'start' }}>
-        <div>
-          <SectionLabel>{COLLABORATION_SECTION.kicker}</SectionLabel>
-          <div style={{ color: navy, fontSize: 20.4, fontWeight: 950, lineHeight: 1.2, marginBottom: 8 }}>{COLLABORATION_SECTION.title}</div>
-          <div style={{ color: slate, fontSize: 14, lineHeight: 1.45, fontWeight: 780 }}>{COLLABORATION_SECTION.intro}</div>
-        </div>
+      <div style={{ display: 'grid', gridTemplateRows: 'auto auto', gap: 18, height: '100%', minHeight: 0, alignContent: 'center' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, minHeight: 0 }}>
           {evidenceItems.map((item) => (
-            <CollaborationEvidence key={item.title} item={item} imageHeight="62mm" />
+            <CollaborationEvidence key={item.title} item={item} imageHeight="72mm" />
           ))}
         </div>
         <a

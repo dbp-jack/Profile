@@ -50,7 +50,7 @@ export default function AboutSection() {
         </div>
 
         {/* 카드 3개 — 세로 나열 가로 레이아웃 */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6">
           {strengthsProfile.cards.map((card, i) => {
             const bullets = card.description
               .split('\n')
@@ -60,7 +60,7 @@ export default function AboutSection() {
             return (
               <article
                 key={card.title}
-                className={`flex flex-col overflow-hidden rounded-xl border transition-all duration-300 sm:min-h-[9rem] sm:flex-row ${
+                className={`flex flex-col overflow-hidden rounded-xl border transition-all duration-300 sm:min-h-[10rem] sm:flex-row ${
                   dark
                     ? 'border-[#3d3d3d] bg-[#2e2e2e] hover:border-[#5a5a5a]'
                     : 'border-gray-200 bg-white hover:border-[#BFDBFE] hover:shadow-md'
@@ -68,9 +68,7 @@ export default function AboutSection() {
               >
                 {/* 왼쪽: 번호 + 카테고리명 */}
                 <div
-                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-5 py-3.5 sm:flex-col sm:justify-center sm:gap-1.5 sm:border-b-0 sm:border-r sm:py-5 ${
-                    usesLegacyLayout ? 'sm:w-36 sm:px-0' : 'sm:w-44 sm:px-3'
-                  } ${
+                  className={`flex w-full shrink-0 flex-row items-center justify-start gap-3 border-b px-6 py-4 sm:w-48 sm:flex-col sm:justify-center sm:gap-2 sm:border-b-0 sm:border-r sm:px-5 sm:py-6 ${
                     dark ? 'border-[#3d3d3d]' : 'border-gray-100'
                   }`}
                 >
@@ -84,27 +82,17 @@ export default function AboutSection() {
                 </div>
 
                 {/* 오른쪽: 소제목 + 내용 */}
-                <div className={`flex min-w-0 flex-1 flex-col justify-center px-5 sm:px-7 ${i === 0 ? 'py-3 sm:py-3' : 'py-4 sm:py-4'}`}>
+                <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-5 sm:px-9 sm:py-6 md:px-10">
                   {/* 소제목 */}
                   <h3
-                    className={`${i === 0 ? 'mb-1.5' : 'mb-2'} text-lg font-extrabold leading-snug md:text-xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
+                    className={`mb-3 text-lg font-extrabold leading-snug md:text-xl ${dark ? 'text-[#e8e8e8]' : 'text-gray-900'}`}
                     dangerouslySetInnerHTML={{ __html: card.subtitle }}
                   />
 
-                  <ul
-                    className={
-                      usesLegacyLayout
-                        ? i === 0
-                          ? 'space-y-1'
-                          : i === 1
-                            ? 'space-y-1.5'
-                            : 'space-y-2'
-                        : 'space-y-1.5'
-                    }
-                  >
+                  <ul className="space-y-2.5">
                     {bullets.map((line, j) => {
                       return (
-                        <li key={j} className="flex min-w-0 items-start gap-3">
+                        <li key={j} className="flex min-w-0 items-start gap-3.5">
                           {usesLegacyLayout ? (
                             <span className="mt-0.5 shrink-0 text-[#2563EB]">✓</span>
                           ) : (
