@@ -449,14 +449,11 @@ function AboutSlide() {
       <div style={{ display: 'grid', gridTemplateRows: 'repeat(3, 1fr)', gap: 10, height: '100%' }}>
         {ABOUT_CARDS.map((card, idx) => (
           <Panel key={card.title} pad={12} background={white} accent={idx === 0 ? blue : idx === 1 ? green : violet}>
-            <div style={{ display: 'grid', gridTemplateColumns: '96px 1fr', gap: 18, alignItems: 'center', height: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '112px 1fr', gap: 18, alignItems: 'center', height: '100%' }}>
               <div style={{ borderRight: `1px solid ${line}`, height: '100%', display: 'grid', placeItems: 'center' }}>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ color: blue, fontSize: 34, fontWeight: 950, lineHeight: 1 }}>{String(idx + 1).padStart(2, '0')}</div>
-                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontWeight: 950, fontSize: 14.2, lineHeight: 1.25 }}>
-                    <i className={card.icon} style={{ color: blue, fontSize: 16 }} aria-hidden />
-                    <span>{card.title}</span>
-                  </div>
+                  <div style={{ marginTop: 8, fontWeight: 950, fontSize: 14.2, lineHeight: 1.25 }}>{card.title}</div>
                 </div>
               </div>
               <div style={{ display: 'grid', alignContent: 'center', gap: 8 }}>
