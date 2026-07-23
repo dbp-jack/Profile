@@ -23,8 +23,14 @@ React, TypeScript, Vite 기반의 웹 포트폴리오입니다.
 
 ```bash
 npm install
-npm run dev -- --host 127.0.0.1 --port 5173
+npm run dev -- --host 127.0.0.1 --port 5174
 npm run build
 ```
 
 GitHub Pages 배포는 `.github/workflows/deploy.yml`에서 `main` 브랜치 push 기준으로 실행됩니다.
+
+## 작업 기준
+
+- 최신 성공 배포본을 화면 비교 기준으로 사용하고, 이 저장소의 canonical workspace를 편집 정본으로 사용합니다.
+- 웹 포트폴리오를 페이지별로 검토·확정한 뒤, 웹 전체 작업이 끝나면 PDF를 별도 단계로 반영합니다.
+- 세부 검토 절차와 피드백 기준은 `AGENTS.md`와 `docs/mentor-feedback-rubric.md`를 따릅니다.

@@ -6,6 +6,18 @@ type Props = { project: ProjectData; index: number }
 
 const IS_DEV = import.meta.env.DEV
 const devWarnedKeys = new Set<string>()
+const FEEDSHOP_PERSPECTIVE_BEFORE =
+  '그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 개선</span>과 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성·정합성 보장</span>을 핵심 과제로 설정했습니다.'
+const FEEDSHOP_PERSPECTIVE_AFTER =
+  '이를 해결하기 위해 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">이벤트 목록 조회 병목 개선</span>과 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">투표 동시성·정합성을 보장</span>을 핵심과제로 설정했습니다.'
+const FEEDSHOP_RESULT_BEFORE = '재방문 진입점의 응답 지연을 줄여 이벤트 탐색 중 사용자 이탈 방지'
+const FEEDSHOP_RESULT_AFTER = '재방문 진입점의 응답 지연을 줄여 사용자 이탈 방지'
+const THREE_M_PERSPECTIVE_BEFORE =
+  '그래서 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Auth·User 책임 분리</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Gateway 중심 인증 흐름</span>을 핵심 과제로 설정했습니다.'
+const THREE_M_PERSPECTIVE_AFTER =
+  '이를 해결하기 위해 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Auth·User 책임 분리</span>와 <span class="font-semibold text-[#2563EB] dark:text-[#8aa8e8]">Gateway 중심 인증 흐름</span>을 핵심과제로 설정했습니다.'
+const THREE_M_HEADLINE_BEFORE = '인증 구조 설계 및 서비스 경계 문제'
+const THREE_M_HEADLINE_AFTER = 'Auth/User 책임 혼재와 요청별 User 조회 문제'
 const ALLOWED_RICH_TAGS = new Set([
   'a',
   'b',
@@ -35,6 +47,20 @@ const ALLOWED_RICH_TAGS = new Set([
   'u',
   'ul',
 ])
+
+function applyWebProjectCopy(projectId: string, content: string): string {
+  if (projectId === 'feedshop') {
+    return content
+      .replace(FEEDSHOP_PERSPECTIVE_BEFORE, FEEDSHOP_PERSPECTIVE_AFTER)
+      .replace(FEEDSHOP_RESULT_BEFORE, FEEDSHOP_RESULT_AFTER)
+  }
+  if (projectId === 'three-m') {
+    return content
+      .replace(THREE_M_PERSPECTIVE_BEFORE, THREE_M_PERSPECTIVE_AFTER)
+      .replace(THREE_M_HEADLINE_BEFORE, THREE_M_HEADLINE_AFTER)
+  }
+  return content
+}
 
 function warnDevOnce(key: string, message: string): void {
   if (!IS_DEV || devWarnedKeys.has(key)) return
@@ -585,7 +611,7 @@ export default function ProjectCard({ project, index }: Props) {
                 {showDeveloperPerspectiveBeforeRoles && project.developerPerspective ? (
                   <ProjectBackgroundCard
                     title={project.developerPerspectiveTitle ?? '개발자 관점에서의 핵심 과제'}
-                    body={project.developerPerspective}
+                    body={applyWebProjectCopy(project.id, project.developerPerspective)}
                     dark={dark}
                     className="pdf-developer-perspective"
                   />
@@ -732,7 +758,7 @@ export default function ProjectCard({ project, index }: Props) {
               <ProblemRow label="Problem" content={sec.problem} dark={dark} />
               <ProblemRow label="Thinking" content={sec.thinking} dark={dark} />
               <ProblemRow label="Solution" content={sec.solution} dark={dark} />
-              <ProblemRow label="Result" content={sec.result} dark={dark} />
+              <ProblemRow label="Result" content={applyWebProjectCopy(project.id, sec.result)} dark={dark} />
             </div>
           ))}
         </div>
@@ -744,7 +770,7 @@ export default function ProjectCard({ project, index }: Props) {
             <p
               className={`text-xl font-semibold uppercase tracking-wide ${dark ? 'text-[#8aa8e8]' : 'text-[#2563EB]'}`}
             >
-              {project.problemHeadline}
+              {applyWebProjectCopy(project.id, project.problemHeadline)}
             </p>
           ) : null}
           {project.problem && <ProblemRow label="Problem" content={project.problem} dark={dark} />}

@@ -15,7 +15,7 @@ export const threeMProject: ProjectData = {
     },
     overviewSummary: {
       intro: '업체·허브·배송 담당자의 주문·배송 흐름을 통합 관리하는 B2B 물류 시스템에서 Auth·User·Gateway 인증 경계와 인프라 통합을 맡았습니다.',
-      achievement: 'Auth/User 책임 분리로 UserService→Auth 결합도 0건·순환 의존 없음으로 인증 변경의 사용자 도메인 장애 전파 위험 방지',
+      achievement: 'Auth/User 책임 분리 후 UserService→Auth 결합도 0건·순환 의존 없음 확인, 장애 전파 위험을 방지',
       reflection: '인증 구조는 결합도뿐 아니라 전체 권한 경로까지 검증해야 안정적입니다.',
     },
     architectureImage: '/m3_infra.png',

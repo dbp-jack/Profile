@@ -507,7 +507,7 @@ function ProjectsOverviewSlide() {
     [
       ['91% 단축', '동시 1,000명 기준 응답시간 6,818ms → 638ms · 사용자 이탈 방지'],
       ['SQL 42회 → 2회', 'fetchJoin 적용 후 Cache Hit 0회 분리'],
-      ['오류·중복 0건', '동시 3,000명 투표 테스트 · 투표 수 정합성 유지'],
+      ['오류·중복 0건', '최대 3000명 투표 테스트 · 투표 수 정합성 유지'],
     ],
     [
       ['CBO 0건', 'UserService → Auth 도메인 결합도 제거 · 장애 전파 위험 방지'],
@@ -1621,7 +1621,7 @@ function FeedShopP2ResultSlide() {
     ['정합성 검증', 'phase2b-redis-count-verify.png', 'DB count 3 = Redis count 3 · 투표 수 정합성 확인'],
     ['nGrinder · 동시 500명', 'vuser500_result.png', 'TPS 588.1 · 평균 응답 833ms · 성공 68,548건 · 오류 0건'],
     ['nGrinder · 동시 1,000명', 'vuser1000_result.png', 'TPS 437.0 · 평균 응답 2.19초 · 성공 48,231건 · 오류 0건'],
-    ['nGrinder · 동시 3,000명', 'vuser3000_result.png', 'TPS 551.1 · 평균 응답 5.00초 · 성공 63,026건 · 오류 0건 · 다음 응답속도 최적화 기준 확인'],
+    ['nGrinder · 최대 3000명', 'vuser3000_result.png', 'TPS 551.1 · 평균 응답 5.00초 · 성공 63,026건 · 오류 0건 · 다음 응답속도 최적화 기준 확인'],
   ]
   const kpis = [
     ['오류율', '0%'],
@@ -2721,7 +2721,7 @@ export default function PdfPortfolio() {
         metrics={[
           { label: '응답시간 단축', value: '91%', caption: '동시 1,000명 기준 6,818ms → 638ms', color: green },
           { label: 'SQL Count', value: '42회 → 2회', caption: 'Cache Hit 0회는 반복 요청 분리', color: blue },
-          { label: '오류·중복', value: '0건', caption: '동시 3,000명 투표 테스트 구간', color: violet },
+          { label: '오류·중복', value: '0건', caption: '최대 3000명 투표 테스트 구간', color: violet },
         ]}
       />
       <ProjectIntroSlide project={feedshop} title="FeedShop" showRoleLabels={false} />

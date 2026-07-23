@@ -7,6 +7,9 @@ type SelectedProjectOverview = {
 }
 
 const SUMMARY_HIGHLIGHT_TERMS = [
+  '이벤트 탐색 성능 개선',
+  '장애 전파 위험을 방지',
+  '동시 1000명 응답시간 6,818ms',
   '최대 3,000명',
   '3,000명',
   '0건',
@@ -16,7 +19,6 @@ const SUMMARY_HIGHLIGHT_TERMS = [
   'TPS 216% 향상',
   '216%',
   '투표 수 정합성 유지',
-  '사용자 이탈 방지',
   'UserService→Auth',
   '결합도 0건',
   '순환 의존 없음',
@@ -196,7 +198,7 @@ export default function ProjectsOverview({ projectIds }: { projectIds: readonly 
                   <div className={`rounded-lg p-3 ${dark ? 'bg-[#1e1e1e]' : 'bg-gray-50'}`}>
                     <div className="mb-1 flex items-center gap-2">
                       <i className={`${project.challengeIcon} text-sm ${dark ? 'text-[#94a3b8]' : 'text-slate-700'}`} />
-                      <span className={`text-sm font-bold ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}>핵심 과제</span>
+                      <span className={`text-sm font-bold ${dark ? 'text-[#e2e8f0]' : 'text-slate-800'}`}>문제 해결</span>
                     </div>
                     <p className={`text-sm leading-relaxed ${dark ? 'text-[#cbd5e1]' : 'text-slate-700'}`}>
                       {project.challenge}
