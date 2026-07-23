@@ -1758,8 +1758,12 @@ function ProjectReflectionSlide({
 }
 
 function FeedShopReflectionSlide() {
-  const reflection = feedshop.projectReflection
-  if (!reflection) return null
+  const sourceReflection = feedshop.projectReflection
+  if (!sourceReflection) return null
+  const reflection = {
+    ...sourceReflection,
+    body: sourceReflection.body.replace('동시 3,000명', '최대 3000명'),
+  }
   return (
     <ProjectReflectionSlide
       eyebrow="FeedShop"
