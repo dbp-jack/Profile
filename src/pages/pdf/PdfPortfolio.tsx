@@ -36,15 +36,6 @@ const red = '#dc2626'
 const violet = '#7c3aed'
 const teal = '#0f766e'
 
-type ReflectionHighlight = {
-  no: string
-  title: string
-  desc: string
-  color: string
-  background: string
-  borderColor: string
-}
-
 const feedshop = PROJECTS[0]
 const m3 = PROJECTS[1]
 type PdfProjectCard = {
@@ -1684,14 +1675,12 @@ function ProjectReflectionSlide({
   subtitle,
   reflection,
   evidence,
-  highlights,
   panelMinHeight,
 }: {
   eyebrow: string
   subtitle: string
   reflection: NonNullable<typeof feedshop.projectReflection>
   evidence: string
-  highlights: ReflectionHighlight[]
   panelMinHeight?: number
 }) {
   return (
@@ -1699,55 +1688,17 @@ function ProjectReflectionSlide({
       <div style={{ display: 'grid', alignContent: 'center', height: '100%' }}>
         <div style={{ display: 'grid', minHeight: panelMinHeight }}>
           <Panel pad={22} background={white} borderColor="#bfdbfe" accent={blue}>
-          <div style={{ display: 'grid', alignContent: panelMinHeight ? 'space-between' : undefined, gap: 14, height: panelMinHeight ? '100%' : undefined }}>
+          <div style={{ display: 'grid', alignContent: 'center', height: panelMinHeight ? '100%' : undefined }}>
             <div>
               <SectionLabel>Retrospective</SectionLabel>
               <div style={{ color: navy, fontSize: 24.2, lineHeight: 1.16, fontWeight: 950, marginBottom: 13 }}>{reflection.title}</div>
-              <Rich html={reflection.body} size={17.2} lineHeight={1.56} />
+              <Rich html={reflection.body} size={18} lineHeight={1.52} />
               <div style={{ marginTop: 13, color: muted, fontSize: 12.2, fontWeight: 760 }}>
                 근거:{' '}
                 <a href={reflection.sourceUrl} style={{ color: blue, fontWeight: 900, textDecoration: 'none' }}>
                   {evidence}
                 </a>
               </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10 }}>
-            {highlights.map((item) => (
-              <div
-                key={item.title}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '40px 1fr',
-                  gap: 10,
-                  alignItems: 'center',
-                  minHeight: 78,
-                  padding: '12px 13px',
-                  borderRadius: 12,
-                  background: item.background,
-                  border: `1px solid ${item.borderColor}`,
-                }}
-              >
-                <div
-                  style={{
-                    width: 34,
-                    height: 34,
-                    borderRadius: 10,
-                    display: 'grid',
-                    placeItems: 'center',
-                    background: white,
-                    color: item.color,
-                    fontSize: 14.8,
-                    fontWeight: 950,
-                  }}
-                >
-                  {item.no}
-                </div>
-                <div>
-                  <div style={{ color: item.color, fontSize: 13.5, lineHeight: 1.18, fontWeight: 950 }}>{item.title}</div>
-                  <div style={{ marginTop: 4, color: slate, fontSize: 12.8, lineHeight: 1.35, fontWeight: 760 }}>{item.desc}</div>
-                </div>
-              </div>
-            ))}
             </div>
           </div>
           </Panel>
@@ -1771,32 +1722,6 @@ function FeedShopReflectionSlide() {
       reflection={reflection}
       evidence="FeedShop Wiki 성능 개선 작업 · 이벤트 조회 성능 및 피드 투표 동시성"
       panelMinHeight={426}
-      highlights={[
-        {
-          no: '01',
-          title: '조회 원칙',
-          desc: '쿼리 구조 개선 후 캐시 적용',
-          color: blue,
-          background: '#eff6ff',
-          borderColor: '#bfdbfe',
-        },
-        {
-          no: '02',
-          title: '정합성 경계',
-          desc: 'DB 유니크 제약으로 중복 차단',
-          color: amber,
-          background: '#fff7ed',
-          borderColor: '#fed7aa',
-        },
-        {
-          no: '03',
-          title: '복구 기준',
-          desc: 'DB 이력을 원본으로 Redis 보정',
-          color: red,
-          background: '#fef2f2',
-          borderColor: '#fecaca',
-        },
-      ]}
     />
   )
 }
@@ -1811,32 +1736,6 @@ function M3ReflectionSlide() {
       reflection={reflection}
       evidence="3M Wiki · Auth/User/Gateway 통합 테스트 결과 보고서"
       panelMinHeight={426}
-      highlights={[
-        {
-          no: '01',
-          title: '책임 경계',
-          desc: 'Auth·User 변경 이유 분리',
-          color: blue,
-          background: '#eff6ff',
-          borderColor: '#bfdbfe',
-        },
-        {
-          no: '02',
-          title: '인증 경로',
-          desc: 'Gateway 중심 권한 판단',
-          color: violet,
-          background: '#f5f3ff',
-          borderColor: '#ddd6fe',
-        },
-        {
-          no: '03',
-          title: '검증 기준',
-          desc: '권한 응답 일관성 확인',
-          color: green,
-          background: '#ecfdf5',
-          borderColor: '#bbf7d0',
-        },
-      ]}
     />
   )
 }
