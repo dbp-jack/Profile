@@ -7,6 +7,10 @@ import {
 import { DEFAULT_PROJECT_IDS, normalizeProjectIds } from '@/content/projects'
 import { DEFAULT_COPY_PROFILE, getCopyProfile } from './copy-profiles'
 import { DEFAULT_STRENGTHS_PROFILE, getStrengthsProfile } from './strengths-profiles'
+import {
+  appendCompanyDirectionParams,
+  type CompanyDirectionDraft,
+} from './company-direction'
 
 type CompanyPortfolioPreset = PortfolioPreset & {
   companyKeys: readonly string[]
@@ -143,6 +147,7 @@ export function createPublicPortfolioPath(
   copyProfileId: string,
   companyKey?: string,
   strengthsProfileId = DEFAULT_STRENGTHS_PROFILE.id,
+  companyDirection?: CompanyDirectionDraft | null,
 ) {
   const normalizedProjectIds = normalizeProjectIds(projectIds)
   const normalizedCompanyKey = normalizeCompanyKey(companyKey)
@@ -156,6 +161,7 @@ export function createPublicPortfolioPath(
   if (normalizedStrengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id) {
     params.set('strengths', normalizedStrengthsProfileId)
   }
+  appendCompanyDirectionParams(params, companyDirection)
   return `/?${params.toString()}`
 }
 

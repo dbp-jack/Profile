@@ -26,6 +26,12 @@ import {
   STRENGTHS_PROFILES,
   getStrengthsProfile,
 } from '@/portfolio-builder/strengths-profiles'
+import {
+  EMPTY_COMPANY_DIRECTION,
+  hasCompanyDirectionContent,
+  normalizeCompanyDirectionDraft,
+  type CompanyDirectionDraft,
+} from '@/portfolio-builder/company-direction'
 import './page.css'
 
 const STORAGE_KEY = 'portfolio-manager-blocks'
@@ -34,6 +40,7 @@ const COPY_STORAGE_KEY = 'portfolio-manager-copy'
 const STRENGTHS_STORAGE_KEY = 'portfolio-manager-strengths'
 const CUSTOM_PRESET_STORAGE_KEY = 'portfolio-manager-custom-presets'
 const COMPANY_KEY_STORAGE_KEY = 'portfolio-manager-company-key'
+const COMPANY_DIRECTION_STORAGE_KEY = 'portfolio-manager-company-directions'
 
 type CopyStatus = 'idle' | 'url' | 'query' | 'markdown' | 'failed'
 type ManagerPanel = 'company' | 'composition' | 'links'
@@ -181,6 +188,22 @@ function loadCustomPresets(): readonly PortfolioPreset[] {
   }
 }
 
+function loadCompanyDirections(): Record<string, CompanyDirectionDraft> {
+  const saved = window.localStorage.getItem(COMPANY_DIRECTION_STORAGE_KEY)
+  if (!saved) return {}
+
+  try {
+    const parsed = JSON.parse(saved) as Record<string, unknown>
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .map(([key, value]) => [normalizeCompanyKey(key), normalizeCompanyDirectionDraft(value)])
+        .filter(([key]) => Boolean(key)),
+    )
+  } catch {
+    return {}
+  }
+}
+
 export default function PortfolioManagerPage() {
   const [blockIds, setBlockIds] = useState<readonly PortfolioBlockId[]>(loadSavedBlocks)
   const [projectIds, setProjectIds] = useState<readonly string[]>(loadSavedProjects)
@@ -191,11 +214,16 @@ export default function PortfolioManagerPage() {
   const [companyKey, setCompanyKey] = useState(() =>
     normalizeCompanyKey(window.localStorage.getItem(COMPANY_KEY_STORAGE_KEY) ?? ''),
   )
+  const [companyDirections, setCompanyDirections] =
+    useState<Record<string, CompanyDirectionDraft>>(loadCompanyDirections)
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
   const [activePanel, setActivePanel] = useState<ManagerPanel>('company')
   const [previewMode, setPreviewMode] = useState<PreviewMode>('desktop')
   const [previewScale, setPreviewScale] = useState(1)
   const previewStageRef = useRef<HTMLDivElement>(null)
+  const companyDirection =
+    companyDirections[companyKey] ?? EMPTY_COMPANY_DIRECTION
+  const hasCustomCompanyDirection = hasCompanyDirectionContent(companyDirection)
 
   const publicPath = useMemo(
     () =>
@@ -205,11 +233,17 @@ export default function PortfolioManagerPage() {
         copyProfileId,
         companyKey,
         strengthsProfileId,
+        companyDirection,
       ),
-    [blockIds, projectIds, copyProfileId, companyKey, strengthsProfileId],
+    [blockIds, projectIds, copyProfileId, companyKey, strengthsProfileId, companyDirection],
   )
   const shortPublicPath = useMemo(() => {
-    if (strengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id) return null
+    if (
+      strengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id ||
+      hasCustomCompanyDirection
+    ) {
+      return null
+    }
 
     const companyPreset = getCompanyPreset(companyKey)
     if (!companyPreset || !matchesPreset(companyPreset, blockIds, projectIds, copyProfileId, companyKey)) {
@@ -217,7 +251,14 @@ export default function PortfolioManagerPage() {
     }
 
     return createCompanyPortfolioPath(companyKey)
-  }, [blockIds, companyKey, copyProfileId, projectIds, strengthsProfileId])
+  }, [
+    blockIds,
+    companyKey,
+    copyProfileId,
+    hasCustomCompanyDirection,
+    projectIds,
+    strengthsProfileId,
+  ])
   const publicUrl = useMemo(
     () => new URL((shortPublicPath ?? publicPath).replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
     [publicPath, shortPublicPath],
@@ -319,6 +360,40 @@ export default function PortfolioManagerPage() {
     const normalizedCompanyKey = normalizeCompanyKey(nextCompanyKey)
     setCompanyKey(normalizedCompanyKey)
     window.localStorage.setItem(COMPANY_KEY_STORAGE_KEY, normalizedCompanyKey)
+  }
+
+  const updateCompanyDirection = (patch: Partial<CompanyDirectionDraft>) => {
+    if (!companyKey) return
+    const nextDirection = normalizeCompanyDirectionDraft({
+      ...companyDirection,
+      ...patch,
+    })
+    const nextDirections = {
+      ...companyDirections,
+      [companyKey]: nextDirection,
+    }
+    setCompanyDirections(nextDirections)
+    window.localStorage.setItem(COMPANY_DIRECTION_STORAGE_KEY, JSON.stringify(nextDirections))
+  }
+
+  const toggleCompanyDirection = (enabled: boolean) => {
+    updateCompanyDirection({ enabled })
+    if (enabled && !blockIds.includes('closing')) {
+      const registryOrder = PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id)
+      updateBlocks(
+        [...blockIds, 'closing'].sort(
+          (left, right) => registryOrder.indexOf(left) - registryOrder.indexOf(right),
+        ),
+      )
+    }
+  }
+
+  const clearCompanyDirection = () => {
+    if (!companyKey) return
+    const nextDirections = { ...companyDirections }
+    delete nextDirections[companyKey]
+    setCompanyDirections(nextDirections)
+    window.localStorage.setItem(COMPANY_DIRECTION_STORAGE_KEY, JSON.stringify(nextDirections))
   }
 
   const applyPreset = (preset: PortfolioPreset) => {
@@ -679,6 +754,199 @@ export default function PortfolioManagerPage() {
                   </section>
 
                   <section className="border-t border-slate-200 pt-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h2 className="text-sm font-extrabold">Company Direction</h2>
+                        <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                          기업 키별로 자동 저장되며 생성 URL에 공개 문구로 포함됩니다.
+                        </p>
+                      </div>
+                      <label className="inline-flex shrink-0 items-center gap-2 text-xs font-extrabold text-slate-700">
+                        <input
+                          type="checkbox"
+                          checked={companyDirection.enabled}
+                          disabled={!companyKey}
+                          onChange={(event) => toggleCompanyDirection(event.target.checked)}
+                          className="h-4 w-4 accent-[#2563EB]"
+                        />
+                        사용
+                      </label>
+                    </div>
+
+                    {!companyKey ? (
+                      <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
+                        먼저 위의 <strong>company=</strong> 기업 키를 입력해 주세요.
+                      </p>
+                    ) : (
+                      <div className="mt-3 space-y-3">
+                        <div className="grid grid-cols-2 gap-2">
+                          <label className="text-xs font-bold text-slate-600">
+                            기업명
+                            <input
+                              value={companyDirection.companyName}
+                              onChange={(event) =>
+                                updateCompanyDirection({ companyName: event.target.value })
+                              }
+                              placeholder="예: ABLY"
+                              maxLength={80}
+                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                          <label className="text-xs font-bold text-slate-600">
+                            한 줄 설명
+                            <input
+                              value={companyDirection.label}
+                              onChange={(event) =>
+                                updateCompanyDirection({ label: event.target.value })
+                              }
+                              placeholder="예: 스타일 커머스 플랫폼"
+                              maxLength={120}
+                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                        </div>
+
+                        <label className="block text-xs font-bold text-slate-600">
+                          회사·서비스 방향 이해
+                          <textarea
+                            value={companyDirection.summary}
+                            onChange={(event) =>
+                              updateCompanyDirection({ summary: event.target.value })
+                            }
+                            placeholder="공식 채용공고와 기술 콘텐츠에서 확인한 사실을 바탕으로 짧게 작성"
+                            maxLength={600}
+                            rows={4}
+                            className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
+                          />
+                        </label>
+
+                        <div className="grid grid-cols-[minmax(120px,0.38fr)_minmax(0,1fr)] gap-2">
+                          <label className="text-xs font-bold text-slate-600">
+                            기업 메모 제목
+                            <input
+                              value={companyDirection.noteTitle}
+                              onChange={(event) =>
+                                updateCompanyDirection({ noteTitle: event.target.value })
+                              }
+                              maxLength={120}
+                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                          <label className="text-xs font-bold text-slate-600">
+                            확인한 내용
+                            <textarea
+                              value={companyDirection.noteBody}
+                              onChange={(event) =>
+                                updateCompanyDirection({ noteBody: event.target.value })
+                              }
+                              placeholder="인상 깊었던 공식 글·채용공고·서비스 원칙"
+                              maxLength={500}
+                              rows={3}
+                              className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                        </div>
+
+                        <div className="grid grid-cols-[minmax(150px,0.45fr)_minmax(0,1fr)] gap-2">
+                          <label className="text-xs font-bold text-slate-600">
+                            경험 연결 제목
+                            <input
+                              value={companyDirection.experienceTitle}
+                              onChange={(event) =>
+                                updateCompanyDirection({ experienceTitle: event.target.value })
+                              }
+                              maxLength={120}
+                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                          <label className="text-xs font-bold text-slate-600">
+                            내 경험·기여 연결
+                            <textarea
+                              value={companyDirection.experienceBody}
+                              onChange={(event) =>
+                                updateCompanyDirection({ experienceBody: event.target.value })
+                              }
+                              placeholder="검증된 프로젝트 경험과 기여 가능성을 연결"
+                              maxLength={600}
+                              rows={3}
+                              className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
+                            />
+                          </label>
+                        </div>
+
+                        <label className="block text-xs font-bold text-slate-600">
+                          핵심 키워드
+                          <input
+                            value={companyDirection.keywords}
+                            onChange={(event) =>
+                              updateCompanyDirection({ keywords: event.target.value })
+                            }
+                            placeholder="도메인 이해 | 데이터 정합성 | 사용자 신뢰"
+                            maxLength={400}
+                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                          />
+                          <span className="mt-1 block font-normal text-slate-400">
+                            최대 6개, <strong>|</strong>로 구분
+                          </span>
+                        </label>
+
+                        <label className="block text-xs font-bold text-slate-600">
+                          핵심 서비스 흐름
+                          <input
+                            value={companyDirection.flow}
+                            onChange={(event) =>
+                              updateCompanyDirection({ flow: event.target.value })
+                            }
+                            placeholder="탐색 | 주문 | 결제 | 배송"
+                            maxLength={400}
+                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                          />
+                          <span className="mt-1 block font-normal text-slate-400">
+                            최대 6단계, <strong>|</strong>로 구분
+                          </span>
+                        </label>
+
+                        <label className="block text-xs font-bold text-slate-600">
+                          로고 URL
+                          <input
+                            value={companyDirection.logoUrl}
+                            onChange={(event) =>
+                              updateCompanyDirection({ logoUrl: event.target.value })
+                            }
+                            placeholder="https://..."
+                            maxLength={1000}
+                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
+                          />
+                          <span className="mt-1 block font-normal text-slate-400">
+                            비우면 기업명의 첫 글자를 표시합니다.
+                          </span>
+                        </label>
+
+                        {companyDirection.enabled && !hasCustomCompanyDirection ? (
+                          <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
+                            회사·서비스 방향 이해 또는 확인한 내용 중 하나를 입력해야 맞춤 카드가 URL에 포함됩니다.
+                          </p>
+                        ) : null}
+
+                        <div className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+                          <span className="text-xs font-semibold text-slate-500">
+                            {hasCustomCompanyDirection
+                              ? `맞춤 카드 적용 · 링크 ${publicUrl.length.toLocaleString()}자`
+                              : '기업 키별 입력 내용 자동 저장'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={clearCompanyDirection}
+                            className="text-xs font-extrabold text-slate-500 hover:text-red-600"
+                          >
+                            입력 초기화
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </section>
+
+                  <section className="border-t border-slate-200 pt-4">
                     <h2 className="text-sm font-extrabold">문구 세트</h2>
                     <div className="mt-3 space-y-2">
                       {COPY_PROFILES.map((profile) => {
@@ -980,6 +1248,28 @@ export default function PortfolioManagerPage() {
                           {publicQuery}
                         </p>
                       </div>
+                      {hasCustomCompanyDirection ? (
+                        <div
+                          className={`rounded-md border p-3 ${
+                            publicUrl.length > 2000
+                              ? 'border-amber-300 bg-amber-50'
+                              : 'border-emerald-200 bg-emerald-50'
+                          }`}
+                        >
+                          <p
+                            className={`text-xs font-extrabold ${
+                              publicUrl.length > 2000 ? 'text-amber-800' : 'text-emerald-700'
+                            }`}
+                          >
+                            Company Direction 포함 · {publicUrl.length.toLocaleString()}자
+                          </p>
+                          <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                            {publicUrl.length > 2000
+                              ? '링크가 길어 일부 채용 사이트에서 잘릴 수 있습니다. 문구를 압축하거나 이메일·메신저로 전달해 주세요.'
+                              : '이 URL 하나로 선택한 구성과 기업 맞춤 문구가 함께 재현됩니다.'}
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                     <div className="mt-3 grid grid-cols-2 gap-2">
                       <button
@@ -1036,8 +1326,8 @@ export default function PortfolioManagerPage() {
                   </section>
 
                   <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                    이 화면은 로컬 개발 환경 전용입니다. 생성되는 링크에는 공개 블록만 포함되며,
-                    비공개 자료는 추후 인증 서버에서 별도로 불러옵니다.
+                    이 화면은 로컬 개발 환경 전용입니다. Company Direction 문구는 생성 URL에
+                    공개 정보로 포함되므로 비공개 자료나 내부 정보는 입력하지 마세요.
                   </p>
                 </div>
               ) : null}

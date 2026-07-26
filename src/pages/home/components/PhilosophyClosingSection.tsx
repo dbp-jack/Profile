@@ -1,24 +1,14 @@
 import { CLOSING_BLOCKS, CLOSING_SECTION } from '@/content/portfolio'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFadeIn } from '@/hooks/useFadeIn'
+import {
+  parseCompanyDirectionFromSearch,
+  type CompanyDirectionInsight,
+} from '@/portfolio-builder/company-direction'
 
-const BANKCOW_COMPANY_KEYS = new Set(['bankcow', 'bancow', 'stockkeeper', 'stock-keeper'])
+const BANKCOW_COMPANY_KEYS = new Set(['test', 'bankcow', 'bancow', 'stockkeeper', 'stock-keeper'])
 
-type CompanyInsight = {
-  brand: string
-  label: string
-  summary: string
-  noteTitle: string
-  noteBody: string
-  experienceTitle?: string
-  experienceBody?: string
-  keywords: readonly string[]
-  flow: readonly string[]
-  logoSrc?: string
-  logoAlt: string
-}
-
-const BANKCOW_INSIGHT: CompanyInsight = {
+const BANKCOW_INSIGHT: CompanyDirectionInsight = {
   brand: 'bankcow',
   label: '한우 조각투자 플랫폼',
   summary:
@@ -44,44 +34,13 @@ function normalizeCompanyParam(value: string | null) {
     .replace(/^-|-$/g, '')
 }
 
-function getListParam(params: URLSearchParams, key: string, fallback: readonly string[]) {
-  const value = params.get(key)
-  if (!value) return fallback
-  const items = value
-    .split('|')
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, 6)
-  return items.length > 0 ? items : fallback
-}
-
-function getCompanyInsightFromSearch(search: string): CompanyInsight | null {
+function getCompanyInsightFromSearch(search: string): CompanyDirectionInsight | null {
   const params = new URLSearchParams(search)
   const companyKey = normalizeCompanyParam(params.get('company'))
-  const hasCustomInsight = params.get('ci') === '1'
+  const customInsight = parseCompanyDirectionFromSearch(search, companyKey)
+  if (customInsight) return customInsight
 
-  if (hasCustomInsight && companyKey) {
-    const brand = params.get('cname')?.trim() || companyKey
-    const label = params.get('clabel')?.trim() || '기업 맞춤 포트폴리오'
-    const summary = params.get('cbody')?.trim()
-    const noteBody = params.get('note')?.trim()
-
-    if (!summary && !noteBody) return null
-
-    return {
-      brand,
-      label,
-      summary: summary || `${brand}의 문제를 백엔드 관점으로 이해하고 연결하겠습니다.`,
-      noteTitle: params.get('noteTitle')?.trim() || '기업 이해 메모',
-      noteBody: noteBody || '도메인과 사용자 흐름을 함께 이해하는 개발자로 접근하겠습니다.',
-      keywords: getListParam(params, 'keywords', ['도메인 이해', '신뢰 설계', '데이터 일관성']),
-      flow: getListParam(params, 'flow', []),
-      logoSrc: params.get('logo')?.trim() || undefined,
-      logoAlt: `${brand} 로고`,
-    }
-  }
-
-  if (companyKey === '' || BANKCOW_COMPANY_KEYS.has(companyKey)) {
+  if (BANKCOW_COMPANY_KEYS.has(companyKey)) {
     return BANKCOW_INSIGHT
   }
 
@@ -92,7 +51,7 @@ function CompanyInsightCard({
   companyInsight,
   dark,
 }: {
-  companyInsight: CompanyInsight
+  companyInsight: CompanyDirectionInsight
   dark: boolean
 }) {
   return (
