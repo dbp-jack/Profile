@@ -29,9 +29,19 @@ function getLocalManageRoutes(): RouteObject[] {
   }]
 }
 
+function getLocalComparisonRoutes(): RouteObject[] {
+  if (!PORTFOLIO_MANAGER_ENABLED) return []
+  const comparisonModules = import.meta.glob<ManagePageModule>('../pages/pdf-compare/page.tsx')
+  const loadComparison = comparisonModules['../pages/pdf-compare/page.tsx']
+  if (!loadComparison) return []
+  const ComparisonPage = lazy(loadComparison)
+  return [{ path: '/pdf-compare', element: <Suspense fallback={null}><ComparisonPage /></Suspense> }]
+}
+
 const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
   ...(import.meta.env.DEV ? getLocalManageRoutes() : []),
+  ...(import.meta.env.DEV ? getLocalComparisonRoutes() : []),
   { path: '/pdf', element: <PdfPortfolioPage /> },
   { path: '*', element: <NotFound /> },
 ]

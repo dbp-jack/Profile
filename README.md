@@ -7,7 +7,8 @@ React, TypeScript, Vite 기반의 웹 포트폴리오입니다.
 - `src/pages/home/page.tsx` — 공개 웹 포트폴리오 진입점
 - `src/content/projects/` — 프로젝트별 공개 콘텐츠
 - `src/content/portfolio.ts` — 공통 소개, 경험, 연락처 문구
-- `src/pages/pdf/` — PDF 미리보기 전용 화면
+- `src/pages/pdf/` — 확정한 26쪽 PDF 포트폴리오, 페이지 탐색·이미지 확대·A4 가로 저장
+- `src/pages/pdf-compare/` — 같은 PDF 본문을 사용하는 로컬 수정안
 - `src/portfolio-builder/` — 공개 URL 조합, 블록/프리셋, 문구 프로필
 
 ## 로컬 관리 페이지
@@ -28,7 +29,7 @@ npm run dev -- --host 127.0.0.1 --port 5174
 npm run build
 ```
 
-GitHub Pages 배포는 `.github/workflows/deploy.yml`에서 `main` 브랜치 push 기준으로 실행됩니다.
+GitHub Pages 배포는 `.github/workflows/deploy.yml`에서 `main` 브랜치 push 기준으로 실행됩니다. 빌드 시 `pdf/index.html`도 생성해 `/Profile/pdf/` 직접 접속과 새로고침을 지원합니다.
 
 ## 작업 기준
 

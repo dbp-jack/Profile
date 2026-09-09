@@ -2,9 +2,27 @@ import { defineConfig } from 'vite'
 import type { PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
+import { mkdir, writeFile } from 'node:fs/promises'
 
 const basePath = process.env.BASE_PATH || '/'
 const localManagerSourcePath = '/src/pages/manage/'
+
+// GitHub Pages에서도 /pdf 직접 접속과 새로고침에 앱 진입점을 제공한다.
+function pdfPageEntry(): PluginOption {
+  return {
+    name: 'pdf-page-entry',
+    apply: 'build',
+    async writeBundle({ dir }, bundle) {
+      const entry = bundle['index.html']
+      if (!dir || entry?.type !== 'asset') {
+        this.error('PDF 페이지의 HTML 진입점을 찾을 수 없습니다.')
+      }
+      const pdfDirectory = path.join(dir, 'pdf')
+      await mkdir(pdfDirectory, { recursive: true })
+      await writeFile(path.join(pdfDirectory, 'index.html'), entry.source)
+    },
+  }
+}
 
 function blockLocalManagerInPublicBuild(): PluginOption {
   return {
@@ -49,7 +67,7 @@ function blockLocalManagerInPublicBuild(): PluginOption {
 // https://vite.dev/config/
 export default defineConfig({
   base: basePath,
-  plugins: [react(), blockLocalManagerInPublicBuild()],
+  plugins: [react(), blockLocalManagerInPublicBuild(), pdfPageEntry()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
