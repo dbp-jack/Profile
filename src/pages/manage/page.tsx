@@ -19,7 +19,7 @@ import {
   createPublicPortfolioPath,
   getCompanyPreset,
 } from '@/portfolio-builder/presets'
-import type { PortfolioBlockId, PortfolioPreset } from '@/portfolio-builder/types'
+import { migrateDefaultBlockOrder, type PortfolioBlockId, type PortfolioPreset } from '@/portfolio-builder/types'
 import { COPY_PROFILES, getCopyProfile } from '@/portfolio-builder/copy-profiles'
 import {
   DEFAULT_STRENGTHS_PROFILE,
@@ -51,8 +51,8 @@ const CORE_BLOCK_IDS: readonly PortfolioBlockId[] = [
   'hero',
   'about',
   'projects',
-  'resources',
   'contact',
+  'resources',
   'footer',
 ]
 const STORY_BLOCK_IDS: readonly PortfolioBlockId[] = [
@@ -60,8 +60,8 @@ const STORY_BLOCK_IDS: readonly PortfolioBlockId[] = [
   'about',
   'projects',
   'experience',
-  'resources',
   'contact',
+  'resources',
   'footer',
 ]
 const PROJECT_QUICK_SETS: readonly {
@@ -138,7 +138,7 @@ function loadSavedBlocks(): readonly PortfolioBlockId[] {
     const parsed = JSON.parse(saved) as PortfolioBlockId[]
     const allowed = new Set(PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id))
     const valid = parsed.filter((blockId) => allowed.has(blockId))
-    return valid.length > 0 ? valid : DEFAULT_PUBLIC_PRESET.blocks
+    return valid.length > 0 ? migrateDefaultBlockOrder([...new Set(valid)]) : DEFAULT_PUBLIC_PRESET.blocks
   } catch {
     return DEFAULT_PUBLIC_PRESET.blocks
   }
@@ -175,7 +175,7 @@ function loadCustomPresets(): readonly PortfolioPreset[] {
     return parsed
       .map((preset) => ({
         ...preset,
-        blocks: preset.blocks.filter((blockId) => allowedBlocks.has(blockId)),
+        blocks: migrateDefaultBlockOrder(preset.blocks.filter((blockId) => allowedBlocks.has(blockId))),
         projectIds: normalizeProjectIds(
           preset.projectIds.filter((projectId) => allowedProjects.has(projectId)),
         ),
@@ -400,6 +400,7 @@ export default function PortfolioManagerPage() {
     updateBlocks(preset.blocks)
     updateProjects(preset.projectIds)
     updateCopyProfile(preset.copyProfileId)
+    if (preset.id === DEFAULT_PUBLIC_PRESET.id) updateStrengthsProfile(DEFAULT_STRENGTHS_PROFILE.id)
     updateCompanyKey(preset.companyKey ?? '')
   }
 
@@ -513,9 +514,9 @@ export default function PortfolioManagerPage() {
           <div className="grid gap-3 xl:grid-cols-[minmax(220px,280px)_minmax(0,1fr)_auto] xl:items-center">
             <div>
               <p className="text-xs font-extrabold uppercase text-[#2563EB]">
-                Local Portfolio Manager
+                로컬 관리
               </p>
-              <h1 className="mt-1 text-xl font-extrabold">포트폴리오 블록 조합</h1>
+              <h1 className="mt-1 text-xl font-extrabold">한 페이지 포트폴리오 관리</h1>
             </div>
             <div className="min-w-0 rounded-lg border border-blue-200 bg-blue-50/80 p-2.5">
               <div className="mb-1 flex items-center justify-between gap-2">
@@ -606,7 +607,7 @@ export default function PortfolioManagerPage() {
                     {selectedCopyProfile.name}
                   </p>
                   <p>
-                    <span className="font-bold text-slate-800">Strengths</span> ·{' '}
+                    <span className="font-bold text-slate-800">강점 소개</span> ·{' '}
                     {selectedStrengthsProfile.name}
                   </p>
                   <p>
@@ -756,7 +757,7 @@ export default function PortfolioManagerPage() {
                   <section className="border-t border-slate-200 pt-4">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <h2 className="text-sm font-extrabold">Company Direction</h2>
+                        <h2 className="text-sm font-extrabold">기업 이해</h2>
                         <p className="mt-1 text-xs leading-relaxed text-slate-500">
                           기업 키별로 자동 저장되며 생성 URL에 공개 문구로 포함됩니다.
                         </p>
@@ -985,7 +986,7 @@ export default function PortfolioManagerPage() {
                   </section>
 
                   <section className="border-t border-slate-200 pt-4">
-                    <h2 className="text-sm font-extrabold">Strengths 구성</h2>
+                    <h2 className="text-sm font-extrabold">강점 소개 방식</h2><p className="mt-2 text-xs leading-relaxed text-slate-500">요약 소개는 상단에 통합됩니다. 검증 중심을 선택하면 상세 강점이 추가되며, 구성에서 강점 소개를 켜야 표시됩니다.</p>
                     <div className="mt-3 space-y-2">
                       {STRENGTHS_PROFILES.map((profile) => {
                         const selected = profile.id === strengthsProfileId
@@ -1026,7 +1027,7 @@ export default function PortfolioManagerPage() {
               {activePanel === 'composition' ? (
                 <div className="space-y-5">
                   <section className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                    <h2 className="text-sm font-extrabold">빠른 작업</h2>
+                    <h2 className="text-sm font-extrabold">빠른 작업</h2><p className="mt-2 text-xs leading-relaxed text-slate-500">소개·기술 → 프로젝트·협업·AI → 경험 → 마무리 → 연락처 → 자료 링크 순서가 새 공개 기본값입니다.</p>
                     <div className="mt-3 grid grid-cols-2 gap-2">
                       <button
                         type="button"
@@ -1061,7 +1062,7 @@ export default function PortfolioManagerPage() {
 
                   <section className="border-t border-slate-200 pt-4">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-extrabold">프로젝트 블록</h2>
+                      <h2 className="text-sm font-extrabold">프로젝트 선택·순서</h2>
                       <span className="text-xs font-semibold text-slate-400">
                         {projectIds.length}/{MAX_VISIBLE_PROJECTS}개 선택
                       </span>
@@ -1090,7 +1091,7 @@ export default function PortfolioManagerPage() {
                       })}
                     </div>
                     <div className="mt-3 space-y-2">
-                      {PROJECTS.map((project) => {
+                      {[...selectedProjects, ...PROJECTS.filter(project => !projectIds.includes(project.id))].map((project) => {
                         const selected = projectIds.includes(project.id)
                         const selectedIndex = projectIds.indexOf(project.id)
                         return (
@@ -1155,13 +1156,13 @@ export default function PortfolioManagerPage() {
 
                   <section className="border-t border-slate-200 pt-4">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-extrabold">블록</h2>
+                      <h2 className="text-sm font-extrabold">표시할 내용·순서</h2>
                       <span className="text-xs font-semibold text-slate-400">
                         {blockIds.length}개 노출
                       </span>
                     </div>
                     <div className="mt-3 space-y-2">
-                      {PORTFOLIO_BLOCK_DEFINITIONS.map((block) => {
+                      {[...selectedBlockDefinitions, ...PORTFOLIO_BLOCK_DEFINITIONS.filter(block => !blockIds.includes(block.id))].map((block) => {
                         const selected = blockIds.includes(block.id)
                         const selectedIndex = blockIds.indexOf(block.id)
                         return (
@@ -1195,7 +1196,7 @@ export default function PortfolioManagerPage() {
                                   <button
                                     type="button"
                                     onClick={() => moveBlock(block.id, -1)}
-                                    disabled={selectedIndex === 0}
+                                    disabled={selectedIndex === 0 || (block.id === 'about' && strengthsProfileId === 'default' && blockIds.includes('hero'))}
                                     aria-label={`${block.label} 위로 이동`}
                                     title="위로 이동"
                                     className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
@@ -1205,7 +1206,7 @@ export default function PortfolioManagerPage() {
                                   <button
                                     type="button"
                                     onClick={() => moveBlock(block.id, 1)}
-                                    disabled={selectedIndex === blockIds.length - 1}
+                                    disabled={selectedIndex === blockIds.length - 1 || (block.id === 'about' && strengthsProfileId === 'default' && blockIds.includes('hero'))}
                                     aria-label={`${block.label} 아래로 이동`}
                                     title="아래로 이동"
                                     className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
@@ -1261,7 +1262,7 @@ export default function PortfolioManagerPage() {
                               publicUrl.length > 2000 ? 'text-amber-800' : 'text-emerald-700'
                             }`}
                           >
-                            Company Direction 포함 · {publicUrl.length.toLocaleString()}자
+                            기업 이해 포함 · {publicUrl.length.toLocaleString()}자
                           </p>
                           <p className="mt-1 text-xs leading-relaxed text-slate-600">
                             {publicUrl.length > 2000
@@ -1326,7 +1327,7 @@ export default function PortfolioManagerPage() {
                   </section>
 
                   <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                    이 화면은 로컬 개발 환경 전용입니다. Company Direction 문구는 생성 URL에
+                    이 화면은 로컬 개발 환경 전용입니다. 기업 이해 문구는 생성 URL에
                     공개 정보로 포함되므로 비공개 자료나 내부 정보는 입력하지 마세요.
                   </p>
                 </div>
@@ -1338,7 +1339,7 @@ export default function PortfolioManagerPage() {
             <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 xl:flex-row xl:items-center xl:justify-between">
               <div className="min-w-0">
                 <p className="text-xs font-extrabold uppercase text-slate-400">
-                  실시간 미리보기
+                  새 웹 실시간 미리보기
                 </p>
                 <p className="mt-0.5 truncate text-sm font-extrabold text-slate-700">
                   {selectedProjectNames.join(' · ')} / {selectedCopyProfile.name} /{' '}
@@ -1377,7 +1378,7 @@ export default function PortfolioManagerPage() {
               >
                 <iframe
                   key={`${previewMode}-${publicPath}`}
-                  title="포트폴리오 실시간 미리보기"
+                  title="포트폴리오 새 웹 실시간 미리보기"
                   src={publicPath}
                   className="portfolio-manager-preview-frame"
                   style={{

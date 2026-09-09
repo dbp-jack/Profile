@@ -1,4 +1,4 @@
-import { ABOUT_CARDS, ABOUT_SECTION } from '@/content/portfolio'
+import { DEFAULT_COPY_PROFILE } from './copy-profiles'
 
 export type StrengthsCard = {
   icon: string
@@ -21,16 +21,12 @@ export type StrengthsProfile = {
 export const STRENGTHS_PROFILES: readonly StrengthsProfile[] = [
   {
     id: 'default',
-    name: '기존 구성',
-    description: '현재 공개 포트폴리오의 Strengths 구성을 그대로 유지합니다.',
-    title: ABOUT_SECTION.title,
-    intro: ABOUT_SECTION.intro,
-    highlights: [
-      '응답시간 <span class="font-black text-[#2563EB]">91% 단축</span> · SQL <span class="font-black text-[#2563EB]">42→2/0</span>',
-      '팀 스프린트 <span class="font-black text-[#2563EB]">가시성 확보</span>',
-      '<span class="font-black text-[#2563EB]">기획·설계·개발을 주도적으로 진행</span>',
-    ],
-    cards: ABOUT_CARDS,
+    name: '요약 소개',
+    description: '승인된 한 페이지 구성처럼 상단 소개에 핵심 경험을 짧게 표시합니다.',
+    title: '문제의 근거와 선택 이유를 함께 설명합니다',
+    intro: DEFAULT_COPY_PROFILE.aboutIntro,
+    highlights: [],
+    cards: [],
     bulletStyle: 'legacy',
   },
   {

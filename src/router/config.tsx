@@ -38,10 +38,12 @@ function getLocalComparisonRoutes(): RouteObject[] {
   return [{ path: '/pdf-compare', element: <Suspense fallback={null}><ComparisonPage /></Suspense> }]
 }
 
+
 const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
   ...(import.meta.env.DEV ? getLocalManageRoutes() : []),
   ...(import.meta.env.DEV ? getLocalComparisonRoutes() : []),
+  ...(import.meta.env.DEV ? [{ path: '/web-preview', element: <Home /> }] : []),
   { path: '/pdf', element: <PdfPortfolioPage /> },
   { path: '*', element: <NotFound /> },
 ]

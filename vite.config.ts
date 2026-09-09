@@ -55,6 +55,7 @@ function blockLocalManagerInPublicBuild(): PluginOption {
           outputText.includes('Local Portfolio Manager') ||
           outputText.includes('portfolio-manager-') ||
           outputText.includes('포트폴리오 블록 조합') ||
+          outputText.includes('한 페이지 포트폴리오 관리') ||
           outputText.includes('../pages/manage/page.tsx')
         ) {
           throw new Error('Local portfolio manager strings were included in a public build.')
