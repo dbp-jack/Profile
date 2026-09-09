@@ -201,3 +201,9 @@
 @media(max-width:950px) { .draft-toolbar { gap:12px; padding:14px; } .draft-location { padding:10px 14px; font-size:12px; gap:8px; } .draft-viewer { --canvas-padding:16px; grid-template-columns:44px minmax(0,1fr) 44px; gap:8px; padding:0 10px; } .draft-page-turn { width:44px; height:68px; } .draft-bottom { padding:0 14px 20px; } }
 @media(max-width:650px) { .draft-brand { grid-column:1 / -1; } .draft-contents-toggle { grid-column:2; } .draft-options { grid-column:1 / -1; justify-content:center; } }
 @media(max-width:500px) { .draft-brand h1 { font-size:17px; } .draft-toolbar select,.draft-toolbar button { font-size:12px; } .draft-options { gap:5px; } .draft-location > span:not(.draft-counter) { display:none; } .draft-viewer { grid-template-columns:40px minmax(0,1fr) 40px; gap:4px; padding:0 6px; } .draft-page-turn { width:40px; height:60px; } }
+
+/* PDF로 저장해도 사용할 수 있는 표지의 공개 웹 링크 */
+.portfolio-screen .rac-slide.cover-slide { position:relative; }
+.rac-slide .cover-web-link { position:absolute; top:28px; right:50px; display:inline-flex; align-items:center; gap:10px; color:var(--blue); font-size:16px; font-weight:700; text-decoration:none; border-bottom:1px solid currentColor; padding:6px 0; }
+.rac-slide .cover-web-link:hover { color:#1d4ed8; }
+.rac-slide .cover-web-link:focus-visible { outline:3px solid var(--blue); outline-offset:5px; }

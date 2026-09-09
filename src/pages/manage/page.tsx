@@ -1,1403 +1,188 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  DEFAULT_PROJECT_IDS,
-  MAX_VISIBLE_PROJECTS,
-  PROJECTS,
-  normalizeProjectIds,
-} from '@/content/projects'
+import { useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { PROJECTS, MAX_VISIBLE_PROJECTS } from '@/content/projects'
 import NotFound from '@/pages/NotFound'
-import {
-  PORTFOLIO_MANAGER_ENABLED,
-  PUBLIC_PORTFOLIO_URL,
-} from '@/portfolio-builder/access'
+import { PORTFOLIO_MANAGER_ENABLED, PUBLIC_PORTFOLIO_URL } from '@/portfolio-builder/access'
 import { PORTFOLIO_BLOCK_DEFINITIONS } from '@/portfolio-builder/block-registry'
-import {
-  COMPANY_PUBLIC_PRESETS,
-  DEFAULT_PUBLIC_PRESET,
-  PUBLIC_PRESETS,
-  createCompanyPortfolioPath,
-  createPublicPortfolioPath,
-  getCompanyPreset,
-} from '@/portfolio-builder/presets'
-import { migrateDefaultBlockOrder, type PortfolioBlockId, type PortfolioPreset } from '@/portfolio-builder/types'
+import { COMPANY_PUBLIC_PRESETS, PUBLIC_PRESETS, createPublicPortfolioPath, normalizeCompanyKey } from '@/portfolio-builder/presets'
 import { COPY_PROFILES, getCopyProfile } from '@/portfolio-builder/copy-profiles'
-import {
-  DEFAULT_STRENGTHS_PROFILE,
-  STRENGTHS_PROFILES,
-  getStrengthsProfile,
-} from '@/portfolio-builder/strengths-profiles'
-import {
-  EMPTY_COMPANY_DIRECTION,
-  hasCompanyDirectionContent,
-  normalizeCompanyDirectionDraft,
-  type CompanyDirectionDraft,
-} from '@/portfolio-builder/company-direction'
+import { STRENGTHS_PROFILES, getStrengthsProfile } from '@/portfolio-builder/strengths-profiles'
+import { EMPTY_COMPANY_DIRECTION, type CompanyDirectionDraft } from '@/portfolio-builder/company-direction'
+import type { PortfolioBlockId } from '@/portfolio-builder/types'
+import { WORKSPACE_KEY, loadWorkspace, defaultDraft, draftFromPreset, changeProjectSlot, moveItem, addBlock, companyKeyForName } from './state'
+import type { Draft, SavedComposition, Workspace } from './state'
 import './page.css'
 
-const STORAGE_KEY = 'portfolio-manager-blocks'
-const PROJECT_STORAGE_KEY = 'portfolio-manager-projects'
-const COPY_STORAGE_KEY = 'portfolio-manager-copy'
-const STRENGTHS_STORAGE_KEY = 'portfolio-manager-strengths'
-const CUSTOM_PRESET_STORAGE_KEY = 'portfolio-manager-custom-presets'
-const COMPANY_KEY_STORAGE_KEY = 'portfolio-manager-company-key'
-const COMPANY_DIRECTION_STORAGE_KEY = 'portfolio-manager-company-directions'
+const steps = [
+  { id: 'structure', title: '프로젝트·구성', description: '보여줄 경험과 순서 선택', anchor: 'projects' },
+  { id: 'copy', title: '소개 문구', description: '강조할 강점 선택', anchor: 'profile' },
+  { id: 'company', title: '지원 기업', description: '기업 이해와 경험 연결', anchor: 'direction' },
+  { id: 'share', title: '검토·공유', description: '구성 저장과 링크 복사', anchor: 'profile' },
+] as const
+type Step = typeof steps[number]['id']
+type PreviewMode = 'fit' | 'desktop' | 'mobile'
+const names = (ids: readonly string[]) => ids.map(id => PROJECTS.find(p => p.id === id)?.name.split(' - ')[0] ?? id)
+const blockName = (id: PortfolioBlockId) => PORTFOLIO_BLOCK_DEFINITIONS.find(block => block.id === id)?.label ?? id
 
-type CopyStatus = 'idle' | 'url' | 'query' | 'markdown' | 'failed'
-type ManagerPanel = 'company' | 'composition' | 'links'
-type PreviewMode = 'desktop' | 'laptop' | 'mobile'
-
-const ALL_BLOCK_IDS = PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id)
-const CORE_BLOCK_IDS: readonly PortfolioBlockId[] = [
-  'hero',
-  'about',
-  'projects',
-  'contact',
-  'resources',
-  'footer',
-]
-const STORY_BLOCK_IDS: readonly PortfolioBlockId[] = [
-  'hero',
-  'about',
-  'projects',
-  'experience',
-  'contact',
-  'resources',
-  'footer',
-]
-const PROJECT_QUICK_SETS: readonly {
-  label: string
-  projectIds: readonly string[]
-}[] = [
-  { label: '기본', projectIds: DEFAULT_PROJECT_IDS },
-  { label: 'FeedShop + FIX', projectIds: ['feedshop', 'fix-ticketing'] },
-  { label: '3M + FIX', projectIds: ['three-m', 'fix-ticketing'] },
-]
-
-const MANAGER_PANELS: readonly {
-  id: ManagerPanel
-  label: string
-  icon: string
-}[] = [
-  { id: 'company', label: '기업', icon: 'ri-building-4-line' },
-  { id: 'composition', label: '구성', icon: 'ri-layout-grid-line' },
-  { id: 'links', label: '링크', icon: 'ri-links-line' },
-]
-
-const PREVIEW_MODES: readonly {
-  id: PreviewMode
-  label: string
-  width: number
-  height: number
-  icon: string
-}[] = [
-  { id: 'desktop', label: 'Desktop', width: 1440, height: 1100, icon: 'ri-computer-line' },
-  { id: 'laptop', label: 'Laptop', width: 1280, height: 1000, icon: 'ri-macbook-line' },
-  { id: 'mobile', label: 'Mobile', width: 390, height: 844, icon: 'ri-smartphone-line' },
-]
-
-function normalizeCompanyKey(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+function Panel({ title, description, children, aside }: { title: string; description?: string; children: ReactNode; aside?: ReactNode }) {
+  return <section className="pm-panel"><header><div><h3>{title}</h3>{description && <p>{description}</p>}</div>{aside}</header>{children}</section>
 }
-
-function hasSameOrder(left: readonly string[], right: readonly string[]): boolean {
-  return left.length === right.length && left.every((item, index) => item === right[index])
+function Preview({ path, mode }: { path: string; mode: PreviewMode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [available, setAvailable] = useState(600)
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+    const observer = new ResizeObserver(([entry]) => { if (entry.contentRect.width > 0) setAvailable(entry.contentRect.width) })
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+  const width = mode === 'desktop' ? 1280 : mode === 'mobile' ? 390 : available
+  const scale = Math.min(1, available / width)
+  return <div className="pm-preview-viewport" ref={ref}><div className="pm-preview-paper" style={{ width: width * scale }}><iframe title="현재 구성 미리보기" src={path} style={{ width, height: `calc(100% / ${scale})`, transform: `scale(${scale})` }} /></div><span className="pm-preview-size">{Math.round(width)}px · {Math.round(scale * 100)}%</span></div>
 }
-
-function matchesPreset(
-  preset: PortfolioPreset & { companyKeys?: readonly string[] },
-  blockIds: readonly PortfolioBlockId[],
-  projectIds: readonly string[],
-  copyProfileId: string,
-  companyKey: string,
-): boolean {
-  const presetCompanyKeys = [preset.companyKey ?? '', ...(preset.companyKeys ?? [])]
-    .map(normalizeCompanyKey)
-    .filter(Boolean)
-  const matchesCompanyKey = companyKey
-    ? presetCompanyKeys.includes(companyKey)
-    : presetCompanyKeys.length === 0
-
-  return (
-    hasSameOrder(preset.blocks, blockIds) &&
-    hasSameOrder(preset.projectIds, projectIds) &&
-    preset.copyProfileId === copyProfileId &&
-    matchesCompanyKey
-  )
-}
-
-function loadSavedBlocks(): readonly PortfolioBlockId[] {
-  const saved = window.localStorage.getItem(STORAGE_KEY)
-  if (!saved) return DEFAULT_PUBLIC_PRESET.blocks
-
-  try {
-    const parsed = JSON.parse(saved) as PortfolioBlockId[]
-    const allowed = new Set(PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id))
-    const valid = parsed.filter((blockId) => allowed.has(blockId))
-    return valid.length > 0 ? migrateDefaultBlockOrder([...new Set(valid)]) : DEFAULT_PUBLIC_PRESET.blocks
-  } catch {
-    return DEFAULT_PUBLIC_PRESET.blocks
-  }
-}
-
-function loadSavedProjects(): readonly string[] {
-  const saved = window.localStorage.getItem(PROJECT_STORAGE_KEY)
-  if (!saved) return DEFAULT_PROJECT_IDS
-
-  try {
-    const parsed = JSON.parse(saved) as string[]
-    return normalizeProjectIds(parsed)
-  } catch {
-    return DEFAULT_PROJECT_IDS
-  }
-}
-
-function loadSavedCopyProfile(): string {
-  return getCopyProfile(window.localStorage.getItem(COPY_STORAGE_KEY)).id
-}
-
-function loadSavedStrengthsProfile(): string {
-  return getStrengthsProfile(window.localStorage.getItem(STRENGTHS_STORAGE_KEY)).id
-}
-
-function loadCustomPresets(): readonly PortfolioPreset[] {
-  const saved = window.localStorage.getItem(CUSTOM_PRESET_STORAGE_KEY)
-  if (!saved) return []
-
-  try {
-    const parsed = JSON.parse(saved) as PortfolioPreset[]
-    const allowedBlocks = new Set(PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id))
-    const allowedProjects = new Set(PROJECTS.map((project) => project.id))
-    return parsed
-      .map((preset) => ({
-        ...preset,
-        blocks: migrateDefaultBlockOrder(preset.blocks.filter((blockId) => allowedBlocks.has(blockId))),
-        projectIds: normalizeProjectIds(
-          preset.projectIds.filter((projectId) => allowedProjects.has(projectId)),
-        ),
-        copyProfileId: getCopyProfile(preset.copyProfileId).id,
-        companyKey: normalizeCompanyKey(preset.companyKey ?? ''),
-      }))
-      .filter((preset) => preset.name.trim() && preset.blocks.length && preset.projectIds.length)
-  } catch {
-    return []
-  }
-}
-
-function loadCompanyDirections(): Record<string, CompanyDirectionDraft> {
-  const saved = window.localStorage.getItem(COMPANY_DIRECTION_STORAGE_KEY)
-  if (!saved) return {}
-
-  try {
-    const parsed = JSON.parse(saved) as Record<string, unknown>
-    return Object.fromEntries(
-      Object.entries(parsed)
-        .map(([key, value]) => [normalizeCompanyKey(key), normalizeCompanyDirectionDraft(value)])
-        .filter(([key]) => Boolean(key)),
-    )
-  } catch {
-    return {}
-  }
+function CompanyEditor({ companyKey, companies, onSelect, onUpdate, enabled, onEnable, onRemove }: {
+  companyKey: string; companies: Workspace['companies']; onSelect: (key: string, name?: string) => void
+  onUpdate: (patch: Partial<CompanyDirectionDraft>) => void; enabled: boolean; onEnable: (value: boolean) => void; onRemove: () => void
+}) {
+  const company = companies[companyKey] ?? EMPTY_COMPANY_DIRECTION
+  const [name, setName] = useState(company.companyName || companyKey)
+  const [customKey, setCustomKey] = useState('')
+  const [error, setError] = useState('')
+  const [confirmRemove, setConfirmRemove] = useState(false)
+  const field = (key: keyof CompanyDirectionDraft, label: string, placeholder: string, rows = 0) => <label className="pm-field"><span>{label}</span>{rows ? <textarea rows={rows} value={String(company[key] ?? '')} placeholder={placeholder} onChange={event => onUpdate({ [key]: event.target.value })} /> : <input value={String(company[key] ?? '')} placeholder={placeholder} onChange={event => onUpdate({ [key]: event.target.value })} />}</label>
+  return <>
+    <Panel title="어느 기업에 보여줄까요?" description="기업 이름으로 시작하세요. 기업별 내용은 이 브라우저에 보관됩니다.">
+      {Object.keys(companies).length > 0 && <label className="pm-field"><span>보관한 기업 문구</span><select value={companyKey} onChange={e => onSelect(e.target.value)}><option value="">공통 포트폴리오</option>{companyKey && !companies[companyKey] && <option value={companyKey}>{companyKey}</option>}{Object.entries(companies).map(([key, value]) => <option value={key} key={key}>{value.companyName || key}</option>)}</select></label>}
+      <form onSubmit={event => { event.preventDefault(); const key = customKey ? normalizeCompanyKey(customKey) : companyKeyForName(name); if (!name.trim() || !key) { setError('기업 이름을 입력해 주세요. 링크 식별자는 영문·숫자로 입력할 수 있습니다.'); return } setError(''); onSelect(key, name.trim()) }}>
+        <label className="pm-field"><span>기업 이름</span><input value={name} onChange={e => setName(e.target.value)} placeholder="예: 지원할 기업 이름" /></label>
+        <details className="pm-advanced"><summary>링크 식별자 직접 지정</summary><label className="pm-field"><span>링크 식별자 (선택)</span><input value={customKey} onChange={e => setCustomKey(e.target.value)} placeholder="자동 생성 · 필요하면 영문으로 지정" /></label></details>
+        <div className="pm-row"><button className="pm-button pm-primary" type="submit">이 기업으로 작업</button>{companyKey && <button className="pm-button" type="button" onClick={() => onSelect('')}>공통 구성으로 전환</button>}</div>
+        {error && <p className="pm-error" role="alert">{error}</p>}
+      </form>
+      {companies[companyKey] && <div className="pm-company-remove">{confirmRemove ? <div className="pm-row"><span>이 기업 문구를 삭제할까요?</span><button className="pm-text-button" onClick={() => setConfirmRemove(false)}>취소</button><button className="pm-text-button pm-danger" onClick={onRemove}>기업 문구 삭제 확인</button></div> : <button className="pm-text-button pm-muted" onClick={() => setConfirmRemove(true)}>보관한 기업 문구 삭제</button>}</div>}
+    </Panel>
+    {companyKey ? <Panel title={`${company.companyName || companyKey}에 전할 내용`} description="공식 자료에서 이해한 내용과 연결할 경험을 적어 주세요.">
+      <label className="pm-check-row"><input type="checkbox" checked={enabled} onChange={e => onEnable(e.target.checked)} /><span><strong>웹사이트에 기업 이해 표시</strong><small>마무리 영역에 들어갑니다</small></span></label>
+      <fieldset disabled={!enabled} className="pm-company-fields">
+        {field('label', '기업 한 줄 소개', '예: 서비스를 한 문장으로 소개')}
+        {field('summary', '이 기업을 어떻게 이해했나요?', '제품·사용자·서비스 흐름에서 이해한 내용을 작성', 4)}
+        {field('noteTitle', '주목한 내용의 제목', '기업 이해')}
+        {field('noteBody', '주목한 내용', '공식 글이나 서비스에서 인상 깊었던 점', 3)}
+        {field('experienceTitle', '내 경험의 제목', '제가 연결할 수 있는 경험')}
+        {field('experienceBody', '어떤 경험을 연결할 수 있나요?', '프로젝트에서 직접 해결한 문제와 연결', 4)}
+        <details className="pm-advanced"><summary>키워드·서비스 흐름·로고 추가</summary>{field('keywords', '핵심 키워드', '예: 데이터 정확성 | 서비스 경계')}{field('flow', '서비스 흐름', '예: 요청 | 처리 | 결과 확인')}{field('logoUrl', '로고 이미지 주소', 'https://...')}<p className="pm-help">키워드와 흐름은 |로 구분합니다.</p></details>
+      </fieldset>
+      {enabled && !company.summary.trim() && !company.noteBody.trim() && <p className="pm-help">기업 이해나 주목한 내용 중 하나를 작성하면 미리보기에 나타납니다.</p>}
+    </Panel> : <div className="pm-empty"><strong>기업별 내용은 선택 사항입니다</strong><p>공통 포트폴리오로 사용할 때는 바로 검토·공유로 넘어가도 됩니다.</p></div>}
+  </>
 }
 
 export default function PortfolioManagerPage() {
-  const [blockIds, setBlockIds] = useState<readonly PortfolioBlockId[]>(loadSavedBlocks)
-  const [projectIds, setProjectIds] = useState<readonly string[]>(loadSavedProjects)
-  const [copyProfileId, setCopyProfileId] = useState(loadSavedCopyProfile)
-  const [strengthsProfileId, setStrengthsProfileId] = useState(loadSavedStrengthsProfile)
-  const [customPresets, setCustomPresets] = useState<readonly PortfolioPreset[]>(loadCustomPresets)
-  const [presetName, setPresetName] = useState('')
-  const [companyKey, setCompanyKey] = useState(() =>
-    normalizeCompanyKey(window.localStorage.getItem(COMPANY_KEY_STORAGE_KEY) ?? ''),
-  )
-  const [companyDirections, setCompanyDirections] =
-    useState<Record<string, CompanyDirectionDraft>>(loadCompanyDirections)
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
-  const [activePanel, setActivePanel] = useState<ManagerPanel>('company')
-  const [previewMode, setPreviewMode] = useState<PreviewMode>('desktop')
-  const [previewScale, setPreviewScale] = useState(1)
-  const previewStageRef = useRef<HTMLDivElement>(null)
-  const companyDirection =
-    companyDirections[companyKey] ?? EMPTY_COMPANY_DIRECTION
-  const hasCustomCompanyDirection = hasCompanyDirectionContent(companyDirection)
-
-  const publicPath = useMemo(
-    () =>
-      createPublicPortfolioPath(
-        blockIds,
-        projectIds,
-        copyProfileId,
-        companyKey,
-        strengthsProfileId,
-        companyDirection,
-      ),
-    [blockIds, projectIds, copyProfileId, companyKey, strengthsProfileId, companyDirection],
-  )
-  const shortPublicPath = useMemo(() => {
-    if (
-      strengthsProfileId !== DEFAULT_STRENGTHS_PROFILE.id ||
-      hasCustomCompanyDirection
-    ) {
-      return null
-    }
-
-    const companyPreset = getCompanyPreset(companyKey)
-    if (!companyPreset || !matchesPreset(companyPreset, blockIds, projectIds, copyProfileId, companyKey)) {
-      return null
-    }
-
-    return createCompanyPortfolioPath(companyKey)
-  }, [
-    blockIds,
-    companyKey,
-    copyProfileId,
-    hasCustomCompanyDirection,
-    projectIds,
-    strengthsProfileId,
-  ])
-  const publicUrl = useMemo(
-    () => new URL((shortPublicPath ?? publicPath).replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
-    [publicPath, shortPublicPath],
-  )
-  const fullPublicUrl = useMemo(
-    () => new URL(publicPath.replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString(),
-    [publicPath],
-  )
-  const publicQuery = useMemo(() => publicPath.replace(/^\/\?/, ''), [publicPath])
-  const activePreset = useMemo(
-    () =>
-      [...PUBLIC_PRESETS, ...COMPANY_PUBLIC_PRESETS, ...customPresets].find((preset) =>
-        matchesPreset(preset, blockIds, projectIds, copyProfileId, companyKey),
-      ),
-    [blockIds, companyKey, copyProfileId, customPresets, projectIds],
-  )
-  const selectedProjects = useMemo(
-    () =>
-      projectIds
-        .map((projectId) => PROJECTS.find((project) => project.id === projectId))
-        .filter((project): project is (typeof PROJECTS)[number] => Boolean(project)),
-    [projectIds],
-  )
-  const selectedProjectNames = useMemo(
-    () => selectedProjects.map((project) => project.name.split(' - ')[0]),
-    [selectedProjects],
-  )
-  const selectedBlockDefinitions = useMemo(
-    () =>
-      blockIds
-        .map((blockId) => PORTFOLIO_BLOCK_DEFINITIONS.find((block) => block.id === blockId))
-        .filter((block): block is (typeof PORTFOLIO_BLOCK_DEFINITIONS)[number] => Boolean(block)),
-    [blockIds],
-  )
-  const activePreviewMode =
-    PREVIEW_MODES.find((mode) => mode.id === previewMode) ?? PREVIEW_MODES[0]
-  const selectedCopyProfile = getCopyProfile(copyProfileId)
-  const selectedStrengthsProfile = getStrengthsProfile(strengthsProfileId)
-  const copiedLabel =
-    copyStatus === 'url'
-      ? 'URL 복사됨'
-      : copyStatus === 'query'
-        ? '쿼리 복사됨'
-        : copyStatus === 'markdown'
-          ? 'Markdown 복사됨'
-          : copyStatus === 'failed'
-            ? '직접 복사 필요'
-            : null
-
+  const [workspace, setWorkspace] = useState(() => loadWorkspace({ getItem: key => window.localStorage.getItem(key) }))
+  const [undo, setUndo] = useState<Workspace | null>(null)
+  const [step, setStep] = useState<Step>('structure')
+  const [surface, setSurface] = useState<'editor' | 'preview'>('editor')
+  const [previewMode, setPreviewMode] = useState<PreviewMode>('fit')
+  const [previewAnchor, setPreviewAnchor] = useState('profile')
+  const [saveStatus, setSaveStatus] = useState('변경 내용은 자동으로 저장됩니다')
+  const [notice, setNotice] = useState('')
+  const [saveName, setSaveName] = useState('')
+  const [removeId, setRemoveId] = useState<string | null>(null)
+  const [copyFailed, setCopyFailed] = useState(false)
+  const widePreview = useRef<HTMLDialogElement>(null)
+  const [wideOpen, setWideOpen] = useState(false)
+  const openWidePreview = () => { setWideOpen(true); widePreview.current?.showModal() }
+  const { draft, saved, companies } = workspace
+  const company = companies[draft.companyKey] ?? EMPTY_COMPANY_DIRECTION
+  const companyLabel = company.companyName || draft.companyKey
+  const selectedCopy = getCopyProfile(draft.copyProfileId)
+  const selectedStrengths = getStrengthsProfile(draft.strengthsProfileId)
+  const publicPath = createPublicPortfolioPath(draft.blockIds, draft.projectIds, draft.copyProfileId, draft.companyKey, draft.strengthsProfileId, company)
+  const publicUrl = new URL(publicPath.replace(/^\//, ''), PUBLIC_PORTFOLIO_URL).toString()
+  const [previewPath, setPreviewPath] = useState(`${publicPath}#profile`)
   useEffect(() => {
-    const stage = previewStageRef.current
-    if (!stage) return
-
-    const updatePreviewScale = () => {
-      const horizontalPadding = 24
-      const availableWidth = Math.max(stage.clientWidth - horizontalPadding, 1)
-      const nextScale = Math.min(1, availableWidth / activePreviewMode.width)
-
-      setPreviewScale(Number(Math.max(0.35, nextScale).toFixed(3)))
-    }
-
-    updatePreviewScale()
-
-    const resizeObserver = new ResizeObserver(updatePreviewScale)
-    resizeObserver.observe(stage)
-    window.addEventListener('resize', updatePreviewScale)
-
-    return () => {
-      resizeObserver.disconnect()
-      window.removeEventListener('resize', updatePreviewScale)
-    }
-  }, [activePreviewMode.width])
-
+    const timer = window.setTimeout(() => setPreviewPath(`${publicPath}#${previewAnchor}`), 300)
+    return () => window.clearTimeout(timer)
+  }, [publicPath, previewAnchor])
+  const currentIndex = steps.findIndex(item => item.id === step)
+  const currentStep = steps[currentIndex]
+  const activeSaved = saved.find(item => JSON.stringify(draftFromPreset(item)) === JSON.stringify(draft))
+  useEffect(() => { const previous = document.title; document.title = '포트폴리오 작업실 · 로컬 관리'; return () => { document.title = previous } }, [])
   if (!PORTFOLIO_MANAGER_ENABLED) return <NotFound />
 
-  const updateBlocks = (nextBlocks: readonly PortfolioBlockId[]) => {
-    setBlockIds(nextBlocks)
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextBlocks))
+  const persist = (next: Workspace) => {
+    setWorkspace(next)
+    try { window.localStorage.setItem(WORKSPACE_KEY, JSON.stringify(next)); setSaveStatus('이 브라우저에 자동 저장됨') }
+    catch { setSaveStatus('저장 공간을 확인해 주세요. 현재 구성은 링크로 복사할 수 있습니다.') }
   }
-
-  const updateProjects = (nextProjectIds: readonly string[]) => {
-    const normalized = normalizeProjectIds(nextProjectIds)
-    setProjectIds(normalized)
-    window.localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(normalized))
+  const commit = (next: Workspace, message = '') => { setUndo(workspace); persist(next); setNotice(message) }
+  const updateDraft = (patch: Partial<Draft>, message = '') => commit({ ...workspace, draft: { ...draft, ...patch } }, message)
+  const go = (id: Step) => { setStep(id); setSurface('editor'); setPreviewAnchor(steps.find(item => item.id === id)!.anchor); window.scrollTo({ top: 0, behavior: 'instant' }) }
+  const apply = (preset: SavedComposition) => { updateDraft(draftFromPreset(preset), `${preset.name} 구성을 불러왔습니다`); setPreviewAnchor('profile') }
+  const toggleBlock = (id: PortfolioBlockId) => {
+    if (draft.blockIds.includes(id) && draft.blockIds.length === 1) { setNotice('표시할 내용을 하나 이상 남겨 주세요'); return }
+    updateDraft({ blockIds: draft.blockIds.includes(id) ? draft.blockIds.filter(item => item !== id) : addBlock(draft.blockIds, id) })
   }
-
-  const updateCopyProfile = (nextCopyProfileId: string) => {
-    setCopyProfileId(getCopyProfile(nextCopyProfileId).id)
-    window.localStorage.setItem(COPY_STORAGE_KEY, getCopyProfile(nextCopyProfileId).id)
+  const selectCompany = (key: string, name?: string) => {
+    const nextCompanies = name ? { ...companies, [key]: { ...(companies[key] ?? EMPTY_COMPANY_DIRECTION), companyName: name } } : companies
+    commit({ ...workspace, companies: nextCompanies, draft: { ...draft, companyKey: key } }, key ? '지원 기업을 적용했습니다' : '공통 구성으로 전환했습니다')
   }
-
-  const updateStrengthsProfile = (nextStrengthsProfileId: string) => {
-    const normalizedStrengthsProfileId = getStrengthsProfile(nextStrengthsProfileId).id
-    setStrengthsProfileId(normalizedStrengthsProfileId)
-    window.localStorage.setItem(STRENGTHS_STORAGE_KEY, normalizedStrengthsProfileId)
+  const updateCompany = (patch: Partial<CompanyDirectionDraft>) => {
+    if (!draft.companyKey) return
+    const nextCompany = { ...company, ...patch }
+    const nextDraft = patch.enabled === true ? { ...draft, blockIds: addBlock(draft.blockIds, 'closing') } : draft
+    commit({ ...workspace, draft: nextDraft, companies: { ...companies, [draft.companyKey]: nextCompany } })
   }
-
-  const updateCompanyKey = (nextCompanyKey: string) => {
-    const normalizedCompanyKey = normalizeCompanyKey(nextCompanyKey)
-    setCompanyKey(normalizedCompanyKey)
-    window.localStorage.setItem(COMPANY_KEY_STORAGE_KEY, normalizedCompanyKey)
+  const copy = async (markdown = false) => {
+    try { await navigator.clipboard.writeText(markdown ? `[${companyLabel || '정민수 포트폴리오'}](${publicUrl})` : publicUrl); setCopyFailed(false); setNotice(markdown ? '문서용 링크를 복사했습니다' : '공유 링크를 복사했습니다') }
+    catch { setCopyFailed(true); setStep('share'); setSurface('editor'); setNotice('아래 링크를 선택해 직접 복사해 주세요') }
   }
-
-  const updateCompanyDirection = (patch: Partial<CompanyDirectionDraft>) => {
-    if (!companyKey) return
-    const nextDirection = normalizeCompanyDirectionDraft({
-      ...companyDirection,
-      ...patch,
-    })
-    const nextDirections = {
-      ...companyDirections,
-      [companyKey]: nextDirection,
-    }
-    setCompanyDirections(nextDirections)
-    window.localStorage.setItem(COMPANY_DIRECTION_STORAGE_KEY, JSON.stringify(nextDirections))
+  const save = () => {
+    const name = saveName.trim()
+    if (!name) { setNotice('다시 찾기 쉬운 구성 이름을 입력해 주세요'); return }
+    const existing = saved.find(item => item.name === name)
+    const entry: SavedComposition = { id: existing?.id ?? `custom-${Date.now()}`, name, description: `${names(draft.projectIds).join(' · ')} / ${selectedCopy.name}`, blocks: [...draft.blockIds], projectIds: [...draft.projectIds], copyProfileId: draft.copyProfileId, strengthsProfileId: draft.strengthsProfileId, companyKey: draft.companyKey }
+    commit({ ...workspace, saved: [...saved.filter(item => item.id !== entry.id), entry] }, existing ? `${name} 구성을 업데이트했습니다` : `${name} 구성을 저장했습니다`)
+    setSaveName('')
   }
+  const orderedBlocks = [...draft.blockIds.map(id => PORTFOLIO_BLOCK_DEFINITIONS.find(item => item.id === id)!), ...PORTFOLIO_BLOCK_DEFINITIONS.filter(item => !draft.blockIds.includes(item.id))]
+  const previewControls = <div className="pm-segment" aria-label="미리보기 크기">{([['fit', '읽기 크기'], ['desktop', 'PC'], ['mobile', '모바일']] as const).map(([value, label]) => <button key={value} aria-pressed={previewMode === value} onClick={() => setPreviewMode(value)}>{label}</button>)}</div>
 
-  const toggleCompanyDirection = (enabled: boolean) => {
-    updateCompanyDirection({ enabled })
-    if (enabled && !blockIds.includes('closing')) {
-      const registryOrder = PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id)
-      updateBlocks(
-        [...blockIds, 'closing'].sort(
-          (left, right) => registryOrder.indexOf(left) - registryOrder.indexOf(right),
-        ),
-      )
-    }
-  }
-
-  const clearCompanyDirection = () => {
-    if (!companyKey) return
-    const nextDirections = { ...companyDirections }
-    delete nextDirections[companyKey]
-    setCompanyDirections(nextDirections)
-    window.localStorage.setItem(COMPANY_DIRECTION_STORAGE_KEY, JSON.stringify(nextDirections))
-  }
-
-  const applyPreset = (preset: PortfolioPreset) => {
-    updateBlocks(preset.blocks)
-    updateProjects(preset.projectIds)
-    updateCopyProfile(preset.copyProfileId)
-    if (preset.id === DEFAULT_PUBLIC_PRESET.id) updateStrengthsProfile(DEFAULT_STRENGTHS_PROFILE.id)
-    updateCompanyKey(preset.companyKey ?? '')
-  }
-
-  const applyBlockTemplate = (templateBlockIds: readonly PortfolioBlockId[]) => {
-    updateBlocks(templateBlockIds)
-  }
-
-
-  const saveCustomPreset = () => {
-    const name = presetName.trim()
-    const normalizedCompanyKey = normalizeCompanyKey(companyKey)
-    if (!name || !normalizedCompanyKey) return
-
-    const nextPreset: PortfolioPreset = {
-      id: `custom-${Date.now()}`,
-      name,
-      description: `${projectIds.length}개 프로젝트 · ${getCopyProfile(copyProfileId).name}`,
-      blocks: [...blockIds],
-      projectIds: [...projectIds],
-      copyProfileId,
-      companyKey: normalizedCompanyKey,
-    }
-    const nextPresets = [...customPresets.filter((preset) => preset.name !== name), nextPreset]
-    setCustomPresets(nextPresets)
-    window.localStorage.setItem(CUSTOM_PRESET_STORAGE_KEY, JSON.stringify(nextPresets))
-    setPresetName('')
-  }
-
-  const deleteCustomPreset = (presetId: string) => {
-    const nextPresets = customPresets.filter((preset) => preset.id !== presetId)
-    setCustomPresets(nextPresets)
-    window.localStorage.setItem(CUSTOM_PRESET_STORAGE_KEY, JSON.stringify(nextPresets))
-  }
-
-  const toggleBlock = (blockId: PortfolioBlockId) => {
-    if (blockIds.includes(blockId)) {
-      updateBlocks(blockIds.filter((item) => item !== blockId))
-      return
-    }
-
-    const registryOrder = PORTFOLIO_BLOCK_DEFINITIONS.map((block) => block.id)
-    updateBlocks(
-      [...blockIds, blockId].sort(
-        (left, right) => registryOrder.indexOf(left) - registryOrder.indexOf(right),
-      ),
-    )
-  }
-
-  const moveBlock = (blockId: PortfolioBlockId, direction: -1 | 1) => {
-    const currentIndex = blockIds.indexOf(blockId)
-    const targetIndex = currentIndex + direction
-    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= blockIds.length) return
-
-    const nextBlocks = [...blockIds]
-    ;[nextBlocks[currentIndex], nextBlocks[targetIndex]] = [
-      nextBlocks[targetIndex],
-      nextBlocks[currentIndex],
-    ]
-    updateBlocks(nextBlocks)
-  }
-
-  const toggleProject = (projectId: string) => {
-    if (projectIds.includes(projectId)) {
-      if (projectIds.length === 1) return
-      updateProjects(projectIds.filter((item) => item !== projectId))
-      return
-    }
-    if (projectIds.length >= MAX_VISIBLE_PROJECTS) return
-    updateProjects([...projectIds, projectId])
-  }
-
-  const moveProject = (projectId: string, direction: -1 | 1) => {
-    const currentIndex = projectIds.indexOf(projectId)
-    const targetIndex = currentIndex + direction
-    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= projectIds.length) return
-
-    const nextProjectIds = [...projectIds]
-    ;[nextProjectIds[currentIndex], nextProjectIds[targetIndex]] = [
-      nextProjectIds[targetIndex],
-      nextProjectIds[currentIndex],
-    ]
-    updateProjects(nextProjectIds)
-  }
-
-  const copyText = async (value: string, nextStatus: Exclude<CopyStatus, 'idle' | 'failed'>) => {
-    try {
-      await navigator.clipboard.writeText(value)
-      setCopyStatus(nextStatus)
-    } catch {
-      setCopyStatus('failed')
-    }
-    window.setTimeout(() => setCopyStatus('idle'), 1500)
-  }
-
-  const copyPublicUrl = () => {
-    void copyText(publicUrl, 'url')
-  }
-
-  const copyPublicQuery = () => {
-    void copyText(publicQuery, 'query')
-  }
-
-  const copyMarkdownLink = () => {
-    void copyText(`[${activePreset?.name ?? '포트폴리오'}](${publicUrl})`, 'markdown')
-  }
-
-  return (
-    <div className="portfolio-manager-page">
-      <div className="portfolio-manager-shell">
-        <header className="shrink-0 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-          <div className="grid gap-3 xl:grid-cols-[minmax(220px,280px)_minmax(0,1fr)_auto] xl:items-center">
-            <div>
-              <p className="text-xs font-extrabold uppercase text-[#2563EB]">
-                로컬 관리
-              </p>
-              <h1 className="mt-1 text-xl font-extrabold">한 페이지 포트폴리오 관리</h1>
-            </div>
-            <div className="min-w-0 rounded-lg border border-blue-200 bg-blue-50/80 p-2.5">
-              <div className="mb-1 flex items-center justify-between gap-2">
-                <span className="text-[0.68rem] font-extrabold uppercase text-blue-700">
-                  현재 공개 링크
-                </span>
-                {companyKey ? (
-                  <span className="rounded-full bg-white px-2 py-0.5 text-[0.68rem] font-bold text-blue-700 ring-1 ring-blue-200">
-                    company={companyKey}
-                  </span>
-                ) : null}
-              </div>
-              <p className="truncate rounded-md bg-white px-3 py-2 font-mono text-[0.75rem] font-semibold text-slate-700 ring-1 ring-blue-100">
-                {publicUrl}
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center justify-end gap-2">
-              {copiedLabel ? (
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-extrabold text-emerald-700">
-                  {copiedLabel}
-                </span>
-              ) : null}
-              <button
-                type="button"
-                onClick={copyPublicUrl}
-                title={publicUrl}
-                className="inline-flex items-center gap-2 rounded-md bg-[#1E3A5F] px-3 py-2 text-sm font-bold text-white hover:bg-[#152a45]"
-              >
-                <i
-                  className={copyStatus === 'url' ? 'ri-check-line' : 'ri-link'}
-                  aria-hidden="true"
-                />
-                URL 복사
-              </button>
-              <a
-                href={publicUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md border border-blue-300 bg-white px-3 py-2 text-sm font-bold text-blue-700 hover:bg-blue-50"
-              >
-                <i className="ri-external-link-line" aria-hidden="true" />
-                열기
-              </a>
-            </div>
-          </div>
-        </header>
-
-        <div className="portfolio-manager-grid">
-          <aside className="portfolio-manager-editor">
-            <div className="border-b border-slate-200 p-3">
-              <div className="grid grid-cols-3 gap-1 rounded-lg bg-slate-100 p-1">
-                {MANAGER_PANELS.map((panel) => {
-                  const selected = activePanel === panel.id
-                  return (
-                    <button
-                      key={panel.id}
-                      type="button"
-                      onClick={() => setActivePanel(panel.id)}
-                      aria-pressed={selected}
-                      className={`inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md px-2 text-sm font-extrabold transition-colors ${
-                        selected
-                          ? 'bg-white text-[#1E3A5F] shadow-sm ring-1 ring-slate-200'
-                          : 'text-slate-500 hover:bg-white/70 hover:text-slate-800'
-                      }`}
-                    >
-                      <i className={panel.icon} aria-hidden="true" />
-                      {panel.label}
-                    </button>
-                  )
-                })}
-              </div>
-
-              <section className="mt-3 rounded-lg border border-blue-200 bg-blue-50/80 p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-xs font-extrabold uppercase text-blue-600">
-                    현재 적용
-                  </span>
-                  <span className="rounded-full bg-white px-2 py-1 text-[0.68rem] font-bold text-blue-700 ring-1 ring-blue-200">
-                    {activePreset ? '저장된 프리셋' : '수동 편집'}
-                  </span>
-                </div>
-                <p className="mt-2 text-base font-extrabold text-slate-900">
-                  {activePreset?.name ?? '사용자 조합'}
-                </p>
-                <div className="mt-2 space-y-1 text-xs leading-relaxed text-slate-600">
-                  <p>
-                    <span className="font-bold text-slate-800">문구</span> ·{' '}
-                    {selectedCopyProfile.name}
-                  </p>
-                  <p>
-                    <span className="font-bold text-slate-800">강점 소개</span> ·{' '}
-                    {selectedStrengthsProfile.name}
-                  </p>
-                  <p>
-                    <span className="font-bold text-slate-800">프로젝트</span> ·{' '}
-                    {selectedProjectNames.join(', ')}
-                  </p>
-                  <p>
-                    <span className="font-bold text-slate-800">블록</span> · {blockIds.length}개
-                    {companyKey ? ` · company=${companyKey}` : ' · 공통 공개 링크'}
-                  </p>
-                </div>
-              </section>
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-y-auto p-4">
-              {activePanel === 'company' ? (
-                <div className="space-y-5">
-                  <section>
-                    <div className="flex items-center justify-between gap-3">
-                      <h2 className="text-sm font-extrabold">기업 프리셋</h2>
-                      <span className="text-xs font-semibold text-slate-400">
-                        {activePreset?.name ?? '사용자 조합'}
-                      </span>
-                    </div>
-                    <div className="mt-3 space-y-2">
-                      {[...PUBLIC_PRESETS, ...COMPANY_PUBLIC_PRESETS].map((preset) => {
-                        const selected = activePreset?.id === preset.id
-                        return (
-                          <button
-                            key={preset.id}
-                            type="button"
-                            onClick={() => applyPreset(preset)}
-                            aria-pressed={selected}
-                            className={`w-full rounded-md border px-3 py-2.5 text-left transition-colors ${
-                              selected
-                                ? 'border-blue-400 bg-blue-50 ring-1 ring-blue-200'
-                                : 'border-slate-200 hover:border-[#2563EB] hover:bg-blue-50'
-                            }`}
-                          >
-                            <span className="flex items-center justify-between gap-2 text-sm font-bold">
-                              <span className="min-w-0 truncate">{preset.name}</span>
-                              {selected ? (
-                                <span className="shrink-0 rounded-full bg-blue-600 px-2 py-0.5 text-[0.65rem] text-white">
-                                  선택됨
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                              {preset.description}
-                            </span>
-                          </button>
-                        )
-                      })}
-                      {customPresets.map((preset) => {
-                        const selected = activePreset?.id === preset.id
-                        return (
-                          <div
-                            key={preset.id}
-                            className={`flex items-stretch overflow-hidden rounded-md border ${
-                              selected
-                                ? 'border-emerald-400 bg-emerald-50 ring-1 ring-emerald-200'
-                                : 'border-emerald-200 bg-emerald-50/50'
-                            }`}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => applyPreset(preset)}
-                              aria-pressed={selected}
-                              className="min-w-0 flex-1 px-3 py-2.5 text-left hover:bg-emerald-50"
-                            >
-                              <span className="flex items-center justify-between gap-2 text-sm font-bold">
-                                <span className="truncate">{preset.name}</span>
-                                {selected ? (
-                                  <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-0.5 text-[0.65rem] text-white">
-                                    선택됨
-                                  </span>
-                                ) : null}
-                              </span>
-                              <span className="mt-0.5 block text-xs text-slate-500">
-                                {preset.companyKey ? `company=${preset.companyKey} · ` : ''}
-                                {preset.description}
-                              </span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => deleteCustomPreset(preset.id)}
-                              aria-label={`${preset.name} 프리셋 삭제`}
-                              title="프리셋 삭제"
-                              className="flex w-10 items-center justify-center border-l border-emerald-200 text-slate-400 hover:bg-red-50 hover:text-red-600"
-                            >
-                              <i className="ri-delete-bin-line" aria-hidden="true" />
-                            </button>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <h2 className="text-sm font-extrabold">맞춤 저장</h2>
-                    <div className="mt-3 space-y-2">
-                      <input
-                        value={presetName}
-                        onChange={(event) => setPresetName(event.target.value)}
-                        placeholder="예: 에이블리 지원용"
-                        aria-label="기업별 프리셋 이름"
-                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
-                      />
-                      <div className="flex items-center rounded-md border border-slate-300 bg-white px-3">
-                        <span className="shrink-0 text-xs font-semibold text-slate-400">
-                          company=
-                        </span>
-                        <input
-                          value={companyKey}
-                          onChange={(event) => updateCompanyKey(event.target.value)}
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter') saveCustomPreset()
-                          }}
-                          placeholder="ably"
-                          aria-label="기업 링크 키"
-                          className="min-w-0 flex-1 px-1 py-2 text-sm outline-none"
-                        />
-                        {companyKey ? (
-                          <button
-                            type="button"
-                            onClick={() => updateCompanyKey('')}
-                            aria-label="기업 링크 키 비우기"
-                            title="비우기"
-                            className="ml-1 flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                          >
-                            <i className="ri-close-line" aria-hidden="true" />
-                          </button>
-                        ) : null}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={saveCustomPreset}
-                        disabled={!presetName.trim() || !companyKey}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        <i className="ri-save-3-line" aria-hidden="true" />
-                        저장
-                      </button>
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <h2 className="text-sm font-extrabold">기업 이해</h2>
-                        <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                          기업 키별로 자동 저장되며 생성 URL에 공개 문구로 포함됩니다.
-                        </p>
-                      </div>
-                      <label className="inline-flex shrink-0 items-center gap-2 text-xs font-extrabold text-slate-700">
-                        <input
-                          type="checkbox"
-                          checked={companyDirection.enabled}
-                          disabled={!companyKey}
-                          onChange={(event) => toggleCompanyDirection(event.target.checked)}
-                          className="h-4 w-4 accent-[#2563EB]"
-                        />
-                        사용
-                      </label>
-                    </div>
-
-                    {!companyKey ? (
-                      <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                        먼저 위의 <strong>company=</strong> 기업 키를 입력해 주세요.
-                      </p>
-                    ) : (
-                      <div className="mt-3 space-y-3">
-                        <div className="grid grid-cols-2 gap-2">
-                          <label className="text-xs font-bold text-slate-600">
-                            기업명
-                            <input
-                              value={companyDirection.companyName}
-                              onChange={(event) =>
-                                updateCompanyDirection({ companyName: event.target.value })
-                              }
-                              placeholder="예: ABLY"
-                              maxLength={80}
-                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                          <label className="text-xs font-bold text-slate-600">
-                            한 줄 설명
-                            <input
-                              value={companyDirection.label}
-                              onChange={(event) =>
-                                updateCompanyDirection({ label: event.target.value })
-                              }
-                              placeholder="예: 스타일 커머스 플랫폼"
-                              maxLength={120}
-                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                        </div>
-
-                        <label className="block text-xs font-bold text-slate-600">
-                          회사·서비스 방향 이해
-                          <textarea
-                            value={companyDirection.summary}
-                            onChange={(event) =>
-                              updateCompanyDirection({ summary: event.target.value })
-                            }
-                            placeholder="공식 채용공고와 기술 콘텐츠에서 확인한 사실을 바탕으로 짧게 작성"
-                            maxLength={600}
-                            rows={4}
-                            className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
-                          />
-                        </label>
-
-                        <div className="grid grid-cols-[minmax(120px,0.38fr)_minmax(0,1fr)] gap-2">
-                          <label className="text-xs font-bold text-slate-600">
-                            기업 메모 제목
-                            <input
-                              value={companyDirection.noteTitle}
-                              onChange={(event) =>
-                                updateCompanyDirection({ noteTitle: event.target.value })
-                              }
-                              maxLength={120}
-                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                          <label className="text-xs font-bold text-slate-600">
-                            확인한 내용
-                            <textarea
-                              value={companyDirection.noteBody}
-                              onChange={(event) =>
-                                updateCompanyDirection({ noteBody: event.target.value })
-                              }
-                              placeholder="인상 깊었던 공식 글·채용공고·서비스 원칙"
-                              maxLength={500}
-                              rows={3}
-                              className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                        </div>
-
-                        <div className="grid grid-cols-[minmax(150px,0.45fr)_minmax(0,1fr)] gap-2">
-                          <label className="text-xs font-bold text-slate-600">
-                            경험 연결 제목
-                            <input
-                              value={companyDirection.experienceTitle}
-                              onChange={(event) =>
-                                updateCompanyDirection({ experienceTitle: event.target.value })
-                              }
-                              maxLength={120}
-                              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                          <label className="text-xs font-bold text-slate-600">
-                            내 경험·기여 연결
-                            <textarea
-                              value={companyDirection.experienceBody}
-                              onChange={(event) =>
-                                updateCompanyDirection({ experienceBody: event.target.value })
-                              }
-                              placeholder="검증된 프로젝트 경험과 기여 가능성을 연결"
-                              maxLength={600}
-                              rows={3}
-                              className="mt-1 w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm font-normal leading-relaxed text-slate-900 outline-none focus:border-[#2563EB]"
-                            />
-                          </label>
-                        </div>
-
-                        <label className="block text-xs font-bold text-slate-600">
-                          핵심 키워드
-                          <input
-                            value={companyDirection.keywords}
-                            onChange={(event) =>
-                              updateCompanyDirection({ keywords: event.target.value })
-                            }
-                            placeholder="도메인 이해 | 데이터 정합성 | 사용자 신뢰"
-                            maxLength={400}
-                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                          />
-                          <span className="mt-1 block font-normal text-slate-400">
-                            최대 6개, <strong>|</strong>로 구분
-                          </span>
-                        </label>
-
-                        <label className="block text-xs font-bold text-slate-600">
-                          핵심 서비스 흐름
-                          <input
-                            value={companyDirection.flow}
-                            onChange={(event) =>
-                              updateCompanyDirection({ flow: event.target.value })
-                            }
-                            placeholder="탐색 | 주문 | 결제 | 배송"
-                            maxLength={400}
-                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                          />
-                          <span className="mt-1 block font-normal text-slate-400">
-                            최대 6단계, <strong>|</strong>로 구분
-                          </span>
-                        </label>
-
-                        <label className="block text-xs font-bold text-slate-600">
-                          로고 URL
-                          <input
-                            value={companyDirection.logoUrl}
-                            onChange={(event) =>
-                              updateCompanyDirection({ logoUrl: event.target.value })
-                            }
-                            placeholder="https://..."
-                            maxLength={1000}
-                            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-normal text-slate-900 outline-none focus:border-[#2563EB]"
-                          />
-                          <span className="mt-1 block font-normal text-slate-400">
-                            비우면 기업명의 첫 글자를 표시합니다.
-                          </span>
-                        </label>
-
-                        {companyDirection.enabled && !hasCustomCompanyDirection ? (
-                          <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                            회사·서비스 방향 이해 또는 확인한 내용 중 하나를 입력해야 맞춤 카드가 URL에 포함됩니다.
-                          </p>
-                        ) : null}
-
-                        <div className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
-                          <span className="text-xs font-semibold text-slate-500">
-                            {hasCustomCompanyDirection
-                              ? `맞춤 카드 적용 · 링크 ${publicUrl.length.toLocaleString()}자`
-                              : '기업 키별 입력 내용 자동 저장'}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={clearCompanyDirection}
-                            className="text-xs font-extrabold text-slate-500 hover:text-red-600"
-                          >
-                            입력 초기화
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <h2 className="text-sm font-extrabold">문구 세트</h2>
-                    <div className="mt-3 space-y-2">
-                      {COPY_PROFILES.map((profile) => {
-                        const selected = profile.id === copyProfileId
-                        return (
-                          <button
-                            key={profile.id}
-                            type="button"
-                            onClick={() => updateCopyProfile(profile.id)}
-                            aria-pressed={selected}
-                            className={`w-full rounded-md border px-3 py-2.5 text-left ${
-                              selected
-                                ? 'border-blue-300 bg-blue-50'
-                                : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
-                            }`}
-                          >
-                            <span className="flex items-start justify-between gap-2">
-                              <span className="text-sm font-bold">{profile.name}</span>
-                              {profile.recommended ? (
-                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[0.65rem] font-extrabold text-amber-700 ring-1 ring-amber-200">
-                                  <i className="ri-star-line" aria-hidden="true" />
-                                  추천
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                              {profile.description}
-                            </span>
-                            <span className="mt-2 block rounded-md bg-white/80 px-2.5 py-2 text-xs font-semibold leading-relaxed text-slate-700 ring-1 ring-slate-200/80">
-                              {profile.heroRoleTitle}
-                            </span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <h2 className="text-sm font-extrabold">강점 소개 방식</h2><p className="mt-2 text-xs leading-relaxed text-slate-500">요약 소개는 상단에 통합됩니다. 검증 중심을 선택하면 상세 강점이 추가되며, 구성에서 강점 소개를 켜야 표시됩니다.</p>
-                    <div className="mt-3 space-y-2">
-                      {STRENGTHS_PROFILES.map((profile) => {
-                        const selected = profile.id === strengthsProfileId
-                        return (
-                          <button
-                            key={profile.id}
-                            type="button"
-                            onClick={() => updateStrengthsProfile(profile.id)}
-                            aria-pressed={selected}
-                            className={`w-full rounded-md border px-3 py-2.5 text-left ${
-                              selected
-                                ? 'border-blue-300 bg-blue-50'
-                                : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
-                            }`}
-                          >
-                            <span className="flex items-center justify-between gap-2">
-                              <span className="text-sm font-bold">{profile.name}</span>
-                              {selected ? (
-                                <span className="shrink-0 rounded-full bg-blue-600 px-2 py-0.5 text-[0.65rem] font-bold text-white">
-                                  선택됨
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                              {profile.description}
-                            </span>
-                            <span className="mt-2 block rounded-md bg-white/80 px-2.5 py-2 text-xs font-semibold leading-relaxed text-slate-700 ring-1 ring-slate-200/80">
-                              {profile.title}
-                            </span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </section>
-                </div>
-              ) : null}
-
-              {activePanel === 'composition' ? (
-                <div className="space-y-5">
-                  <section className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                    <h2 className="text-sm font-extrabold">빠른 작업</h2><p className="mt-2 text-xs leading-relaxed text-slate-500">소개·기술 → 프로젝트·협업·AI → 경험 → 마무리 → 연락처 → 자료 링크 순서가 새 공개 기본값입니다.</p>
-                    <div className="mt-3 grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => applyPreset(DEFAULT_PUBLIC_PRESET)}
-                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-700 hover:border-[#2563EB] hover:text-[#2563EB]"
-                      >
-                        공개 기본값
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => applyBlockTemplate(ALL_BLOCK_IDS)}
-                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-700 hover:border-[#2563EB] hover:text-[#2563EB]"
-                      >
-                        전체 블록
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => applyBlockTemplate(CORE_BLOCK_IDS)}
-                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-700 hover:border-[#2563EB] hover:text-[#2563EB]"
-                      >
-                        핵심만
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => applyBlockTemplate(STORY_BLOCK_IDS)}
-                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-extrabold text-slate-700 hover:border-[#2563EB] hover:text-[#2563EB]"
-                      >
-                        스토리형
-                      </button>
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-extrabold">프로젝트 선택·순서</h2>
-                      <span className="text-xs font-semibold text-slate-400">
-                        {projectIds.length}/{MAX_VISIBLE_PROJECTS}개 선택
-                      </span>
-                    </div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {PROJECT_QUICK_SETS.map((quickSet) => {
-                        const selected = hasSameOrder(
-                          projectIds,
-                          normalizeProjectIds(quickSet.projectIds),
-                        )
-                        return (
-                          <button
-                            key={quickSet.label}
-                            type="button"
-                            onClick={() => updateProjects(quickSet.projectIds)}
-                            aria-pressed={selected}
-                            className={`rounded-full px-3 py-1.5 text-xs font-extrabold ring-1 transition-colors ${
-                              selected
-                                ? 'bg-emerald-600 text-white ring-emerald-600'
-                                : 'bg-white text-slate-600 ring-slate-200 hover:text-emerald-700 hover:ring-emerald-300'
-                            }`}
-                          >
-                            {quickSet.label}
-                          </button>
-                        )
-                      })}
-                    </div>
-                    <div className="mt-3 space-y-2">
-                      {[...selectedProjects, ...PROJECTS.filter(project => !projectIds.includes(project.id))].map((project) => {
-                        const selected = projectIds.includes(project.id)
-                        const selectedIndex = projectIds.indexOf(project.id)
-                        return (
-                          <div
-                            key={project.id}
-                            className={`rounded-md border p-3 ${
-                              selected
-                                ? 'border-emerald-200 bg-emerald-50/70'
-                                : 'border-slate-200 bg-slate-50'
-                            }`}
-                          >
-                            <div className="flex items-start gap-3">
-                              <input
-                                id={`project-${project.id}`}
-                                type="checkbox"
-                                checked={selected}
-                                disabled={!selected && projectIds.length >= MAX_VISIBLE_PROJECTS}
-                                onChange={() => toggleProject(project.id)}
-                                className="mt-1 h-4 w-4 accent-emerald-600 disabled:cursor-not-allowed disabled:opacity-40"
-                              />
-                              <label
-                                htmlFor={`project-${project.id}`}
-                                className="min-w-0 flex-1 cursor-pointer"
-                              >
-                                <span className="block text-sm font-bold">
-                                  {project.name.split(' - ')[0]}
-                                </span>
-                                <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                                  {project.period} · {project.teamSize}
-                                </span>
-                              </label>
-                              {selected ? (
-                                <div className="flex shrink-0 gap-1">
-                                  <button
-                                    type="button"
-                                    onClick={() => moveProject(project.id, -1)}
-                                    disabled={selectedIndex === 0}
-                                    aria-label={`${project.name} 위로 이동`}
-                                    title="위로 이동"
-                                    className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
-                                  >
-                                    <i className="ri-arrow-up-line" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => moveProject(project.id, 1)}
-                                    disabled={selectedIndex === projectIds.length - 1}
-                                    aria-label={`${project.name} 아래로 이동`}
-                                    title="아래로 이동"
-                                    className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
-                                  >
-                                    <i className="ri-arrow-down-line" />
-                                  </button>
-                                </div>
-                              ) : null}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm font-extrabold">표시할 내용·순서</h2>
-                      <span className="text-xs font-semibold text-slate-400">
-                        {blockIds.length}개 노출
-                      </span>
-                    </div>
-                    <div className="mt-3 space-y-2">
-                      {[...selectedBlockDefinitions, ...PORTFOLIO_BLOCK_DEFINITIONS.filter(block => !blockIds.includes(block.id))].map((block) => {
-                        const selected = blockIds.includes(block.id)
-                        const selectedIndex = blockIds.indexOf(block.id)
-                        return (
-                          <div
-                            key={block.id}
-                            className={`rounded-md border p-3 ${
-                              selected
-                                ? 'border-blue-200 bg-blue-50/60'
-                                : 'border-slate-200 bg-slate-50'
-                            }`}
-                          >
-                            <div className="flex items-start gap-3">
-                              <input
-                                id={`block-${block.id}`}
-                                type="checkbox"
-                                checked={selected}
-                                onChange={() => toggleBlock(block.id)}
-                                className="mt-1 h-4 w-4 accent-[#2563EB]"
-                              />
-                              <label
-                                htmlFor={`block-${block.id}`}
-                                className="min-w-0 flex-1 cursor-pointer"
-                              >
-                                <span className="block text-sm font-bold">{block.label}</span>
-                                <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">
-                                  {block.description}
-                                </span>
-                              </label>
-                              {selected ? (
-                                <div className="flex shrink-0 gap-1">
-                                  <button
-                                    type="button"
-                                    onClick={() => moveBlock(block.id, -1)}
-                                    disabled={selectedIndex === 0 || (block.id === 'about' && strengthsProfileId === 'default' && blockIds.includes('hero'))}
-                                    aria-label={`${block.label} 위로 이동`}
-                                    title="위로 이동"
-                                    className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
-                                  >
-                                    <i className="ri-arrow-up-line" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => moveBlock(block.id, 1)}
-                                    disabled={selectedIndex === blockIds.length - 1 || (block.id === 'about' && strengthsProfileId === 'default' && blockIds.includes('hero'))}
-                                    aria-label={`${block.label} 아래로 이동`}
-                                    title="아래로 이동"
-                                    className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 bg-white text-slate-500 disabled:opacity-30"
-                                  >
-                                    <i className="ri-arrow-down-line" />
-                                  </button>
-                                </div>
-                              ) : null}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </section>
-                </div>
-              ) : null}
-
-              {activePanel === 'links' ? (
-                <div className="space-y-5">
-                  <section>
-                    <h2 className="text-sm font-extrabold">공개 링크</h2>
-                    <div className="mt-3 space-y-3">
-                      <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-                        <p className="text-xs font-extrabold text-slate-500">대표 링크</p>
-                        <p className="mt-2 break-all font-mono text-xs font-semibold text-slate-700">
-                          {publicUrl}
-                        </p>
-                      </div>
-                      {shortPublicPath ? (
-                        <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-                          <p className="text-xs font-extrabold text-blue-700">전체 조건 링크</p>
-                          <p className="mt-2 break-all font-mono text-xs font-semibold text-blue-800">
-                            {fullPublicUrl}
-                          </p>
-                        </div>
-                      ) : null}
-                      <div className="rounded-md border border-slate-200 bg-white p-3">
-                        <p className="text-xs font-extrabold text-slate-500">쿼리</p>
-                        <p className="mt-2 break-all font-mono text-xs font-semibold text-slate-700">
-                          {publicQuery}
-                        </p>
-                      </div>
-                      {hasCustomCompanyDirection ? (
-                        <div
-                          className={`rounded-md border p-3 ${
-                            publicUrl.length > 2000
-                              ? 'border-amber-300 bg-amber-50'
-                              : 'border-emerald-200 bg-emerald-50'
-                          }`}
-                        >
-                          <p
-                            className={`text-xs font-extrabold ${
-                              publicUrl.length > 2000 ? 'text-amber-800' : 'text-emerald-700'
-                            }`}
-                          >
-                            기업 이해 포함 · {publicUrl.length.toLocaleString()}자
-                          </p>
-                          <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                            {publicUrl.length > 2000
-                              ? '링크가 길어 일부 채용 사이트에서 잘릴 수 있습니다. 문구를 압축하거나 이메일·메신저로 전달해 주세요.'
-                              : '이 URL 하나로 선택한 구성과 기업 맞춤 문구가 함께 재현됩니다.'}
-                          </p>
-                        </div>
-                      ) : null}
-                    </div>
-                    <div className="mt-3 grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={copyPublicUrl}
-                        className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1E3A5F] px-3 py-2 text-sm font-bold text-white hover:bg-[#152a45]"
-                      >
-                        <i
-                          className={copyStatus === 'url' ? 'ri-check-line' : 'ri-link'}
-                          aria-hidden="true"
-                        />
-                        URL 복사
-                      </button>
-                      <button
-                        type="button"
-                        onClick={copyMarkdownLink}
-                        className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50"
-                      >
-                        <i className="ri-markdown-line" aria-hidden="true" />
-                        MD 링크
-                      </button>
-                      <button
-                        type="button"
-                        onClick={copyPublicQuery}
-                        className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50"
-                      >
-                        <i className="ri-file-copy-line" aria-hidden="true" />
-                        쿼리 복사
-                      </button>
-                      <a
-                        href={publicPath}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-300 bg-white px-3 py-2 text-sm font-bold text-blue-700 hover:bg-blue-50"
-                      >
-                        <i className="ri-eye-line" aria-hidden="true" />
-                        로컬 열기
-                      </a>
-                    </div>
-                  </section>
-
-                  <section className="border-t border-slate-200 pt-4">
-                    <h2 className="text-sm font-extrabold">노출 블록</h2>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {selectedBlockDefinitions.map((block, index) => (
-                        <span
-                          key={block.id}
-                          className="rounded-full bg-white px-2 py-1 text-[0.68rem] font-bold text-slate-600 ring-1 ring-slate-200"
-                        >
-                          {index + 1}. {block.label}
-                        </span>
-                      ))}
-                    </div>
-                  </section>
-
-                  <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
-                    이 화면은 로컬 개발 환경 전용입니다. 기업 이해 문구는 생성 URL에
-                    공개 정보로 포함되므로 비공개 자료나 내부 정보는 입력하지 마세요.
-                  </p>
-                </div>
-              ) : null}
-            </div>
-          </aside>
-
-          <section className="portfolio-manager-preview">
-            <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 xl:flex-row xl:items-center xl:justify-between">
-              <div className="min-w-0">
-                <p className="text-xs font-extrabold uppercase text-slate-400">
-                  새 웹 실시간 미리보기
-                </p>
-                <p className="mt-0.5 truncate text-sm font-extrabold text-slate-700">
-                  {selectedProjectNames.join(' · ')} / {selectedCopyProfile.name} /{' '}
-                  {selectedStrengthsProfile.name}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {PREVIEW_MODES.map((mode) => {
-                  const selected = mode.id === previewMode
-                  return (
-                    <button
-                      key={mode.id}
-                      type="button"
-                      onClick={() => setPreviewMode(mode.id)}
-                      aria-pressed={selected}
-                      className={`inline-flex min-h-9 items-center gap-1.5 rounded-md border px-2.5 text-xs font-extrabold transition-colors ${
-                        selected
-                          ? 'border-blue-600 bg-blue-600 text-white'
-                          : 'border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700'
-                      }`}
-                    >
-                      <i className={mode.icon} aria-hidden="true" />
-                      {mode.label}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-            <div ref={previewStageRef} className="portfolio-manager-preview-stage">
-              <div
-                className="portfolio-manager-preview-frame-shell"
-                style={{
-                  width: activePreviewMode.width * previewScale,
-                  height: activePreviewMode.height * previewScale,
-                }}
-              >
-                <iframe
-                  key={`${previewMode}-${publicPath}`}
-                  title="포트폴리오 새 웹 실시간 미리보기"
-                  src={publicPath}
-                  className="portfolio-manager-preview-frame"
-                  style={{
-                    width: activePreviewMode.width,
-                    height: activePreviewMode.height,
-                    transform: `scale(${previewScale})`,
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-500">
-              <span>
-                {activePreviewMode.width}px × {activePreviewMode.height}px
-              </span>
-              <span>{Math.round(previewScale * 100)}%</span>
-            </div>
-          </section>
-        </div>
+  return <div className="portfolio-manager-page pm-workspace">
+    <header className="pm-topbar"><a href="/" className="pm-brand"><span aria-hidden="true">P</span><div><strong>포트폴리오 작업실</strong><small>로컬 관리</small></div></a><div className="pm-top-actions"><button className="pm-button pm-quiet" onClick={() => { commit({ ...workspace, draft: defaultDraft() }, '공개 기본값으로 돌아왔습니다. 보관한 구성과 기업 문구는 유지됩니다'); setPreviewAnchor('profile') }}>기본값 복원</button><button className="pm-button pm-primary" onClick={() => void copy()}>링크 복사 <span aria-hidden="true">↗</span></button></div></header>
+    <div className="pm-shell">
+      <div className="pm-workspace-heading"><div><p className="pm-eyebrow">지원할 곳에 맞게, 필요한 경험만</p><h1>{companyLabel ? `${companyLabel} 지원용 포트폴리오` : '내 포트폴리오 다듬기'}</h1><p className="pm-save-status">{saveStatus}</p></div><label className="pm-saved-select"><span>저장한 구성 불러오기</span><select aria-label="저장한 구성 불러오기" value={activeSaved?.id ?? ''} onChange={e => { const item = saved.find(preset => preset.id === e.target.value); if (item) apply(item) }}><option value="">{saved.length ? '구성을 선택하세요' : '아직 저장한 구성이 없습니다'}</option>{saved.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label></div>
+      <nav className="pm-steps" aria-label="편집 단계">{steps.map((item, index) => <button key={item.id} aria-current={step === item.id ? 'step' : undefined} onClick={() => go(item.id)}><span className="pm-step-number">{index + 1}</span><span><strong>{item.title}</strong><small>{item.description}</small></span></button>)}</nav>
+      <div className="pm-feedback" role="status" aria-live="polite"><span>{notice || `${names(draft.projectIds).join(' · ')} · ${selectedCopy.name} · ${draft.blockIds.length}개 영역`}</span><button disabled={!undo} onClick={() => { if (undo) { persist(undo); setUndo(null); setNotice('직전 변경을 취소했습니다') } }}>직전 변경 취소</button></div>
+      <div className="pm-mobile-switch"><button aria-pressed={surface === 'editor'} onClick={() => setSurface('editor')}>내용 편집</button><button aria-pressed={surface === 'preview'} onClick={() => setSurface('preview')}>미리보기</button></div>
+      <div className="pm-layout" data-surface={surface}>
+        <main className="pm-editor"><header className="pm-editor-heading"><span>0{currentIndex + 1}</span><h2>{currentStep.title}</h2></header>
+          {step === 'structure' && <>
+            <Panel title="어떤 경험을 보여줄까요?" description="프로젝트는 최대 2개입니다. 칸에서 바로 바꾸거나 순서를 교환하세요.">
+              <label className="pm-field"><span>빠르게 시작하기</span><select aria-label="시작 구성 선택" value="" onChange={e => { const item = [...PUBLIC_PRESETS, ...COMPANY_PUBLIC_PRESETS].find(p => p.id === e.target.value); if (item) apply(item) }}><option value="">현재 구성을 유지하며 선택</option><optgroup label="기본 구성">{PUBLIC_PRESETS.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</optgroup><optgroup label="지원 분야별">{COMPANY_PUBLIC_PRESETS.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</optgroup></select></label>
+              <div className="pm-project-slots">{Array.from({ length: MAX_VISIBLE_PROJECTS }, (_, index) => { const project = PROJECTS.find(item => item.id === draft.projectIds[index]); return <div className="pm-project-slot" key={index}><span className="pm-slot-number">0{index + 1}</span><label className="pm-field"><span>{index === 0 ? '먼저 보여줄 프로젝트' : '이어서 보여줄 프로젝트'}</span><select value={draft.projectIds[index] ?? ''} onChange={e => updateDraft({ projectIds: changeProjectSlot(draft.projectIds, index, e.target.value) })}>{index > 0 && <option value="">프로젝트 하나만 보여주기</option>}{PROJECTS.map(item => <option key={item.id} value={item.id}>{item.name.split(' - ')[0]}</option>)}</select></label>{project && <p>{project.id === 'feedshop' ? '조회 성능 · 투표 동시성·정합성' : project.id === 'three-m' ? '인증 구조 · 서비스 경계 분리' : 'Kafka · 주문·결제 실패 흐름'}</p>}</div> })}</div>
+              <button className="pm-text-button" disabled={draft.projectIds.length < 2} onClick={() => updateDraft({ projectIds: [...draft.projectIds].reverse() }, '프로젝트 순서를 바꿨습니다')}>↑↓ 프로젝트 순서 바꾸기</button>
+            </Panel>
+            <Panel title="표시할 내용과 순서" description="체크한 내용만 표시합니다. 화살표로 읽는 순서를 바꿀 수 있습니다." aside={<span className="pm-count">{draft.blockIds.length}개</span>}>
+              <div className="pm-block-list">{orderedBlocks.map(block => { const index = draft.blockIds.indexOf(block.id); const selected = index >= 0; const attached = block.id === 'about' && draft.strengthsProfileId === 'default' && draft.blockIds.includes('hero'); return <div className={`pm-block-row ${selected ? 'is-selected' : ''}`} key={block.id}><label><input type="checkbox" checked={selected} onChange={() => toggleBlock(block.id)} /><span><strong>{block.label}</strong><small>{attached ? '상단 소개와 함께 표시됩니다' : block.description}</small></span></label>{selected && !attached && <div className="pm-order-buttons"><button aria-label={`${block.label} 위로`} disabled={index === 0} onClick={() => updateDraft({ blockIds: moveItem(draft.blockIds, index, -1) })}>↑</button><button aria-label={`${block.label} 아래로`} disabled={index === draft.blockIds.length - 1} onClick={() => updateDraft({ blockIds: moveItem(draft.blockIds, index, 1) })}>↓</button></div>}</div> })}</div>
+            </Panel>
+          </>}
+          {step === 'copy' && <>
+            <Panel title="나를 소개하는 첫 문장" description="강조할 경험을 고르면 상단 소개와 프로젝트 안내 문구가 함께 바뀝니다."><div className="pm-copy-options">{COPY_PROFILES.map(profile => <label className={`pm-choice ${draft.copyProfileId === profile.id ? 'is-selected' : ''}`} key={profile.id}><input type="radio" name="copy-profile" value={profile.id} checked={draft.copyProfileId === profile.id} onChange={() => updateDraft({ copyProfileId: profile.id })} /><span><strong>{profile.name}</strong><p>{profile.heroRoleTitle}</p><small>{profile.description}</small></span></label>)}</div></Panel>
+            <Panel title="강점은 얼마나 자세히 보여줄까요?"><div className="pm-copy-options">{STRENGTHS_PROFILES.map(profile => <label className={`pm-choice ${draft.strengthsProfileId === profile.id ? 'is-selected' : ''}`} key={profile.id}><input type="radio" name="strengths-profile" checked={draft.strengthsProfileId === profile.id} onChange={() => { updateDraft({ strengthsProfileId: profile.id, blockIds: addBlock(draft.blockIds, 'about') }); setPreviewAnchor(profile.id === 'default' ? 'profile' : 'strengths') }} /><span><strong>{profile.name}</strong><small>{profile.description}</small></span></label>)}</div></Panel>
+          </>}
+          {step === 'company' && <CompanyEditor key={draft.companyKey} companyKey={draft.companyKey} companies={companies} onSelect={selectCompany} onUpdate={updateCompany} enabled={company.enabled} onEnable={enabled => updateCompany({ enabled })} onRemove={() => commit({ ...workspace, draft: { ...draft, companyKey: '' }, companies: Object.fromEntries(Object.entries(companies).filter(([key]) => key !== draft.companyKey)) }, '기업 문구를 삭제했습니다. 직전 변경 취소로 복구할 수 있습니다')} />}
+          {step === 'share' && <>
+            <Panel title="공유할 구성을 확인하세요" description="링크를 받은 사람은 지금 선택한 구성으로 포트폴리오를 봅니다."><dl className="pm-review-list"><div><dt>지원 기업</dt><dd>{companyLabel || '공통 포트폴리오'}</dd></div><div><dt>프로젝트 순서</dt><dd>{names(draft.projectIds).join(' → ')}</dd></div><div><dt>소개 문구</dt><dd>{selectedCopy.name}</dd></div><div><dt>강점 소개</dt><dd>{selectedStrengths.name}</dd></div><div><dt>표시할 내용</dt><dd>{draft.blockIds.map(blockName).join(' · ')}</dd></div></dl><div className="pm-row"><button className="pm-button" onClick={openWidePreview}>미리보기 크게 열기</button><a className="pm-button" href={publicPath} target="_blank" rel="noreferrer">새 탭에서 검토 ↗</a></div></Panel>
+            <Panel title="공유 링크"><label className="pm-field"><span>이 주소를 지원서에 넣어 주세요</span><textarea className="pm-url" rows={3} readOnly value={publicUrl} onFocus={e => e.target.select()} /></label><div className="pm-row"><button className="pm-button pm-primary" onClick={() => void copy()}>공유 링크 복사</button><button className="pm-button" onClick={() => void copy(true)}>문서용 링크 복사</button></div>{copyFailed && <p className="pm-error">주소를 선택한 뒤 ⌘C 또는 Ctrl+C로 복사할 수 있습니다.</p>}</Panel>
+            <Panel title="다음에도 쓸 구성 저장" description="기업을 지정하지 않아도 저장할 수 있습니다. 같은 이름으로 저장하면 해당 구성을 업데이트합니다."><form className="pm-save-form" onSubmit={e => { e.preventDefault(); save() }}><label className="pm-field"><span>구성 이름</span><input value={saveName} onChange={e => setSaveName(e.target.value)} placeholder={companyLabel ? `${companyLabel} 지원용` : '예: 성능 개선 중심'} /></label><button className="pm-button pm-primary" type="submit" disabled={!saveName.trim()}>구성 저장</button></form>{saved.length > 0 && <ul className="pm-saved-list">{saved.map(item => <li key={item.id}><div><strong>{item.name}</strong><small>{item.description}</small></div>{removeId === item.id ? <div className="pm-row"><span>삭제할까요?</span><button className="pm-text-button" onClick={() => setRemoveId(null)}>취소</button><button className="pm-text-button pm-danger" onClick={() => { commit({ ...workspace, saved: saved.filter(preset => preset.id !== item.id) }, '저장한 구성을 삭제했습니다. 직전 변경 취소로 복구할 수 있습니다'); setRemoveId(null) }}>삭제 확인</button></div> : <div className="pm-row"><button className="pm-text-button" onClick={() => apply(item)}>불러오기</button><button className="pm-text-button pm-muted" aria-label={`${item.name} 삭제`} onClick={() => setRemoveId(item.id)}>삭제</button></div>}</li>)}</ul>}</Panel>
+          </>}
+          <footer className="pm-step-footer"><button className="pm-button" disabled={currentIndex === 0} onClick={() => go(steps[currentIndex - 1].id)}>← 이전</button>{currentIndex < steps.length - 1 ? <button className="pm-button pm-primary" onClick={() => go(steps[currentIndex + 1].id)}>다음: {steps[currentIndex + 1].title} →</button> : <button className="pm-button pm-primary" onClick={() => void copy()}>링크 복사하고 마무리 ↗</button>}</footer>
+        </main>
+        <aside className="pm-preview" aria-label="실시간 포트폴리오 미리보기"><header><div><span className="pm-eyebrow">실시간 미리보기</span><h2>이렇게 보입니다</h2></div><button className="pm-icon-button" aria-label="미리보기 크게 보기" onClick={openWidePreview}>⤢</button></header>{previewControls}<Preview path={previewPath} mode={previewMode} /><div className="pm-preview-bottom"><span>선택한 내용을 바로 반영합니다</span><a href={publicPath} target="_blank" rel="noreferrer">새 탭 ↗</a></div></aside>
       </div>
     </div>
-  )
+    <dialog className="pm-wide-preview" ref={widePreview} onClose={() => setWideOpen(false)} onClick={e => { if (e.target === e.currentTarget) widePreview.current?.close() }}><header><h2>포트폴리오 미리보기</h2><button className="pm-button" autoFocus onClick={() => widePreview.current?.close()}>닫기 ×</button></header>{wideOpen && <iframe title="크게 보는 포트폴리오" src={previewPath} />}</dialog>
+  </div>
 }
