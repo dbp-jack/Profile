@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { MouseEvent, ReactNode } from 'react'
+import type { CSSProperties, MouseEvent, ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { caseLabels, chapters, draftPages } from './content'
 import type { DraftPage } from './content'
@@ -8,7 +8,7 @@ import './page.css'
 const WIDTH = 1123
 const HEIGHT = 794
 
-function PageCanvas({ children, zoom }: { children: ReactNode; zoom: string }) {
+function PageCanvas({ children, zoom, previous, next }: { children: ReactNode; zoom: string; previous: ReactNode; next: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
   const [available, setAvailable] = useState(WIDTH)
   useEffect(() => {
@@ -19,7 +19,11 @@ function PageCanvas({ children, zoom }: { children: ReactNode; zoom: string }) {
     return () => observer.disconnect()
   }, [])
   const scale = zoom === 'fit' ? Math.min(1, Math.max(0.1, available / WIDTH)) : Number(zoom)
-  return <div ref={ref} className="draft-canvas"><div className="draft-paper-size" style={{ width: WIDTH * scale, height: HEIGHT * scale }}><div className="draft-paper" style={{ width: WIDTH, height: HEIGHT, transform: `scale(${scale})` }}>{children}</div></div></div>
+  return <div className="draft-viewer" style={{ '--preview-height': `${HEIGHT * scale}px` } as CSSProperties}>
+    {previous}
+    <div ref={ref} className="draft-canvas"><div className="draft-paper-size" style={{ width: WIDTH * scale, height: HEIGHT * scale }}><div className="draft-paper" style={{ width: WIDTH, height: HEIGHT, transform: `scale(${scale})` }}>{children}</div></div></div>
+    {next}
+  </div>
 }
 
 function PortfolioSlide({ page, pageNumber }: { page: DraftPage; pageNumber: number }) {
@@ -100,22 +104,21 @@ export default function PdfPortfolio({ preview = false }: { preview?: boolean })
     <div className="portfolio-screen">
     <header className="draft-toolbar">
       <div className="draft-brand"><h1>{preview ? '포트폴리오 수정안' : '정민수 포트폴리오'}</h1><p>{preview ? '통합 수정안' : 'PDF 포트폴리오'} · {draftPages.length}쪽</p></div>
-      <div className="draft-navigation">
-        <button onClick={() => go(pageNumber - 1)} disabled={pageNumber === 1} aria-label="이전 페이지">←</button>
-        <label className="draft-page-picker"><span className="sr-only">페이지 선택</span><select value={pageNumber} onChange={e => go(Number(e.target.value))}>{chapters.map(c => <optgroup label={c.name} key={c.name}>{draftPages.slice(c.start - 1, c.end).map((p, i) => <option value={c.start + i} key={p.id}>{String(c.start + i).padStart(2, '0')} · {p.title}</option>)}</optgroup>)}</select></label>
-        <button onClick={() => go(pageNumber + 1)} disabled={pageNumber === draftPages.length} aria-label="다음 페이지">→</button>
-      </div>
-      <div className="draft-options">{!preview && <><Link className="pdf-home-link" to="/">← 사이트로</Link><button className="pdf-save-button" onClick={savePdf} disabled={preparingPrint}>{preparingPrint ? '저장 준비 중…' : 'PDF로 저장'}</button></>}<button aria-expanded={contentsOpen} aria-controls="draft-contents" onClick={() => setContentsOpen(!contentsOpen)}>전체 목차</button><label><span className="sr-only">확대 비율</span><select aria-label="확대 비율" value={zoom} onChange={e => setZoom(e.target.value)}><option value="fit">너비 맞춤</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option></select></label></div>
+      <button className="draft-contents-toggle" aria-expanded={contentsOpen} aria-controls="draft-contents" onClick={() => setContentsOpen(!contentsOpen)}>전체 목차</button>
+      <div className="draft-options">{!preview && <><Link className="pdf-home-link" to="/">← 사이트로</Link><button className="pdf-save-button" onClick={savePdf} disabled={preparingPrint}>{preparingPrint ? '저장 준비 중…' : 'PDF로 저장'}</button></>}<label><span className="sr-only">확대 비율</span><select aria-label="확대 비율" value={zoom} onChange={e => setZoom(e.target.value)}><option value="fit">너비 맞춤</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option></select></label></div>
     </header>
     {printError && <p className="pdf-print-error" role="alert">{printError}</p>}
     {contentsOpen && <nav id="draft-contents" className="draft-contents" aria-label="전체 페이지 목차">{chapters.map(c => <section key={c.name}><h2>{c.name}</h2>{draftPages.slice(c.start - 1, c.end).map((p, i) => <button aria-current={pageNumber === c.start + i ? 'page' : undefined} key={p.id} onClick={() => go(c.start + i)}><span>{String(c.start + i).padStart(2, '0')}</span>{p.title}</button>)}</section>)}</nav>}
     <div className="draft-location"><strong>{chapter.name}</strong><span>{caseLabel ? `문제 해결 ${caseLabel.number} · ${caseLabel.name}` : page.section}</span><span className="draft-counter">{pageNumber} / {draftPages.length}</span></div>
     <div className="portfolio-screen-page" onClick={handleDocumentClick}>
-      <PageCanvas zoom={zoom}>
+      <PageCanvas zoom={zoom}
+        previous={<button className="draft-page-turn" onClick={() => go(pageNumber - 1)} disabled={pageNumber === 1} aria-label="이전 페이지"><span aria-hidden="true">←</span><span>이전</span></button>}
+        next={<button className="draft-page-turn" onClick={() => go(pageNumber + 1)} disabled={pageNumber === draftPages.length} aria-label="다음 페이지"><span aria-hidden="true">→</span><span>다음</span></button>}
+      >
         <PortfolioSlide page={page} pageNumber={pageNumber} />
       </PageCanvas>
     </div>
-    <div className="draft-bottom"><span>근거 이미지를 누르면 크게 볼 수 있습니다.</span><button onClick={() => go(3)}>목차 페이지로</button><button onClick={() => go(pageNumber + 1)} disabled={pageNumber === draftPages.length}>다음 페이지 →</button></div>
+    <div className="draft-bottom">근거 이미지를 누르면 크게 볼 수 있습니다.</div>
     </div>
     {!preview && <div ref={printPages} className="portfolio-print-pages" aria-hidden="true">{draftPages.map((p, i) => <div className="pdf-print-sheet" key={p.id}><PortfolioSlide page={p} pageNumber={i + 1} /></div>)}</div>}
     <dialog ref={evidenceDialog} className="evidence-dialog" aria-labelledby="evidence-title" onClick={event => event.stopPropagation()} onClose={() => setEvidence(null)}>
