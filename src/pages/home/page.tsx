@@ -232,10 +232,6 @@ export default function Home() {
       navigate(`${homePath}${location.search}#${migratedAnchor}`, { replace: true })
       return
     }
-    if (location.pathname === '/web-preview') {
-      navigate(`${homePath}${location.search}${location.hash}`, { replace: true })
-      return
-    }
     const frame = requestAnimationFrame(() => {
       const target = location.hash ? document.getElementById(location.hash.slice(1)) : null
       if (target) target.scrollIntoView({ behavior: 'instant', block: 'start' })

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import type { ComponentType } from 'react'
 import type { RouteObject } from 'react-router-dom'
+import LegacyPreviewRedirect from './LegacyPreviewRedirect'
 import NotFound from '../pages/NotFound'
 import Home from '../pages/home/page'
 import PdfPortfolioPage from '../pages/pdf/page'
@@ -29,21 +30,13 @@ function getLocalManageRoutes(): RouteObject[] {
   }]
 }
 
-function getLocalComparisonRoutes(): RouteObject[] {
-  if (!PORTFOLIO_MANAGER_ENABLED) return []
-  const comparisonModules = import.meta.glob<ManagePageModule>('../pages/pdf-compare/page.tsx')
-  const loadComparison = comparisonModules['../pages/pdf-compare/page.tsx']
-  if (!loadComparison) return []
-  const ComparisonPage = lazy(loadComparison)
-  return [{ path: '/pdf-compare', element: <Suspense fallback={null}><ComparisonPage /></Suspense> }]
-}
-
-
 const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
   ...(import.meta.env.DEV ? getLocalManageRoutes() : []),
-  ...(import.meta.env.DEV ? getLocalComparisonRoutes() : []),
-  ...(import.meta.env.DEV ? [{ path: '/web-preview', element: <Home /> }] : []),
+  ...(import.meta.env.DEV && PORTFOLIO_MANAGER_ENABLED ? [
+    { path: '/pdf-compare', element: <LegacyPreviewRedirect to="/pdf" /> },
+    { path: '/web-preview', element: <LegacyPreviewRedirect to="/" /> },
+  ] : []),
   { path: '/pdf', element: <PdfPortfolioPage /> },
   { path: '*', element: <NotFound /> },
 ]

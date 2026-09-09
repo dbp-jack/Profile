@@ -21,20 +21,23 @@ If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is 
 - 최신 성공 GitHub Pages 배포본을 화면 비교 기준으로 사용하고, canonical workspace를 편집 정본으로 사용합니다. 둘이 다르면 수정 전에 차이를 알리고 정합성을 맞춥니다.
 - If multiple worktrees exist, stop and reconcile them before editing, committing, pushing, or deploying.
 
-## Current UI Baseline
+## 현재 정본과 기업별 작업 시작
 
-The current sidebar baseline is:
-
-`Profile → Strengths → Projects → P1 FeedShop → P2 3M → Work Style → Direction → Experience → Resources → Contact`
-
-Do not replace these labels with older wording such as `Hero`, `About`, `How I Work`, or `Closing`.
+- 새 작업은 `README.md`와 `docs/portfolio-delivery.md`를 먼저 읽습니다. 최신 구성·확정 문구·수치의 한계·기업별 작업 절차는 이 인계를 기준으로 이어갑니다.
+- 현재 웹은 `src/pages/home/`의 한 페이지 구성(`/`), PDF는 `src/pages/pdf/`의 26쪽(`/pdf`), 로컬 관리 도구는 `src/pages/manage/`(`/manage`)입니다.
+- 웹 기본 순서는 소개·기술 → FeedShop(문제 2개·회고) → 3M(통합 문제 1개·회고) → 협업·AI → 경험 → 마무리·연락처·자료입니다. 예전 사이드바와 프로젝트별 왕복 화면을 복원하지 않습니다.
+- `/web-preview`, `/pdf-compare`는 로컬의 과거 북마크를 현재 정본으로 보내는 경로만 유지합니다. 별도 시안 본문을 만들지 않습니다.
+- PDF 4·15쪽의 소개·서비스 흐름·담당/효과 배치는 사용자 확정 사항입니다. 다른 페이지를 수정하며 함께 바꾸지 않습니다.
+- 기업별 작업은 기업명과 지원공고 URL 또는 전문을 받은 뒤 시작합니다. 과거 뱅카우 등 다른 지원 기업을 현재 대상으로 추정하지 않습니다.
+- 기업별 선택은 기존 `/manage` 기능을 먼저 사용하고 공통 기본값은 유지합니다. 새 회사의 요구사항을 공통 본문에 자동 반영하거나, 웹 공유 URL만으로 PDF도 맞춤화됐다고 판단하지 않습니다.
+- 2026-09-10 격리한 과거 출력물은 ignored `output/archive/2026-09-10-obsolete-portfolio/`에 있습니다. 현재본이나 제출 자료의 근거로 사용하지 않습니다. 과거 화면 작업 기록은 Git 이력에서만 필요한 경우 확인합니다.
 
 ## Mentor Feedback Review Loop
 
 - Treat `docs/mentor-feedback-rubric.md` as the single source of truth for portfolio and resume feedback.
 - 다음 두 김현수 멘토 원문은 페이지 검토와 수정 전에 반드시 다시 확인하는 고정 자료입니다.
-  - 1차: `/Users/minsujeong/Downloads/김현수멘토님피드백.pdf`
-  - 2차: `/Users/minsujeong/Downloads/김현수멘토님피드백2차.pdf`
+  - 1차: `/Users/minsujeong/Downloads/01_커리어_지원/멘토링_특강/멘토링_피드백_김현수_1차.pdf`
+  - 2차: `/Users/minsujeong/Downloads/01_커리어_지원/멘토링_특강/멘토링_피드백_김현수_2차.pdf`
 - 컨텍스트가 압축됐더라도 대화 기억만으로 이어서 작업하지 않습니다. 매 페이지 검토 또는 수정 전에 두 파일의 존재와 관련 구간 재확인을 마친 뒤, 사용자에게 `현재 하려는 작업`, `1차 확인 내용`, `2차 확인 내용`을 먼저 알립니다. 직접 조언이 없으면 `해당 없음`으로 명시합니다.
 - 피드백 파일 업로드, 원문 검토, 요약, 수정안 제안은 포트폴리오 반영 승인이 아닙니다. 사용자가 해당 페이지에 대해 `작업해`, `반영해`, `수정해`처럼 명시적으로 승인하기 전에는 웹·PDF·관련 콘텐츠 파일을 수정하지 않습니다.
 - 각 단계에서 도구를 사용하거나 파일을 확인하기 전에 지금 무엇을 확인하고 있으며 무엇은 수정하지 않는지 사용자에게 먼저 짧게 알립니다.
@@ -47,18 +50,20 @@ Do not replace these labels with older wording such as `Hero`, `About`, `How I W
 - Keep source-specific advice separate. Resolve overlaps and conflicts only through the rubric's conflict decisions.
 - Portfolio rules and resume review rules are both active. Do not mix their source IDs or integrated rules.
 
-## Resume Review Workflow
+## Resume and Interview Workflow
 
-- The user maintains two resumes: `상세버전` and `함축버전`. Treat them as separate documents with different density goals, never as interchangeable revisions of one file.
-- The current canonical resume files are:
-  - `상세버전` (`v5_2`, 3 pages): `/Users/minsujeong/Downloads/멘토리용 이력서v5_2_상세.pdf`
-  - `함축버전` (`v5_2`, 2 pages): `/Users/minsujeong/Downloads/멘토리용 이력서v5_2_함축.pdf`
-- Before every resume review or wording proposal, re-open and compare both current resume files. Do not rely on conversation memory or a compacted context.
-- Re-read the resume-specific sources and integrated rules in `docs/mentor-feedback-rubric.md` before every review. Keep portfolio-only guidance out unless the rubric explicitly connects it to resume rules.
-- In this chat, do not edit either resume file. Propose changes for the user to apply in the format `수정 전 → 수정 후 → 변경 이유`.
-- Label every proposal with its target: `상세버전`, `함축버전`, or `공통`. Never assume a change applies to both.
-- After the detailed and compact resume reviews are complete, provide a separate `중간 버전` proposal that preserves the strongest evidence from the detailed version at a density between the two source resumes. Do not treat it as a replacement unless the user explicitly adopts it.
-- If either current resume file is unavailable or its version is ambiguous, stop and request the missing file before reviewing or proposing a change.
+- 공통·인성 질문과 최신 이력서 기반 기술질문·답변은 일반 면접 기준본으로 분리해 유지합니다. 기업별 지원 작업과 질문은 해당 기업 작업에서 별도로 다룹니다.
+- 면접 자료의 canonical 폴더는 다음 경로입니다.
+  - `/Users/minsujeong/Downloads/01_커리어_지원/자소서_면접`
+- 현재 유일한 canonical 이력서는 `v5_3` 3페이지 PDF입니다.
+  - `/Users/minsujeong/Downloads/01_커리어_지원/자소서_면접/00_Current_Resume/멘토리용 이력서_v5_3.pdf`
+- canonical 이력서의 버전·페이지 수·SHA-256과 사용 규칙은 같은 폴더의 `README.md`를 기준으로 확인합니다. 2026-09-10 현재 위 실제 경로에서 3쪽과 SHA-256 `2a92c0e3517f9cf001176368e3fb35646191555dfa9c8d105fb120e6f4b0fa85`를 재확인했습니다. 외부 README의 경로 문장은 이동 전 위치이므로 파일 식별에는 해시도 대조합니다.
+- 이력서 기반 검토나 질문 작성을 시작할 때마다 canonical PDF와 `README.md`를 다시 열어 확인합니다. 대화 기억이나 압축된 컨텍스트만으로 이어서 작업하지 않습니다.
+- `v5_2` 상세·함축본과 그 이전 이력서·기업별 지원서·중간산출물은 2026-08-03에 정본에서 제외했습니다. 다시 발견해도 면접 질문의 근거로 사용하지 않습니다.
+- 새 이력서가 들어오면 파일 열람, 전체 페이지 렌더링, 페이지 수, SHA-256을 검증한 뒤 canonical 경로와 `README.md`를 갱신합니다. 새 파일 검증 전에는 기존 정본을 제거하지 않습니다.
+- 사용자가 명시적으로 요청하지 않는 한 이력서 PDF 자체는 수정하지 않습니다. 이력서 문구 검토를 요청하면 `docs/mentor-feedback-rubric.md`의 이력서 전용 규칙을 다시 확인합니다.
+- 특정 기업용 질문이나 답변은 사용자가 회사를 지정했을 때만 별도로 다룹니다. 일반 면접 기준본에 기업별 내용을 섞지 않습니다.
+- 답변을 작성할 때 `이력서 명시`, `별도 근거 확인`, `지원자 설명`, `일반론`을 구분합니다. 구현·측정 근거가 확인되지 않은 기술, 수치, 성과는 본인 경험으로 단정하지 않습니다.
 
 ## Backup Rule
 

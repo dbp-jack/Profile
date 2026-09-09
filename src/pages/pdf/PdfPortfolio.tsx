@@ -44,7 +44,7 @@ function PortfolioSlide({ page, pageNumber }: { page: DraftPage; pageNumber: num
   )
 }
 
-export default function PdfPortfolio({ preview = false }: { preview?: boolean }) {
+export default function PdfPortfolio() {
   const [params, setParams] = useSearchParams()
   const raw = Number(params.get('page') ?? 1)
   const pageNumber = Number.isInteger(raw) && raw >= 1 && raw <= draftPages.length ? raw : 1
@@ -61,9 +61,9 @@ export default function PdfPortfolio({ preview = false }: { preview?: boolean })
 
   useEffect(() => {
     const previousTitle = document.title
-    document.title = preview ? '포트폴리오 · 통합 수정안' : '정민수 포트폴리오'
+    document.title = '정민수 포트폴리오'
     return () => { document.title = previousTitle }
-  }, [preview])
+  }, [])
 
   useEffect(() => {
     if (evidence && !evidenceDialog.current?.open) evidenceDialog.current?.showModal()
@@ -103,9 +103,9 @@ export default function PdfPortfolio({ preview = false }: { preview?: boolean })
   return <main className="portfolio-draft">
     <div className="portfolio-screen">
     <header className="draft-toolbar">
-      <div className="draft-brand"><h1>{preview ? '포트폴리오 수정안' : '정민수 포트폴리오'}</h1><p>{preview ? '통합 수정안' : 'PDF 포트폴리오'} · {draftPages.length}쪽</p></div>
+      <div className="draft-brand"><h1>정민수 포트폴리오</h1><p>PDF 포트폴리오 · {draftPages.length}쪽</p></div>
       <button className="draft-contents-toggle" aria-expanded={contentsOpen} aria-controls="draft-contents" onClick={() => setContentsOpen(!contentsOpen)}>전체 목차</button>
-      <div className="draft-options">{!preview && <><Link className="pdf-home-link" to="/">← 사이트로</Link><button className="pdf-save-button" onClick={savePdf} disabled={preparingPrint}>{preparingPrint ? '저장 준비 중…' : 'PDF로 저장'}</button></>}<label><span className="sr-only">확대 비율</span><select aria-label="확대 비율" value={zoom} onChange={e => setZoom(e.target.value)}><option value="fit">너비 맞춤</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option></select></label></div>
+      <div className="draft-options"><Link className="pdf-home-link" to="/">← 사이트로</Link><button className="pdf-save-button" onClick={savePdf} disabled={preparingPrint}>{preparingPrint ? '저장 준비 중…' : 'PDF로 저장'}</button><label><span className="sr-only">확대 비율</span><select aria-label="확대 비율" value={zoom} onChange={e => setZoom(e.target.value)}><option value="fit">너비 맞춤</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option></select></label></div>
     </header>
     {printError && <p className="pdf-print-error" role="alert">{printError}</p>}
     {contentsOpen && <nav id="draft-contents" className="draft-contents" aria-label="전체 페이지 목차">{chapters.map(c => <section key={c.name}><h2>{c.name}</h2>{draftPages.slice(c.start - 1, c.end).map((p, i) => <button aria-current={pageNumber === c.start + i ? 'page' : undefined} key={p.id} onClick={() => go(c.start + i)}><span>{String(c.start + i).padStart(2, '0')}</span>{p.title}</button>)}</section>)}</nav>}
@@ -120,7 +120,7 @@ export default function PdfPortfolio({ preview = false }: { preview?: boolean })
     </div>
     <div className="draft-bottom">근거 이미지를 누르면 크게 볼 수 있습니다.</div>
     </div>
-    {!preview && <div ref={printPages} className="portfolio-print-pages" aria-hidden="true">{draftPages.map((p, i) => <div className="pdf-print-sheet" key={p.id}><PortfolioSlide page={p} pageNumber={i + 1} /></div>)}</div>}
+    <div ref={printPages} className="portfolio-print-pages" aria-hidden="true">{draftPages.map((p, i) => <div className="pdf-print-sheet" key={p.id}><PortfolioSlide page={p} pageNumber={i + 1} /></div>)}</div>
     <dialog ref={evidenceDialog} className="evidence-dialog" aria-labelledby="evidence-title" onClick={event => event.stopPropagation()} onClose={() => setEvidence(null)}>
       {evidence && <><header><h2 id="evidence-title">{evidence.caption}</h2><button autoFocus onClick={() => evidenceDialog.current?.close()} aria-label="이미지 닫기">닫기 ×</button></header><div className="evidence-image"><img src={evidence.src} alt={evidence.caption} /></div><a href={evidence.src} target="_blank" rel="noreferrer">원본 이미지 열기 ↗</a></>}
     </dialog>
