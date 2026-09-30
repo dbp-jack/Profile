@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { COLLABORATION_SECTION, EXPERIENCE_ITEMS, HERO_SKILL_GROUPS, PROJECT_WORKFLOW, RESOURCE_LINKS } from '@/content/portfolio'
 import plannerScreen from '../pdf/assets/planner-screen.png'
+import { FEEDSHOP_SCREENS } from '@/content/feedshop-screens'
+import { THREE_M_SCREENS } from '@/content/three-m-screens'
 import { authReport, boundaryWiki, projects, queryWiki, recoveryCommit, survey, voteWiki } from './data'
 import type { PortfolioProject } from './data'
 import { resolveWebComposition } from './composition'
@@ -100,7 +102,7 @@ function HomeView({ show, activeSection, composition, search }: { show: ShowEvid
     <section className="wc-soft-section" id="work"><div className="wc-container wc-section"><SectionHeading number="02" title="함께 일하는 방식">과정을 공유하고, 도구의 결과를 직접 확인합니다</SectionHeading>
       <article className="wc-work-row"><div><span className="wc-kicker">팀 협업</span><h3>작업 변경을 자동 공유해<br />팀의 흐름을 투명하게</h3><p>JIRA 운영 기준과 Confluence 자료 체계를 정리했습니다. Slack 알림으로 이슈·커밋 변경을 자동 공유해 담당과 진행 상태를 함께 확인하고 추적할 수 있게 했습니다.</p><ExternalLink href={COLLABORATION_SECTION.guideUrl}>직접 작성한 JIRA 가이드라인</ExternalLink></div><Evidence src={asset(COLLABORATION_SECTION.evidence[1].image)} caption="JIRA 이슈·커밋 변경이 Slack에 자동 공유된 화면" show={show} /></article>
       <details className="wc-disclosure"><summary>스프린트 운영과 자료 정리 근거 <span>2개 자료 <b aria-hidden="true">+</b></span></summary><div className="wc-proof-grid">{[COLLABORATION_SECTION.evidence[0], COLLABORATION_SECTION.evidence[2]].map(item => <div key={item.image}><Evidence src={asset(item.image)} caption={item.title} show={show} /><p className="wc-caption">{item.description}</p></div>)}</div></details>
-      <article className="wc-work-row wc-planner-row"><div><span className="wc-kicker">AI 활용 · 개인 플래너</span><h3>일상을 관리하고<br />기록·정리하는 도구 제작</h3><p>Codex와 AI 도구로 개인 플래너를 제작해 일상의 관리·기록·정리에 사용하고 있습니다. 생성한 코드는 변경 영향과 실제 동작을 직접 확인합니다.</p><p className="wc-small-label">AI 원티드 챌린지 대회 참여 중</p><ExternalLink href={PROJECT_WORKFLOW.currentStage.linkUrl}>플래너 제작 후기</ExternalLink></div><Evidence src={plannerScreen} caption="직접 제작해 사용 중인 개인 플래너" show={show} /></article>
+      <article className="wc-work-row wc-planner-row"><div><span className="wc-kicker">AI 활용 · 개인 플래너</span><h3>일상을 관리하고<br />기록·정리하는 도구 제작</h3><p>Codex와 AI 도구로 개인 플래너를 제작해 일상의 관리·기록·정리에 사용하고 있습니다. 생성한 코드는 변경 영향과 실제 동작을 직접 확인합니다.</p><p className="wc-small-label">AI 원티드 챌린지 대회 참여 중</p><ExternalLink href={PROJECT_WORKFLOW.currentStage.linkUrl}>플래너 제작 과정</ExternalLink></div><Evidence src={plannerScreen} caption="직접 제작해 사용 중인 개인 플래너" show={show} /></article>
       <details className="wc-disclosure"><summary>AI 활용 과정과 현재·다음 단계 <span><b aria-hidden="true">+</b></span></summary><Steps items={[["근거와 생각 정리", "NotebookLM으로 근거를 모으고 Claude·Gemini로 문서와 대안을 정리"], ["구현과 직접 검증", "Codex·Claude Code로 구현하고 코드 이해·변경 영향·빌드·테스트·실제 동작 확인"], ["다음 단계", "일상 도구 제작에서 기술 문제의 원인 분석과 해결책 설계·검증으로 활용 범위 확장"]]} /></details>
     </div></section></>,
     experience: <section className="wc-container wc-section" id="experience"><SectionHeading number="03" title="관련 경험">개발·교육·발표로 쌓은 경험</SectionHeading><div className="wc-experience-list">{[EXPERIENCE_ITEMS[4], EXPERIENCE_ITEMS[0], EXPERIENCE_ITEMS[1]].map(item => <div key={item.title}><p className="wc-meta">{item.period}<span>{item.category}</span></p><div><h3>{item.title}</h3><p>{item.detail}</p></div></div>)}</div><details className="wc-disclosure"><summary>교육·발표 경험 더 보기 <span>2개 경험 <b aria-hidden="true">+</b></span></summary><div className="wc-experience-list">{EXPERIENCE_ITEMS.slice(2, 4).map(item => <div key={item.title}><p className="wc-meta">{item.period}<span>{item.category}</span></p><div><h3>{item.title}</h3><p>{item.detail}</p></div></div>)}</div></details></section>,
@@ -192,6 +194,19 @@ function ProjectStory({ project, show }: { project: PortfolioProject; show: Show
   const feed = project.id === 'feedshop'
   return <article className="wc-project-story" id={project.id}>
     <header className="wc-project-heading"><span className="wc-kicker">프로젝트 {project.number} · {project.category}</span><h2>{project.name}</h2><p>{project.description}</p><dl className="wc-project-facts"><div><dt>기간</dt><dd>{project.period}</dd></div><div><dt>팀 구성</dt><dd>{project.team}</dd></div><div><dt>내 역할</dt><dd>{project.role}</dd></div></dl><p className="wc-detail-stack">{project.stack.join(' · ')}</p><div className="wc-sources"><ExternalLink href={project.github}>GitHub</ExternalLink><ExternalLink href={project.wiki}>Wiki</ExternalLink></div></header>
+    {!feed && <section className="wc-service-screens" aria-labelledby="three-m-screens-title">
+      <h3 id="three-m-screens-title">3M · 물류 서비스 흐름</h3>
+      <p className="wc-service-flow">공급 업체의 입고부터 허브 간 이동과 수령 업체 배송까지</p>
+      <div className="wc-three-m-screens">{THREE_M_SCREENS.map(screen => <Evidence key={screen.src} src={asset(screen.src)} caption={screen.caption} show={show} />)}</div>
+    </section>}
+    {feed && <section className="wc-service-screens" aria-labelledby="feedshop-screens-title">
+      <h3 id="feedshop-screens-title">FeedShop · 서비스 화면</h3>
+      <p className="wc-service-flow">이벤트 탐색 → 피드·후기 공유 → 투표 → 보상 확인</p>
+      <div className="wc-service-screen-grid">{FEEDSHOP_SCREENS.map(screen => <div key={screen.src}>
+        <Evidence src={asset(screen.src)} caption={screen.caption} show={show} />
+        <p className="wc-caption">{screen.detail}</p>
+      </div>)}</div>
+    </section>}
     <section className="wc-overview" id={`${project.id}-overview`}><h3>서비스와 직접 맡은 개발</h3><p>{project.responsibility}</p><Steps items={feed ? [['구매', '상품 탐색·구매'], ['참여', '피드 공유·이벤트 투표'], ['보상·재방문', '참여 보상으로 다음 방문 유도']] : [['업체', '주문 생성·상품 요청'], ['허브', '지역 거점 간 이동 관리'], ['배송 담당자', '배정된 배송 작업 수행']]} />
       {feed && <p className="wc-context-source">서비스 배경: 도·소매업 소상공인의 46.9%가 경쟁 심화를 경영 애로로 꼽은 조사에 주목했습니다. <ExternalLink href={survey}>2022년 소상공인실태조사 · 본문 11쪽, 복수응답</ExternalLink></p>}
       <div className="wc-architecture"><Evidence src={asset(project.architecture)} caption={`${project.name} 전체 시스템 구조`} show={show} legend /><div className="wc-context-grid"><div><h4>{feed ? '배포와 상태 확인' : '통합 실행 환경'}</h4><p>{feed ? 'Docker 이미지 → GCR → Cloud Run 배포 후 Actuator 헬스체크로 서비스 상태 확인' : 'Docker Compose로 서비스·DB·Redis·Zipkin을 함께 실행하고 Actuator 헬스체크로 기동 상태 점검'}</p></div><div><h4>{feed ? '검증·배포 자동화' : '서비스 연결'}</h4><p>{feed ? 'GitHub Actions에 테스트·JaCoCo·SonarCloud·배포를 연결해 변경마다 같은 품질 기준 확인' : 'Eureka 자동 등록으로 고정 주소 의존을 줄이고, Gateway에 JWT 검증을 모아 중복 인증 처리 축소'}</p></div></div></div>

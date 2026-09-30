@@ -1,19 +1,61 @@
 # 최신 정본과 기업별 지원 작업 인계
 
-확인일: 2026-09-10. 새 작업은 이 문서와 루트 `AGENTS.md`, `README.md`에서 시작합니다. 긴 과거 대화나 이전 시안의 구성을 현재 지시로 복원하지 않습니다.
+## 새 채팅이 먼저 확인할 상태 — 2026-10-01
+
+이 상단은 현재 작업 상태입니다. 아래 기존 인계의 날짜별 구성·근거·배포 기록은 해당 시점의 참고이며, 과거의 회사 미정·로컬 작업 중·배포 완료 표현을 현재 상태로 해석하지 않습니다. 변경 사항은 이 상단 한 곳에 갱신하고 실제 Git 상태와 대조합니다.
+
+| 항목 | 현재 확인 내용 |
+| --- | --- |
+| 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
+| 브랜치·커밋 | `main`. 반영 전 로컬·원격 main이 `1ecfc8e6debb1603d09636cd56cfc17a85f151b6`으로 같음을 GitHub API로 확인. 이번 반영 후 HEAD는 `git log -1`로 확인 |
+| worktree·데모 | 등록 worktree 1개, 정본 경로만 확인. 별도 편집 데모 없음. 배포 검증 빌드는 `/private/tmp/portfolio-release-verification-9skn06xq/`에 생성하며 정본으로 사용하지 않음. 과거 임시 복사본 전체를 조사하거나 정리하지 않음 |
+| 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
+| 이번 승인·반영 | 문서 정리와 기존 수정 12개·새 파일 12개, 총 24개 파일의 커밋·push·GitHub Pages 배포를 승인받음. 기존 서비스 이미지·PDF 28쪽·플래너 링크 변경을 반영하며, 새 협업 배치·문구·AI 사례 수정은 아직 진행하지 않음 |
+| 배포 차이·빌드 검증 | `/`와 `/Profile/` 프로덕션 빌드 2회 통과. 새 `/` 빌드 64개 파일은 기존 `dist`의 대응 파일과 모두 같고 Firebase 주요 JS·CSS·새 이미지 8개도 일치. Pages용 이미지·JS 경로 및 `/pdf/` 진입점 확인. 기존 `dist`는 보존 |
+| 기존 빌드의 추가 파일 | 기존 ignored `dist`는 118개, 새 빌드는 64개 파일. 기존 `dist`에만 있는 54개는 현재 소스의 빌드 결과로 채택하지 않음. 번호가 붙은 복사본과 이전 이미지의 출처·정리 여부는 별도 확인 대상이며 이번에 삭제하지 않음 |
+| 제출 링크 확인 | 정본 v5_3 이력서의 링크는 `https://dbp-jack.github.io/Profile/`. 앞선 확인에서 이 주소의 새 FeedShop·3M 이미지가 404, Firebase에서는 200. 실제 제출 파일과의 동일성은 아직 확인하지 않음 |
+| 커밋·push·배포 | 승인된 24개 파일의 반영 진행 중. 저장된 `dbp-jack` 계정의 push 권한과 Git 작성자 일치를 확인했으며, 전역 활성 계정 `planner-one`은 변경하지 않음. Pages 완료는 Actions 성공과 공개 파일 확인 후 이 상단에 갱신. Firebase 추가 배포는 수행하지 않음 |
+
+### 작업 시작 전부터 있던 변경 — 보존 대상
+
+다음은 이번 문서 정리 전부터 있던 변경입니다. 미커밋·미추적이라는 이유로 잔여물로 분류하거나 되돌리지 않습니다. 기존 인계에 2026-09-20 이미지 추가·Firebase 배포가 기록되어 있지만, 모든 파일의 개별 출처·통합 상태를 이번에 새로 검증한 것은 아닙니다.
+
+| 구분 | 작업 시작 시 경로 |
+| --- | --- |
+| 추적 문서·설정 변경 | `.gitignore`, `README.md`, `docs/portfolio-delivery.md`, `src/pages/home/README.md`, `src/pages/pdf/README.md` |
+| 추적 웹 소스 변경 | `src/content/portfolio.ts`, `src/pages/home/page.tsx`, `src/pages/home/page.css` |
+| 추적 PDF 소스 변경 | `src/pages/pdf/content.tsx`, `src/pages/pdf/page.css`, `src/styles/pdf.css` |
+| 미추적 배포 설정 | `.firebaserc`, `firebase.json` |
+| 미추적 FeedShop 이미지 | `public/feedshop-screens/event-detail.png`, `public/feedshop-screens/events.png`, `public/feedshop-screens/feeds.png`, `public/feedshop-screens/review-detail.png`, `public/feedshop-screens/reward.png`, `public/feedshop-screens/votes.png` |
+| 미추적 3M 이미지·화면 목록 | `public/three-m-overview.png`, `public/three-m-service-flow.png`, `src/content/feedshop-screens.ts`, `src/content/three-m-screens.ts` |
+
+### 다음 순서와 아직 확정하지 않은 내용
+
+1. 승인된 기존 변경을 GitHub main에 반영하고 제출 링크의 Pages 배포를 완료합니다. Actions 결과와 공개 웹·PDF 진입점·새 이미지 8개를 확인한 뒤 이 상단을 완료 상태로 갱신합니다. 관련 TS·TSX 5개 ESLint와 공백 검사는 통과했으며 전체 회귀 테스트·Browser 화면 검증은 미실시입니다.
+2. 협업 이미지 3개의 순서·크기·설명 위치를 먼저 논의합니다. Jira·Confluence 이미지가 현재 접힌 영역에 있고 Slack만 바로 표시되는 원인은 확인했지만 새 배치는 확정하지 않았습니다.
+3. 관련 경험·AI 영역의 토글, FeedShop·3M의 이미지·설명 순서와 구분선, 개선 효과·검증·한계 표현, 마무리 문구를 하나씩 논의·확정 후 수정합니다.
+4. My Planner를 위로 배치할 위치와 LLM Wiki·RAG 작업의 실제 진행 범위는 확인이 필요합니다. 완료된 성과로 미리 작성하지 않습니다.
+
+새 데모를 사용하면 이 상단에 경로·목적·승인 범위·정본 반영 파일·검증 결과를 기록합니다. 정본 반영, 검증, 커밋, push, 배포를 각각 갱신하며, 통합 뒤 남은 데모의 참고 용도·정리 승인 여부도 기록합니다. 파일명이나 수정 시각만으로 과거 결과를 다시 채택하지 않습니다.
+
+이번 정리의 원문 보존: `AGENTS.md`는 Git 커밋 `1ecfc8e6debb1603d09636cd56cfc17a85f151b6`의 원문을 유지합니다. 이 문서의 기존 본문은 아래에 그대로 두며, 상단 상태만 추가했습니다. 별도 인계·백업 파일을 만들거나 기존 파일을 이동·삭제하지 않습니다.
+
+## 기존 인계 본문과 세부 참고
+
+기본 인계 확인일: 2026-09-10. 2026-09-20 배포 반영: FeedShop 서비스 화면 6장과 3M 이미지 2장을 웹과 PDF 5·17쪽에 추가해 PDF는 28쪽입니다. FeedShop 4번 화면의 표시 이름은 `피드 상세`이며, 화면 아래 샘플 수치 안내는 표시하지 않습니다. 플래너 링크는 웹·PDF 모두 `제작 과정`으로 표시하고 `https://lnkd.in/p/grdkMPJq`로 연결합니다. 사용자 로컬 확인 후 planner100402@gmail.com 계정의 devboard-preview 프로젝트, myplanner-portfolio 사이트에 배포했습니다. 새 작업은 이 문서와 루트 `AGENTS.md`, `README.md`에서 시작합니다. 긴 과거 대화나 이전 시안의 구성을 현재 지시로 복원하지 않습니다.
 
 ## 현재 상태와 정본
 
 | 대상 | 현재 기준 |
 | --- | --- |
 | 편집 저장소 | `/Users/minsujeong/Desktop/재적3/Portfolio` — 하나의 canonical workspace |
-| 공개 웹 | https://dbp-jack.github.io/Profile/ — `src/pages/home/` |
-| PDF 페이지 | https://dbp-jack.github.io/Profile/pdf/ — `src/pages/pdf/`의 26쪽 |
+| 공개 웹 | https://myplanner-portfolio.web.app/ — `src/pages/home/` |
+| PDF 페이지 | https://myplanner-portfolio.web.app/pdf/ — `src/pages/pdf/`의 28쪽 |
 | 관리 도구 | http://127.0.0.1:5174/manage — `src/pages/manage/`, 로컬 전용 |
-| 웹·PDF 본문 확정 배포 | 커밋 `8557b36e2bb598fe38e1ea3b71ea6ea05caf55c9`, [Actions 34368037726](https://github.com/dbp-jack/Profile/actions/runs/34368037726) |
+| 이전 GitHub Pages 배포 기록 | 커밋 `8557b36e2bb598fe38e1ea3b71ea6ea05caf55c9`, [Actions 34368037726](https://github.com/dbp-jack/Profile/actions/runs/34368037726) |
 | 이력서 | 아래 검증된 `v5_3` 3쪽 PDF 하나. 과거 상세·함축본은 정본에서 제외 |
 
-위 배포는 PDF 1쪽 웹 링크와 네 단계 관리 도구가 확정된 기준입니다. **이전 시안 경로·문서 정리와 v5_3 이력서 규칙**은 같은 `main` 브랜치의 후속 변경으로 관리합니다. 최신 커밋은 `git log -1`, 실제 배포 성공은 [GitHub Actions](https://github.com/dbp-jack/Profile/actions/workflows/deploy.yml)에서 해당 커밋의 실행 결과로 확인합니다. 과거의 ‘로컬 작업 중’ 기록만으로 미완료라고 판단하지 않습니다. 새 작업은 `git status --short --branch`와 `git worktree list --porcelain`을 확인하고, 진행 중인 다른 변경이 있으면 보존합니다.
+위 GitHub Pages 기록은 이전 기준입니다. 현재 공개본은 Firebase Hosting에 직접 배포했으며 이번 배포에 Git 커밋·push는 포함하지 않았습니다. 공개 HTML·JS와 3M 이미지 2장·FeedShop 교체 이미지가 로컬 빌드와 일치함을 확인했습니다. PDF 1쪽 웹 링크와 네 단계 관리 도구는 기존 구성을 유지합니다. **이전 시안 경로·문서 정리와 v5_3 이력서 규칙**은 같은 `main` 브랜치의 후속 변경으로 관리합니다. 최신 커밋은 `git log -1`, GitHub Pages 이력은 [GitHub Actions](https://github.com/dbp-jack/Profile/actions/workflows/deploy.yml)에서 확인하며, 현재 Firebase 배포 여부와 혼동하지 않습니다. 과거의 ‘로컬 작업 중’ 기록만으로 미완료라고 판단하지 않습니다. 새 작업은 `git status --short --branch`와 `git worktree list --porcelain`을 확인하고, 진행 중인 다른 변경이 있으면 보존합니다.
 
 ## 사용자가 확정한 구성
 
@@ -22,8 +64,8 @@
 - 핵심 문제·대안·구조·검증·회고는 바로 보입니다. 보조 측정 자료만 펼쳐봅니다. 기술 목록과 하단 자료 링크에는 토글을 다시 넣지 않습니다.
 - 소개의 링크는 LinkedIn·GitHub이며, PDF 보기는 상단 오른쪽에 있습니다. SQL 42회·2회·캐시 적중 0회 이미지는 가로 3열과 원본 비율을 유지하고 같은 페이지에서 확대합니다.
 - 웹 마무리의 `근거를 확인하고, 팀이 이해할 수 있게 설명합니다`와 PDF 표지의 `수치로 검증하고, 팀 흐름을 움직이는 백엔드 개발자`는 각각 강제 줄바꿈 없는 한 문단입니다.
-- PDF는 26쪽입니다. 문제·배경 → 대안 비교·구현 → 검증 → 최종 결과 순서이며 결과부터 시작하는 RAC 배치로 되돌리지 않습니다.
-- PDF 4·15쪽은 소개·기간 → 가로 서비스 흐름 → 담당/효과 두 열 → 기술의 배치를 유지합니다. 증거 이미지·대안 비교·회고·협업 자료·AI 현재/다음 단계·목차·마무리를 임의로 빼지 않습니다.
+- 로컬 PDF는 28쪽입니다. FeedShop 소개 다음 5쪽에 서비스 화면 6장, 3M 소개 다음 17쪽에 개요 이미지와 서비스 흐름도를 모았습니다. 문제·배경 → 대안 비교·구현 → 검증 → 최종 결과 순서이며 결과부터 시작하는 RAC 배치로 되돌리지 않습니다.
+- PDF 소개 페이지는 현재 4·16쪽(이전 4·15쪽)으로, 소개·기간 → 가로 서비스 흐름 → 담당/효과 두 열 → 기술의 배치를 유지합니다. 증거 이미지·대안 비교·회고·협업 자료·AI 현재/다음 단계·목차·마무리를 임의로 빼지 않습니다.
 - 누구나 이해할 쉬운 단어를 우선합니다. 제목이나 짧은 항목에 불필요한 마침표를 붙이지 않습니다. 완결된 문장은 마침표를 쓸 수 있습니다.
 - 핵심 수치와 테두리는 파란색, 연락처는 링크와 구분되는 청록색입니다. 회고는 성과 목록이나 다음 할 일이 아니라 **경험을 통해 얻은 배움과 판단 기준**을 설명합니다.
 - 기업별 우선순위는 달라질 수 있지만 기본 프로젝트는 FeedShop·3M 두 개입니다. FIX는 기존 관리 선택지이며 필요할 때 별도 검토합니다. FlexiRoute는 현재 노출 대상이 아닙니다.
@@ -62,7 +104,7 @@
 3. `공고 요구사항 / 본인 근거 / 강조할 경험 / 부족하거나 확인할 점`을 짧은 표로 제시합니다. 프로젝트 순서, 소개 문구와 마무리에서 무엇을 바꿀지 쉬운 말로 설명합니다.
 4. `/manage`의 **기본값·현재 선택·이미 제공되는 대안**을 먼저 대조합니다. 회사별 문구는 해당 기업의 구성과 URL로 분리하며, 공통 기본값이나 기존 지원 기업의 구성을 덮어쓰지 않습니다. 구현·문구 반영은 사용자 승인 범위 안에서 진행합니다.
 5. 승인한 선택은 미리보기·생성 URL·새로고침 복원·기본값 복귀로 확인합니다. 저장 상태는 브라우저와 origin별로 다르므로 `127.0.0.1:5174`를 기준으로 사용합니다.
-6. **관리 URL은 웹에만 적용됩니다.** PDF는 공통 26쪽입니다. 기업별 이력서/PDF가 필요하면 형식·저장 위치·원본 보존을 정한 뒤 별도로 만들고 내용·레이아웃을 검증합니다. 링크 생성만으로 PDF까지 맞춤화됐다고 말하지 않습니다.
+6. **관리 URL은 웹에만 적용됩니다.** 로컬 PDF는 공통 28쪽입니다. 기업별 이력서/PDF가 필요하면 형식·저장 위치·원본 보존을 정한 뒤 별도로 만들고 내용·레이아웃을 검증합니다. 링크 생성만으로 PDF까지 맞춤화됐다고 말하지 않습니다.
 7. 최종 전달은 해당 기업의 강조 근거, 수정 문안, 공유 URL 또는 승인한 제출 파일로 마칩니다. 지원서 제출이나 이메일 발송은 별도 명시적 요청이 있어야 합니다.
 
 회사마다 새 작업을 사용할 때도 이 문서에서 시작합니다. 첫 응답은 준비 상태를 짧게 알리고 기업명과 공고를 요청하면 됩니다. 전체 포트폴리오 재설계, 기본값 초기화, 서버 재시작, 배포부터 자동 실행하지 않습니다.

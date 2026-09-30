@@ -4,14 +4,14 @@ React, TypeScript, Vite 기반의 웹 포트폴리오입니다.
 
 ## 새 기업별 작업을 시작할 때
 
-[최신 정본·기업별 지원 인계](docs/portfolio-delivery.md)를 먼저 읽습니다. 회사명과 채용공고를 받은 뒤 현재 웹·26쪽 PDF·v5_3 이력서를 기준으로 맞춥니다. 과거 시안과 격리된 PDF 출력물은 현재본이 아닙니다.
+[최신 정본·기업별 지원 인계](docs/portfolio-delivery.md)를 먼저 읽습니다. 회사명과 채용공고를 받은 뒤 현재 웹·28쪽 PDF·v5_3 이력서를 기준으로 맞춥니다. 과거 시안과 격리된 PDF 출력물은 현재본이 아닙니다.
 
 ## 구조
 
 - `src/pages/home/` — 승인된 한 페이지 웹 포트폴리오, SQL 원본 가로 비교·이미지 확대·기업별 구성 연결
 - `src/content/projects/` — 프로젝트별 공개 콘텐츠
 - `src/content/portfolio.ts` — 공통 소개, 경험, 연락처 문구
-- `src/pages/pdf/` — 확정한 26쪽 PDF 포트폴리오, 페이지 탐색·이미지 확대·A4 가로 저장
+- `src/pages/pdf/` — 28쪽 PDF 포트폴리오, 페이지 탐색·이미지 확대·A4 가로 저장
 - `src/portfolio-builder/` — 공개 URL 조합, 블록/프리셋, 문구 프로필
 
 ## 로컬 관리 페이지

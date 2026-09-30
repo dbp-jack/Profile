@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import plannerScreen from './assets/planner-screen.png'
+import { FEEDSHOP_SCREENS } from '@/content/feedshop-screens'
+import { THREE_M_SCREENS } from '@/content/three-m-screens'
 import { Note, PageBottom, Grid, Block, Table, Flow, Proof, Source } from './components'
 import { HERO_PERSONAL_INFO, HERO_SKILL_GROUPS, PROJECT_WORKFLOW, COLLABORATION_SECTION, RESOURCE_LINKS, EXPERIENCE_ITEMS } from '@/content/portfolio'
 import { feedShopProject, threeMProject } from '@/content/projects'
@@ -16,12 +18,12 @@ const survey = 'https://www.kostat.go.kr/boardDownload.es?bid=12029&list_no=4288
 
 export const chapters = [
   { name: '소개와 목차', start: 1, end: 3, detail: '개발자 소개 · 핵심 경험' },
-  { name: 'FeedShop', start: 4, end: 14, detail: '조회 성능 · 투표 동시성 · 회고' },
-  { name: '3M', start: 15, end: 21, detail: '책임 분리 · 인증 흐름 · 회고' },
-  { name: '협업 방식', start: 22, end: 22, detail: 'JIRA · Confluence · Slack 증거' },
-  { name: 'AI 활용', start: 23, end: 23, detail: '현재 제작 경험 · 활용 흐름 · 다음 단계' },
-  { name: '관련 경험', start: 24, end: 24, detail: '개발 · 교육 · 발표 기록' },
-  { name: '마무리와 자료', start: 25, end: 26, detail: '성장 방향 · 자료 링크 · 연락처 · 감사 인사' },
+  { name: 'FeedShop', start: 4, end: 15, detail: '서비스 화면 · 조회 성능 · 투표 동시성 · 회고' },
+  { name: '3M', start: 16, end: 23, detail: '서비스 흐름 · 책임 분리 · 인증 흐름 · 회고' },
+  { name: '협업 방식', start: 24, end: 24, detail: 'JIRA · Confluence · Slack 증거' },
+  { name: 'AI 활용', start: 25, end: 25, detail: '현재 제작 경험 · 활용 흐름 · 다음 단계' },
+  { name: '관련 경험', start: 26, end: 26, detail: '개발 · 교육 · 발표 기록' },
+  { name: '마무리와 자료', start: 27, end: 28, detail: '성장 방향 · 자료 링크 · 연락처 · 감사 인사' },
 ] as const
 
 export const caseLabels = {
@@ -63,6 +65,16 @@ export const draftPages: DraftPage[] = [
     body: <><p className="project-intro">도·소매업 소상공인의 <strong className="metric-accent">46.9%</strong>가 경쟁 심화를 경영 애로로 꼽은 조사에 주목해,<br />투표 이벤트와 참여 보상으로 구매 후 재방문을 유도하는 패션 커뮤니티 플랫폼</p><Source href={survey}>2022년 소상공인실태조사 결과(잠정) · 본문 11쪽, 복수응답</Source><p className="rac-meta">2025.05–2025.09 · 4명 · 부팀장 / 백엔드</p><Flow steps={[
       ['구매', '상품 탐색·구매'], ['참여', '피드 공유·이벤트 투표'], ['보상·재방문', '참여 보상으로 다음 방문 유도'],
     ]} /><Grid><Block title="직접 담당한 개발">이벤트·투표 API, 피드·댓글·좋아요·검색<br />Docker·Cloud Run 배포, CI/CD 구성</Block><Block title="주요 개선과 효과"><p>목록 로딩 지연 개선 → 이탈 방지를 위한 탐색 속도 개선</p><p>동시 투표의 중복 저장 차단 → 투표 수 정합성 확보</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · QueryDSL · MySQL · Redis · GCP · Docker</p></PageBottom></>,
+  },
+  {
+    id: 'feed-screens', title: 'FeedShop · 서비스 화면', section: '프로젝트 1 · FeedShop',
+    body: <>
+      <p className="feed-screen-flow">이벤트 탐색 → 피드·후기 공유 → 투표 → 보상 확인</p>
+      <div className="feed-screen-grid">{FEEDSHOP_SCREENS.map(screen => <div key={screen.src}>
+        <Proof src={screen.src} caption={screen.caption} height={200} />
+        <p>{screen.detail}</p>
+      </div>)}</div>
+    </>,
   },
   {
     id: 'feed-architecture', title: 'FeedShop · 배포와 서비스 확인', section: '프로젝트 1 · FeedShop',
@@ -150,6 +162,14 @@ export const draftPages: DraftPage[] = [
     body: <><p className="project-intro">주문 생성부터 지역 허브 이동·배송 담당자 배정까지,<br />업체·허브·배송 담당자의 역할별 업무를 연결하는 B2B 물류 관리 시스템</p><p className="rac-meta">2025.03–2025.04 · 4명 · 팀장 / 백엔드</p><Flow steps={[
       ['업체', '주문 생성·상품 요청'], ['허브', '지역 거점 간 이동 관리'], ['배송 담당자', '배정된 배송 작업 수행'],
     ]} /><Grid><Block title="직접 담당한 개발">Auth·User·Gateway 설계·구현<br />JWT 발급·검증, 사용자 정보 전달, AOP 권한 확인<br />Docker Compose 통합 실행 환경 구성</Block><Block title="주요 개선과 효과"><p>인증·사용자 책임 분리 → 변경 시 함께 수정할 범위 축소</p><p>인증 정보 전달 정리 → 반복 조회 부담을 줄이고 역할별 권한 응답 검증</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · Spring Cloud Gateway · JWT · PostgreSQL · Redis · Docker</p></PageBottom></>,
+  },
+  {
+    id: 'm3-screens', title: '3M · 물류 서비스 흐름', section: '프로젝트 2 · 3M',
+    body: <>
+      <p className="project-intro">공급 업체의 입고부터 허브 간 이동과 수령 업체 배송까지</p>
+      <div className="m3-service-images">{THREE_M_SCREENS.map((screen, index) => <Proof key={screen.src} src={screen.src} caption={screen.caption} height={index === 0 ? 200 : 430} />)}</div>
+      <p className="rac-meta">허브 배송 담당자는 거점 간 이동을, 업체 배송 담당자는 수령 업체까지의 배송을 맡습니다.</p>
+    </>,
   },
   {
     id: 'm3-architecture', title: '3M · 통합 실행과 인증 구조', section: '프로젝트 2 · 3M',
@@ -242,7 +262,7 @@ export const draftPages: DraftPage[] = [
         <div className="planner-stages">
           <Block title="현재 · 제작과 일상 활용">흩어진 기록을 확인·정리하는 불편을 줄이기 위해 Codex와 AI 도구로 기능을 만들고, 일상의 관리·기록·정리에 사용하고 있습니다.</Block>
           <Block title="다음 · 기술 문제의 원인 분석">일상의 생산성 개선에서 더 나아가, 기술 문제의 원인을 분석하고 해결책을 설계·검증하는 데 AI 활용 범위를 넓히겠습니다.</Block>
-          <Source href={PROJECT_WORKFLOW.currentStage.linkUrl}>개인 플래너 제작 후기</Source>
+          <Source href={PROJECT_WORKFLOW.currentStage.linkUrl}>개인 플래너 제작 과정</Source>
         </div>
       </div>
       <PageBottom><div className="planner-workflow">

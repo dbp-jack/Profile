@@ -99,9 +99,8 @@ export const PROJECT_WORKFLOW = {
     title: 'Codex로 만드는 나만의 플래너',
     description:
       'Codex와 다양한 AI를 활용해 할 일·루틴·일정·지원 기록·메모를 한곳에서 관리하는 나만의 플래너를 만들고 있습니다. 일상 속 생산성을 높이며 생각과 기록의 방식을 구조화하고 있습니다.',
-    linkLabel: '나만의 플래너 제작 후기',
-    linkUrl:
-      'https://www.linkedin.com/posts/minsoo-jeong-31861b401_codex-aiupqsqb-snzsmgspf-activity-7477935583982632960-1lvw',
+    linkLabel: '나만의 플래너 제작 과정',
+    linkUrl: 'https://lnkd.in/p/grdkMPJq',
   },
   flowTitle: '도구별 활용 흐름',
   flowDescription: '모든 도구를 한 번에 사용하지 않고, 작업 목적에 맞는 단계를 선택합니다.',

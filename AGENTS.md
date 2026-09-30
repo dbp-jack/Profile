@@ -1,89 +1,80 @@
-<!-- CODEGRAPH_START -->
-## CodeGraph
+# 포트폴리오 작업 규칙
 
-In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
+## 정본과 문서 역할
 
-- **MCP tools** (when available): `codegraph_explore` answers most code questions in one call — the relevant symbols' verbatim source plus the call paths between them. `codegraph_node` returns one symbol's source + callers, or reads a whole file with line numbers. If the tools are listed but deferred, load them by name via tool search.
-- **Shell** (always works): `codegraph explore "<symbol names or question>"` and `codegraph node <symbol-or-file>` print the same output.
+- 편집 정본은 `/Users/minsujeong/Desktop/재적3/Portfolio` 하나입니다. `/Users/minsujeong/Desktop/재적3/Portfolio`는 같은 경로의 다른 표시입니다.
+- `AGENTS.md`는 작업 규칙, `README.md`는 구조·실행 방법, `docs/portfolio-delivery.md`는 현재 상태·확정 내용·성과 근거·배포 이력을 담당합니다. 새 채팅은 이 문서들과 정본의 `git status --short --branch`, `git worktree list --porcelain`부터 확인합니다.
+- 현재 구성·PDF 쪽수·소개 페이지 위치·배포 주소·지원 기업은 인계 문서 상단과 해당 세부 기준을 확인합니다. 과거 기록의 숫자나 기업을 현재 대상으로 추정하지 않습니다.
+- `docs/mentor-feedback-rubric.md`는 멘토 조언의 출처와 통합 판단 기준입니다. 웹·PDF·관리 페이지의 세부 구현은 해당 페이지의 README를 필요한 범위만 읽습니다.
 
-If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
-<!-- CODEGRAPH_END -->
+## 작업과 승인 범위
 
-## Canonical Workspace
+- 대화와 문서는 한국어로 작성합니다. 명령어·경로·코드 식별자는 원래 표기를 유지합니다.
+- 질문·검토·진단·기획은 읽기 전용입니다. 논의나 수정안 제안만으로 구현 승인을 추정하지 않으며, 이미 받은 승인은 해당 범위에서 이어서 적용합니다.
+- 서버 실행·설치·파일 변경·worktree 생성과 제거·커밋·push·배포는 각각 요청·승인 범위 안에서 수행합니다. 한 행동의 승인을 다른 행동으로 확대하지 않습니다.
+- 각 단계에서 무엇을 확인하거나 수정하는지 먼저 짧게 알립니다. 기존 사용자 변경과 보호 자료를 보존하며, 승인 범위 밖의 파일을 수정·스테이징·정리하지 않습니다.
 
-- Treat this repository path as the single source of truth:
-  `/Users/minsujeong/Desktop/재적3/Portfolio`
-- The same path may visually render as `/Users/minsujeong/Desktop/재적3/Portfolio`; it is the canonical portfolio workspace.
-- Do not make lasting portfolio edits in temporary Codex worktrees such as `/Users/minsujeong/.codex/worktrees/.../Portfolio` unless the user explicitly asks for that worktree.
-- If a temporary worktree is used, copy or apply the final changes back to the canonical workspace before claiming the work is done.
-- Before verifying local UI, confirm the dev server port points at the canonical workspace with `lsof -a -p <pid> -d cwd`.
-- For this portfolio, use `http://127.0.0.1:5174/` from the canonical workspace when checking the local site.
-- 최신 성공 GitHub Pages 배포본을 화면 비교 기준으로 사용하고, canonical workspace를 편집 정본으로 사용합니다. 둘이 다르면 수정 전에 차이를 알리고 정합성을 맞춥니다.
-- If multiple worktrees exist, stop and reconcile them before editing, committing, pushing, or deploying.
+## 데모·통합·새 채팅 인계
 
-## 현재 정본과 기업별 작업 시작
+- 데모·임시 복사본·백업·패치는 참고 자료입니다. 파일명에 `latest`가 있거나 수정 시각이 최근이라는 이유로 정본으로 선택하지 않습니다.
+- 별도 worktree에서 지속적인 포트폴리오 편집은 사용자가 요청한 경우에만 합니다. worktree가 여러 개면 편집·커밋·push·배포 전에 작업 목적과 반영 대상을 대조해 정합성을 맞춥니다.
+- 임시 경로의 승인된 결과는 정본에 적용하고 관련 검증을 마친 뒤 통합 완료로 기록합니다. 적용 전후 차이와 반영 파일을 확인하며, 임시 결과만 검증하고 완료로 보고하지 않습니다.
+- 정본 반영·검증·커밋·push·배포는 별도 상태입니다. 미커밋 변경도 승인받아 진행 중인 작업일 수 있으며, 배포된 결과도 GitHub에 반영되지 않았을 수 있습니다.
+- 인계 문서 상단 한 곳에 정본 경로·진행 중 변경·참고용 데모 경로와 용도·통합 및 검증 상태·커밋 및 배포 상태·다음 승인 범위를 기록합니다. 새 채팅은 이를 실제 Git 상태와 대조한 뒤 이어갑니다.
+- 출처가 불분명한 변경은 보존하고 경로·수정 시각·크기·추정 작업을 먼저 보고합니다. 자동으로 덮어쓰거나 되돌리거나 통합·삭제하지 않습니다.
+- 통합 후 남은 데모와 과거 출력물은 반영 여부와 참고 용도를 기록합니다. `git worktree list`에 없는 과거 임시 경로와 복사본을 최신 근거로 사용하지 않습니다. 기록된 용도와 맞지 않거나 정본과 충돌하면 변경 전에 확인합니다.
+- 백업이나 패치를 새로 만들면 경로를 보고합니다. 복구용 자료가 편집 정본을 대신하지 않도록 합니다.
 
-- 새 작업은 `README.md`와 `docs/portfolio-delivery.md`를 먼저 읽습니다. 최신 구성·확정 문구·수치의 한계·기업별 작업 절차는 이 인계를 기준으로 이어갑니다.
-- 현재 웹은 `src/pages/home/`의 한 페이지 구성(`/`), PDF는 `src/pages/pdf/`의 26쪽(`/pdf`), 로컬 관리 도구는 `src/pages/manage/`(`/manage`)입니다.
-- 웹 기본 순서는 소개·기술 → FeedShop(문제 2개·회고) → 3M(통합 문제 1개·회고) → 협업·AI → 경험 → 마무리·연락처·자료입니다. 예전 사이드바와 프로젝트별 왕복 화면을 복원하지 않습니다.
-- `/web-preview`, `/pdf-compare`는 로컬의 과거 북마크를 현재 정본으로 보내는 경로만 유지합니다. 별도 시안 본문을 만들지 않습니다.
-- PDF 4·15쪽의 소개·서비스 흐름·담당/효과 배치는 사용자 확정 사항입니다. 다른 페이지를 수정하며 함께 바꾸지 않습니다.
-- 기업별 작업은 기업명과 지원공고 URL 또는 전문을 받은 뒤 시작합니다. 과거 뱅카우 등 다른 지원 기업을 현재 대상으로 추정하지 않습니다.
-- 기업별 선택은 기존 `/manage` 기능을 먼저 사용하고 공통 기본값은 유지합니다. 새 회사의 요구사항을 공통 본문에 자동 반영하거나, 웹 공유 URL만으로 PDF도 맞춤화됐다고 판단하지 않습니다.
-- 2026-09-10 격리한 과거 출력물은 ignored `output/archive/2026-09-10-obsolete-portfolio/`에 있습니다. 현재본이나 제출 자료의 근거로 사용하지 않습니다. 과거 화면 작업 기록은 Git 이력에서만 필요한 경우 확인합니다.
+## 웹·PDF 검토와 수정
 
-## Mentor Feedback Review Loop
-
-- Treat `docs/mentor-feedback-rubric.md` as the single source of truth for portfolio and resume feedback.
-- 다음 두 김현수 멘토 원문은 페이지 검토와 수정 전에 반드시 다시 확인하는 고정 자료입니다.
+- 페이지 검토·수정 전마다 다음 두 멘토 원문의 존재와 관련 구간, rubric의 해당 출처 ID·통합 규칙을 다시 확인합니다. 대화 기억이나 압축 요약만으로 이어가지 않습니다.
   - 1차: `/Users/minsujeong/Downloads/01_커리어_지원/멘토링_특강/멘토링_피드백_김현수_1차.pdf`
   - 2차: `/Users/minsujeong/Downloads/01_커리어_지원/멘토링_특강/멘토링_피드백_김현수_2차.pdf`
-- 컨텍스트가 압축됐더라도 대화 기억만으로 이어서 작업하지 않습니다. 매 페이지 검토 또는 수정 전에 두 파일의 존재와 관련 구간 재확인을 마친 뒤, 사용자에게 `현재 하려는 작업`, `1차 확인 내용`, `2차 확인 내용`을 먼저 알립니다. 직접 조언이 없으면 `해당 없음`으로 명시합니다.
-- 피드백 파일 업로드, 원문 검토, 요약, 수정안 제안은 포트폴리오 반영 승인이 아닙니다. 사용자가 해당 페이지에 대해 `작업해`, `반영해`, `수정해`처럼 명시적으로 승인하기 전에는 웹·PDF·관련 콘텐츠 파일을 수정하지 않습니다.
-- 각 단계에서 도구를 사용하거나 파일을 확인하기 전에 지금 무엇을 확인하고 있으며 무엇은 수정하지 않는지 사용자에게 먼저 짧게 알립니다.
-- 페이지 문구·구성 변경을 제안하기 전에 canonical 로컬 `/manage`에서 이미 제공하는 기본값, 독립 선택지, 미리보기, 생성 URL 계약을 함께 확인합니다. 이미 선택 가능한 대안은 기본값 교체안처럼 다시 제안하지 않고 `기본값 유지`, `현재 선택`, `선택 가능한 대안`을 구분해 보고합니다.
-- 사용자가 선택형 문구·구성 변경을 승인한 경우 공개 웹만 확인하고 끝내지 않습니다. canonical `http://127.0.0.1:5174/manage`에서 선택 상태, 미리보기, 생성 URL, 새로고침 복원, 기본값 복귀를 함께 검증합니다. 검증 전에는 해당 포트가 canonical workspace에서 실행 중인지 확인합니다.
-- Before changing any portfolio page, re-read the relevant passages from both original mentor PDFs, then re-read the active source IDs and integrated rules for that page. Record `해당 없음` when one source has no direct guidance.
-- 웹 단계에서는 한 페이지씩 `검토 → 사용자와 논의·확정 → 웹 수정 → 배포본과 canonical 로컬 화면 비교·검증 → 페이지 검토 기록 갱신` 순서로 진행합니다.
-- After each page edit, record and show a concise `작업 전 → 작업 후 → 변경 이유` comparison before moving to the next page.
-- 모든 웹 페이지의 검토와 사용자 확인을 마친 뒤에만 PDF를 수정합니다. PDF는 같은 페이지 순서로 반영하고 웹/PDF 정합성을 별도 단계에서 검증합니다.
-- Keep source-specific advice separate. Resolve overlaps and conflicts only through the rubric's conflict decisions.
-- Portfolio rules and resume review rules are both active. Do not mix their source IDs or integrated rules.
+- 확인 후 `현재 하려는 작업`, `1차 확인 내용`, `2차 확인 내용`을 먼저 알립니다. 직접 조언이 없으면 `해당 없음`으로 기록합니다. 원문 업로드·검토·요약은 포트폴리오 반영 승인이 아닙니다.
+- 웹·PDF·관련 콘텐츠는 사용자가 해당 페이지의 수정을 명시적으로 승인한 뒤 변경합니다. 멘토별 조언은 출처를 분리하고 충돌은 rubric의 판단을 따릅니다. 포트폴리오와 이력서 규칙의 출처 ID를 섞지 않습니다.
+- 문구·구성을 제안하기 전 정본의 `/manage`에서 기본값·현재 선택·독립 선택지·미리보기·생성 URL 계약을 확인합니다. 이미 제공되는 선택지를 기본값 교체안처럼 제안하지 않습니다.
+- 선택형 변경은 `/manage`의 선택 상태·미리보기·생성 URL·새로고침 복원·기본값 복귀를 함께 검증합니다. 공개 웹 확인만으로 관리 기능 검증을 대신하지 않습니다.
+- 로컬 주소는 `http://127.0.0.1:5174/`이며 관리 주소는 `/manage`입니다. 화면 검증 전 `lsof -a -p <pid> -d cwd`로 해당 포트의 서버가 정본 경로에서 실행 중인지 확인합니다.
+- 웹은 한 페이지씩 `검토 → 사용자와 논의·확정 → 수정 → 배포본과 정본 로컬 화면 비교·검증 → 페이지 검토 기록 갱신` 순서로 진행합니다. 배포본과 로컬의 차이는 먼저 알리고, 과거 배포 화면으로 최신 승인 내용을 덮어쓰지 않습니다.
+- 각 페이지 수정 후 `작업 전 → 작업 후 → 변경 이유`를 기록·보고합니다. 모든 웹 검토와 사용자 확인 후에만 PDF를 별도 단계로 수정하고, 같은 순서로 반영한 뒤 웹·PDF 정합성을 확인합니다.
+- 승인된 한 페이지 구성과 PDF 소개 페이지의 소개·서비스 흐름·담당/효과 배치를 유지합니다. 다른 페이지 수정에 함께 바꾸거나 예전 사이드바·프로젝트 왕복 화면을 복원하지 않습니다.
+- `/web-preview`, `/pdf-compare`는 현재 정본으로 보내는 이전 주소만 유지합니다. 별도 시안 본문을 만들지 않습니다.
 
-## Resume and Interview Workflow
+## 기업별 작업
 
-- 공통·인성 질문과 최신 이력서 기반 기술질문·답변은 일반 면접 기준본으로 분리해 유지합니다. 기업별 지원 작업과 질문은 해당 기업 작업에서 별도로 다룹니다.
-- 면접 자료의 canonical 폴더는 다음 경로입니다.
-  - `/Users/minsujeong/Downloads/01_커리어_지원/자소서_면접`
-- 현재 유일한 canonical 이력서는 `v5_3` 3페이지 PDF입니다.
-  - `/Users/minsujeong/Downloads/01_커리어_지원/자소서_면접/00_Current_Resume/멘토리용 이력서_v5_3.pdf`
-- canonical 이력서의 버전·페이지 수·SHA-256과 사용 규칙은 같은 폴더의 `README.md`를 기준으로 확인합니다. 2026-09-10 현재 위 실제 경로에서 3쪽과 SHA-256 `2a92c0e3517f9cf001176368e3fb35646191555dfa9c8d105fb120e6f4b0fa85`를 재확인했습니다. 외부 README의 경로 문장은 이동 전 위치이므로 파일 식별에는 해시도 대조합니다.
-- 이력서 기반 검토나 질문 작성을 시작할 때마다 canonical PDF와 `README.md`를 다시 열어 확인합니다. 대화 기억이나 압축된 컨텍스트만으로 이어서 작업하지 않습니다.
-- `v5_2` 상세·함축본과 그 이전 이력서·기업별 지원서·중간산출물은 2026-08-03에 정본에서 제외했습니다. 다시 발견해도 면접 질문의 근거로 사용하지 않습니다.
-- 새 이력서가 들어오면 파일 열람, 전체 페이지 렌더링, 페이지 수, SHA-256을 검증한 뒤 canonical 경로와 `README.md`를 갱신합니다. 새 파일 검증 전에는 기존 정본을 제거하지 않습니다.
-- 사용자가 명시적으로 요청하지 않는 한 이력서 PDF 자체는 수정하지 않습니다. 이력서 문구 검토를 요청하면 `docs/mentor-feedback-rubric.md`의 이력서 전용 규칙을 다시 확인합니다.
-- 특정 기업용 질문이나 답변은 사용자가 회사를 지정했을 때만 별도로 다룹니다. 일반 면접 기준본에 기업별 내용을 섞지 않습니다.
-- 답변을 작성할 때 `이력서 명시`, `별도 근거 확인`, `지원자 설명`, `일반론`을 구분합니다. 구현·측정 근거가 확인되지 않은 기술, 수치, 성과는 본인 경험으로 단정하지 않습니다.
+- 기업명과 지원공고 URL 또는 전문을 받은 뒤 시작합니다. 과거 뱅카우 등 다른 기업을 현재 대상으로 추정하지 않습니다.
+- 기존 `/manage`의 기업별 선택을 먼저 확인합니다. 공통 기본값 변경은 사용자가 명시적으로 요청한 범위에 한하며, 회사별 요구사항을 자동으로 공통 본문에 반영하지 않습니다.
+- 웹 공유 URL만으로 PDF도 맞춤화됐다고 판단하지 않습니다. 기업별 PDF·이력서 작업은 별도 승인 범위로 다룹니다.
 
-## Backup Rule
+## 이력서·면접 자료
 
-- Backups and temporary patches are safety nets, not the source of truth.
-- The canonical workspace must receive the latest accepted edits before verification, commit, push, or deploy.
-- If a backup patch is created, mention its path in the final response and keep the canonical workspace updated with the accepted changes.
+- 면접 자료 정본 폴더는 `/Users/minsujeong/Downloads/01_커리어_지원/자소서_면접`입니다. 현재 이력서는 `00_Current_Resume/멘토리용 이력서_v5_3.pdf` 하나이며, 식별 기록은 인계 문서와 해당 폴더 README를 확인합니다.
+- 이력서 기반 검토·질문 작성 때마다 정본 PDF와 해당 README를 다시 엽니다. 이동 전 경로가 남아 있으면 실제 경로와 SHA-256을 대조하며, 대화 기억만으로 파일을 선택하지 않습니다.
+- `v5_2` 상세·함축본과 그 이전 이력서·기업별 지원서·중간산출물은 현재 질문의 근거로 사용하지 않습니다.
+- 새 이력서는 원문 열람·전체 페이지 렌더링·페이지 수·SHA-256 검증 후 정본 경로와 README를 갱신합니다. 검증 전 기존 정본을 제거하지 않습니다.
+- 이력서 PDF 자체는 명시적 요청 없이 수정하지 않습니다. 문구 검토에는 rubric의 이력서 전용 규칙을 적용합니다.
+- 공통·인성·이력서 기반 기술 질문과 답변은 일반 면접 기준본에 유지하고, 회사가 지정된 기업별 질문·답변은 분리합니다.
+- 답변은 `이력서 명시`, `별도 근거 확인`, `지원자 설명`, `일반론`을 구분합니다. 구현·측정 근거가 없는 기술·수치·성과를 본인 경험으로 단정하지 않습니다.
 
-## 잔여물 격리 및 작업 인계
+## GitHub·배포와 완료 보고
 
-- 모든 새 채팅은 작업 시작 전에 canonical workspace에서 `git status --short --branch`와 `git worktree list --porcelain`을 확인합니다.
-- 현재 채팅에서 승인되어 진행 중인 추적 파일 변경은 미커밋 상태여도 잔여물이 아닙니다. 새 작업이 이를 임의로 되돌리거나 정리하지 않습니다.
-- `git worktree list`에 없는 과거 Codex worktree 경로와 과거 채팅의 임시 복사본은 최신 작업 근거로 사용하지 않습니다.
-- 포트폴리오의 지속 보관이 필요한 생성물과 로컬 도구는 기존 ignored `output/` 하위의 용도별 폴더에 둡니다. 일회성 렌더링·비교·검증 파일은 `/private/tmp`을 사용하며 저장소 루트에 `tmp`, `.superpowers`, 임시 `tools` 폴더를 새로 만들지 않습니다.
-- 작업 종료 시 관련 없는 non-ignored 미추적 파일은 0개를 기준으로 확인합니다. 출처가 불명확한 항목은 삭제하지 말고 경로, 수정 시각, 크기, 추정 작업을 먼저 보고합니다.
-- `output/` 전체를 일괄 삭제하지 않습니다. 아래 보호 자료와 완료 결과물이 함께 있을 수 있으므로 정확한 대상만 복구 가능한 방식으로 정리합니다.
-- 인계·커밋·배포 전에는 `진행 중 변경`, `보호 자료`, `새 잔여물`, `worktree 수`를 분리해 확인하고, 승인된 파일만 스테이징합니다.
+- 커밋·push·배포 전 진행 중 변경·보호 자료·새 잔여물·worktree 수를 구분하고 승인된 파일만 반영합니다. 이전 작업의 미커밋·미추적 파일을 모두 이번 작업 결과로 취급하지 않습니다.
+- 인계에 기록된 공개 주소와 제출 자료의 링크를 구분합니다. 배포 확인은 대상 주소·소스 커밋 또는 빌드 식별 정보·실제 결과를 연결해 기록하며, GitHub 반영과 공개 배포 성공을 서로 대신하는 근거로 쓰지 않습니다.
+- 문서 확인은 기능·화면 검증을 대신하지 않습니다. 완료 보고에 수정 파일·관련 검증·남은 공백을 명시하고, 기존의 유효한 증거와 새로 수행한 검증을 구분합니다.
 
-## 보호할 로컬 근거 자료
+## 임시 자료와 보호 파일
 
-- 사용자가 보존을 지정한 다음 파일은 현재 위치에 그대로 둡니다.
+- 지속 보관할 생성물·로컬 도구는 기존 ignored `output/`의 용도별 폴더에, 일회성 렌더링·비교·검증 파일은 `/private/tmp`에 둡니다. 저장소 루트에 `tmp`, `.superpowers`, 임시 `tools` 폴더를 만들지 않습니다.
+- 종료 시 관련 없는 non-ignored 미추적 파일은 0개를 기준으로 확인합니다. 출처 불명 항목은 먼저 보고하며 삭제하지 않습니다. `output/`은 보호 자료와 완료 결과가 있으므로 전체를 일괄 삭제하지 않습니다.
+- 2026-09-10 격리한 `output/archive/2026-09-10-obsolete-portfolio/`는 과거 기록입니다. 현재본·제출 자료의 근거로 사용하지 않으며, 과거 화면 기록은 필요한 경우 Git 이력에서 확인합니다.
+- 다음 두 ignored 파일은 현 위치에 보존합니다. 사용자의 새 명시적 지시와 정확한 경로 재확인 전에는 삭제·이동하거나 `git clean -x`, `git clean -X` 대상에 포함하지 않습니다.
   - `/Users/minsujeong/Desktop/재적3/Portfolio/스탁키퍼_면접준비.md`
   - `/Users/minsujeong/Desktop/재적3/Portfolio/output/wiki/FIX_Kafka_주문_결제_이벤트_흐름.md`
-- 두 파일은 Git ignore 대상입니다. 사용자가 새로 명시적으로 지시하고 정확한 경로를 다시 확인하기 전에는 삭제·이동하거나 `git clean -x`, `git clean -X` 대상에 포함하지 않습니다.
+
+<!-- CODEGRAPH_START -->
+## 코드 탐색
+
+- 저장소 루트에 `.codegraph/`가 있을 때는 코드를 찾거나 이해하기 위해 검색·파일 읽기 전에 CodeGraph를 먼저 사용합니다. 없으면 건너뛰며, 새 인덱싱은 사용자가 결정합니다.
+- MCP 도구가 있으면 `codegraph_explore`로 관련 소스와 호출 경로를, `codegraph_node`로 심볼의 소스·호출자 또는 파일의 줄 번호를 확인합니다. 도구가 지연 제공되면 이름으로 검색해 불러옵니다.
+- CLI에서는 `codegraph explore "<심볼 또는 질문>"`, `codegraph node <심볼 또는 파일>`을 사용합니다.
+<!-- CODEGRAPH_END -->
