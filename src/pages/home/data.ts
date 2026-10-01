@@ -19,7 +19,7 @@ export const projects = [
     architecture: feedShopProject.architectureImage!,
     github: feedShopProject.githubUrl, wiki: feedWiki,
     cases: [{ id: 'query', name: '이벤트 목록의 로딩 지연 개선' }, { id: 'vote', name: '중복 투표 차단과 집계 검증' }],
-    learning: '개선 단계를 나누어 측정하고, 데이터의 정확성과 장애 시 응답까지 함께 확인하는 검증 기준을 얻었습니다.',
+    learning: '개선 효과를 단계별로 측정하고, 응답 속도와 함께 중복 저장·집계 정확성·장애 시 응답을 확인하는 검증 기준을 얻었습니다.',
   },
   {
     id: '3m', number: '02', name: '3M', category: 'B2B 물류 · MSA',
@@ -30,7 +30,7 @@ export const projects = [
     architecture: threeMProject.architectureImage!,
     github: threeMProject.githubUrl, wiki: threeMProject.wikiUrl!,
     cases: [{ id: 'boundary', name: '인증 구조 개선과 서비스 경계 분리' }],
-    learning: '변경이 영향을 주는 범위로 서비스 경계를 정하고, 실제 요청의 허용·차단까지 확인하는 설계·검증 기준을 얻었습니다.',
+    learning: '코드 참조와 변경 영향을 기준으로 서비스 경계를 나누고, 개별 기능뿐 아니라 실제 요청이 인증·권한 검사를 끝까지 거치는지 확인하는 설계·검증 기준을 얻었습니다.',
   },
 ] as const
 

@@ -62,7 +62,8 @@ function CaseHeading({ number, title, description }: { number: string; title: st
 }
 
 function Finding({ label = '개선 효과', children }: { label?: string; children: ReactNode }) {
-  return <div className="wc-finding"><strong>{label}</strong><p>{children}</p></div>
+  const paragraphs = Array.isArray(children) ? children : [children]
+  return <div className="wc-finding"><strong>{label}</strong>{paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>
 }
 
 function ResponseChart() {
@@ -101,11 +102,11 @@ function HomeView({ show, activeSection, composition, search }: { show: ShowEvid
     </section>
     <section className="wc-soft-section" id="work"><div className="wc-container wc-section"><SectionHeading number="02" title="함께 일하는 방식">과정을 공유하고, 도구의 결과를 직접 확인합니다</SectionHeading>
       <article className="wc-work-row"><div><span className="wc-kicker">팀 협업</span><h3>작업 변경을 자동 공유해<br />팀의 흐름을 투명하게</h3><p>JIRA 운영 기준과 Confluence 자료 체계를 정리했습니다. Slack 알림으로 이슈·커밋 변경을 자동 공유해 담당과 진행 상태를 함께 확인하고 추적할 수 있게 했습니다.</p><ExternalLink href={COLLABORATION_SECTION.guideUrl}>직접 작성한 JIRA 가이드라인</ExternalLink></div><Evidence src={asset(COLLABORATION_SECTION.evidence[1].image)} caption="JIRA 이슈·커밋 변경이 Slack에 자동 공유된 화면" show={show} /></article>
-      <details className="wc-disclosure"><summary>스프린트 운영과 자료 정리 근거 <span>2개 자료 <b aria-hidden="true">+</b></span></summary><div className="wc-proof-grid">{[COLLABORATION_SECTION.evidence[0], COLLABORATION_SECTION.evidence[2]].map(item => <div key={item.image}><Evidence src={asset(item.image)} caption={item.title} show={show} /><p className="wc-caption">{item.description}</p></div>)}</div></details>
+      <section className="wc-collaboration-proof" aria-labelledby="collaboration-proof-heading"><h3 id="collaboration-proof-heading">스프린트 운영과 자료 정리 근거</h3><div className="wc-proof-grid">{[COLLABORATION_SECTION.evidence[0], COLLABORATION_SECTION.evidence[2]].map(item => <div key={item.image}><Evidence src={asset(item.image)} caption={item.title} show={show} /><p className="wc-caption">{item.description}</p></div>)}</div></section>
       <article className="wc-work-row wc-planner-row"><div><span className="wc-kicker">AI 활용 · 개인 플래너</span><h3>일상을 관리하고<br />기록·정리하는 도구 제작</h3><p>Codex와 AI 도구로 개인 플래너를 제작해 일상의 관리·기록·정리에 사용하고 있습니다. 생성한 코드는 변경 영향과 실제 동작을 직접 확인합니다.</p><p className="wc-small-label">AI 원티드 챌린지 대회 참여 중</p><ExternalLink href={PROJECT_WORKFLOW.currentStage.linkUrl}>플래너 제작 과정</ExternalLink></div><Evidence src={plannerScreen} caption="직접 제작해 사용 중인 개인 플래너" show={show} /></article>
       <details className="wc-disclosure"><summary>AI 활용 과정과 현재·다음 단계 <span><b aria-hidden="true">+</b></span></summary><Steps items={[["근거와 생각 정리", "NotebookLM으로 근거를 모으고 Claude·Gemini로 문서와 대안을 정리"], ["구현과 직접 검증", "Codex·Claude Code로 구현하고 코드 이해·변경 영향·빌드·테스트·실제 동작 확인"], ["다음 단계", "일상 도구 제작에서 기술 문제의 원인 분석과 해결책 설계·검증으로 활용 범위 확장"]]} /></details>
     </div></section></>,
-    experience: <section className="wc-container wc-section" id="experience"><SectionHeading number="03" title="관련 경험">개발·교육·발표로 쌓은 경험</SectionHeading><div className="wc-experience-list">{[EXPERIENCE_ITEMS[4], EXPERIENCE_ITEMS[0], EXPERIENCE_ITEMS[1]].map(item => <div key={item.title}><p className="wc-meta">{item.period}<span>{item.category}</span></p><div><h3>{item.title}</h3><p>{item.detail}</p></div></div>)}</div><details className="wc-disclosure"><summary>교육·발표 경험 더 보기 <span>2개 경험 <b aria-hidden="true">+</b></span></summary><div className="wc-experience-list">{EXPERIENCE_ITEMS.slice(2, 4).map(item => <div key={item.title}><p className="wc-meta">{item.period}<span>{item.category}</span></p><div><h3>{item.title}</h3><p>{item.detail}</p></div></div>)}</div></details></section>,
+    experience: <section className="wc-container wc-section" id="experience"><SectionHeading number="03" title="관련 경험">개발·교육·발표로 쌓은 경험</SectionHeading><div className="wc-experience-list">{[EXPERIENCE_ITEMS[4], EXPERIENCE_ITEMS[0], EXPERIENCE_ITEMS[1], ...EXPERIENCE_ITEMS.slice(2, 4)].map(item => <div key={item.title}><p className="wc-meta">{item.period}<span>{item.category}</span></p><div><h3>{item.title}</h3><p>{item.detail}</p></div></div>)}</div></section>,
     closing: <section className="wc-contact-section wc-closing" id="direction"><div className="wc-container"><span className="wc-kicker">함께 일하고 싶은 개발자</span><h2>근거를 확인하고, 팀이 이해할 수 있게 설명합니다</h2><p>작업 과정과 판단 근거를 공유하고,<br />다음 사람이 이해하고 이어갈 수 있도록 코드와 문서를 정리하겠습니다.</p>{composition.companyInsight && <CompanyInsight insight={composition.companyInsight} />}</div></section>,
     contact: <section className="wc-contact-section wc-contact-details" id="contact"><div className="wc-container"><div className="wc-contact-links"><a href="mailto:dbp100402@gmail.com">dbp100402@gmail.com <span aria-hidden="true">↗</span></a><a href="tel:+821030841488">010-3084-1488</a><ExternalLink href="https://linkedin.com/in/minsoo-jeong-31861b401">LinkedIn</ExternalLink></div></div></section>,
     resources: <section className="wc-contact-section wc-resources-panel" id="resources"><div className="wc-container"><section className="wc-resources" aria-labelledby="resources-title"><h3 id="resources-title">프로젝트·활동 자료</h3><nav className="wc-resource-list" aria-label="전체 자료">{RESOURCE_LINKS.filter(item => !item.projectId || composition.projectIds.includes(item.projectId)).map(item => <ExternalLink key={item.url} href={item.url.replace('https://app.notion.com/p/', 'https://slime-face-7c4.notion.site/')}>{item.label}</ExternalLink>)}</nav></section></div></section>,
@@ -132,20 +133,41 @@ function FeedShopCases({ show }: { show: ShowEvidence }) {
       <h3 className="wc-subtitle">조회 구조 개선 후 캐시를 단계별로 적용</h3><Steps items={[
         ['연관 데이터 함께 조회', 'QueryDSL leftJoin·fetchJoin으로 반복 조회를 줄이고 countDistinct로 집계 쿼리 분리'], ['조회 결과 재사용', '@Cacheable로 Redis에 결과를 저장하고 반복 요청에서 재사용'], ['변경과 만료 관리', 'TTL과 @CacheEvict로 유효기간과 데이터 변경 시 삭제 관리'],
       ]} />
-      <div id="query-proof" className="wc-verification"><h3>단계별 측정으로 효과 확인</h3><ResponseChart /><Comparison caption="평균 응답시간과 요청별 DB 조회를 구분해 확인" columns={['측정 대상', '개선 전', '조회 개선', 'Redis 추가']} rows={[
-        ['평균 응답시간 · 동시 1,000명', '6.818초', '4.191초', '0.638초'], ['오류 · 동시 1,000명', '0건', '0건', '732건 / 49,931건'], ['요청당 DB 조회', '42회', '2회', '캐시 적중 요청 0회'],
-      ]} /><p className="wc-measurement">MacBook Air M2 / 24GB · Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 · nGrinder 3.5.9 · Scouter 2.21.3<br />응답시간은 로컬 부하 테스트의 평균이며, DB 조회 수는 Scouter의 요청별 기록입니다.</p>
-        <Evidence src={asset('phase2a-ngrinder-v1000.png')} caption="Redis 적용 후 · 동시 1,000명 · 평균 638ms / TPS 438.3 · 오류 732건" show={show} />
+      <div id="query-proof" className="wc-results">
+        <div className="wc-verification"><Comparison caption="단계별 평균 응답시간·DB 조회 수" columns={['측정 대상', '개선 전', '조회 개선', 'Redis 추가']} rows={[
+        ['평균 응답시간 · 동시 1,000명', '6.818초', '4.191초', '0.638초'],
+        ['요청당 DB 조회', '42회', '2회', '캐시 적중 요청 0회'],
+      ]} /></div>
+      <section className="wc-result-evidence" aria-labelledby="query-db-title">
+      <h4 id="query-db-title">DB 조회 검증 · Scouter</h4>
+      <p className="wc-measurement">요청당 DB 조회 42회 → 2회 → 캐시 적중 시 0회. Scouter의 요청별 기록이며, 0회는 Redis 캐시에 적중한 요청 기준입니다.</p>
         <div className="wc-sql-evidence" id="query-sql" aria-label="요청당 DB 조회 42회·2회·0회 비교">{[
           ['before-scouter-sql42.png', '개선 전 · 42회'],
           ['phase1-scouter-sql2.png', '조회 구조 개선 · 2회'],
           ['phase2a-scouter-cache-hit2.png', 'Redis 캐시 적중 · 0회'],
         ].map(([src, caption]) => <Evidence src={asset(src)} caption={caption} show={show} key={src} />)}</div>
+      </section>
+      <section className="wc-result-evidence" aria-labelledby="query-load-title">
+      <h4 id="query-load-title">부하 테스트 검증 · nGrinder</h4>
+      <p className="wc-measurement">동시 1,000명 로컬 부하 테스트의 평균 응답시간과 처리량입니다.</p>
+      <div className="wc-verification">
+        <Evidence src={asset('phase2a-ngrinder-v1000.png')} caption="Redis 적용 후 · 동시 1,000명 · 평균 638ms / TPS 438.3" show={show} />
         <details className="wc-disclosure"><summary>개선 전·중간 단계의 응답시간 원본 <span>2개 자료 <b aria-hidden="true">+</b></span></summary><div className="wc-proof-grid">{[
           ['before-ngrinder-v1000.png', '개선 전 · 평균 6,818ms / TPS 138.7'], ['phase1-ngrinder-v1000.png', '조회 구조 개선 · 평균 4,191ms'],
         ].map(([src, caption]) => <Evidence src={asset(src)} caption={caption} show={show} key={src} />)}</div></details>
       </div>
-      <Finding>조회 구조 개선과 캐시 적용 후 평균 응답시간이 약 91% 줄었습니다. 같은 테스트에서 오류 732건(약 1.47%)이 기록되어, 응답 속도와 오류 수를 함께 확인해야 합니다.</Finding><ExternalLink href={queryWiki}>대안·구현 코드·전체 측정 기록</ExternalLink>
+      </section>
+        <p className="wc-measurement">MacBook Air M2 / 24GB · Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 · nGrinder 3.5.9 · Scouter 2.21.3</p>
+      </div>
+      <div className="wc-verification wc-result-summary">
+        <h3 id="query-response-title">단계별 검증 결과</h3>
+        <ResponseChart />
+      </div>
+      <div id="query-result"><Finding>{[
+        '동시 1,000명 테스트에서 목록 응답시간을 평균 6.818초에서 0.638초로 약 91% 단축했습니다.',
+        '요청당 DB 조회를 42회에서 2회로 줄이고, 캐시 적중 시에는 0회로 처리해 반복 조회 부담을 낮췄습니다.',
+        '재방문 진입점인 이벤트 목록의 대기 시간을 줄여, 응답 지연으로 인한 사용자 이탈 위험을 낮추도록 개선했습니다.',
+      ]}</Finding></div><div className="wc-sources" aria-label="목록 조회 상세 자료"><ExternalLink href={queryWiki}>대안·구현·검증 기록</ExternalLink></div>
     </section>
     <section className="wc-case" id="vote"><CaseHeading number="02" title="중복 투표 차단과 집계 검증" description="중복 검사만으로 막을 수 없었던 동시 요청을 DB 제약으로 처리하고, 카운터 갱신을 분리했습니다." />
       <div className="wc-context-grid"><div><h3>문제와 원인</h3><p>중복 검사와 저장 사이에 두 요청이 함께 통과하는 구간이 있었습니다. DB에서 투표 카운터를 갱신할 때는 잠금 경합도 발생했습니다.</p></div><div><h3>판단 기준</h3><p>중복 저장은 DB에서 막고, 저장 실패 후 응답 처리와 카운터 갱신은 각각의 경계에서 처리하도록 나눴습니다.</p></div></div>
@@ -155,12 +177,22 @@ function FeedShopCases({ show }: { show: ShowEvidence }) {
       <h3 className="wc-subtitle">저장 → 예외 처리 → 카운터 갱신</h3><Steps items={[
         ['DB 저장', '(event_id, voter_id) 유니크 제약으로 같은 사용자의 중복 투표 저장 차단'], ['중복 예외 처리', '저장·flush는 REQUIRED 안에서, 중복 예외는 NOT_SUPPORTED 흐름에서 처리'], ['Redis 갱신', '정상 저장한 투표 수를 Redis INCR로 갱신해 DB 카운터 잠금 경합 분리'],
       ]} />
-      <div className="wc-verification"><h3>부하별 응답과 데이터 정확성을 각각 검증</h3><Comparison caption="개선 후 투표 요청 · nGrinder 부하 테스트" columns={['동시 사용자', '실행 시간', '평균 응답시간', 'HTTP 오류']} rows={[
+      <div className="wc-case-step" id="vote-recovery"><h3>키 유실·조회 장애에 대비한 복구</h3><p>Redis 키 유실 시 DB 투표 이력으로 카운터를 복구하고, Redis 조회 장애 시 DB 집계값으로 응답하도록 구현했습니다. 매일 새벽 DB 투표 이력을 기준으로 카운터를 보정합니다.</p></div>
+      <div className="wc-verification"><h3>부하별 응답시간과 HTTP 오류 확인</h3><Comparison caption="개선 후 투표 요청 · nGrinder 부하 테스트" columns={['동시 사용자', '실행 시간', '평균 응답시간', 'HTTP 오류']} rows={[
         ['500명', '2분 1초', '0.83초', '0건'], ['1,000명', '2분', '2.19초', '0건'], ['3,000명', '2분 1초', '5.00초', '0건'],
       ]} /><Evidence src={asset('vuser3000_result.png')} caption="동시 3,000명 · 투표 요청의 HTTP 오류 0건" show={show} />
-        <Finding label="데이터 검증">DB 중복 저장 0건과 DB 투표 이력 수·Redis 카운터의 일치를 별도로 확인했습니다.</Finding>
-        <details className="wc-disclosure"><summary>500·1,000명 테스트와 집계 대조 화면 <span>3개 자료 <b aria-hidden="true">+</b></span></summary><div className="wc-proof-grid"><Evidence src={asset('vuser500_result.png')} caption="동시 500명 · HTTP 오류 0건" show={show} /><Evidence src={asset('vuser1000_result.png')} caption="동시 1,000명 · HTTP 오류 0건" show={show} /><Evidence src={asset('phase2b-redis-count-verify.png')} caption="Redis 카운터와 API 응답 대조 · DB 대조는 Wiki 검증 기록 참고" show={show} /></div></details>
-      </div><div className="wc-limit"><h3>복구 경로와 남은 한계</h3><p>Redis 키 유실 시 DB 투표 수로 복구하고, Redis 조회 장애 시 DB 집계로 응답하도록 구현했습니다. DB 커밋과 Redis 갱신 사이의 일시적 불일치는 남아 정기 보정이 필요합니다.</p></div><div className="wc-sources"><ExternalLink href={voteWiki}>대안·DB 중복·집계 검증 기록</ExternalLink><ExternalLink href={recoveryCommit}>복구 구현과 테스트 코드</ExternalLink></div>
+        <details className="wc-disclosure"><summary>500·1,000명 부하 테스트 원본 <span>2개 자료 <b aria-hidden="true">+</b></span></summary><div className="wc-proof-grid"><Evidence src={asset('vuser500_result.png')} caption="동시 500명 · HTTP 오류 0건" show={show} /><Evidence src={asset('vuser1000_result.png')} caption="동시 1,000명 · HTTP 오류 0건" show={show} /></div></details>
+      </div>
+      <div className="wc-verification" id="vote-data-proof"><h3>투표 집계 대조</h3>
+        <p>Redis 카운터와 투표 수 조회 API의 응답이 일치하는 것을 확인했습니다.</p>
+        <Evidence src={asset('phase2b-redis-count-verify.png')} caption="Redis 카운터와 API 응답 대조" show={show} />
+        <p className="wc-measurement">부하 테스트의 DB 중복 저장·DB/Redis 집계 대조 결과는 별도 검증 기록에 정리했습니다. <ExternalLink href={voteWiki}>DB 중복 저장·집계 검증 기록</ExternalLink></p>
+      </div>
+      <div id="vote-result"><Finding>{[
+        '동시 사용자 최대 3,000명 테스트에서 HTTP 오류와 중복 저장 0건, DB·Redis 카운트 일치를 기록했습니다.',
+        '테스트한 동시 투표 환경에서 중복 투표와 집계 오차를 막아 투표 데이터의 정합성을 확보했습니다.',
+      ]}</Finding></div>
+      <div className="wc-sources" aria-label="투표 상세 자료"><ExternalLink href={voteWiki}>대안·구현·검증 기록</ExternalLink><ExternalLink href={`${voteWiki}#7-운영-고려사항과-복구-전략`}>복구·정기 보정·정합성 제약</ExternalLink><ExternalLink href={recoveryCommit}>복구 구현·테스트 코드</ExternalLink></div>
     </section>
   </>
 }
@@ -184,16 +216,25 @@ function ThreeMCase({ show }: { show: ShowEvidence }) {
       ['Auth의 User 모듈 직접 의존', '제거 · common DTO 계약을 통한 Feign 호출'], ['User 모듈의 Auth 패키지 import', '정적 분석에서 0건 확인'],
     ]} /><p>통합 테스트에서 User API의 JWT 검증 우회와 권한 검사 누락을 발견했습니다. 인증 제외 경로를 수정하고 MasterRoleAspect와 예외 처리를 추가했습니다.</p><Comparison caption="역할 변경 API · Gateway·Auth·User 통합 테스트" columns={['요청 조건', '응답', '확인한 동작']} rows={[
       ['MASTER', '200', '관리자 요청 허용'], ['HUB_MANAGER', '403', '권한이 부족한 요청 거부'], ['미인증', '401', '인증되지 않은 요청 차단'],
-    ]} /><p className="wc-measurement">로컬 H2 환경의 통합 테스트 결과 · 코드 구조 분석과 실제 권한 응답을 구분해 검증</p></div>
-    <Finding>내부 구현의 직접 참조를 분리해 빌드 경계를 확보했습니다. 인증 확인부터 역할별 요청 허용·차단까지 연결하고, 테스트에서 발견한 검증 우회와 권한 검사 누락을 수정했습니다.</Finding>
-    <div className="wc-limit"><h3>함께 관리할 조건</h3><p>토큰 유효기간 중 역할 변경을 반영하는 방식과, 서비스에 전달하는 헤더의 신뢰 경계를 함께 관리해야 합니다.</p></div><div className="wc-sources"><ExternalLink href={boundaryWiki}>서비스 경계 비교와 정적 분석 근거</ExternalLink><ExternalLink href={authReport}>인증 문제와 통합 테스트 보고서</ExternalLink></div>
+    ]} /><p className="wc-measurement">로컬 H2 환경의 통합 테스트 결과 · 코드 구조 분석과 실제 권한 응답을 구분해 검증</p><p className="wc-measurement" id="boundary-conditions">운영 조건: 토큰 유효기간 중 역할 변경 반영과 서비스에 전달하는 헤더의 신뢰 경계는 별도로 관리해야 합니다.</p></div>
+    <div id="boundary-result"><Finding>내부 구현의 직접 참조를 분리해 빌드 경계를 확보했습니다. 인증 확인부터 역할별 요청 허용·차단까지 연결하고, 테스트에서 발견한 검증 우회와 권한 검사 누락을 수정했습니다.</Finding></div>
+    <div className="wc-sources" aria-label="인증 구조 상세 자료"><ExternalLink href={boundaryWiki}>대안·구현·검증 기록</ExternalLink><ExternalLink href={authReport}>통합 테스트 보고서</ExternalLink></div>
   </section>
 }
 
 function ProjectStory({ project, show }: { project: PortfolioProject; show: ShowEvidence }) {
   const feed = project.id === 'feedshop'
   return <article className="wc-project-story" id={project.id}>
-    <header className="wc-project-heading"><span className="wc-kicker">프로젝트 {project.number} · {project.category}</span><h2>{project.name}</h2><p>{project.description}</p><dl className="wc-project-facts"><div><dt>기간</dt><dd>{project.period}</dd></div><div><dt>팀 구성</dt><dd>{project.team}</dd></div><div><dt>내 역할</dt><dd>{project.role}</dd></div></dl><p className="wc-detail-stack">{project.stack.join(' · ')}</p><div className="wc-sources"><ExternalLink href={project.github}>GitHub</ExternalLink><ExternalLink href={project.wiki}>Wiki</ExternalLink></div></header>
+    <header className="wc-project-heading wc-project-intro">
+      <span className="wc-kicker">프로젝트 {project.number} · {project.category}</span>
+      <h2>{project.name}</h2><p>{project.description}</p>
+      <dl className="wc-project-facts"><div><dt>기간</dt><dd>{project.period}</dd></div><div><dt>팀 구성</dt><dd>{project.team}</dd></div><div><dt>내 역할</dt><dd>{project.role}</dd></div></dl>
+      <div className="wc-intro-tech-row">
+        <div className="wc-intro-field"><span className="wc-intro-label">기술</span><p>{project.stack.join(' · ')}</p></div>
+        <div className="wc-sources"><ExternalLink href={project.github}>GitHub</ExternalLink><ExternalLink href={project.wiki}>Wiki</ExternalLink></div>
+      </div>
+      <div className="wc-intro-field wc-intro-responsibility"><span className="wc-intro-label">담당 개발</span><p>{project.responsibility}</p></div>
+    </header>
     {!feed && <section className="wc-service-screens" aria-labelledby="three-m-screens-title">
       <h3 id="three-m-screens-title">3M · 물류 서비스 흐름</h3>
       <p className="wc-service-flow">공급 업체의 입고부터 허브 간 이동과 수령 업체 배송까지</p>
@@ -207,12 +248,12 @@ function ProjectStory({ project, show }: { project: PortfolioProject; show: Show
         <p className="wc-caption">{screen.detail}</p>
       </div>)}</div>
     </section>}
-    <section className="wc-overview" id={`${project.id}-overview`}><h3>서비스와 직접 맡은 개발</h3><p>{project.responsibility}</p><Steps items={feed ? [['구매', '상품 탐색·구매'], ['참여', '피드 공유·이벤트 투표'], ['보상·재방문', '참여 보상으로 다음 방문 유도']] : [['업체', '주문 생성·상품 요청'], ['허브', '지역 거점 간 이동 관리'], ['배송 담당자', '배정된 배송 작업 수행']]} />
+    <section className="wc-overview wc-service-overview" id={`${project.id}-overview`}><h3>서비스 흐름</h3><Steps items={feed ? [['구매', '상품 탐색·구매'], ['참여', '피드 공유·이벤트 투표'], ['보상·재방문', '참여 보상으로 다음 방문 유도']] : [['업체', '주문 생성·상품 요청'], ['허브', '지역 거점 간 이동 관리'], ['배송 담당자', '배정된 배송 작업 수행']]} />
       {feed && <p className="wc-context-source">서비스 배경: 도·소매업 소상공인의 46.9%가 경쟁 심화를 경영 애로로 꼽은 조사에 주목했습니다. <ExternalLink href={survey}>2022년 소상공인실태조사 · 본문 11쪽, 복수응답</ExternalLink></p>}
-      <div className="wc-architecture"><Evidence src={asset(project.architecture)} caption={`${project.name} 전체 시스템 구조`} show={show} legend /><div className="wc-context-grid"><div><h4>{feed ? '배포와 상태 확인' : '통합 실행 환경'}</h4><p>{feed ? 'Docker 이미지 → GCR → Cloud Run 배포 후 Actuator 헬스체크로 서비스 상태 확인' : 'Docker Compose로 서비스·DB·Redis·Zipkin을 함께 실행하고 Actuator 헬스체크로 기동 상태 점검'}</p></div><div><h4>{feed ? '검증·배포 자동화' : '서비스 연결'}</h4><p>{feed ? 'GitHub Actions에 테스트·JaCoCo·SonarCloud·배포를 연결해 변경마다 같은 품질 기준 확인' : 'Eureka 자동 등록으로 고정 주소 의존을 줄이고, Gateway에 JWT 검증을 모아 중복 인증 처리 축소'}</p></div></div></div>
+      <div className="wc-architecture"><h3>시스템 구조</h3><Evidence src={asset(project.architecture)} caption={`${project.name} 전체 시스템 구조`} show={show} legend /><div className="wc-context-grid"><div><h4>{feed ? '배포와 상태 확인' : '통합 실행 환경'}</h4><p>{feed ? 'Docker 이미지 → GCR → Cloud Run 배포 후 Actuator 헬스체크로 서비스 상태 확인' : 'Docker Compose로 서비스·DB·Redis·Zipkin을 함께 실행하고 Actuator 헬스체크로 기동 상태 점검'}</p></div><div><h4>{feed ? '검증·배포 자동화' : '서비스 연결'}</h4><p>{feed ? 'GitHub Actions에 테스트·JaCoCo·SonarCloud·배포를 연결해 변경마다 같은 품질 기준 확인' : 'Eureka 자동 등록으로 고정 주소 의존을 줄이고, Gateway에 JWT 검증을 모아 중복 인증 처리 축소'}</p></div></div></div>
     </section>
     {feed ? <FeedShopCases show={show} /> : <ThreeMCase show={show} />}
-    <section className="wc-reflection" id={`${project.id}-reflection`}><span className="wc-kicker">{project.name} · 프로젝트 회고</span><h3>이 경험으로 얻은 기준</h3><p>{project.learning}</p><ul>{(feed ? ['성능 개선은 단계를 나누어 측정해야 각 조치의 효과를 구분할 수 있습니다.', '빠른 응답과 함께 중복 저장 여부, 집계의 정확성, 장애 시 조회 경로까지 확인합니다.'] : ['서비스 이름을 나누는 데서 끝내지 않고 실제 코드의 참조와 변경 범위를 확인합니다.', '개별 기능의 동작과 별개로, 요청이 인증과 권한 검사를 끝까지 거치는지 검증합니다.']).map(text => <li key={text}>{text}</li>)}</ul></section>
+    <section className="wc-reflection" id={`${project.id}-reflection`}><span className="wc-kicker">{project.name} · 프로젝트 회고</span><h3>이 경험으로 얻은 기준</h3><p>{project.learning}</p></section>
   </article>
 }
 
