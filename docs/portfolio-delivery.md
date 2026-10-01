@@ -7,16 +7,16 @@
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | `main`. 공개 콘텐츠 반영 커밋 `6392078845c46951751f379f1b25e886575e9919`. 완료 기록은 후속 문서 커밋으로 반영하며 최신 HEAD는 `git log -1`로 확인. 문서 커밋과 공개 콘텐츠 변경을 구분 |
-| worktree·데모 | 등록 worktree 1개, 정본 경로만 확인. 별도 편집 데모 없음. 이번 검증용 `/private/tmp/portfolio-release-verification-9skn06xq/`의 빌드 파일 128개는 확인 후 제거. 과거 임시 복사본 전체를 조사하거나 정리하지 않음 |
+| 브랜치·커밋 | `main`. 이번 웹 콘텐츠 커밋 `19c68c353885a4f72353c702ce71989df64d95e1`을 `origin/main`에 push. 배포 완료 기록은 후속 문서 커밋으로 반영하며 최신 HEAD는 `git log -1`로 확인. 후속 문서 커밋은 웹 콘텐츠를 변경하지 않음 |
+| worktree·데모 | 등록 worktree 1개, 정본 경로만 확인. 별도 편집 데모 없음. 이번 배포용 `/private/tmp/portfolio-ship-xuic_646/`의 임시 파일 69개는 검증 후 제거했으며 정본으로 사용하지 않음. 과거 임시 복사본 전체를 조사하거나 정리하지 않음 |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
 | 로컬 미리보기 | 5174 서버 종료를 확인해 정본에서 `npm run dev -- --host 127.0.0.1 --port 5174 --strictPort`로 재시작. PID 37144, 실행 세션 3449. `127.0.0.1`·`localhost` HTTP 200, cwd 정본 확인. 브라우저 시각 검증 미실시 |
-| 이번 승인·반영 | 문서 정리와 기존 수정 12개·새 파일 12개, 총 24개 파일의 커밋·push·GitHub Pages 배포를 승인받음. 기존 서비스 이미지·PDF 28쪽·플래너 링크 변경을 반영하며, 이후 협업·관련 경험 토글 제거를 각각 승인받아 로컬에 반영. Slack 행 아래 Jira·Confluence 2열 및 관련 경험 5개 상시 표시. 이후 FeedShop·3M 소개·본문·회고와 표시 일관성 수정을 순차 승인받아 로컬 반영. AI 사례 수정은 대기 |
-| 현재 진행 중 변경 | `src/pages/home/page.tsx`, `src/pages/home/page.css`, `src/pages/home/data.ts`, `src/pages/home/README.md`, 이 인계 문서. 협업·관련 경험 토글 제거, FeedShop 조회·투표 근거 배치와 조회 개선 효과·투표 검증·복구 문구, FeedShop·3M 공통 소개 배치·프로젝트 본문 여백·결과/회고/근거 표시 통일, 담당 개발 라벨 14px·설명 15px와 기술 행 기준 정렬, 목록 조회 오류 비교 행·설명·캡션 문구 삭제(대체 원본 재탐색 후 사용자 요청 반영, 원본 이미지의 Errors 732는 유지), 조회 개선 비교표의 DB 조회 42회·2회·캐시 적중 요청 0회 행 복원과 표 바로 아래 DB 조회 설명·SQL 이미지 3장 배치와 단계별 검증 결과의 상위/하위 제목 계층 정리와 Scouter·nGrinder 이미지별 제목·조건 배치(단계별 검증 결과 제목·세 수치의 막대그래프·테스트 설명 전체를 한 블록으로 묶어 개선 효과 바로 위에 배치, 공통 환경은 그 블록 앞에 유지), 조회 효과 세 문단 분리(사용자 이탈 위험 문장을 별도 문단으로 표시)와 DB 조회 42→2→캐시 적중 0회 및 응답 지연에 따른 이탈 위험 완화 방향 명시·투표 효과를 테스트 환경의 정확한 집계와 정합성 확보로 마무리한 수정 및 기록 갱신이며 잔여물이 아님. 변경 TSX ESLint·공백 검사 통과, 브라우저 시각 검증 미실시. 미커밋·미push·미배포이므로 공개본은 협업 이미지 2장과 추가 경험 2개가 여전히 접히며 FeedShop 조회 근거도 이전 배치. 소개 배치는 복원 이후 새 승인안으로 재정리해 공개본과 다름 |
-| 배포 차이·빌드 검증 | `/`와 `/Profile/` 프로덕션 빌드 2회 통과. 새 `/` 빌드 64개 파일은 기존 `dist`의 대응 파일과 모두 같고 Firebase 주요 JS·CSS·새 이미지 8개도 일치. Pages용 이미지·JS 경로 및 `/pdf/` 진입점 확인. 기존 `dist`는 보존 |
+| 이번 승인·반영 | 사용자의 ‘다음으로 넘어가자’를 앞서 합의한 ship 승인으로 적용. 순차 확인한 웹 소스 3개와 기록 문서 2개를 커밋·push하고 제출 링크 GitHub Pages 및 기존 Firebase 공개 사이트에 배포. AI 사례·마무리·My Planner 독립 프로젝트·LLM Wiki/RAG·모두닥 맞춤 작업은 아직 미반영 |
+| 현재 진행 중 변경 | 승인된 협업 이미지 3장·관련 경험 5개 상시 표시, FeedShop·3M 공통 소개/담당 개발/여백/회고, 조회·투표·인증 사례의 검증과 개선 효과 배치를 커밋·공개 반영 완료. 조회 요약은 제목·막대그래프·테스트 설명 전체가 개선 효과 바로 위에 있으며 효과는 세 문단. 원본 이미지의 Errors 732는 유지하고 사용자 요청에 따라 조회 표·설명·캡션의 오류 표현만 제거. 변경 TSX ESLint·CSS 구문·구조 보존 검사의 기존 통과 결과를 재사용. 배포 완료 기록 갱신 외 새 콘텐츠 변경 없음. 브라우저 시각 검증 미실시 |
+| 배포 차이·빌드 검증 | 이번 Firebase용 `/` 프로덕션 빌드와 Actions의 `/Profile/` 빌드·배포 통과. 각 64개 파일. 두 공개 주소 각각 HTML·PDF 진입점·JS·CSS 4개(총 8개)가 해당 빌드와 HTTP 200·SHA-256 일치. 기존 dist 118개와 보호 파일 2개는 해시로 보존 확인. Type Stripping 실험 기능·Browserslist 데이터 경고는 빌드를 막지 않았으며 의존성은 변경하지 않음 |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
-| 제출 링크 확인 | 정본 v5_3 이력서의 링크 `https://dbp-jack.github.io/Profile/`를 최신화. 웹·PDF 진입점, JS·CSS, 새 이미지 8개 모두 HTTP 200 및 검증한 Pages 빌드와 해시 일치. 실제 제출 파일과 정본 이력서의 동일성은 아직 확인하지 않음 |
-| 커밋·push·배포 | 승인된 24개 파일을 `dbp-jack` 계정으로 `origin/main`에 반영. 콘텐츠 커밋의 [Pages 배포 36749972075](https://github.com/dbp-jack/Profile/actions/runs/36749972075) 성공 및 공개 파일 일치 확인. 전역 활성 계정 `planner-one`은 유지. Firebase는 새 `/` 빌드와 주요 파일이 일치해 추가 배포하지 않음 |
+| 제출 링크 확인 | `https://dbp-jack.github.io/Profile/` 및 `/pdf/`를 이번 콘텐츠로 최신화. 성공한 Pages 작업의 실제 artifact와 공개 파일을 대조. 실제 제출 이력서 파일과 정본 이력서의 동일성은 미확인 |
+| 커밋·push·배포 | `dbp-jack`의 저장소 push 권한과 원격 main을 확인해 승인된 5개 파일 반영. [Pages 배포 36802909141](https://github.com/dbp-jack/Profile/actions/runs/36802909141) 성공. 전역 활성 계정 planner-one은 유지. Firebase는 planner100402@gmail.com / devboard-preview / myplanner-portfolio에 `firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config <임시 설정> --non-interactive`로 배포 성공. 임시 설정은 기존 site·rewrite를 유지하고 public만 새 빌드로 지정. 브라우저 검증·전체 회귀 테스트 미실시 |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 
@@ -32,6 +32,8 @@
 | 미추적 3M 이미지·화면 목록 | `public/three-m-overview.png`, `public/three-m-service-flow.png`, `src/content/feedshop-screens.ts`, `src/content/three-m-screens.ts` |
 
 ### 다음 순서와 아직 확정하지 않은 내용
+
+아래 1~3은 순차 작업 당시의 진행 기록입니다. 해당 웹 변경은 이번 ship으로 공개 반영했으며 최신 배포·검증 상태는 상단 표를 따릅니다. 다음 콘텐츠 검토는 마무리 문구와 AI 단계 표시이며, My Planner·LLM Wiki/RAG·모두닥 맞춤은 그 이후 순서입니다.
 
 1. GitHub 반영과 제출 링크의 Pages 최신화 완료. 관련 TS·TSX 5개 ESLint·공백 검사·프로덕션 빌드 2회·공개 파일 12개 대조 통과. 전체 회귀 테스트·Browser 화면 검증은 미실시이며 기존 UI 문제를 수정하거나 해결했다고 판단하지 않습니다. 협업 이미지 토글 제거는 아래와 같이 로컬 반영했습니다.
 2. 협업 배치 확정·로컬 반영: Slack 행은 유지하고 Jira·Confluence를 기존 2열로 상시 표시합니다. 토글은 일반 소제목으로 변경했습니다. 이미지·설명·확대 기능은 보존하며 화면 비교와 사용자 확인은 남아 있습니다.
