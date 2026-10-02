@@ -7,16 +7,16 @@
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | main. 웹 소개 코드 a7b671ddfa70b49a7ad45fba96ba5ce58cb3df42을 origin/main에 push. 후속 배포 기록은 [skip ci] 문서 커밋, 공개 소스는 a7b671d |
-| worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 배포용 /private/tmp/portfolio-ship-mdj0v3bb/ 임시 파일 67개는 검증 후 제거. 기존 dist 118개와 보호 파일 2개는 SHA-256 일치로 보존 확인 |
+| 브랜치·커밋 | main. PDF 배포 소스 c43cd091a1d5efa0435896a3df2cc6393ed9f525를 origin/main에 push. 배포 증거는 후속 [skip ci] 문서 커밋으로 기록. 웹 확정 소개는 a7b671d에서 유지. |
+| worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 배포는 /private/tmp/portfolio-ship-pdf-7mmo86d4의 소스 스냅샷·64개 빌드 파일로 수행. 기존 dist·보호 파일·이전 임시 폴더는 수정·삭제하지 않음. 새 임시 폴더는 배포 재현용으로 보존. |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
 | 로컬 미리보기 | 2026-10-02 정본에서 `npm run dev -- --host 127.0.0.1 --port 5174 --strictPort` 실행. PID 26171, 세션 69567, cwd 정본 확인. Browser 홈·manage 렌더링 성공. 셸 curl은 127.0.0.1·localhost 모두 연결 실패하여 HTTP 200으로 기록하지 않음. 사용자 확인용 첫 화면을 열어둠 |
 | 이번 승인·반영 | 2026-10-03 사용자 승인: PDF 표지 본문 두 문장을 삭제하고 소제목·개발자 표시는 유지. 지금까지의 PDF 1·4·8·9·10·12쪽 변경과 관련 CSS·문서를 커밋·push하고 기존 GitHub Pages·Firebase에 배포. 웹 소개 문구는 기존 배포본 유지. |
-| 현재 진행 중 변경 | PDF 1쪽 본문 삭제·확정 소제목 반영, 4쪽 효과에 사용자 명시, 8쪽 Scouter 이미지와 DB 조회 횟수 일치, 9쪽 단계별 표·전후 이미지·측정 조건 통합, 10쪽 탐색 대기와 반복 DB 조회 개선 효과, 12쪽 집계 복구·보정과 상세 링크 반영. 28쪽 유지. 관련 TSX·CSS·PDF README·이 문서 4개 파일. 기존 4·8·9·10·12쪽 화면 검증 근거 재사용. 최종 표지 실제 화면·TSX ESLint·CSS 구문·공백 검사·배포용 npm run build 통과. GitHub Pages·Firebase 배포 진행 중. 인쇄 PDF 출력·전체 회귀는 미실시. |
-| 배포 차이·빌드 검증 | 웹 TS/TSX ESLint·공백 검사·배포용 npm run build 통과. 로컬 확정 문구 화면 확인. 공개 JS 두 곳에 확정 문구 존재, Firebase JS SHA-256이 빌드와 일치. 공개 Browser·모바일·전체 회귀 미검증. 기존 Type Stripping·Browserslist 경고 유지 |
+| 현재 진행 중 변경 | PDF 1쪽 본문 삭제·확정 소제목 반영, 4쪽 효과에 사용자 명시, 8쪽 Scouter 이미지와 DB 조회 횟수 일치, 9쪽 단계별 표·전후 이미지·측정 조건 통합, 10쪽 탐색 대기와 반복 DB 조회 개선 효과, 12쪽 집계 복구·보정과 상세 링크 반영. 28쪽 유지. 관련 TSX·CSS·PDF README·이 문서 4개 파일. 기존 4·8·9·10·12쪽 화면 검증 근거 재사용. 최종 표지 실제 화면·TSX ESLint·CSS 구문·공백 검사·배포용 npm run build 통과. GitHub Pages·Firebase 공개 배포 완료. 승인된 미반영 코드 변경 없음. 인쇄 PDF 출력·전체 회귀는 미실시. |
+| 배포 차이·빌드 검증 | 최종 표지 로컬 화면·TSX ESLint·CSS 구문·공백 검사·npm run build 통과. 기존 4·8·9·10·12쪽 화면 근거 재사용. 공개 두 곳의 PDF 진입 HTML HTTP 200 및 JS에 최신 문구 존재·cover-description 부재 확인. Firebase 공개 JS SHA-256이 배포 빌드와 일치. 공개 Browser·모바일·인쇄 PDF·전체 회귀 미검증. 기존 Type Stripping·Browserslist 및 GitHub Actions Node20/ubuntu-latest 전환 안내 유지. |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
-| 제출 링크 확인 | https://dbp-jack.github.io/Profile/ HTML·JS 확인, index-C7RZlNak.js에 소제목·본문 두 문장 존재. 실제 제출 이력서 파일 동일성 미확인 |
-| 커밋·push·배포 | dbp-jack ADMIN 권한을 명령 범위에서 사용. [Pages 실행 37016760980](https://github.com/dbp-jack/Profile/actions/runs/37016760980) 성공. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio에 firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-final-_n_f27sv/firebase-deploy.json --non-interactive 성공. JS index-Bm7A8PsG.js, 공개 SHA-256 일치. 이번 임시 폴더 /private/tmp/portfolio-ship-final-_n_f27sv 보존. 이전 임시 경로도 삭제하지 않음. 정본 dist·보호 파일 미변경 |
+| 제출 링크 확인 | https://dbp-jack.github.io/Profile/pdf/?page=1 HTML·JS 확인. index-CcWdlxLD.js에 최신 PDF 문구 반영. 실제 제출 이력서 파일 동일성 미확인. |
+| 커밋·push·배포 | 2026-10-03 dbp-jack ADMIN 권한을 명령 범위에서 사용해 origin/main push 완료. [Pages 실행 37036317442](https://github.com/dbp-jack/Profile/actions/runs/37036317442) build·deploy 성공, JS index-CcWdlxLD.js. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production에 `firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-pdf-7mmo86d4/firebase-deploy.json --non-interactive` 성공. JS index-Dy5lXuHU.js, SHA-256 4639e1369c1a4c34a4e8ea7029d1c58703b6cd51edfd988bd0e33ab1851ca456 일치. |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 
