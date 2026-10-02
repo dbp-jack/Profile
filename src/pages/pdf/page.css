@@ -236,3 +236,7 @@
 
 .rac-slide[data-page-id="vote-result"] .rac-grid .rac-block { font-size:20px; }
 .rac-slide[data-page-id="vote-result"] .rac-grid h3 { font-size:22px; }
+
+.rac-slide[data-page-id="feed-reflection"] .rac-block .rac-meta { font-size:16px; line-height:1.5; color:#17243a; }
+.reflection-next { border-left:3px solid var(--blue); padding:10px 16px; background:#f5f8ff; font-size:16px; line-height:1.6; }
+.reflection-next strong { display:block; margin-bottom:4px; color:var(--blue); }

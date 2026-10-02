@@ -165,10 +165,10 @@ export const draftPages: DraftPage[] = [
   {
     id: 'feed-reflection', title: 'FeedShop 회고 · 경험으로 얻은 판단 기준', section: '프로젝트 1 · 회고',
     body: <>
-      <Block title="목록 조회의 평균 응답시간 약 91% 단축">조회 구조와 캐시를 단계별로 적용해, 동시 1,000명 테스트의 평균 응답시간을 6.818초 → 4.191초 → 0.638초로 줄였습니다. 이벤트 목록을 불러오는 대기 시간을 줄였습니다.</Block>
-      <Block title="중복 투표 저장 차단과 집계 일치 확인">DB 유니크 제약과 예외 처리 분리, Redis INCR을 적용했습니다. 최대 동시 3,000명 테스트에서 HTTP 오류·DB 중복 저장 0건을 확인하고, DB 투표 수와 Redis 카운터가 일치하는 것을 확인했습니다.</Block>
-      <Block title="카운터가 없어도 원본 기록을 기준으로 응답">Redis 키가 유실되면 DB 투표 수로 복구하고, 조회 장애 시 DB 집계로 응답하도록 구현했습니다. Redis 상태에만 의존하지 않는 투표 수 조회 경로를 마련했습니다.</Block>
-      <PageBottom><Note label="이 경험으로 얻은 기준">단계별 측정으로 개선 효과를 구분하고, <strong>데이터의 정확성과 장애 시 응답까지 함께 확인하는 검증 기준</strong>을 얻었습니다.</Note>
+      <Block title="성능 개선 · 단계를 나누어 효과를 확인"><p className="rac-meta">동시 1,000명 · 6.818초 → 4.191초 → 0.638초, 평균 응답시간 약 91% 단축</p><p>조회 구조 개선과 캐시 적용을 나누어 측정하면서, 각 변경이 응답시간에 미친 효과를 구분할 수 있었습니다.</p></Block>
+      <Block title="동시성 처리 · 저장 제약과 예외 처리 경계를 함께 설계"><p className="rac-meta">최대 동시 3,000명 · HTTP 오류·DB 중복 저장 0건 · DB와 Redis 집계 일치</p><p>DB 제약으로 중복을 막는 것과 실패한 저장이 후속 처리를 방해하지 않도록 하는 것은 각각 설계하고 검증해야 함을 배웠습니다.</p></Block>
+      <Block title="장애 대응 · 원본 데이터와 복구 경로를 함께 준비"><p className="rac-meta">Redis 키 유실 시 복구 · 조회 장애 시 DB 집계 응답 · 매일 새벽 카운터 보정</p><p>카운터를 분리할 때는 정상 동작뿐 아니라, 장애 시 어떤 데이터를 기준으로 응답하고 집계를 복구할지도 정해야 함을 배웠습니다.</p></Block>
+      <PageBottom><p className="reflection-next"><strong>다음 적용 기준</strong>변경 단계별 측정과 함께, 중복 요청·저장 실패·캐시 유실을 검증 항목으로 먼저 정하겠습니다.</p>
       <div className="source-row"><Source href={feedShopProject.projectReflection?.sourceUrl ?? feedWiki}>성능·동시성 개선 기록</Source><Source href={voteRecoveryCommit}>DB 기준 복구 구현과 테스트 코드</Source></div></PageBottom>
     </>,
   },
