@@ -7,16 +7,16 @@
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | main. PDF 배포 소스 c43cd091a1d5efa0435896a3df2cc6393ed9f525를 origin/main에 push. 배포 증거는 후속 [skip ci] 문서 커밋으로 기록. 웹 확정 소개는 a7b671d에서 유지. |
-| worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 배포는 /private/tmp/portfolio-ship-pdf-7mmo86d4의 소스 스냅샷·64개 빌드 파일로 수행. 기존 dist·보호 파일·이전 임시 폴더는 수정·삭제하지 않음. 새 임시 폴더는 배포 재현용으로 보존. |
+| 브랜치·커밋 | main. 문제 해결 2 배포 소스 1c82ad4cb097d3a3e5635bd02b40b44b7b04710b를 origin/main에 push. 배포 증거는 후속 [skip ci] 문서 커밋으로 기록. 이전 c43cd09의 표지·문제 해결 1 변경 포함. |
+| worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 배포용 /private/tmp/portfolio-ship-vote-m7i9foj0 소스 스냅샷·64개 빌드 파일 보존. 기존 dist·보호 파일·이전 임시 폴더는 수정·삭제하지 않음. |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
 | 로컬 미리보기 | 정본의 기존 5174 서버 PID 26171·세션 69567 유지, 2026-10-03 cwd 재확인. http://127.0.0.1:5174/pdf?page=14 에 두 행 결과표와 개선 효과 중심으로 정리한 화면을 열어둠. 공개본과의 차이는 현재 진행 중 변경 행 참조. |
-| 이번 승인·반영 | 2026-10-03 후속 승인: PDF 문제 해결 2의 11~14쪽을 제안한 구성으로 수정하고 로컬 화면 확인. 후속 ship 요청으로 확정된 11~14쪽·관련 CSS·기록의 커밋·push·기존 두 공개 환경 배포 승인. 직전 1·4·8·9·10·12쪽 배포는 c43cd09 기준으로 완료. |
-| 현재 진행 중 변경 | 문제 해결 2 로컬 작업 중: 11쪽 문제·선택 기준 두 단락 및 막고 표현, 12쪽 정상/중복 경로·복구 설명 두 단락 유지. 최신 13쪽은 부하 표·요청 처리/집계 증거 이미지·검증 구분을 모으고, 14쪽은 두 행 결과표·두 열 개선 효과·집계 복구 요약으로 재구성하여 문제 해결 1의 검증→효과 흐름과 일치. 최대 동시 3,000명·HTTP 오류 0건·DB 중복 저장 0건·DB와 Redis 값 일치 및 보정 지연 최대 24시간 유지. src/pages/pdf/content.tsx·page.css·README.md·이 문서 수정. TSX ESLint·CSS 구문·공백·13/14쪽 실제 화면 검증 통과, 본문 넘침 없음. 전후 화면 경로는 PDF README 마지막 기록 참조. 사용자 확인 후 ship 승인. 배포용 npm run build 통과, 커밋·push·배포 진행 중. 공개 Wiki 효과 중심 재정리·인쇄 PDF·전체 회귀 미실시. 다음 검토 대상은 15쪽 FeedShop 회고이며 문구 변경은 아직 미승인. |
-| 배포 차이·빌드 검증 | 최종 표지 로컬 화면·TSX ESLint·CSS 구문·공백 검사·npm run build 통과. 기존 4·8·9·10·12쪽 화면 근거 재사용. 공개 두 곳의 PDF 진입 HTML HTTP 200 및 JS에 최신 문구 존재·cover-description 부재 확인. Firebase 공개 JS SHA-256이 배포 빌드와 일치. 공개 Browser·모바일·인쇄 PDF·전체 회귀 미검증. 기존 Type Stripping·Browserslist 및 GitHub Actions Node20/ubuntu-latest 전환 안내 유지. |
+| 이번 승인·반영 | 2026-10-03 ship 승인으로 문제 해결 2의 11~14쪽·관련 CSS·기록 4개 파일을 커밋·push하고 기존 GitHub Pages·Firebase에 공개 배포 완료. 다음 순서는 15쪽 FeedShop 회고 검토. 15쪽 수정 및 공개 Wiki 수정은 아직 미반영. |
+| 현재 진행 중 변경 | 문제 해결 2 확정본 배포 완료. 11쪽 문제·선택 기준 두 단락 및 막고 표현, 12쪽 정상/중복 경로와 복구 설명, 13쪽 부하·집계 검증 근거, 14쪽 두 행 결과표와 개선 효과 반영. 최대 동시 3,000명·HTTP 오류 0건·DB 중복 저장 0건·DB와 Redis 값 일치·보정 지연 최대 24시간 보존. 승인된 미반영 코드 변경 없음. 다음 15쪽은 기존 성과 반복과 경험에서 얻은 판단 기준을 읽기 전용으로 대조한 뒤 수정안 논의 예정. 공개 Wiki 효과 중심 재정리·인쇄 PDF·전체 회귀 미실시. |
+| 배포 차이·빌드 검증 | 기존 최종 TSX ESLint·CSS 구문·로컬 11~14쪽 화면 확인 근거 재사용. 이번 배포용 npm run build·공백 검사 통과. 두 공개 PDF HTML HTTP200 및 JS 최신 문구 확인. Firebase JS SHA-256이 배포 빌드와 일치. 공개 Browser·모바일·인쇄 PDF·전체 회귀 미검증. 기존 Type Stripping·Browserslist 및 GitHub Actions Node20/ubuntu-latest 전환 안내 유지. |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
-| 제출 링크 확인 | https://dbp-jack.github.io/Profile/pdf/?page=1 HTML·JS 확인. index-CcWdlxLD.js에 최신 PDF 문구 반영. 실제 제출 이력서 파일 동일성 미확인. |
-| 커밋·push·배포 | 2026-10-03 dbp-jack ADMIN 권한을 명령 범위에서 사용해 origin/main push 완료. [Pages 실행 37036317442](https://github.com/dbp-jack/Profile/actions/runs/37036317442) build·deploy 성공, JS index-CcWdlxLD.js. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production에 `firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-pdf-7mmo86d4/firebase-deploy.json --non-interactive` 성공. JS index-Dy5lXuHU.js, SHA-256 4639e1369c1a4c34a4e8ea7029d1c58703b6cd51edfd988bd0e33ab1851ca456 일치. |
+| 제출 링크 확인 | https://dbp-jack.github.io/Profile/pdf/?page=14 HTML·JS 확인, index-CQ1z34qr.js에 최신 문제 해결 2 반영. 실제 제출 이력서 파일 동일성 미확인. |
+| 커밋·push·배포 | 2026-10-03 dbp-jack ADMIN 권한을 명령 범위에서 사용해 origin/main push 완료. [Pages 실행 37043749148](https://github.com/dbp-jack/Profile/actions/runs/37043749148) build·deploy 성공, JS index-CQ1z34qr.js. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production에 `firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-vote-m7i9foj0/firebase-deploy.json --non-interactive` 성공. JS index-DpbiogRG.js, SHA-256 9facc88021e5544d9104bc2112269c04634a7c11d96388fcfecaaadafd5ea47f 일치. |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 
