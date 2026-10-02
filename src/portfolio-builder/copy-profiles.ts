@@ -1,5 +1,3 @@
-import { HERO_ROLE_TITLE } from '@/content/portfolio'
-
 export type PortfolioCopyProfile = {
   id: string
   name: string
@@ -15,8 +13,8 @@ export const COPY_PROFILES: readonly PortfolioCopyProfile[] = [
     id: 'default',
     name: '기본 문구',
     description: '현재 공개 포트폴리오 문구를 그대로 사용합니다.',
-    heroRoleTitle: HERO_ROLE_TITLE,
-    aboutIntro: '로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다. 문제를 확인한 근거와 기술을 적용한 이유를 함께 설명합니다.',
+    heroRoleTitle: '서비스의 문제를 찾고, 구현과 검증으로 개선합니다.',
+    aboutIntro: '로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다.',
     projectsSubtitle: '직접 맡은 문제와 검증한 결과',
   },
   {

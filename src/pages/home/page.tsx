@@ -87,9 +87,9 @@ function HomeView({ show, activeSection, composition, search }: { show: ShowEvid
   const sections = getReadingSections(composition.projectIds)
   const strengths = composition.strengthsProfile
   const blocks: Partial<Record<PortfolioBlockId, ReactNode>> = {
-    footer: <footer className="wc-footer wc-container"><Link to={`${homePath}${search}`}>정민수 · 백엔드 개발자</Link><span>문제에서 출발해, 근거로 설명합니다</span></footer>,
+    footer: <footer className="wc-footer wc-container"><Link to={`${homePath}${search}`}>정민수 · 개발자</Link><span>문제에서 출발해, 근거로 설명합니다</span></footer>,
     hero: <section className="wc-hero wc-container" id="profile">
-      <div className="wc-hero-main"><div><span className="wc-kicker">백엔드 개발자</span><h1>정민수</h1><p className="wc-hero-line">{composition.copyProfile.heroRoleTitle}</p>{has('about') && <p className="wc-hero-description" id="about">{composition.copyProfile.id === 'default' ? <>로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다.<br className="wc-desktop-break" />{' '}문제를 확인한 근거와 기술을 적용한 이유를 함께 설명합니다.</> : composition.copyProfile.aboutIntro}</p>}<div className="wc-hero-actions">{has('projects') && <a className="wc-button wc-button-blue" href="#projects">대표 프로젝트 보기 <span aria-hidden="true">↓</span></a>}<ExternalLink href="https://linkedin.com/in/minsoo-jeong-31861b401">LinkedIn</ExternalLink><ExternalLink href="https://github.com/dbp-jack">GitHub</ExternalLink></div></div><div className="wc-portrait"><img src={asset('profile-photo.png')} alt="정민수 증명사진" /><span>서울 · 백엔드 개발</span></div></div>
+      <div className="wc-hero-main"><div><span className="wc-kicker">개발자</span><h1>정민수</h1><p className="wc-hero-line">{composition.copyProfile.heroRoleTitle}</p>{has('about') && <p className="wc-hero-description" id="about">{composition.copyProfile.aboutIntro.split('\n').map((line, index) => <Fragment key={line}>{index > 0 && <><br className="wc-desktop-break" />{' '}</>}{line}</Fragment>)}</p>}<div className="wc-hero-actions">{has('projects') && <a className="wc-button wc-button-blue" href="#projects">대표 프로젝트 보기 <span aria-hidden="true">↓</span></a>}<ExternalLink href="https://linkedin.com/in/minsoo-jeong-31861b401">LinkedIn</ExternalLink><ExternalLink href="https://github.com/dbp-jack">GitHub</ExternalLink></div></div><div className="wc-portrait"><img src={asset('profile-photo.png')} alt="정민수 증명사진" /><span>서울 · 개발자</span></div></div>
       <div className="wc-skill-strip"><p><strong>주요 기술</strong>Java · Spring Boot · JPA · QueryDSL · MySQL · PostgreSQL · Redis</p><div id="all-skills" className="wc-skill-list">{HERO_SKILL_GROUPS.map(group => <p key={group.label}><strong>{group.label}</strong>{group.tags.join(' · ')}</p>)}<p><strong>AI</strong>Local Agent · Ollama · ChromaDB · Codex</p></div></div>
     </section>,
     about: (strengths.id !== 'default' || !has('hero')) && <section className="wc-container wc-section wc-strengths" id={has('hero') ? 'strengths' : 'about'}><SectionHeading number="" title={strengths.title}>{strengths.intro}</SectionHeading><div className="wc-context-grid">{strengths.cards.map(card => <article key={card.title}><h3>{card.title}</h3><p>{card.subtitle}</p><div className="wc-rich-copy" dangerouslySetInnerHTML={{ __html: card.description }} /></article>)}</div></section>,
@@ -269,7 +269,7 @@ export default function Home() {
   const dialog = useRef<HTMLDialogElement>(null)
   useEffect(() => {
     const previousTitle = document.title
-    document.title = '정민수 · 백엔드 개발자 포트폴리오'
+    document.title = '정민수 · 개발자 포트폴리오'
     return () => { document.title = previousTitle }
   }, [])
   useEffect(() => {
@@ -330,7 +330,7 @@ export default function Home() {
   useEffect(() => { if (evidence) dialog.current?.showModal() }, [evidence])
   return <div className="web-concept" ref={root}>
     <a className="wc-skip" href="#wc-main">본문으로 건너뛰기</a>
-    <header className="wc-nav"><div className="wc-container"><Link className="wc-brand" to={`${homePath}${location.search}`}>정민수<span>백엔드 개발자</span></Link><nav aria-label="주요 메뉴">{has('projects') && <Link to={`${homePath}${location.search}#projects`}>프로젝트</Link>}{has('projects') && <Link to={`${homePath}${location.search}#work`}>협업·AI</Link>}{has('experience') && <Link to={`${homePath}${location.search}#experience`}>경험</Link>}{has('contact') && <Link to={`${homePath}${location.search}#contact`}>연락</Link>}</nav><Link className="wc-nav-pdf" to="/pdf">PDF 보기 ↗</Link></div></header>
+    <header className="wc-nav"><div className="wc-container"><Link className="wc-brand" to={`${homePath}${location.search}`}>정민수<span>개발자</span></Link><nav aria-label="주요 메뉴">{has('projects') && <Link to={`${homePath}${location.search}#projects`}>프로젝트</Link>}{has('projects') && <Link to={`${homePath}${location.search}#work`}>협업·AI</Link>}{has('experience') && <Link to={`${homePath}${location.search}#experience`}>경험</Link>}{has('contact') && <Link to={`${homePath}${location.search}#contact`}>연락</Link>}</nav><Link className="wc-nav-pdf" to="/pdf">PDF 보기 ↗</Link></div></header>
     <main id="wc-main"><HomeView show={setEvidence} activeSection={activeSection} composition={composition} search={location.search} /></main>
     <dialog className="wc-image-dialog" ref={dialog} onClose={() => setEvidence(null)} onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) dialog.current?.close() }}>
       {evidence && <><header><h2>{evidence.caption}</h2><button autoFocus onClick={() => dialog.current?.close()} aria-label="근거 이미지 닫기">닫기 ×</button></header><div><img src={evidence.src} alt={evidence.caption} /></div><ExternalLink href={evidence.src}>원본 이미지 열기</ExternalLink></>}
