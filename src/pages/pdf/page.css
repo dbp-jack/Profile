@@ -74,7 +74,10 @@
 .rac-slide[data-page-id="contents"] .rac-note { grid-template-columns:155px minmax(0,1fr); font-size:21px; padding:20px 22px; }
 .rac-slide[data-page-id="contents"] .rac-note > strong { font-size:19px; }
 .rac-slide[data-page-id="query-validation"] .rac-body { gap:16px; }
-.rac-slide[data-page-id="query-validation"] .rac-grid { grid-template-columns:minmax(0,2.1fr) minmax(0,1fr); }
+.rac-slide[data-page-id="query-validation"] .rac-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.rac-slide[data-page-id="query-validation"] .rac-body { gap:12px; }
+.rac-slide[data-page-id="query-validation"] .rac-page-bottom { gap:7px; }
+.rac-slide[data-page-id="query-validation"] .rac-note { font-size:14px; line-height:1.5; }
 .rac-slide[data-page-id="query-decision"] .rac-grid { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); }
 /* 사진 설명의 한 줄 높이와 위 간격만큼 표 아래 공간을 확보한다. */
 .rac-slide[data-page-id="query-decision"] .rac-grid > div:last-child { padding-bottom:calc(19.5px + 7px); }

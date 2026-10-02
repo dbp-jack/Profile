@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { DEFAULT_COPY_PROFILE } from '@/portfolio-builder/copy-profiles'
 import plannerScreen from './assets/planner-screen.png'
 import { FEEDSHOP_SCREENS } from '@/content/feedshop-screens'
 import { THREE_M_SCREENS } from '@/content/three-m-screens'
@@ -46,7 +47,7 @@ export type DraftPage = {
 export const draftPages: DraftPage[] = [
   {
     id: 'profile', title: '정민수', section: '소개', layout: 'cover',
-    body: <><a className="cover-web-link" href="https://dbp-jack.github.io/Profile/" target="_blank" rel="noopener noreferrer">포트폴리오 웹사이트 <span aria-hidden="true">↗</span></a><div className="rac-cover"><img className="rac-photo" src={asset('profile-photo.png')} alt="정민수 증명사진" /><div><p className="cover-role">백엔드 개발자</p><h2>정민수</h2><p className="cover-intro">수치로 검증하고, 팀 흐름을 움직이는 백엔드 개발자</p><dl className="rac-contact">{HERO_PERSONAL_INFO.map((row, i) => <div key={row.text}><dt>{['주소', '전화번호', 'Github', 'LinkedIn'][i]}</dt><dd>{row.href ? <a href={row.href} target="_blank" rel="noreferrer">{row.text}</a> : row.text}</dd></div>)}</dl><div className="rac-skills">{HERO_SKILL_GROUPS.map(group => <div key={group.label}><strong>{group.label}</strong><span>{group.tags.join(' · ')}</span></div>)}<div><strong>AI</strong><span>Local Agent · Ollama · ChromaDB · Codex</span></div></div></div></div></>,
+    body: <><a className="cover-web-link" href="https://dbp-jack.github.io/Profile/" target="_blank" rel="noopener noreferrer">포트폴리오 웹사이트 <span aria-hidden="true">↗</span></a><div className="rac-cover"><img className="rac-photo" src={asset('profile-photo.png')} alt="정민수 증명사진" /><div><p className="cover-role">개발자</p><h2>정민수</h2><p className="cover-intro">{DEFAULT_COPY_PROFILE.heroRoleTitle}</p><dl className="rac-contact">{HERO_PERSONAL_INFO.map((row, i) => <div key={row.text}><dt>{['주소', '전화번호', 'Github', 'LinkedIn'][i]}</dt><dd>{row.href ? <a href={row.href} target="_blank" rel="noreferrer">{row.text}</a> : row.text}</dd></div>)}</dl><div className="rac-skills">{HERO_SKILL_GROUPS.map(group => <div key={group.label}><strong>{group.label}</strong><span>{group.tags.join(' · ')}</span></div>)}<div><strong>AI</strong><span>Local Agent · Ollama · ChromaDB · Codex</span></div></div></div></div></>,
   },
   {
     id: 'strengths', title: '핵심 경험', section: '소개',
@@ -64,7 +65,7 @@ export const draftPages: DraftPage[] = [
     id: 'feed-intro', title: 'FeedShop · 서비스와 담당', section: '프로젝트 1 · FeedShop',
     body: <><p className="project-intro">도·소매업 소상공인의 <strong className="metric-accent">46.9%</strong>가 경쟁 심화를 경영 애로로 꼽은 조사에 주목해,<br />투표 이벤트와 참여 보상으로 구매 후 재방문을 유도하는 패션 커뮤니티 플랫폼</p><Source href={survey}>2022년 소상공인실태조사 결과(잠정) · 본문 11쪽, 복수응답</Source><p className="rac-meta">2025.05–2025.09 · 4명 · 부팀장 / 백엔드</p><Flow steps={[
       ['구매', '상품 탐색·구매'], ['참여', '피드 공유·이벤트 투표'], ['보상·재방문', '참여 보상으로 다음 방문 유도'],
-    ]} /><Grid><Block title="직접 담당한 개발">이벤트·투표 API, 피드·댓글·좋아요·검색<br />Docker·Cloud Run 배포, CI/CD 구성</Block><Block title="주요 개선과 효과"><p>목록 로딩 지연 개선 → 이탈 방지를 위한 탐색 속도 개선</p><p>동시 투표의 중복 저장 차단 → 투표 수 정합성 확보</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · QueryDSL · MySQL · Redis · GCP · Docker</p></PageBottom></>,
+    ]} /><Grid><Block title="직접 담당한 개발">이벤트·투표 API, 피드·댓글·좋아요·검색<br />Docker·Cloud Run 배포, CI/CD 구성</Block><Block title="주요 개선과 효과"><p>목록 로딩 지연 개선 → 사용자 이탈 방지를 위한 탐색 속도 개선</p><p>동시 투표의 중복 저장 차단 → 투표 수 정합성 확보</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · QueryDSL · MySQL · Redis · GCP · Docker</p></PageBottom></>,
   },
   {
     id: 'feed-screens', title: 'FeedShop · 서비스 화면', section: '프로젝트 1 · FeedShop',
@@ -90,18 +91,18 @@ export const draftPages: DraftPage[] = [
   },
   {
     id: 'query-implementation', title: '쿼리 42회 → 2회, 캐시 적중 시 DB 조회 0회', section: 'FeedShop', caseId: 'feed-query', stage: '단계별 구현',
-    body: <><Grid><div><Block title="1단계 · 조회 구조 개선">leftJoin·fetchJoin으로 연관 데이터를 함께 조회하고, countDistinct로 집계 쿼리 분리</Block><Proof src="phase1-scouter-sql2.png" caption="조회 구조 개선 후 · DB 조회 2회" height={155} /><p className="step-result">평균 응답시간 <strong>6.818초 → 4.191초</strong></p></div><div><Block title="2단계 · Redis 캐시 적용">@Cacheable로 결과를 재사용하고, TTL·@CacheEvict로 유효기간과 변경 시 삭제 관리</Block><Proof src="phase2a-scouter-cache-hit2.png" caption="Redis 캐시 적중 요청 · DB 조회 0회" height={155} /><p className="step-result">평균 응답시간 <strong>4.191초 → 0.638초</strong></p></div></Grid><PageBottom><Note label="측정 구분">응답시간은 동시 1,000명 부하 테스트의 단계별 평균입니다. DB 조회 0회는 Scouter에서 확인한 <strong>캐시 적중 요청</strong> 기준입니다.</Note><Source href={performanceWiki}>구현 코드와 캐시 관리 방식</Source></PageBottom></>,
+    body: <><Grid><div><Block title="1단계 · 조회 구조 개선">leftJoin·fetchJoin으로 연관 데이터를 함께 조회하고, countDistinct로 집계 쿼리 분리</Block><Proof src="phase1-scouter-sql2.png" caption="조회 구조 개선 후 · DB 조회 2회" height={155} /><p className="step-result">요청당 DB 조회 <strong>42회 → 2회</strong></p></div><div><Block title="2단계 · Redis 캐시 적용">@Cacheable로 결과를 재사용하고, TTL·@CacheEvict로 유효기간과 변경 시 삭제 관리</Block><Proof src="phase2a-scouter-cache-hit2.png" caption="Redis 캐시 적중 요청 · DB 조회 0회" height={155} /><p className="step-result">요청당 DB 조회 <strong>2회 → 캐시 적중 시 0회</strong></p></div></Grid><PageBottom><Note label="측정 기준">DB 조회 횟수는 Scouter의 요청별 기록으로 확인했습니다. <strong>0회는 캐시 적중 요청</strong> 기준입니다.</Note><Source href={performanceWiki}>구현 코드와 캐시 관리 방식</Source></PageBottom></>,
   },
   {
     id: 'query-validation', title: '쿼리 개선과 캐시 효과를 단계별로 확인', section: 'FeedShop', caseId: 'feed-query', stage: '검증 · 측정 근거',
-    body: <><p>조회 구조를 먼저 바꾸고 Redis를 추가하며, 각 단계의 응답시간과 DB 조회 수를 비교했습니다.</p><Table columns={['확인 지표', '개선 전', '조회 구조 개선', 'Redis 추가']} rows={[
+    body: <><p>조회 구조 개선과 Redis 적용 전후를 동시 1,000명 조건에서 비교했습니다.</p><Table columns={['확인 지표', '개선 전', '조회 구조 개선', 'Redis 추가']} rows={[
       ['평균 응답시간 · 동시 1,000명', '6,818ms', '4,191ms', '638ms'],
       ['요청당 DB 조회', '42회', '2회', '캐시 적중 시 0회'],
-    ]} /><Grid><Proof src="phase1-ngrinder-v1000.png" caption="1단계 검증 · 조회 구조만 개선한 동시 1,000명 테스트" height={248} /><div><Block title="추가 부하 구간 확인">동시 100명: <strong className="metric-accent">645ms → 209ms</strong><br />TPS: <strong className="metric-accent">154.6 → 470.1</strong></Block><Block title="측정 환경">Java 17 · Spring Boot 3.3.12<br />MySQL 8.2 · Redis 7.4<br />Scouter 2.21.3 · nGrinder 3.5.9</Block></div></Grid><PageBottom><Note label="측정 기준">응답시간은 각 부하 테스트의 평균, DB 조회 수는 Scouter 요청별 기록입니다. 캐시 적중 요청의 DB 조회는 0회로 확인했습니다.</Note></PageBottom></>,
+    ]} /><Grid><Proof src="before-ngrinder-v1000.png" caption="개선 전 · 평균 6,818ms / TPS 138.7" height={185} /><Proof src="phase2a-ngrinder-v1000.png" caption="개선 후 · 평균 638ms / TPS 438.3" height={185} /></Grid><PageBottom><Note label="측정 조건">동시 1,000명 · MacBook Air M2 / 24GB · 로컬 부하 테스트<br />Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 · nGrinder 3.5.9 · Scouter 2.21.3<br />응답시간은 부하 테스트 평균, DB 조회 수는 Scouter 요청별 기록이며 0회는 캐시 적중 기준입니다.</Note><div className="rac-meta"><Source href={asset('phase1-ngrinder-v1000.png')}>조회 구조 개선 단계 원본 · 4,191ms</Source><Source href={performanceWiki}>보조 측정 · 동시 100명 645ms → 209ms / TPS 154.6 → 470.1</Source></div></PageBottom></>,
   },
   {
-    id: 'query-result', title: '이벤트 목록 평균 응답시간 약 91% 단축', section: 'FeedShop', caseId: 'feed-query', stage: '최종 결과',
-    body: <><p>조회 구조 개선 → Redis 캐시를 단계별로 적용해 목록의 로딩 지연을 줄였습니다.</p><div className="rac-metric"><div><span>동시 사용자 1,000명 · 평균 응답시간</span><strong>6.82초 → 0.64초</strong></div><div><span>초당 처리량</span><strong>약 216% ↑</strong></div></div><Grid><Proof src="before-ngrinder-v1000.png" caption="개선 전 · 평균 6,818ms / TPS 138.7" height={225} /><Proof src="phase2a-ngrinder-v1000.png" caption="개선 후 · 평균 638ms / TPS 438.3" height={225} /></Grid><PageBottom><Note label="검증 조건">동시 사용자 1,000명 · MacBook Air M2 / 24GB · nGrinder 3.5.9 · 로컬 부하 테스트</Note></PageBottom></>,
+    id: 'query-result', title: '이벤트 탐색의 대기 시간을 줄이고, 반복 조회 부담을 낮춤', section: 'FeedShop', caseId: 'feed-query', stage: '개선 효과',
+    body: <><div className="rac-metric"><div><span>동시 사용자 1,000명 · 평균 응답시간</span><strong>6.82초 → 0.64초</strong></div><div><span>평균 응답시간 단축</span><strong>약 91%</strong></div></div><Grid><Block title="사용자 탐색 · 목록 대기 시간 개선">이벤트 목록 응답을 기다리는 시간을 줄여, 로딩 지연으로 탐색이 끊기는 문제를 개선했습니다.</Block><Block title="조회 처리 · 반복 DB 접근 감소">요청당 DB 조회를 42회에서 2회로 줄이고, 캐시 적중 요청은 DB 조회 없이 처리했습니다.</Block></Grid><Note label="개선 목적">이벤트 탐색을 원활하게 하고, 응답 지연으로 인한 사용자 이탈 위험을 줄이기 위한 개선입니다.</Note><PageBottom><p className="rac-meta">앞 페이지의 로컬 부하 테스트에서 확인한 결과입니다. 실제 사용자 이탈률의 변화는 측정하지 않았습니다.</p><Source href={performanceWiki}>성능 개선 과정과 상세 검증 기록</Source></PageBottom></>,
   },
   {
     id: 'vote-decision', title: '중복 저장은 DB에서, 카운터 갱신은 Redis에서', section: 'FeedShop', caseId: 'feed-vote', stage: '문제 · 대안 비교',
@@ -125,7 +126,7 @@ export const draftPages: DraftPage[] = [
       ['DB 저장', '(event_id, voter_id) 유니크 제약으로 같은 사용자의 중복 투표 저장 차단'],
       ['중복 예외 처리', '저장·flush는 REQUIRED 안에서 끝내고, 중복 예외는 NOT_SUPPORTED 흐름에서 처리'],
       ['카운터 갱신', '정상 저장한 투표 수는 Redis INCR로 갱신'],
-    ]} /><PageBottom><Note label="효과">실패한 저장 트랜잭션에 후속 응답 처리가 묶이지 않도록 하고, 투표 수 갱신의 DB 잠금 경합을 분리했습니다.</Note><Note label="복구와 한계">Redis 키 유실 시 DB 투표 수로 복구하고, Redis 조회 장애 시 DB 집계로 응답하도록 구현했습니다. DB 커밋과 Redis 갱신 사이에는 일시적 불일치가 남아 정기 보정이 필요합니다.</Note><Source href={voteWiki}>예외 처리 대안·트랜잭션 테스트·구현 근거</Source></PageBottom></>,
+    ]} /><PageBottom><Note label="효과">실패한 저장 트랜잭션에 후속 응답 처리가 묶이지 않도록 하고, 투표 수 갱신의 DB 잠금 경합을 분리했습니다.</Note><Note label="집계 복구와 보정">Redis 키 유실 시 DB 투표 이력으로 카운터를 복구하고, Redis 조회 장애 시 DB 집계값으로 응답하도록 구현했습니다. 매일 새벽 DB 투표 이력을 기준으로 카운터를 보정합니다.</Note><div className="source-row"><Source href={voteWiki}>예외 처리·트랜잭션 구현 근거</Source><Source href={`${voteWiki}#7-운영-고려사항과-복구-전략`}>복구·보정 상세 기록</Source></div></PageBottom></>,
   },
   {
     id: 'vote-validation', title: '동시 3,000명까지 투표 요청의 HTTP 오류 0건 확인', section: 'FeedShop', caseId: 'feed-vote', stage: '검증 · 부하별 응답과 오류',
