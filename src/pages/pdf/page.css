@@ -95,8 +95,6 @@
 .rac-slide[data-page-id="query-result"] .rac-metric span { font-size:16px; }
 .rac-slide[data-page-id="query-result"] .rac-metric strong { font-size:48px; }
 .rac-slide:is([data-page-id="query-result"],[data-page-id="vote-result"]) .rac-body > p { font-size:20px; }
-.rac-slide[data-page-id="vote-result"] .rac-table { flex:1; font-size:18px; }
-.rac-slide[data-page-id="vote-result"] .rac-table td { vertical-align:middle; }
 .rac-slide[data-page-id="vote-validation"] .rac-table { font-size:17px; }
 .rac-slide[data-page-id="vote-validation"] .rac-body { gap:14px; }
 .rac-slide[data-page-id="auth-flow"] .rac-body { gap:12px; }
@@ -197,12 +195,6 @@
 .rac-slide:is([data-page-id="vote-decision"],[data-page-id="auth-decision"],[data-page-id="m3-result"]) .rac-table thead { height:50px; }
 .rac-slide:is([data-page-id="vote-decision"],[data-page-id="auth-decision"],[data-page-id="m3-result"]) .rac-table td { vertical-align:middle; }
 .rac-slide:is([data-page-id="vote-decision"],[data-page-id="auth-decision"]) .decision-context .rac-note { font-size:16px; }
-.rac-slide[data-page-id="vote-implementation"] .rac-flow { flex:1; flex-direction:column; gap:14px; }
-.rac-slide[data-page-id="vote-implementation"] .rac-flow > div { display:grid; grid-template-columns:44px 190px minmax(0,1fr); align-items:center; column-gap:18px; padding:16px 0; }
-.rac-slide[data-page-id="vote-implementation"] .rac-flow > div + div:before { content:'↓'; left:15px; top:-16px; font-size:14px; line-height:1; }
-.rac-slide[data-page-id="vote-implementation"] .rac-step { margin:0; font-size:15px; }
-.rac-slide[data-page-id="vote-implementation"] .rac-flow h3 { margin:0; font-size:22px; }
-.rac-slide[data-page-id="vote-implementation"] .rac-flow p { font-size:18px; }
 .rac-slide:is([data-page-id="feed-reflection"],[data-page-id="m3-reflection"]) .rac-block { font-size:19px; }
 .rac-slide:is([data-page-id="feed-reflection"],[data-page-id="m3-reflection"]) .rac-block h3 { font-size:22px; }
 .evidence-dialog { width:min(94vw,1450px); max-height:93vh; border:1px solid var(--blue); border-radius:8px; padding:20px; color:#17243a; }
@@ -222,3 +214,25 @@
 .rac-slide .cover-web-link { position:absolute; top:28px; right:50px; display:inline-flex; align-items:center; gap:10px; color:var(--blue); font-size:16px; font-weight:700; text-decoration:none; border-bottom:1px solid currentColor; padding:6px 0; }
 .rac-slide .cover-web-link:hover { color:#1d4ed8; }
 .rac-slide .cover-web-link:focus-visible { outline:3px solid var(--blue); outline-offset:5px; }
+
+/* 투표 구현은 정상 저장과 중복 요청을 서로 다른 경로로 표시한다. */
+.vote-branch-flow { display:flex; flex-direction:column; gap:22px; }
+.vote-save { border-top:1px solid var(--blue); padding:16px 0; text-align:center; }
+.vote-save strong { font-size:22px; }
+.vote-save p { margin-top:7px; font-size:18px; }
+.vote-branches { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; }
+.vote-path { display:block; margin-bottom:12px; color:var(--blue); font-size:17px; font-weight:650; }
+.vote-branches .rac-block { font-size:18px; }
+.rac-slide[data-page-id="vote-validation"] .rac-body { gap:12px; }
+.rac-slide[data-page-id="vote-validation"] .rac-table th,
+.rac-slide[data-page-id="vote-validation"] .rac-table td { padding:8px 13px; }
+.rac-slide[data-page-id="vote-validation"] .rac-page-bottom { gap:8px; }
+.rac-slide[data-page-id="vote-validation"] .rac-note { font-size:14px; line-height:1.5; }
+
+.rac-slide[data-page-id="vote-result"] .rac-body { gap:20px; }
+.vote-result-table { font-size:20px; border-top:1px solid var(--blue); }
+.vote-result-table th { width:20%; vertical-align:middle; }
+.vote-result-table th,.vote-result-table td { padding:12px 15px; }
+
+.rac-slide[data-page-id="vote-result"] .rac-grid .rac-block { font-size:20px; }
+.rac-slide[data-page-id="vote-result"] .rac-grid h3 { font-size:22px; }

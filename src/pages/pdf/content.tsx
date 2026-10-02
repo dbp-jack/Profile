@@ -105,11 +105,11 @@ export const draftPages: DraftPage[] = [
     body: <><div className="rac-metric"><div><span>동시 사용자 1,000명 · 평균 응답시간</span><strong>6.82초 → 0.64초</strong></div><div><span>평균 응답시간 단축</span><strong>약 91%</strong></div></div><Grid><Block title="사용자 탐색 · 목록 대기 시간 개선">이벤트 목록 응답을 기다리는 시간을 줄여, 로딩 지연으로 탐색이 끊기는 문제를 개선했습니다.</Block><Block title="조회 처리 · 반복 DB 접근 감소">요청당 DB 조회를 42회에서 2회로 줄이고, 캐시 적중 요청은 DB 조회 없이 처리했습니다.</Block></Grid><Note label="개선 목적">이벤트 탐색을 원활하게 하고, 응답 지연으로 인한 사용자 이탈 위험을 줄이기 위한 개선입니다.</Note><PageBottom><p className="rac-meta">앞 페이지의 로컬 부하 테스트에서 확인한 결과입니다. 실제 사용자 이탈률의 변화는 측정하지 않았습니다.</p><Source href={performanceWiki}>성능 개선 과정과 상세 검증 기록</Source></PageBottom></>,
   },
   {
-    id: 'vote-decision', title: '중복 저장은 DB에서, 카운터 갱신은 Redis에서', section: 'FeedShop', caseId: 'feed-vote', stage: '문제 · 대안 비교',
+    id: 'vote-decision', title: '동시 투표의 중복 저장과 카운터 잠금 경합을 함께 해결', section: 'FeedShop', caseId: 'feed-vote', stage: '문제 · 대안 비교',
     body: <>
       <div className="decision-context">
-        <Note label="문제">중복 검사와 저장 사이에 두 요청이 함께 통과하는 TOCTOU 구간이 있었습니다. DB 카운터 갱신에서는 잠금 경합도 발생했습니다.</Note>
-        <Note label="선택 기준">DB 제약으로 중복 저장을 막고, 저장 예외를 트랜잭션 밖에서 처리했습니다. 카운터 갱신은 Redis로 옮겨 DB 잠금 경합을 분리했습니다.</Note>
+        <Note label="문제"><p>같은 사용자의 동시 요청이 중복 검사를 함께 통과해 중복 저장될 수 있었습니다.</p><p>투표 수를 DB에서 갱신할 때는 잠금 경합이 발생했습니다.</p></Note>
+        <Note label="선택 기준"><p>DB 유니크 제약으로 중복 저장을 막고, 중복 예외는 저장 트랜잭션 밖에서 처리했습니다.</p><p>카운터는 Redis에서 갱신하도록 분리했습니다.</p></Note>
       </div>
       <Table columns={['검토한 방식', '얻는 점', '남는 문제·부담']} rows={[
         ['코드 중복 검사', '구현이 단순함', '동시 요청이 검사를 함께 통과'],
@@ -121,32 +121,46 @@ export const draftPages: DraftPage[] = [
     </>,
   },
   {
-    id: 'vote-implementation', title: '투표 저장·예외·카운터의 처리 흐름', section: 'FeedShop', caseId: 'feed-vote', stage: '구현',
-    body: <><p>저장, 중복 예외, 카운터 갱신을 각자의 처리 경계로 나누었습니다.</p><Flow steps={[
-      ['DB 저장', '(event_id, voter_id) 유니크 제약으로 같은 사용자의 중복 투표 저장 차단'],
-      ['중복 예외 처리', '저장·flush는 REQUIRED 안에서 끝내고, 중복 예외는 NOT_SUPPORTED 흐름에서 처리'],
-      ['카운터 갱신', '정상 저장한 투표 수는 Redis INCR로 갱신'],
-    ]} /><PageBottom><Note label="효과">실패한 저장 트랜잭션에 후속 응답 처리가 묶이지 않도록 하고, 투표 수 갱신의 DB 잠금 경합을 분리했습니다.</Note><Note label="집계 복구와 보정">Redis 키 유실 시 DB 투표 이력으로 카운터를 복구하고, Redis 조회 장애 시 DB 집계값으로 응답하도록 구현했습니다. 매일 새벽 DB 투표 이력을 기준으로 카운터를 보정합니다.</Note><div className="source-row"><Source href={voteWiki}>예외 처리·트랜잭션 구현 근거</Source><Source href={`${voteWiki}#7-운영-고려사항과-복구-전략`}>복구·보정 상세 기록</Source></div></PageBottom></>,
+    id: 'vote-implementation', title: '정상 저장과 중복 요청의 처리 경로를 분리', section: 'FeedShop', caseId: 'feed-vote', stage: '구현',
+    body: <>
+      <p>DB에서 중복 여부를 확정하고, 정상 저장한 투표만 카운터에 반영합니다.</p>
+      <div className="vote-branch-flow">
+        <div className="vote-save"><strong>투표 저장·flush · REQUIRED</strong><p>(event_id, voter_id) 유니크 제약으로 중복 저장 차단</p></div>
+        <div className="vote-branches">
+          <div><span className="vote-path">정상 저장 ↓</span><Block title="Redis INCR로 카운터 증가">저장한 투표를 집계에 반영하고<br />정상 응답을 반환합니다.</Block></div>
+          <div><span className="vote-path">중복 제약 위반 ↓</span><Block title="저장 트랜잭션 밖에서 예외 처리">NOT_SUPPORTED 흐름에서 중복 예외를 처리하고,<br />카운터는 증가시키지 않습니다.</Block></div>
+        </div>
+      </div>
+      <PageBottom><Note label="집계 복구와 보정"><p>Redis 키 유실 시 DB 투표 이력으로 카운터를 복구하고, Redis 조회 장애 시 DB 집계값으로 응답합니다.</p><p>매일 새벽 DB 투표 이력을 기준으로 카운터를 보정합니다.</p></Note><div className="source-row"><Source href={voteWiki}>예외 처리·트랜잭션 구현 근거</Source><Source href={`${voteWiki}#7-운영-고려사항과-복구-전략`}>복구·보정 상세 기록</Source></div></PageBottom>
+    </>,
   },
   {
-    id: 'vote-validation', title: '동시 3,000명까지 투표 요청의 HTTP 오류 0건 확인', section: 'FeedShop', caseId: 'feed-vote', stage: '검증 · 부하별 응답과 오류',
+    id: 'vote-validation', title: '투표 요청 처리와 중복·집계 정확성을 각각 검증', section: 'FeedShop', caseId: 'feed-vote', stage: '검증 · 측정 근거',
     body: <>
-      <p>개선 후 동시 500·1,000·3,000명 테스트에서 투표 요청의 HTTP 오류 0건을 확인했습니다.</p>
+      <p>개선 후 부하별 응답·오류를 측정하고, 저장 기록과 카운터를 별도로 대조했습니다.</p>
       <Table columns={['동시 사용자', '실행 시간', '평균 응답시간', 'HTTP 오류']} rows={[
         ['500명', '2분 1초', '0.83초', '0건'],
         ['1,000명', '2분', '2.19초', '0건'],
         ['3,000명', '2분 1초', '5.00초', '0건'],
       ]} />
-      <Grid><Proof src="vuser500_result.png" caption="500명 · 실행한 요청의 HTTP 오류 0건" height={150} /><Proof src="vuser1000_result.png" caption="1,000명 · 실행한 요청의 HTTP 오류 0건" height={150} /></Grid>
-      <PageBottom><Note label="개선 결과">저장 트랜잭션 밖에서 중복 예외를 처리하고 카운터 갱신을 Redis로 분리한 뒤, 세 부하 구간 모두 투표 요청을 HTTP 오류 없이 처리했습니다. <a href={voteWiki} target="_blank" rel="noreferrer">상세 측정 기록 ↗</a></Note></PageBottom>
+      <Grid><Proof src="vuser3000_result.png" caption="요청 처리 · 동시 3,000명 / HTTP 오류 0건" height={175} /><Proof src="phase2b-redis-count-verify.png" caption="집계 확인 화면 · Redis 값 3 / API 응답 3" height={175} /></Grid>
+      <PageBottom><Note label="검증 구분"><p>HTTP 오류는 nGrinder로, DB 중복 0건·DB와 Redis 값 일치는 저장 기록과 카운터 대조로 확인했습니다.</p><p>오른쪽 이미지는 Redis와 API 응답 대조입니다. DB 검증 근거와 측정 환경은 상세 기록에 연결합니다.</p></Note><div className="source-row"><Source href={asset('vuser500_result.png')}>500명 원본</Source><Source href={asset('vuser1000_result.png')}>1,000명 원본</Source><Source href={voteWiki}>측정 환경·DB 검증 상세 기록</Source></div></PageBottom>
     </>,
   },
   {
-    id: 'vote-result', title: '동시 투표에서 오류·중복 0건과 집계 일치 확인', section: 'FeedShop', caseId: 'feed-vote', stage: '최종 결과',
-    body: <><p>DB 유니크 제약·예외 처리 분리·Redis INCR을 적용해 중복 저장과 카운터 갱신을 분리했습니다.</p><Table columns={['검증 대상', '확인 결과', '확인 방법']} rows={[
-      ['투표 요청', '최대 동시 3,000명 · HTTP 오류 0건', 'nGrinder 부하 테스트'],
-      ['중복·집계', 'DB 중복 0건 · DB와 Redis 값 일치', '저장 기록과 카운터 대조'],
-    ]} /><Grid><Proof src="phase2b-redis-count-verify.png" caption="투표 집계 · Redis 카운터와 API 응답 대조" height={205} /><Proof src="vuser3000_result.png" caption="동시 3,000명 · 투표 요청 처리 결과" height={205} /></Grid><PageBottom><p className="rac-meta">왼쪽 화면은 Redis 값과 API 응답 대조입니다. DB 중복 0건과 DB·Redis 집계 일치의 검증 내용은 <a href={voteWiki} target="_blank" rel="noreferrer">상세 검증 기록 ↗</a>에 정리했습니다.</p></PageBottom></>,
+    id: 'vote-result', title: '중복 투표를 막고, 장애 시에도 투표 수를 제공', section: 'FeedShop', caseId: 'feed-vote', stage: '개선 효과',
+    body: <>
+      <table className="rac-table vote-result-table" aria-label="개선 후 검증 결과"><tbody>
+        <tr><th scope="row">투표 요청</th><td>최대 동시 3,000명 · HTTP 오류 <strong className="metric-accent">0건</strong></td></tr>
+        <tr><th scope="row">중복·집계</th><td>DB 중복 저장 <strong className="metric-accent">0건</strong> · DB와 Redis 값 <strong className="metric-accent">일치</strong></td></tr>
+      </tbody></table>
+      <Grid>
+        <Block title="투표 참여 · 중복 반영 방지">같은 사용자의 동시 요청이 여러 투표 기록으로 저장되는 문제를 막았습니다.</Block>
+        <Block title="투표 수 조회 · 장애 시 응답 유지">Redis 키 유실·조회 장애에도 DB 투표 이력을 기준으로 카운터를 복구하거나 투표 수를 응답하도록 했습니다.</Block>
+      </Grid>
+      <Note label="집계 복구">매일 새벽 원본 투표 이력으로 카운터를 보정해, 갱신 누락으로 생긴 집계 차이를 복구할 수 있도록 했습니다.</Note>
+      <PageBottom><p className="rac-meta">수치는 앞 페이지의 테스트에서 확인한 결과입니다. 정기 보정에는 최대 24시간의 지연이 있습니다.</p><Source href={voteWiki}>투표 검증·복구 조건 상세 기록</Source></PageBottom>
+    </>,
   },
   {
     id: 'feed-reflection', title: 'FeedShop 회고 · 경험으로 얻은 판단 기준', section: '프로젝트 1 · 회고',
