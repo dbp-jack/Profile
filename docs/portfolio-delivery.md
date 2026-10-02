@@ -7,16 +7,16 @@
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | main. 웹 소개 코드 afe9e8b2095bc50dfa9795a43c8992f57502cac6을 origin/main에 push. 후속 배포 기록 커밋은 [skip ci]로 기록하며 공개 소스는 afe9e8b |
+| 브랜치·커밋 | main. 웹 소개 코드 a7b671ddfa70b49a7ad45fba96ba5ce58cb3df42을 origin/main에 push. 후속 배포 기록은 [skip ci] 문서 커밋, 공개 소스는 a7b671d |
 | worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 배포용 /private/tmp/portfolio-ship-mdj0v3bb/ 임시 파일 67개는 검증 후 제거. 기존 dist 118개와 보호 파일 2개는 SHA-256 일치로 보존 확인 |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
 | 로컬 미리보기 | 2026-10-02 정본에서 `npm run dev -- --host 127.0.0.1 --port 5174 --strictPort` 실행. PID 26171, 세션 69567, cwd 정본 확인. Browser 홈·manage 렌더링 성공. 셸 curl은 127.0.0.1·localhost 모두 연결 실패하여 HTTP 200으로 기록하지 않음. 사용자 확인용 첫 화면을 열어둠 |
-| 이번 승인·반영 | 최신 정정은 로컬 반영: 소제목 ‘서비스의 문제를 찾고, 구현과 검증으로 개선하는 개발자’, 본문 ‘서비스의 문제를 찾고, 구현과 검증으로 개선합니다.’ + ‘로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다.’. 이 정정은 아직 미커밋·미배포. 다음 내용은 직전 배포 기록: 웹 소개 최종 문구: ‘서비스의 문제를 찾고, 구현과 검증으로 개선합니다.’ / ‘로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다.’. 개발자 표시와 함께 GitHub·Pages·Firebase 반영 완료. PDF 변경은 이번 커밋·빌드에서 제외해 로컬 보존. 다음은 PDF 9·10쪽 흐름 검토 |
+| 이번 승인·반영 | 최종 소제목 ‘서비스의 문제를 찾고, 구현과 검증으로 개선하는 개발자’. 본문은 ‘서비스의 문제를 찾고, 구현과 검증으로 개선합니다.’와 ‘로딩 지연과 중복 투표를 개선하고, 인증의 책임 경계를 정리했습니다.’ 두 문장. GitHub·Pages·Firebase 반영 완료. PDF 변경은 로컬 보존 |
 | 현재 진행 중 변경 | PDF 순차 정리: 기존 12쪽 ‘집계 복구와 보정’ 문구·상세 Wiki 링크를 보존하고, 이번에 4쪽 효과 문구에 ‘사용자’를 추가했습니다. 8쪽 Scouter 이미지 아래 평균 응답시간은 요청당 DB 조회 ‘42회 → 2회’, ‘2회 → 캐시 적중 시 0회’로 교체하고 측정 기준도 일치시켰습니다. 반영 파일은 `src/pages/pdf/content.tsx`·`src/pages/pdf/README.md`·이 인계 문서입니다. 변경 TSX ESLint·공백 검사 및 정본 로컬 4·8쪽 실제 화면 확인 통과. 12쪽은 이전 화면 확인 근거를 유지합니다. 현재 28쪽, 9·10쪽 재배치와 페이지 통합은 미적용. 인쇄 PDF 출력·전체 회귀 검증 미실시. 미커밋·미push·미배포이며, 다음 단계는 사용자의 4·8쪽 로컬 확인입니다. 12쪽도 사용자 통과 여부 미확정. 웹 기존 배포 상태는 아래 기록 유지 |
 | 배포 차이·빌드 검증 | 웹 TS/TSX ESLint·공백 검사·배포용 npm run build 통과. 로컬 확정 문구 화면 확인. 공개 JS 두 곳에 확정 문구 존재, Firebase JS SHA-256이 빌드와 일치. 공개 Browser·모바일·전체 회귀 미검증. 기존 Type Stripping·Browserslist 경고 유지 |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
-| 제출 링크 확인 | https://dbp-jack.github.io/Profile/ 공개 HTML·JS 응답 성공, index-CsgfUQBV.js 확정 문구 확인. 실제 제출 이력서 파일 동일성은 미확인 |
-| 커밋·push·배포 | dbp-jack ADMIN 권한을 명령 범위에서 사용, 전역 활성 계정 변경 없음. [Pages 배포 37015759330](https://github.com/dbp-jack/Profile/actions/runs/37015759330) 성공. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio에 firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-q4rls61j/firebase-deploy.json --non-interactive 성공. JS index-D7QaLkYj.js. 임시 빌드 폴더와 /private/tmp/portfolio-ship-current-path는 삭제하지 않음. 정본 dist·보호 파일은 변경하지 않음 |
+| 제출 링크 확인 | https://dbp-jack.github.io/Profile/ HTML·JS 확인, index-C7RZlNak.js에 소제목·본문 두 문장 존재. 실제 제출 이력서 파일 동일성 미확인 |
+| 커밋·push·배포 | dbp-jack ADMIN 권한을 명령 범위에서 사용. [Pages 실행 37016760980](https://github.com/dbp-jack/Profile/actions/runs/37016760980) 성공. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio에 firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-final-_n_f27sv/firebase-deploy.json --non-interactive 성공. JS index-Bm7A8PsG.js, 공개 SHA-256 일치. 이번 임시 폴더 /private/tmp/portfolio-ship-final-_n_f27sv 보존. 이전 임시 경로도 삭제하지 않음. 정본 dist·보호 파일 미변경 |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 
