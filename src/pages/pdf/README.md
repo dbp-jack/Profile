@@ -425,3 +425,4 @@
 - 사용자 승인한 28쪽 공통본의 누적 문구·읽기 순서·3M 문제 해결 흐름·회고·협업·AI 활용·LinkedIn 링크를 배포 대상으로 확정. AI 중심 별도 버전은 미착수.
 - TSX ESLint·CSS 구문·공백 검사·배포용 TypeScript/Vite 빌드 통과. 기존 화면 확인 근거 재사용. 새 전체 회귀·인쇄 PDF·공개 Browser 검증 미실시.
 - 배포용 산출물과 두 문서 수정 전 사본: /private/tmp/portfolio-ship-20261006-6xfrqaq6/. 기존 dist 및 보호 자료 보존. 기존 출처 불명 삭제는 커밋 제외.
+- 배포 완료: 소스 5dee249921fa4b1230da00c08224b8010da535dd, origin/main push 및 GitHub Pages 실행 37331045203 성공. Firebase myplanner-portfolio production 성공. 두 공개 PDF HTML·최신 JS 문구/링크·CSS 확인, Firebase 산출물 바이트 일치. 공개 Browser 새 검증은 미실시. GitHub Actions Node20 폐기 예정·ubuntu 이미지 변경 안내는 기존 CI 후속 관리 사항.

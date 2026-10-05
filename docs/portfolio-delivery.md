@@ -7,17 +7,17 @@
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | main. 2026-10-06 확정 공통본 ship 진행. 이전 HEAD 2d1bca8b38078914f8ff5f0e3bf7918bd1dc264a. 최신 결과는 아래 배포 기록으로 갱신. |
+| 브랜치·커밋 | main. 배포 소스 5dee249921fa4b1230da00c08224b8010da535dd (Refine portfolio PDF narrative and AI workflow). 배포 완료 기록은 후속 문서 커밋으로 반영. |
 | worktree·데모 | 등록 worktree 2개: 편집 정본과 /Users/minsujeong/.codex/worktrees/0f9e/Portfolio(detached, 2d1bca8). 이번 수정은 정본에서만 수행. 최신 작업 직전 4개 파일 원문은 /private/tmp/portfolio-reading-order-dx1_91c7/collaboration-24-20261005-before/, 확인 화면은 같은 상위 폴더에 보존. 기존 배포 폴더 /private/tmp/portfolio-ship-reflection-j5hrzn1m 및 보호 자료 유지. |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
 | 로컬 미리보기 | 정본의 기존 5174 서버 재사용. PID 79571·세션 24493, cwd 재확인. http://127.0.0.1:5174/pdf?page=26 을 사용자 확인용으로 열어둠. 실행 명령 npm run dev -- --host 127.0.0.1 --port 5174 --strictPort. 기존 HTTP 200 근거 유지, 이번에는 변경 19~22쪽 실제 화면 확인, 동일 원본·컴포넌트의 확대 기능 검증은 기존 근거 재사용. 종료: kill 79571. |
 | 이번 승인·반영 | 2026-10-05 사용자 승인으로 19~22쪽 논리 연결 재수정. 19쪽 코드 공유·권한 조회 선택과 대안 대응, 20쪽 초기 검토→분리 설계→실제 코드 의존 제거 단계 및 전후 그림 240px 유지, 반대 방향 import 0건은 별도 근거로 이동. 21쪽 JWT 전달 경로의 누락별 수정, 22쪽 역할별 200/403/401·로컬 H2 검증·관리 조건으로 마무리. 전체 28쪽·다른 24쪽과 기존 확정 변경 유지.  후속 교정: 19쪽 코드 공유 표현을 Auth의 User 모듈 직접 의존 제거로 구체화하고 해결 설명·대안 문구를 함께 교정.  최신 승인: 23쪽 3M 회고를 15쪽과 같은 제목→배운 점→회색 결과 요약·다음 적용 기준으로 통일. 모듈 의존 확인·권한 경로 점검·허용/차단 검증의 배움으로 정리.  최신 승인: 24쪽 협업 3열 유지, 이미지→소제목→직접 한 일 순서로 조정(사용자 후속 교정). 제목 구체화·캡션 축약·반복 효과 요약 축소·JIRA 가이드라인 링크 분리.  최신 승인: 25쪽 AI 활용을 만든 이유→현재 제작·활용→직접 확인 기준으로 재배치, 하단 도구 역할 3열·다음 계획 축약. 대회 순위를 2쪽과 통일.  후속 교정: 25쪽 생산성 목적과 현재 직접 검증·반영 판단을 제목·본문에 명시.  25쪽 제작 과정 링크를 사용자 지정 LinkedIn activity:7510919407477547008 주소로 교체.  25쪽 구현·자동화의 Claude Code와 해당 설명 삭제, Codex 역할 유지. 다음 26쪽 확인으로 이동. |
-| 현재 진행 중 변경 | 승인한 content.tsx·page.css·PDF README·이 문서 4개를 공통본으로 커밋·push·배포 진행. AI 중심 My Planner+FeedShop 별도 구성은 미착수. docs/bankcow-company-research.md 삭제 상태는 이번 커밋에서 제외. |
+| 현재 진행 중 변경 | 승인된 공통본 4개 파일 커밋·push·공개 배포 완료. AI 중심 My Planner+FeedShop 별도 구성은 미착수. 기존 docs/bankcow-company-research.md 삭제 상태는 제외·보존. |
 | 별도 보존 상태 | 작업 시작부터 docs/bankcow-company-research.md가 삭제 상태(D). 이번 PDF 작업에서 삭제·복원하지 않았으며 경위 미확인. 새 non-ignored 미추적 파일 없음. |
 | 배포 차이·빌드 검증 | 2026-10-06 TSX ESLint·CSS 구문·git diff --check·배포용 npm run build -- --outDir /private/tmp/portfolio-ship-20261006-6xfrqaq6/dist 통과. 로컬 화면은 기존 사용자 확인 근거 재사용. 전체 회귀·새 인쇄 PDF·공개 Browser 검증 미실시. 기존 dist 보존. Type Stripping·Browserslist 데이터 경고, 새 outDir 비삭제 안내 있음. |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
-| 제출 링크 확인 | https://dbp-jack.github.io/Profile/pdf/?page=15 HTML·JS·CSS 확인. JS index-E6dcgeXR.js, CSS index-V2QHKqfD.css에 최신 15쪽 반영. 실제 제출 이력서 파일 동일성 미확인. |
-| 커밋·push·배포 | 2026-10-06 배포 진행: 명령 범위 dbp-jack ADMIN / origin main. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production. 완료 여부는 후속 기록에서 확인. 이전 성공 이력은 아래 본문에 보존. |
+| 제출 링크 확인 | 2026-10-06 https://dbp-jack.github.io/Profile/pdf/?page=25 및 https://myplanner-portfolio.web.app/pdf/?page=25 HTTP 성공·최신 문구·LinkedIn 게시물 링크·CSS 확인. Pages index-Cn0Xdscn.js, Firebase index-CGkBZHWn.js, 공통 index-DN9zyqwx.css. Firebase JS/CSS는 이번 빌드 바이트 일치. 공개 Browser·모바일·인쇄 PDF는 새 검증하지 않음. |
+| 커밋·push·배포 | 2026-10-06 dbp-jack ADMIN 명령 범위 인증 / origin main push 성공. Pages 실행 https://github.com/dbp-jack/Profile/actions/runs/37331045203 build·deploy 성공. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production 배포 성공. 명령: firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-20261006-6xfrqaq6/firebase-deploy.json --non-interactive. |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 
