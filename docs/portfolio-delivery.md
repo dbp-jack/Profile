@@ -1,22 +1,23 @@
 # 최신 정본과 기업별 지원 작업 인계
 
-## 새 채팅이 먼저 확인할 상태 — 2026-10-03
+## 새 채팅이 먼저 확인할 상태 — 2026-10-06
 
 이 상단은 현재 작업 상태입니다. 아래 기존 인계의 날짜별 구성·근거·배포 기록은 해당 시점의 참고이며, 과거의 회사 미정·로컬 작업 중·배포 완료 표현을 현재 상태로 해석하지 않습니다. 변경 사항은 이 상단 한 곳에 갱신하고 실제 Git 상태와 대조합니다.
 
 | 항목 | 현재 확인 내용 |
 | --- | --- |
 | 편집 정본 | `/Users/minsujeong/Desktop/재적3/Portfolio` |
-| 브랜치·커밋 | main. 15쪽 회고·글자색 배포 소스 0800b5474e42de37c6ef5674b721b9e692db8a26를 origin/main에 push. 배포 증거는 후속 [skip ci] 문서 커밋으로 기록. 이전 확정 PDF 변경 포함. |
-| worktree·데모 | 등록 worktree 1개, 정본만 사용. 이번 임시 배포 폴더 /private/tmp/portfolio-ship-reflection-j5hrzn1m의 소스 스냅샷·64개 빌드 파일 보존. 기존 dist·보호 파일·이전 임시 폴더 미변경. |
+| 브랜치·커밋 | main. 2026-10-06 확정 공통본 ship 진행. 이전 HEAD 2d1bca8b38078914f8ff5f0e3bf7918bd1dc264a. 최신 결과는 아래 배포 기록으로 갱신. |
+| worktree·데모 | 등록 worktree 2개: 편집 정본과 /Users/minsujeong/.codex/worktrees/0f9e/Portfolio(detached, 2d1bca8). 이번 수정은 정본에서만 수행. 최신 작업 직전 4개 파일 원문은 /private/tmp/portfolio-reading-order-dx1_91c7/collaboration-24-20261005-before/, 확인 화면은 같은 상위 폴더에 보존. 기존 배포 폴더 /private/tmp/portfolio-ship-reflection-j5hrzn1m 및 보호 자료 유지. |
 | 지원 대상 | 대화에서 지정한 모두닥. 과거 기업을 현재 대상으로 추정하지 않음 |
-| 로컬 미리보기 | 기존 정본 5174 서버 PID 26171·세션 69567 유지, cwd 확인. http://127.0.0.1:5174/pdf?page=15 에 판단 기준 중심의 회고 화면을 열어둠. 최신 화면 기록 /private/tmp/portfolio-feed-reflection-15-contrast.png. 15쪽과 관련 스타일은 공개본에도 반영 완료. |
-| 이번 승인·반영 | 15쪽 회고의 경험→판단 기준 두 단락 구성과 진한 글자색을 사용자 ship 승인으로 커밋·push·기존 GitHub Pages/Firebase 배포 완료. 다음 3M 16~23쪽은 작업 방향 안내만 수행, 본문 수정 미착수. 공개 Wiki 변경 미실시. |
-| 현재 진행 중 변경 | 승인된 미반영 코드 변경 없음. 15쪽 수치·근거 링크·28쪽 구성 보존. 다음 작업은 3M: 16쪽 서비스·담당 소개부터 순서대로 검토하고, 19쪽에 몰린 문제·대안·구현 및 21~22쪽 검증·효과의 역할을 대조해 수정안 확정 후 로컬 반영. 0건 import의 참조 방향, 권한 응답 200/403/401과 로컬 H2 검증 범위를 구분. 23쪽은 경험에서 얻은 기준 중심 검토. 페이지 추가·삭제 및 3M 실제 수정은 미승인. 공개 Wiki·인쇄 PDF·전체 회귀 미실시. |
-| 배포 차이·빌드 검증 | 기존 최종 TSX ESLint·CSS 구문·로컬 15쪽 화면 및 계산된 글자색 확인 근거 재사용. 배포용 npm run build·공백 검사 통과. 두 공개 PDF HTML HTTP200, 최신 JS 문구·CSS 반영 확인. Firebase JS/CSS는 배포 빌드 바이트 일치. 검증 스크립트의 외부 Font Awesome CSS 선택 오류를 앱 assets CSS 선택으로 수정해 확인 완료. 공개 Browser·모바일·인쇄 PDF·전체 회귀 미검증. 기존 Type Stripping·Browserslist·Actions Node20/ubuntu 안내 유지. |
+| 로컬 미리보기 | 정본의 기존 5174 서버 재사용. PID 79571·세션 24493, cwd 재확인. http://127.0.0.1:5174/pdf?page=26 을 사용자 확인용으로 열어둠. 실행 명령 npm run dev -- --host 127.0.0.1 --port 5174 --strictPort. 기존 HTTP 200 근거 유지, 이번에는 변경 19~22쪽 실제 화면 확인, 동일 원본·컴포넌트의 확대 기능 검증은 기존 근거 재사용. 종료: kill 79571. |
+| 이번 승인·반영 | 2026-10-05 사용자 승인으로 19~22쪽 논리 연결 재수정. 19쪽 코드 공유·권한 조회 선택과 대안 대응, 20쪽 초기 검토→분리 설계→실제 코드 의존 제거 단계 및 전후 그림 240px 유지, 반대 방향 import 0건은 별도 근거로 이동. 21쪽 JWT 전달 경로의 누락별 수정, 22쪽 역할별 200/403/401·로컬 H2 검증·관리 조건으로 마무리. 전체 28쪽·다른 24쪽과 기존 확정 변경 유지.  후속 교정: 19쪽 코드 공유 표현을 Auth의 User 모듈 직접 의존 제거로 구체화하고 해결 설명·대안 문구를 함께 교정.  최신 승인: 23쪽 3M 회고를 15쪽과 같은 제목→배운 점→회색 결과 요약·다음 적용 기준으로 통일. 모듈 의존 확인·권한 경로 점검·허용/차단 검증의 배움으로 정리.  최신 승인: 24쪽 협업 3열 유지, 이미지→소제목→직접 한 일 순서로 조정(사용자 후속 교정). 제목 구체화·캡션 축약·반복 효과 요약 축소·JIRA 가이드라인 링크 분리.  최신 승인: 25쪽 AI 활용을 만든 이유→현재 제작·활용→직접 확인 기준으로 재배치, 하단 도구 역할 3열·다음 계획 축약. 대회 순위를 2쪽과 통일.  후속 교정: 25쪽 생산성 목적과 현재 직접 검증·반영 판단을 제목·본문에 명시.  25쪽 제작 과정 링크를 사용자 지정 LinkedIn activity:7510919407477547008 주소로 교체.  25쪽 구현·자동화의 Claude Code와 해당 설명 삭제, Codex 역할 유지. 다음 26쪽 확인으로 이동. |
+| 현재 진행 중 변경 | 승인한 content.tsx·page.css·PDF README·이 문서 4개를 공통본으로 커밋·push·배포 진행. AI 중심 My Planner+FeedShop 별도 구성은 미착수. docs/bankcow-company-research.md 삭제 상태는 이번 커밋에서 제외. |
+| 별도 보존 상태 | 작업 시작부터 docs/bankcow-company-research.md가 삭제 상태(D). 이번 PDF 작업에서 삭제·복원하지 않았으며 경위 미확인. 새 non-ignored 미추적 파일 없음. |
+| 배포 차이·빌드 검증 | 2026-10-06 TSX ESLint·CSS 구문·git diff --check·배포용 npm run build -- --outDir /private/tmp/portfolio-ship-20261006-6xfrqaq6/dist 통과. 로컬 화면은 기존 사용자 확인 근거 재사용. 전체 회귀·새 인쇄 PDF·공개 Browser 검증 미실시. 기존 dist 보존. Type Stripping·Browserslist 데이터 경고, 새 outDir 비삭제 안내 있음. |
 | 기존 빌드의 추가 파일 | 기존 ignored `dist` 118개는 해시 대조로 보존 확인. 새 빌드 64개에 없는 54개는 동일 복사본 51개, 내용이 다른 `dist/index 2.html`·`dist/pdf/index 2.html`, `dist/무제 20.png` 1개. 정본 근거로 채택하지 않으며 출처·정리 여부는 별도 확인 대상. 이번에 삭제하지 않음 |
 | 제출 링크 확인 | https://dbp-jack.github.io/Profile/pdf/?page=15 HTML·JS·CSS 확인. JS index-E6dcgeXR.js, CSS index-V2QHKqfD.css에 최신 15쪽 반영. 실제 제출 이력서 파일 동일성 미확인. |
-| 커밋·push·배포 | dbp-jack ADMIN 권한을 명령 범위에서 사용해 origin/main push. [Pages 실행 37045964676](https://github.com/dbp-jack/Profile/actions/runs/37045964676) build·deploy 성공. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production에 `firebase deploy --only hosting --project devboard-preview --account planner100402@gmail.com --config /private/tmp/portfolio-ship-reflection-j5hrzn1m/firebase-deploy.json --non-interactive` 성공. Firebase JS index-CFqHjb6o.js SHA-256 1d4538050bcc8358f3e742040df37823aa3a9f4cb2e5e882b43d76fd7ad5a494 및 CSS index-V2QHKqfD.css 빌드 일치. |
+| 커밋·push·배포 | 2026-10-06 배포 진행: 명령 범위 dbp-jack ADMIN / origin main. Firebase planner100402@gmail.com / devboard-preview / myplanner-portfolio production. 완료 여부는 후속 기록에서 확인. 이전 성공 이력은 아래 본문에 보존. |
 
 ### 작업 시작 전부터 있던 변경 — 보존 대상
 

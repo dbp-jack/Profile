@@ -4,7 +4,7 @@ import plannerScreen from './assets/planner-screen.png'
 import { FEEDSHOP_SCREENS } from '@/content/feedshop-screens'
 import { THREE_M_SCREENS } from '@/content/three-m-screens'
 import { Note, PageBottom, Grid, Block, Table, Flow, Proof, Source } from './components'
-import { HERO_PERSONAL_INFO, HERO_SKILL_GROUPS, PROJECT_WORKFLOW, COLLABORATION_SECTION, RESOURCE_LINKS, EXPERIENCE_ITEMS } from '@/content/portfolio'
+import { HERO_PERSONAL_INFO, HERO_SKILL_GROUPS, COLLABORATION_SECTION, RESOURCE_LINKS, EXPERIENCE_ITEMS } from '@/content/portfolio'
 import { feedShopProject, threeMProject } from '@/content/projects'
 
 declare const __BASE_PATH__: string
@@ -30,8 +30,7 @@ export const chapters = [
 export const caseLabels = {
   'feed-query': { project: 'FeedShop', number: 1, name: '이벤트 목록 조회 성능 개선' },
   'feed-vote': { project: 'FeedShop', number: 2, name: '투표 동시성과 정합성 확보' },
-  'm3-boundary': { project: '3M', number: 1, name: 'Auth·User 책임 분리' },
-  'm3-auth': { project: '3M', number: 2, name: '인증 정보 전달 흐름 단순화' },
+  'm3-boundary': { project: '3M', number: 1, name: '서비스 경계와 인증 흐름 개선' },
 } as const
 
 export type DraftPage = {
@@ -54,12 +53,12 @@ export const draftPages: DraftPage[] = [
     body: <div className="rac-experiences">
       <div className="rac-experience"><span>01</span><div><h3>성능과 데이터 정확성 개선</h3><p>사용자 이탈 방지를 위해 이벤트 목록의 로딩 지연을 줄여<br />평균 응답시간 <strong className="metric-accent">91% 단축</strong>, 동시 투표 테스트에서 오류·중복 <strong className="metric-accent">0건</strong> 확인</p></div></div>
       <div className="rac-experience"><span>02</span><div><h3>작업 과정이 투명하게 공유되는 협업 환경 구축</h3><p>JIRA 운영 기준과 Confluence 문서 체계를 정리하고,<br />Slack 알림으로 작업 상태·커밋 변경을 <strong className="metric-accent">자동 공유</strong>해<br />팀이 작업 흐름을 <strong className="metric-accent">투명하게</strong> 확인하고 추적할 수 있는 환경 구축</p></div></div>
-      <div className="rac-experience"><span>03</span><div><h3>AI를 활용한 제작 경험</h3><p>일상을 관리하고 기록·정리하는 개인 플래너를 제작<br /><strong className="metric-accent">AI 원티드 챌린지 대회 참여 중</strong></p></div></div>
+      <div className="rac-experience"><span>03</span><div><h3>AI를 활용한 제작 경험</h3><p>일상을 관리하고 기록·정리하는 개인 플래너를 제작<br /><strong className="metric-accent">AI 원티드 챌린지 대회 참여 중 · 1,390팀 중 70위</strong></p></div></div>
     </div>,
   },
   {
     id: 'contents', title: '목차', section: '전체 구성', layout: 'toc',
-    body: <><p>프로젝트의 문제와 배경을 이해한 뒤, 대안 비교·구현 → 검증 → 최종 결과 순서로 읽을 수 있습니다.</p><div className="document-toc">{chapters.filter(c => c.start > 3).map(c => <button key={c.name} data-jump-page={c.start}><span><strong>{c.name}</strong><small>{c.detail}</small></span><b>{c.start === c.end ? c.start : `${c.start}–${c.end}`}쪽 →</b></button>)}</div><PageBottom><Note label="문제 해결 사례">FeedShop ① 조회 성능 ② 투표 동시성<br />3M ① Auth·User 책임 분리 ② 인증 정보 전달</Note></PageBottom></>,
+    body: <><p>프로젝트의 문제와 배경을 이해한 뒤, 대안 비교·구현 → 검증 → 최종 결과 순서로 읽을 수 있습니다.</p><div className="document-toc">{chapters.filter(c => c.start > 3).map(c => <button key={c.name} data-jump-page={c.start}><span><strong>{c.name}</strong><small>{c.detail}</small></span><b>{c.start === c.end ? c.start : `${c.start}–${c.end}`}쪽 →</b></button>)}</div><PageBottom><Note label="문제 해결 사례">FeedShop ① 조회 성능 ② 투표 동시성<br />3M ① 서비스 경계와 인증 흐름 개선</Note></PageBottom></>,
   },
   {
     id: 'feed-intro', title: 'FeedShop · 서비스와 담당', section: '프로젝트 1 · FeedShop',
@@ -83,7 +82,7 @@ export const draftPages: DraftPage[] = [
   },
   {
     id: 'query-decision', title: '조회 구조를 먼저 개선하고 캐시 적용', section: 'FeedShop', caseId: 'feed-query', stage: '문제 · 원인과 대안 비교',
-    body: <><Grid><div><Block title="문제와 원인">연관 데이터를 반복 조회하고 메모리에서 필터링해,<br />목록 요청 한 번에 <strong className="metric-accent">DB 조회 42회</strong> 발생</Block><Proof src="before-scouter-sql42.png" caption="Scouter XLog · 반복 DB 조회 확인" height={230} /></div><div><Table columns={['검토한 방식', '장점과 남는 부담']} rows={[
+    body: <><Block title="문제와 원인">연관 데이터를 반복 조회하고 메모리에서 필터링해,<br />목록 요청 한 번에 <strong className="metric-accent">DB 조회 42회</strong> 발생</Block><Grid><div><Proof src="before-scouter-sql42.png" caption="Scouter XLog · 반복 DB 조회 확인" height={230} /></div><div><Table columns={['검토한 방식', '장점과 남는 부담']} rows={[
       ['캐시만 적용', '반복 요청은 빨라지지만 캐시가 없으면 N+1 조회가 유지됨'],
       ['조회 구조만 개선', '조회 횟수는 줄지만 반복 요청마다 DB에 접근'],
       ['조회 개선 + Redis', '두 비용을 함께 줄임 · 캐시 유효기간·삭제 관리 필요'],
@@ -95,10 +94,10 @@ export const draftPages: DraftPage[] = [
   },
   {
     id: 'query-validation', title: '쿼리 개선과 캐시 효과를 단계별로 확인', section: 'FeedShop', caseId: 'feed-query', stage: '검증 · 측정 근거',
-    body: <><p>조회 구조 개선과 Redis 적용 전후를 동시 1,000명 조건에서 비교했습니다.</p><Table columns={['확인 지표', '개선 전', '조회 구조 개선', 'Redis 추가']} rows={[
+    body: <><p>조회 구조 개선과 Redis 적용 전후를 동시 1,000명 조건에서 비교했습니다.</p><div className="query-measurement"><Table columns={['확인 지표', '개선 전', '조회 구조 개선', 'Redis 추가']} rows={[
       ['평균 응답시간 · 동시 1,000명', '6,818ms', '4,191ms', '638ms'],
       ['요청당 DB 조회', '42회', '2회', '캐시 적중 시 0회'],
-    ]} /><Grid><Proof src="before-ngrinder-v1000.png" caption="개선 전 · 평균 6,818ms / TPS 138.7" height={185} /><Proof src="phase2a-ngrinder-v1000.png" caption="개선 후 · 평균 638ms / TPS 438.3" height={185} /></Grid><PageBottom><Note label="측정 조건">동시 1,000명 · MacBook Air M2 / 24GB · 로컬 부하 테스트<br />Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 · nGrinder 3.5.9 · Scouter 2.21.3<br />응답시간은 부하 테스트 평균, DB 조회 수는 Scouter 요청별 기록이며 0회는 캐시 적중 기준입니다.</Note><div className="rac-meta"><Source href={asset('phase1-ngrinder-v1000.png')}>조회 구조 개선 단계 원본 · 4,191ms</Source><Source href={performanceWiki}>보조 측정 · 동시 100명 645ms → 209ms / TPS 154.6 → 470.1</Source></div></PageBottom></>,
+    ]} /><p className="measurement-explanation">응답시간은 부하 테스트 평균, DB 조회 수는 Scouter 요청별 기록이며 0회는 캐시 적중 기준입니다.</p></div><Grid><Proof src="before-ngrinder-v1000.png" caption="개선 전 · 평균 6,818ms / TPS 138.7" height={185} /><Proof src="phase2a-ngrinder-v1000.png" caption="개선 후 · 평균 638ms / TPS 438.3" height={185} /></Grid><PageBottom><Note label="측정 조건">동시 1,000명 · MacBook Air M2 / 24GB · 로컬 부하 테스트<br />Java 17 · Spring Boot 3.3.12 · MySQL 8.2 · Redis 7.4 · nGrinder 3.5.9 · Scouter 2.21.3</Note><div className="rac-meta"><Source href={asset('phase1-ngrinder-v1000.png')}>조회 구조 개선 단계 원본 · 4,191ms</Source><Source href={performanceWiki}>보조 측정 · 동시 100명 645ms → 209ms / TPS 154.6 → 470.1</Source></div></PageBottom></>,
   },
   {
     id: 'query-result', title: '이벤트 탐색의 대기 시간을 줄이고, 반복 조회 부담을 낮춤', section: 'FeedShop', caseId: 'feed-query', stage: '개선 효과',
@@ -165,127 +164,151 @@ export const draftPages: DraftPage[] = [
   {
     id: 'feed-reflection', title: 'FeedShop 회고 · 경험으로 얻은 판단 기준', section: '프로젝트 1 · 회고',
     body: <>
-      <Block title="성능 개선 · 단계를 나누어 효과를 확인"><p className="rac-meta">동시 1,000명 · 6.818초 → 4.191초 → 0.638초, 평균 응답시간 약 91% 단축</p><p>조회 구조 개선과 캐시 적용을 나누어 측정하면서, 각 변경이 응답시간에 미친 효과를 구분할 수 있었습니다.</p></Block>
-      <Block title="동시성 처리 · 저장 제약과 예외 처리 경계를 함께 설계"><p className="rac-meta">최대 동시 3,000명 · HTTP 오류·DB 중복 저장 0건 · DB와 Redis 집계 일치</p><p>DB 제약으로 중복을 막는 것과 실패한 저장이 후속 처리를 방해하지 않도록 하는 것은 각각 설계하고 검증해야 함을 배웠습니다.</p></Block>
-      <Block title="장애 대응 · 원본 데이터와 복구 경로를 함께 준비"><p className="rac-meta">Redis 키 유실 시 복구 · 조회 장애 시 DB 집계 응답 · 매일 새벽 카운터 보정</p><p>카운터를 분리할 때는 정상 동작뿐 아니라, 장애 시 어떤 데이터를 기준으로 응답하고 집계를 복구할지도 정해야 함을 배웠습니다.</p></Block>
+      <Block title="성능 개선 · 단계를 나누어 효과를 확인"><p>조회 구조 개선과 캐시 적용을 나누어 측정하면서, 각 변경이 응답시간에 미친 효과를 구분할 수 있었습니다.</p><p className="rac-meta">동시 1,000명 · 6.818초 → 4.191초 → 0.638초, 평균 응답시간 약 91% 단축</p></Block>
+      <Block title="동시성 처리 · 저장 제약과 예외 처리 경계를 함께 설계"><p>DB 제약으로 중복을 막는 것과 실패한 저장이 후속 처리를 방해하지 않도록 하는 것은 각각 설계하고 검증해야 함을 배웠습니다.</p><p className="rac-meta">최대 동시 3,000명 · HTTP 오류·DB 중복 저장 0건 · DB와 Redis 집계 일치</p></Block>
+      <Block title="장애 대응 · 원본 데이터와 복구 경로를 함께 준비"><p>카운터를 분리할 때는 정상 동작뿐 아니라, 장애 시 어떤 데이터를 기준으로 응답하고 집계를 복구할지도 정해야 함을 배웠습니다.</p><p className="rac-meta">Redis 키 유실 시 복구 · 조회 장애 시 DB 집계 응답 · 매일 새벽 카운터 보정</p></Block>
       <PageBottom><p className="reflection-next"><strong>다음 적용 기준</strong>변경 단계별 측정과 함께, 중복 요청·저장 실패·캐시 유실을 검증 항목으로 먼저 정하겠습니다.</p>
       <div className="source-row"><Source href={feedShopProject.projectReflection?.sourceUrl ?? feedWiki}>성능·동시성 개선 기록</Source><Source href={voteRecoveryCommit}>DB 기준 복구 구현과 테스트 코드</Source></div></PageBottom>
     </>,
   },
   {
     id: 'm3-intro', title: '3M · 서비스와 담당', section: '프로젝트 2 · 3M',
-    body: <><p className="project-intro">주문 생성부터 지역 허브 이동·배송 담당자 배정까지,<br />업체·허브·배송 담당자의 역할별 업무를 연결하는 B2B 물류 관리 시스템</p><p className="rac-meta">2025.03–2025.04 · 4명 · 팀장 / 백엔드</p><Flow steps={[
+    body: <><p className="project-intro">업체의 주문 생성부터 허브 간 이동·배송 담당자 배정까지,<br />역할별 물류 업무를 연결하는 B2B 물류 관리 시스템</p><p className="rac-meta">2025.03–2025.04 · 4명 · 팀장 / 백엔드</p><Flow steps={[
       ['업체', '주문 생성·상품 요청'], ['허브', '지역 거점 간 이동 관리'], ['배송 담당자', '배정된 배송 작업 수행'],
-    ]} /><Grid><Block title="직접 담당한 개발">Auth·User·Gateway 설계·구현<br />JWT 발급·검증, 사용자 정보 전달, AOP 권한 확인<br />Docker Compose 통합 실행 환경 구성</Block><Block title="주요 개선과 효과"><p>인증·사용자 책임 분리 → 변경 시 함께 수정할 범위 축소</p><p>인증 정보 전달 정리 → 반복 조회 부담을 줄이고 역할별 권한 응답 검증</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · Spring Cloud Gateway · JWT · PostgreSQL · Redis · Docker</p></PageBottom></>,
+    ]} /><Grid><Block title="직접 담당한 개발"><p>Auth·User·Gateway 설계·구현</p><p>JWT 발급·검증 → 사용자 정보 전달 → AOP 권한 확인</p><p>Docker Compose 통합 실행 환경 구성</p></Block><Block title="주요 개선과 효과"><p>Auth·User 직접 모듈 의존 제거<br />→ 내부 구현 변경의 영향 범위 축소</p><p>검증된 사용자 정보 전달·권한 처리 연결<br />→ 일반 권한 확인의 추가 조회 분리·역할별 접근 제어</p></Block></Grid><PageBottom><p className="rac-meta">Spring Boot · Spring Cloud Gateway · JWT · PostgreSQL · Redis · Docker</p></PageBottom></>,
   },
   {
     id: 'm3-screens', title: '3M · 물류 서비스 흐름', section: '프로젝트 2 · 3M',
     body: <>
-      <p className="project-intro">공급 업체의 입고부터 허브 간 이동과 수령 업체 배송까지</p>
-      <div className="m3-service-images">{THREE_M_SCREENS.map((screen, index) => <Proof key={screen.src} src={screen.src} caption={screen.caption} height={index === 0 ? 200 : 430} />)}</div>
-      <p className="rac-meta">허브 배송 담당자는 거점 간 이동을, 업체 배송 담당자는 수령 업체까지의 배송을 맡습니다.</p>
+      <p className="project-intro">공급 업체의 입고 → 허브 간 운송 → 수령 업체 배송</p>
+      <dl className="m3-delivery-roles">
+        <div><dt>허브 배송 담당자</dt><dd>허브 간 운송</dd></div>
+        <div><dt>업체 배송 담당자</dt><dd>수령 업체까지 배송</dd></div>
+      </dl>
+      <div className="m3-service-images">{THREE_M_SCREENS.map((screen, index) => <Proof key={screen.src} src={screen.src} caption={index === 0 ? '서비스 전체 개요' : '파란 화살표: 공급 업체에서 수령 업체까지의 배송 경로'} height={index === 0 ? 200 : 430} />)}</div>
     </>,
   },
   {
     id: 'm3-architecture', title: '3M · 통합 실행과 인증 구조', section: '프로젝트 2 · 3M',
-    body: <><Proof src={threeMProject.architectureImage!} caption="3M 전체 시스템 구조 · 기존 프로젝트 설계 자료" height={325} workLegend /><Grid><Block title="실행 환경과 상태 확인">Docker Compose로 서비스·DB·Redis·Zipkin을 함께 실행하고 <strong>Actuator 헬스체크</strong>로 기동 상태 점검</Block><Block title="구성으로 얻은 효과">Eureka 자동 등록으로 고정 주소 의존을 줄이고, Gateway에 JWT 검증을 모아 서비스별 중복 인증 처리 축소</Block></Grid><PageBottom><Note label="직접 담당">Auth·User·Gateway의 인증 경계와 Docker Compose 기반 통합 실행 환경을 구성했습니다.</Note></PageBottom></>,
+    body: <><Proof src={threeMProject.architectureImage!} caption="3M 전체 시스템 구조 · 기존 프로젝트 설계 자료" height={325} workLegend /><Grid><Block title="통합 실행과 상태 확인"><p>Docker Compose · 서비스·DB·Redis·Zipkin 통합 실행</p><p>Actuator · 서비스 기동 상태 점검</p><p>Eureka · 서비스 이름 기반 연결</p></Block><Block title="인증 처리 역할"><p>Auth · 로그인·JWT 발급</p><p>Gateway · JWT 검증·사용자 정보 전달</p><p>각 서비스 · 전달받은 정보로 권한 확인</p></Block></Grid><PageBottom><Note label="직접 담당">Auth·User·Gateway 설계·구현 · Docker Compose 통합 환경 구성</Note></PageBottom></>,
   },
   {
-    id: 'boundary-decision', title: '변경 이유에 따라 Auth·User의 책임을 분리', section: '3M', caseId: 'm3-boundary', stage: '문제 · 대안 비교 · 구현',
+    id: 'boundary-decision', title: '서비스 간 결합을 줄이기 위한 두 가지 선택', section: '3M', caseId: 'm3-boundary', stage: '문제 · 대안과 선택',
     body: <>
-      <Note label="문제">서비스는 나뉘었지만 Auth가 User 모듈을 직접 참조해 빌드 경계가 묶여 있었습니다. 공통 계약과 서비스 내부 구현을 분리할 필요가 있었습니다.</Note>
-      <div className="boundary-diagrams">
-        <Proof src="3m-auth-user-before-class-diagram.png" caption="개선 전 검토 구조 · Auth/User 책임 혼재" height={235} />
-        <Proof src="3m-auth-user-after-class-diagram-final.png" caption="개선 후 · Auth/User 분리와 Feign 기반 단방향 호출" height={235} />
+      <div className="m3-decision-list">
+        <section className="m3-decision-row">
+          <h3><span>01</span> Auth의 User 모듈 직접 의존을 어떻게 없앨까?</h3>
+          <div className="m3-decision-pair">
+            <div><span className="m3-decision-label">문제</span><p>Auth가 UserRole·권한 어노테이션·DTO를<br />User 모듈에서 직접 참조</p></div>
+            <span className="m3-decision-arrow" aria-hidden="true">→</span>
+            <div><span className="m3-decision-label">선택</span><h4>공통 계약 + Feign 호출</h4><p>공통 타입을 common으로 옮기고 Feign으로 호출</p></div>
+          </div>
+          <div className="m3-alternatives"><span>검토한 대안</span><p>직접 참조 — 구현은 간단하지만 빌드가 묶임<br />DTO 복제 — 모듈은 분리되지만 계약을 중복 관리</p></div>
+        </section>
+        <section className="m3-decision-row">
+          <h3><span>02</span> 권한 정보는 어디서 확인할까?</h3>
+          <div className="m3-decision-pair">
+            <div><span className="m3-decision-label">고려한 비용</span><p>매 요청마다 User에서 역할을 조회하면<br />호출 비용과 User 장애의 영향이 커짐</p></div>
+            <span className="m3-decision-arrow" aria-hidden="true">→</span>
+            <div><span className="m3-decision-label">선택</span><h4>JWT의 userId·role 활용</h4><p>일반 권한 확인을 위한 추가 조회 생략</p></div>
+          </div>
+          <div className="m3-alternatives"><span>검토한 대안</span><p>요청마다 User 조회 — 최신 역할 확인 / 호출·장애 영향<br />Gateway 캐시 — 호출 감소 / 값 동기화·삭제 관리</p></div>
+        </section>
       </div>
-      <PageBottom><div className="boundary-details">
-        <Table columns={['검토안', '장점과 부담']} rows={[
-          ['User 직접 참조', '타입 공유는 쉽지만 빌드·배포 경계가 묶임'],
-          ['서비스별 DTO 복제', '모듈 분리 가능 · 계약 변경 누락과 중복 관리 부담'],
-          ['common 계약 + Feign', '구현 참조 분리 · 공통 계약 버전 관리 필요'],
-        ]} />
-        <div className="boundary-roles">
-          <p><strong>Auth</strong> 로그인 검증·JWT 발급·최소 계정 정보 보관</p>
-          <p><strong>User</strong> 사용자 정보·역할 관리 · Auth → User 단방향 호출</p>
-          <p><strong>변경 범위 축소</strong> Auth의 User 모듈 직접 의존 제거 · common DTO 계약을 통한 Feign 호출</p>
-          <Source href={m3BoundaryWiki}>서비스 경계 비교와 변경 전후 구조</Source>
-        </div>
-      </div></PageBottom>
+      <PageBottom><p className="m3-decision-condition">선택 후 관리할 조건 · 공통 계약 버전 · JWT 역할 갱신 · 전달 헤더의 신뢰 경계</p><Source href={m3BoundaryWiki}>문제 원인과 대안 비교 기록</Source></PageBottom>
     </>,
   },
   {
-    id: 'auth-decision', title: '일반 권한 확인과 상세 사용자 조회를 분리', section: '3M', caseId: 'm3-auth', stage: '문제 · 대안 비교',
+    id: 'auth-decision', title: '책임을 나눈 뒤, 코드의 직접 의존까지 제거', section: '3M', caseId: 'm3-boundary', stage: '구현 · 책임과 코드 경계',
     body: <>
-      <div className="decision-context">
-        <Note label="문제">업체·허브·배송 담당자의 권한이 달랐습니다. 요청마다 User에서 역할을 조회하면 호출이 늘고, User 장애가 권한 확인에도 영향을 줄 수 있었습니다.</Note>
-        <Note label="선택 기준">일반 권한 확인에는 Gateway가 검증한 JWT의 userId·role을 사용하고, 상세 사용자 정보가 필요한 요청만 User를 조회하도록 구분했습니다.</Note>
+      <div className="m3-before-after">
+        <section><h3>① 이전 · 책임이 섞인 초기 검토안</h3><Proof src="3m-auth-user-before-class-diagram.png" caption="인증 처리와 사용자 정보·권한 참조가 혼재" height={240} /></section>
+        <section><h3>② 이후 · Auth·User 책임 분리 설계</h3><Proof src="3m-auth-user-after-class-diagram-final.png" caption="Auth는 인증, User는 사용자 관리 · Feign으로 연결" height={240} /></section>
       </div>
-      <Table columns={['검토한 방식', '얻는 점', '관리할 문제']} rows={[
-        ['요청마다 User 조회', '최신 역할 확인', '호출 증가·User 상태에 대한 의존'],
-        ['Gateway 로컬 캐시', 'User 호출 감소', '인스턴스별 값 동기화·삭제'],
-        ['JWT userId·role 활용', '일반 권한 확인의 추가 조회 감소', '역할 변경 반영·헤더 신뢰 경계'],
-      ]} />
-      <PageBottom><Note label="적용 효과">일반 권한 확인에 필요한 User 호출을 분리하고, Gateway 검증 → 헤더 전달 → 서비스 AOP로 권한 처리 경로를 모았습니다.</Note>
-      <Source href={m3BoundaryWiki}>인증 정보 전달 방식과 적용 근거</Source></PageBottom>
+      <section className="m3-code-boundary"><h3>③ 분리된 코드에 남은 Auth → User 직접 의존 제거</h3>
+        <div><p>UserRole·권한 어노테이션·Feign DTO를<br /><strong>common으로 이동</strong></p><div className="m3-gradle-evidence"><span>auth/build.gradle에서 삭제</span><code>− implementation project(':user')</code></div></div>
+        <p className="m3-import-note"><strong>별도 확인</strong> User → Auth 패키지 import 0건 · User 소스 정적 분석<br />위 Gradle 의존 제거와는 반대 방향을 확인한 기록입니다.</p>
+      </section>
+      <PageBottom><p className="m3-request-note">Auth가 User 내부 타입을 직접 참조하는 범위를 줄였습니다. 서비스 간 Feign HTTP 호출은 유지됩니다.</p><div className="source-row m3-evidence-links"><Source href={m3BoundaryWiki}>설계·코드 변경과 정적 분석 근거</Source><button type="button" className="rac-source" data-proof-src={asset('3m-auth-user-class-diagram.png')} data-proof-caption="Auth·User 책임과 Feign 호출 · 간략 클래스 구조">간략 클래스 그림 보기</button></div></PageBottom>
     </>,
   },
   {
-    id: 'auth-flow', title: 'Gateway 검증 → 사용자 정보 전달 → 권한 처리', section: '3M', caseId: 'm3-auth', stage: '인증 흐름 단순화',
-    body: <><p className="auth-findings">통합 테스트에서 User API의 JWT 검증 우회와 권한 AOP 누락을 찾아 수정했습니다.</p><div className="auth-flow-block"><h3>개선 전 검토 · 요청마다 User 조회</h3><Flow steps={[
-      ['Client', 'JWT 포함 요청'], ['Service', '사용자 정보 요청'], ['User', '역할·정보 반환'], ['Service', '권한 판단'],
-    ]} /></div><div className="auth-flow-block"><h3>개선 후 · 검증한 정보로 일반 권한 처리</h3><Flow steps={[
-      ['Client', 'JWT 포함 요청'], ['Gateway', 'JWT 검증'], ['X-User-*', 'userId·role 전달'], ['Service', 'AOP 권한 처리'],
-    ]} /></div><Note label="수정과 효과">User API를 인증 제외 경로에서 제거하고 MasterRoleAspect·예외 처리를 추가했습니다. 역할 변경 API에서 MASTER 200·HUB_MANAGER 403·미인증 401 응답을 확인했습니다.</Note><PageBottom><Note label="관리 기준">토큰 유효기간 중 역할 변경 반영과 전달 헤더의 신뢰 경계를 함께 관리해야 합니다.</Note><Source href={threeMProject.projectReflection?.sourceUrl ?? m3Wiki}>MASTER·HUB_MANAGER·미인증 시나리오 검증</Source></PageBottom></>,
+    id: 'auth-flow', title: '통합 과정에서 인증·권한 검사 누락을 보완', section: '3M', caseId: 'm3-boundary', stage: '통합 · 발견한 문제와 수정',
+    body: <>
+      <p className="m3-integration-lead">JWT 정보를 전달하는 설계를 적용하며, 실제 요청의 검사 경로를 점검했습니다.</p>
+      <ol className="m3-live-flow" aria-label="수정한 요청 처리 경로">
+        <li><span>01</span><h3>Gateway</h3><p>JWT 검증<br />사용자 ID·role 전달</p></li>
+        <li><span>02</span><h3>User</h3><p>전달받은 role로<br />AOP 권한 검사</p></li>
+        <li><span>03</span><h3>HTTP 응답</h3><p>인증·권한 결과에 맞는<br />상태 코드 반환</p></li>
+      </ol>
+      <div className="m3-fix-table"><Table columns={['단계', '발견한 문제', '수정한 내용']} rows={[
+        ['Gateway', 'User API 전체가 인증 제외 경로에 포함', '전체 제외 해제 · 로그인/가입만 제외'],
+        ['User', '권한 어노테이션에 대응하는 AOP 누락', 'MasterRoleAspect와 AOP 의존성 추가'],
+        ['예외 처리', '권한 예외를 HTTP 응답으로 처리할 규칙 누락', 'GlobalExceptionHandler 추가 · 권한 부족은 403'],
+      ]} /></div>
+      <PageBottom><p className="m3-request-note">X-User-Id·X-User-Role을 전달하고, 상세 사용자 정보가 필요한 요청만 User를 조회합니다.</p><Source href={m3BoundaryWiki}>인증 제외·권한 AOP·예외 처리 수정 기록</Source></PageBottom>
+    </>,
   },
   {
-    id: 'm3-result', title: '책임 분리와 권한 응답을 나누어 검증', section: '3M · 문제 해결 1·2', stage: '결과 · 책임 분리와 인증 흐름 검증',
-    body: <><p>Auth·User 책임 분리와 Gateway 중심 정보 전달을 적용하고, 코드 구조와 실제 권한 응답을 각각 확인했습니다.</p><Table columns={['검증 대상', '확인 결과', '확인 방법']} rows={[
-      ['User 모듈의 Auth 패키지 import', '0건', '소스 코드 import 정적 분석'],
-      ['서비스 간 참조', 'common 계약 + Feign 단방향 호출', 'Auth의 User 모듈 직접 의존 제거'],
-      ['역할 변경 API의 권한 응답', 'MASTER 200 · HUB_MANAGER 403 · 미인증 401', 'Gateway·AOP 통합 테스트'],
-    ]} /><PageBottom><Note label="개선 효과">Auth와 User의 내부 구현 참조를 분리해 빌드 경계를 확보했습니다. 권한 처리 누락을 수정하고 관리자 요청 허용·일반 역할 거부·미인증 차단을 확인했습니다.</Note><Note label="검증 범위">0건은 User 모듈 소스의 Auth 패키지 import 수입니다. 권한 응답은 로컬 H2 환경에서 Gateway·Auth·User를 연결한 통합 테스트 결과입니다.</Note><div className="source-row"><Source href={m3BoundaryWiki}>서비스 경계와 정적 분석 근거</Source><Source href={threeMProject.projectReflection?.sourceUrl ?? m3Wiki}>인증 경로 통합 테스트 보고서</Source></div></PageBottom></>,
+    id: 'm3-result', title: '역할별 요청으로 허용과 차단을 확인', section: '3M', caseId: 'm3-boundary', stage: '검증 · 결과와 적용 범위',
+    body: <>
+      <p className="m3-test-context"><strong>검증 대상</strong> 역할 변경 API · Gateway·Auth·User를 연결한 로컬 환경</p>
+      <div className="m3-test-results">
+        <section><h3>MASTER</h3><p>관리자 요청</p><strong>200</strong><span>역할 변경 허용</span></section>
+        <section><h3>HUB_MANAGER</h3><p>권한이 부족한 요청</p><strong>403</strong><span>권한 부족 차단</span></section>
+        <section><h3>토큰 없음</h3><p>인증되지 않은 요청</p><strong>401</strong><span>미인증 요청 차단</span></section>
+      </div>
+      <p className="m3-tested-effect">관리자만 역할을 변경하고,<br />권한이 부족하거나 인증되지 않은 요청은 차단했습니다.</p>
+      <div className="m3-operating-conditions"><h3>적용 후에도 관리할 조건</h3><div><p><strong>서비스 계약</strong>공통 DTO·어노테이션의 버전 관리<br />Feign 호출의 지연·실패 처리</p><p><strong>인증 정보</strong>역할 변경 반영을 위한 JWT 유효기간<br />외부에서 전달 헤더를 위조하지 못하는 신뢰 경계</p></div></div>
+      <PageBottom><p className="m3-request-note">검증 환경 · 로컬 H2 기반 통합 테스트 기록</p><div className="source-row"><Source href={threeMProject.projectReflection?.sourceUrl ?? m3Wiki}>역할별 응답 통합 테스트 보고서</Source><Source href={m3BoundaryWiki}>설계 선택과 남은 조건</Source></div></PageBottom>
+    </>,
   },
   {
     id: 'm3-reflection', title: '3M 회고 · 경험으로 얻은 판단 기준', section: '프로젝트 2 · 회고',
     body: <>
-      <Block title="Auth·User의 직접 모듈 의존 제거">Auth의 User 모듈 직접 의존을 없애고 공통 계약과 Feign 호출로 연결했습니다. User 모듈의 Auth 패키지 import 0건도 확인해, 내부 구현을 직접 참조하지 않는 경계를 확보했습니다.</Block>
-      <Block title="인증 제외와 권한 검사 누락 수정">User API를 Gateway의 인증 제외 경로에서 제거하고 권한 AOP와 예외 처리를 추가했습니다. 인증 확인부터 역할에 따른 요청 허용·차단까지 처리 흐름을 연결했습니다.</Block>
-      <Block title="역할 변경 API의 권한별 응답 확인">로컬 통합 테스트에서 MASTER 200·HUB_MANAGER 403·미인증 401 응답을 확인했습니다. 관리자 요청은 허용하고, 권한이 부족하거나 인증되지 않은 요청은 차단했습니다.</Block>
-      <PageBottom><Note label="이 경험으로 얻은 기준"><strong>변경이 영향을 주는 범위로 서비스 경계를 정하고, 실제 요청의 허용·차단까지 확인하는 설계·검증 기준</strong>을 얻었습니다.</Note>
+      <Block title="서비스 경계 · 모듈을 나눈 뒤 참조 관계까지 확인"><p>서비스를 나누는 것만으로 직접 참조가 사라지지는 않았습니다. 코드의 의존 관계까지 확인해야 함을 배웠습니다.</p><p className="rac-meta">Auth → User 직접 모듈 의존 제거 · common 계약·Feign 연결 · User → Auth 패키지 import 0건</p></Block>
+      <Block title="권한 처리 · 설정부터 예외 응답까지 연결"><p>권한 어노테이션이 있어도 인증 제외 설정이나 AOP가 빠지면 검사가 동작하지 않았습니다. 요청이 통과하는 경로 전체를 확인해야 함을 배웠습니다.</p><p className="rac-meta">User API 전체 인증 제외 해제 · 권한 AOP·예외 처리 추가</p></Block>
+      <Block title="통합 검증 · 허용과 차단을 함께 확인"><p>정상 요청의 성공만으로 접근 제어를 확인할 수는 없었습니다. 역할과 토큰 유무를 나누어, 차단해야 할 요청도 검증 기준에 포함하게 됐습니다.</p><p className="rac-meta">로컬 H2 통합 테스트 · MASTER 200 · HUB_MANAGER 403 · 미인증 401</p></Block>
+      <PageBottom><p className="reflection-next"><strong>다음 적용 기준</strong>서비스를 분리할 때 참조 방향과 호출 계약을 먼저 정하고, 역할·토큰 유무별 허용·차단을 통합 검증 항목으로 두겠습니다.</p>
       <div className="source-row"><Source href={m3BoundaryWiki}>실제 발견한 문제와 수정 기록</Source><Source href={threeMProject.projectReflection?.sourceUrl ?? m3Wiki}>권한 통합 테스트 결과</Source></div></PageBottom>
     </>,
   },
   {
-    id: 'collaboration-system', title: '협업 환경을 구축하고, 작업 변경을 투명하게 공유', section: '협업 방식',
+    id: 'collaboration-system', title: '업무 기준을 정리하고, 진행 상황과 변경 사항을 함께 확인', section: '협업 방식',
     body: <>
-      <p>JIRA 운영 기준과 Confluence 자료 체계를 정리하고, Slack 알림으로 작업 변경을 자동 공유했습니다.</p>
+      <p>팀이 같은 기준으로 업무를 확인하도록, 진행 관리·자료 정리·변경 알림을 연결했습니다.</p>
       <div className="collaboration-evidence">
-        {[COLLABORATION_SECTION.evidence[0], COLLABORATION_SECTION.evidence[2], COLLABORATION_SECTION.evidence[1]].map(item => <div key={item.image}>
-          <Proof src={item.image} caption={item.alt} height={220} />
-          <Block title={item.title}>{item.description}</Block>
+        {[
+          { evidence: COLLABORATION_SECTION.evidence[0], caption: 'JIRA 백로그', description: '백로그를 주간 단위로 나누고 담당·상태·완료 범위를 확인하는 기준을 정리했습니다.' },
+          { evidence: COLLABORATION_SECTION.evidence[2], caption: 'Confluence 자료 목록', description: '스프린트 일정과 기술·테스트 자료를 Confluence에 모아 자료 위치를 정리했습니다.' },
+          { evidence: COLLABORATION_SECTION.evidence[1], caption: 'Slack 자동 알림', description: '이슈 생성과 연결된 커밋 변경이 팀 채널에 자동 공유되도록 설정했습니다.' },
+        ].map(({ evidence, caption, description }) => <div key={evidence.image}>
+          <Proof src={evidence.image} caption={caption} height={220} />
+          <h3>{evidence.title}</h3>
+          <p>{description}</p>
         </div>)}
       </div>
-      <PageBottom><Note label="개선 효과">담당·상태·완료 범위와 자료 위치를 같은 기준으로 확인하고, 이슈 생성·연결된 커밋 변경을 공통 채널에서 확인합니다. <a href={COLLABORATION_SECTION.guideUrl} target="_blank" rel="noreferrer">직접 작성한 JIRA 가이드라인 ↗</a></Note></PageBottom>
+      <PageBottom><Note label="개선 효과">업무 진행과 변경 이력을 팀이 같은 기준으로 확인하도록 했습니다.</Note><Source href={COLLABORATION_SECTION.guideUrl}>직접 작성한 JIRA 가이드라인</Source></PageBottom>
     </>,
   },
   {
-    id: 'ai-current', title: '일상을 관리하고 기록·정리하는 개인 플래너', section: 'AI 활용 · 현재와 다음 단계',
+    id: 'ai-current', title: 'AI를 생산성 도구로 활용하고, 결과는 직접 검증·판단', section: 'AI 활용 · 제작과 검증',
     body: <>
-      <p className="project-intro">일상을 관리하고 기록·정리하는 개인 플래너를 제작<br /><strong className="metric-accent">AI 원티드 챌린지 대회 참여 중</strong></p>
+      <p className="project-intro"><strong className="metric-accent">AI 원티드 챌린지 대회 참여 중 · 1,390팀 중 70위</strong></p>
       <div className="planner-overview">
         <Proof src={plannerScreen} resolved caption="직접 제작해 사용 중인 개인 플래너 · 실제 화면" height={320} />
         <div className="planner-stages">
-          <Block title="현재 · 제작과 일상 활용">흩어진 기록을 확인·정리하는 불편을 줄이기 위해 Codex와 AI 도구로 기능을 만들고, 일상의 관리·기록·정리에 사용하고 있습니다.</Block>
-          <Block title="다음 · 기술 문제의 원인 분석">일상의 생산성 개선에서 더 나아가, 기술 문제의 원인을 분석하고 해결책을 설계·검증하는 데 AI 활용 범위를 넓히겠습니다.</Block>
-          <Source href={PROJECT_WORKFLOW.currentStage.linkUrl}>개인 플래너 제작 과정</Source>
+          <Block title="만든 이유">흩어진 일상 기록을 한곳에서 관리하고, 기록·정리의 생산성을 높이기 위해 시작했습니다.</Block>
+          <Block title="현재 제작·활용">Codex로 개인 플래너를 제작해 일정 관리와 기록·정리에 사용하고 있습니다.</Block>
+          <Block title="현재 · 직접 검증하고 판단">AI 코드의 변경 영향을 검토하고 빌드·테스트·실제 동작을 검증하며, 반영 여부를 직접 판단하고 있습니다.</Block>
+          <Source href="https://www.linkedin.com/feed/update/urn:li:activity:7510919407477547008/">개인 플래너 제작 과정</Source>
         </div>
       </div>
       <PageBottom><div className="planner-workflow">
         <div><h3>근거 수집</h3><strong>NotebookLM</strong><p>공식 자료 기반 조사와 근거 정리</p></div>
         <div><h3>사고·문서 구조화</h3><strong>Claude · Gemini</strong><p>생각과 문서 구조화, 대안 탐색</p></div>
-        <div><h3>구현·자동화</h3><strong>Codex · Claude Code</strong><p>Codex로 플래너·자동화·코드 점검, Claude Code로 범위가 정해진 기능 구현</p></div>
-        <div><h3>최종 판단은 직접</h3><p>코드 이해·변경 영향·빌드·테스트·실제 동작을 확인하고 설명할 수 있는 코드만 반영</p></div>
-      </div></PageBottom>
+        <div><h3>구현·자동화</h3><strong>Codex</strong><p>플래너 제작·자동화·코드 점검</p></div>
+      </div><p className="planner-next"><strong>다음 활용 계획</strong> 기술 문제의 원인 분석과 해결책 설계·검증으로 AI 활용 범위를 넓히겠습니다.</p></PageBottom>
     </>,
   },
   {
